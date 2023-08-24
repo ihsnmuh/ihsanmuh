@@ -15,7 +15,7 @@ const UnderlineLink = ({href, children, isOpenNewTab, className, nextLinkProps, 
     <Link 
       className={cn(
       'animated-underline',
-      'font-primary font-medium hover:text-primary-500',
+      'font-primary font-medium hover:text-primary-500 hover:dark:text-primary-500',
       'text-slate-600 dark:text-white',
       isOpenNewTab ? "newtab" :"",
       className

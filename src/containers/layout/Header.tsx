@@ -1,7 +1,8 @@
-import ImageFallback from '@/components/Atoms/image/fallback'
 import UnderlineLink from '@/components/Atoms/link/UnderlineLink'
+import KufiLogo from '@/components/Atoms/svg/KufiLogo'
 import { cn } from '@/lib/utils'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
 const ThemeSwitcher = dynamic(() => import('@/components/Molecules/ThemSwicher'))
 
@@ -10,7 +11,7 @@ const Header = () => {
   return (
     <header
       className={cn(
-        'backdrop-blur bg-white/80 dark:bg-black/80',
+        'backdrop-blur bg-white/80 dark:bg-slate-900/80',
         'sticky top-0 z-10'
       )}
     >
@@ -19,12 +20,9 @@ const Header = () => {
         'h-16 w-full',
         'flex justify-between items-center'
       )}>
-        <ImageFallback
-          src={"/images/icon/ihsan-kufi.svg"}
-          width={40}
-          height={40}
-          alt='Logo Ihsan Kufi'
-        />
+        <Link href='/'>
+          <KufiLogo fill='currentColor' className='w-10 h-10 fill-current text-primary-500'/>
+        </Link>
         <div className='flex gap-4 items-center'>
           <UnderlineLink href='/'>
             Home
