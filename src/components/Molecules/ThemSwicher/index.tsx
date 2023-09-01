@@ -23,9 +23,9 @@ const ThemeSwitcher = () => {
     <div>
       <button className={cn(
         'flex justify-center items-center',
-        'rounded hover:bg-slate-200/40 p-1'
+        'rounded hover:bg-slate-200/40 hover:text-primary-500 p-1'
         )} onClick={() => darkModeHandler()}>
-        {theme === 'light' ? <Sun size={20} /> : <MoonStar size={20} />}
+        {theme === 'light' ? <Sun className='fill-current' size={20} /> : <MoonStar className='fill-current' size={20} />}
       </button>
     </div>
   )

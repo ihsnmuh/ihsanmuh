@@ -56,11 +56,15 @@
   .layout {
     /* 1280px */
     max-width: 80rem;
-    @apply mx-auto w-11/12;
+    @apply mx-auto w-full px-4 sm:px-8;
+  }
+
+  .background {
+    @apply dark:bg-slate-900 bg-white;
   }
 
   .newtab {
-    cursor: url('/images/icon/arrow-up-right.svg'), auto;
+    cursor: url('/images/icon/arrow-up-right.svg') 10 10, pointer;
   }
 
 }

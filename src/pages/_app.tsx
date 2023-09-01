@@ -1,4 +1,4 @@
-import Layout from '@/containers/layout/Layout'
+import Layout from '@/containers/Layout/Layout'
 import '@/styles/main.css'
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'

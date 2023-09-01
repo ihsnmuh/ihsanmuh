@@ -3,16 +3,30 @@ import KufiLogo from '@/components/Atoms/svg/KufiLogo'
 import { cn } from '@/lib/utils'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 const ThemeSwitcher = dynamic(() => import('@/components/Molecules/ThemSwicher'))
 
 const Header = () => {  
+  const [isTop, setIsTop] = useState(true)
+
+  const handleScroll = () => {
+    setIsTop(window.scrollY === 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <header
       className={cn(
-        'backdrop-blur bg-white/80 dark:bg-slate-900/80',
-        'sticky top-0 z-10'
+        'backdrop-blur  bg-white/70 dark:bg-slate-900/70',
+        'sticky top-0 z-10',
+        !isTop ? 'shadow-sm': ""
       )}
     >
       <div className={cn(
