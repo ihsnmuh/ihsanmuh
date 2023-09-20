@@ -1,11 +1,22 @@
 import { cn } from "@/lib/utils";
 import { ChevronUp, FileText, Github, Instagram, Linkedin } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen flex items-center">
+    <section className="min-h-screen relative flex items-center">
+      <img
+        className="dark:invisible absolute h-full w-full max-w-none bg-left"
+        src="/images/background/hero-light.jpeg"
+        alt="hero background"
+      />
+      <img
+        className="invisible dark:visible absolute h-full w-full max-w-none bg-left"
+        src="/images/background/hero-dark.jpg"
+        alt="hero background"
+      />
       <div className="relative layout flex flex-col w-full gap-1">
         <p className="font-primary text-base sm:text-lg">
           Hello, Everyone! I&lsquo;m

@@ -26,9 +26,11 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "backdrop-blur bg-white/70 dark:bg-slate-900/70",
+        "bg-transparent",
         "fixed top-0 z-10 w-full",
-        !isTop ? "shadow-sm" : "",
+        !isTop
+          ? "shadow-sm bg-white/70 dark:bg-slate-900/70 backdrop-blur"
+          : "",
       )}
     >
       <div
