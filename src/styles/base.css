@@ -55,8 +55,7 @@
 
   .layout {
     /* 1280px */
-    max-width: 80rem;
-    @apply mx-auto w-full px-4 sm:px-8;
+    @apply mx-auto w-full px-4 sm:px-8 max-w-7xl;
   }
 
   .background {

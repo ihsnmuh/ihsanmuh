@@ -6,6 +6,7 @@ import React from "react";
 const Summary = () => {
   return (
     <section
+      id="summary"
       className={cn(
         "sticky top-0",
         "background border-t border-slate-200 dark:border-slate-800",
