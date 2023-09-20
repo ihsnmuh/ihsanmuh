@@ -7,6 +7,9 @@ const Hero = () => {
   return (
     <section className="min-h-screen flex items-center">
       <div className="relative layout flex flex-col w-full gap-1">
+        <p className="font-primary text-base sm:text-lg">
+          Hello, Everyone! I&lsquo;m
+        </p>
         <h1
           className={cn(
             "capitalize text-transparent font-bold font-secondary",
