@@ -58,6 +58,10 @@ const Hero = () => {
             <div className="flex gap-2 items-center text-slate-500 hover:text-primary-500">
               <FileText size={24} />
               <p>Resume</p>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+              </span>
             </div>
           </Link>
         </div>
