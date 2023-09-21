@@ -62,6 +62,16 @@
     @apply dark:bg-slate-900 bg-white;
   }
 
+  .background-img-light {
+    background-image: url("/images/background/hero-light.jpeg");
+    @apply bg-cover bg-center bg-no-repeat;
+  }
+
+  .background-img-dark {
+    background-image: url("/images/background/hero-dark.jpg");
+    @apply bg-cover bg-center bg-no-repeat;
+  }
+
   .newtab {
     cursor:
       url("/images/icon/arrow-up-right.svg") 10 10,
