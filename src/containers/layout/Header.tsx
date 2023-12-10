@@ -4,12 +4,18 @@ import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/atoms/link/UnderlineLink';
+import UnstyledLink from '@/components/atoms/links/UnstyledLink';
 import KufiLogo from '@/components/atoms/svg/KufiLogo';
 
 const ThemeSwitcher = dynamic(
   () => import('@/components/molecules/ThemSwicher'),
 );
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+];
 
 const Header = () => {
   const [isTop, setIsTop] = useState(true);
@@ -49,11 +55,23 @@ const Header = () => {
           />
         </Link>
         <div className='flex gap-4 items-center'>
-          <UnderlineLink href='/'>Home</UnderlineLink>
-          <UnderlineLink href='/blog'>Blog</UnderlineLink>
-          <UnderlineLink isOpenNewTab href='/about'>
-            About
-          </UnderlineLink>
+          {links.map((link, label) => (
+            <UnstyledLink
+              key={`${link}${label}`}
+              href={link.href}
+              className='group'
+            >
+              <span
+                className={cn(
+                  'transition-colors',
+                  'hover:text-primary-500',
+                  'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
+                )}
+              >
+                {link.label}
+              </span>
+            </UnstyledLink>
+          ))}
           <ThemeSwitcher />
         </div>
       </div>

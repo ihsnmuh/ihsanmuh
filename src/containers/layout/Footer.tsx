@@ -4,7 +4,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/atoms/link/UnderlineLink';
+import UnderlineLink from '@/components/atoms/links/UnderlineLink';
 import KufiLogo from '@/components/atoms/svg/KufiLogo';
 
 const Footer = () => {
