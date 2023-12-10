@@ -3,17 +3,29 @@ import { ChevronUp, FileText, Github, Instagram, Linkedin } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Hero = () => {
   const { resolvedTheme } = useTheme();
+  const [show, setShow] = useState(false);
 
-  console.log(resolvedTheme);
+  useEffect(() => {
+    const setTime = setTimeout(() => {
+      setShow(true);
+    }, 300);
+
+    return () => clearTimeout(setTime);
+  }, []);
 
   return (
-    <section className="min-h-screen background-img-light dark:background-img-dark flex items-center bg-cover">
+    <section
+      className={cn(
+        "min-h-screen background-img-light dark:background-img-dark flex items-center bg-cover",
+        show && "fade-in-start",
+      )}
+    >
       <div className="relative layout flex flex-col w-full gap-1">
-        <p className="font-primary text-base sm:text-lg">
+        <p className="font-primary text-base sm:text-lg" data-fade="1">
           Hello, Everyone! I&lsquo;m
         </p>
         <h1
@@ -23,6 +35,7 @@ const Hero = () => {
             "bg-clip-text text-transparent",
             "bg-gradient-to-r from-primary-500 to-violet-500 dark:to-orange-500",
           )}
+          data-fade="2"
         >
           Muhammad Ihsan
         </h1>
@@ -31,10 +44,11 @@ const Hero = () => {
             "capitalize font-primary text-slate-500",
             "text-xl sm:text-3xl",
           )}
+          data-fade="3"
         >
           Frontend Developer based in Indonesia
         </p>
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-4 mt-4" data-fade="4">
           <Link href="https://github.com/ihsnmuh">
             <Github
               size={24}
