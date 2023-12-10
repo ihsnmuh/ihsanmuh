@@ -58,7 +58,7 @@
     @apply mx-auto w-full px-4 sm:px-8 max-w-7xl;
   }
 
-  .bg-dark a.custom-link {
+  .background a.custom-link {
     @apply border-gray-200 hover:border-gray-200/0;
   }
 
