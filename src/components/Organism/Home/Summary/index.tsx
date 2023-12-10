@@ -1,53 +1,46 @@
-import ImageFallback from "@/components/Atoms/image/fallback";
-import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React from 'react';
+
+import { cn } from '@/lib/utils';
+
+import ImageFallback from '@/components/atoms/image/fallback';
 
 const Summary = () => {
   return (
     <section
-      id="summary"
+      id='summary'
       className={cn(
-        "sticky top-0",
-        "background border-t border-slate-200 dark:border-slate-800",
+        'sticky top-0',
+        'background border-t border-slate-200 dark:border-slate-800',
       )}
     >
-      <div className="layout">
+      <div className='layout'>
         <h1>H1</h1>
         <h2>H2</h2>
         <h3>H3</h3>
         <h4>H4</h4>
         <ImageFallback
-          src={
-            "https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png"
-          }
+          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
           width={200}
           height={200}
-          alt="test"
+          alt='test'
         />
         <ImageFallback
-          src={
-            "https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png"
-          }
+          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
           width={200}
           height={200}
-          alt="test"
+          alt='test'
         />
         <ImageFallback
-          src={
-            "https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png"
-          }
+          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
           width={200}
           height={200}
-          alt="test"
+          alt='test'
         />
         <ImageFallback
-          src={
-            "https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png"
-          }
+          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
           width={200}
           height={200}
-          alt="test"
+          alt='test'
         />
         <p>aa</p>
       </div>

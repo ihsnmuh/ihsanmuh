@@ -1,13 +1,13 @@
-import Hero from '@/components/Organism/Home/Hero'
-import Summary from '@/components/Organism/Home/Summary'
+import Hero from '@/components/organism/Home/Hero';
+import Summary from '@/components/organism/Home/Summary';
 
 const HomeContainer = () => {
   return (
     <>
-      <Hero/>
-      <Summary/>
+      <Hero />
+      <Summary />
     </>
-  )
-}
+  );
+};
 
-export default HomeContainer
+export default HomeContainer;

@@ -1,40 +1,42 @@
-import UnderlineLink from "@/components/Atoms/link/UnderlineLink";
-import KufiLogo from "@/components/Atoms/svg/KufiLogo";
-import { cn } from "@/lib/utils";
-import { Github, Instagram, Linkedin, Mail } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { cn } from '@/lib/utils';
+
+import UnderlineLink from '@/components/atoms/link/UnderlineLink';
+import KufiLogo from '@/components/atoms/svg/KufiLogo';
 
 const Footer = () => {
   return (
     <footer>
       <div
         className={cn(
-          "layout flex justify-between",
-          "w-full py-4 sm:py-8",
-          "border-t border-slate-200 dark:border-slate-800",
+          'layout flex justify-between',
+          'w-full py-4 sm:py-8',
+          'border-t border-slate-200 dark:border-slate-800',
         )}
       >
-        <div className="flex flex-col gap-4">
+        <div className='flex flex-col gap-4'>
           <div>
             <KufiLogo
-              fill="currentColor"
-              className="w-10 h-10 fill-current text-primary-500"
+              fill='currentColor'
+              className='w-10 h-10 fill-current text-primary-500'
             />
             <p
               className={cn(
-                "text-md font-semibold text-slate-900 dark:text-white",
-                "mt-2 underline underline-offset-2 decoration-primary-400",
+                'text-md font-semibold text-slate-900 dark:text-white',
+                'mt-2 underline underline-offset-2 decoration-primary-400',
               )}
             >
               Thanks for coming!
             </p>
           </div>
-          <p className="text-xs text-slate-900 dark:text-slate-200">
-            © 2023,{" "}
+          <p className='text-xs text-slate-900 dark:text-slate-200'>
+            © 2023,{' '}
             <UnderlineLink
-              className="text-slate-600/70 dark:text-white/70"
-              href="/"
+              className='text-slate-600/70 dark:text-white/70'
+              href='/'
             >
               Muhammad Ihsan
             </UnderlineLink>
@@ -42,21 +44,21 @@ const Footer = () => {
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold underline underline-offset-2 decoration-primary-400">
+          <p className='text-sm font-semibold underline underline-offset-2 decoration-primary-400'>
             Reach me out
           </p>
-          <div className="flex justify-end gap-2 mt-2">
-            <Link href="mailto:ihsanmuhaammad@gmail.com">
-              <Mail size={16} className="hover:text-primary-500" />
+          <div className='flex justify-end gap-2 mt-2'>
+            <Link href='mailto:ihsanmuhaammad@gmail.com'>
+              <Mail size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href="https://github.com/ihsnmuh">
-              <Github size={16} className="hover:text-primary-500" />
+            <Link href='https://github.com/ihsnmuh'>
+              <Github size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href="https://www.linkedin.com/in/ihsanmuhammad19/">
-              <Linkedin size={16} className="hover:text-primary-500" />
+            <Link href='https://www.linkedin.com/in/ihsanmuhammad19/'>
+              <Linkedin size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href="https://instagram.com/ihsnmuh">
-              <Instagram size={16} className="hover:text-primary-500" />
+            <Link href='https://instagram.com/ihsnmuh'>
+              <Instagram size={16} className='hover:text-primary-500' />
             </Link>
           </div>
         </div>

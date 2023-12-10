@@ -3,11 +3,11 @@
 @layer base {
   /* inter var - latin */
   @font-face {
-    font-family: "Inter";
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 100 900;
     font-display: optional;
-    src: url("/fonts/inter-latin.woff2") format("woff2");
+    src: url('/fonts/inter-latin.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
       U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
       U+2215, U+FEFF, U+FFFD;
@@ -58,23 +58,27 @@
     @apply mx-auto w-full px-4 sm:px-8 max-w-7xl;
   }
 
+  .bg-dark a.custom-link {
+    @apply border-gray-200 hover:border-gray-200/0;
+  }
+
   .background {
     @apply dark:bg-slate-900 bg-white;
   }
 
   .background-img-light {
-    background-image: url("/images/background/hero-light.jpeg");
+    background-image: url('/images/background/hero-light.jpeg');
     @apply bg-cover bg-center bg-no-repeat;
   }
 
   .background-img-dark {
-    background-image: url("/images/background/hero-dark.jpg");
+    background-image: url('/images/background/hero-dark.jpg');
     @apply bg-cover bg-center bg-no-repeat;
   }
 
   .newtab {
     cursor:
-      url("/images/icon/arrow-up-right.svg") 10 10,
+      url('/images/icon/arrow-up-right.svg') 10 10,
       pointer;
   }
 
