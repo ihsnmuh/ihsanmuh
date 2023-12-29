@@ -67,13 +67,23 @@
   }
 
   .background-img-light {
-    background-image: url('/images/background/hero-light.jpeg');
+    background-image: url('/images/background/hero-light-2.jpg');
     @apply bg-cover bg-center bg-no-repeat;
   }
 
   .background-img-dark {
     background-image: url('/images/background/hero-dark.jpg');
     @apply bg-cover bg-center bg-no-repeat;
+  }
+
+  .background-grid {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(to right, #80808012 1px, transparent 1px),
+      linear-gradient(to bottom, #80808012 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
   .newtab {

@@ -26,6 +26,22 @@ module.exports = {
           950: 'rgb(var(--tw-color-primary-950) / <alpha-value>)',
         },
       },
+      animation: {
+        gradient: 'gradient 10s ease infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%': {
+            'background-position': '0% 05%',
+          },
+          '50%': {
+            'background-position': '100% 50%',
+          },
+          '100%': {
+            'background-position': '0% 50%',
+          },
+        },
+      },
     },
   },
   plugins: [],

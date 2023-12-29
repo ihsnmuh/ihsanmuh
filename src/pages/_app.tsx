@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 
 import '@/styles/main.css';
+import '@/styles/colors.css';
 
 import Layout from '@/containers/Layout/Layout';
 
