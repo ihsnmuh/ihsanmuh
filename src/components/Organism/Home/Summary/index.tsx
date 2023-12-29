@@ -2,47 +2,36 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import ImageFallback from '@/components/atoms/image/fallback';
+import UnderlineLink from '@/components/atoms/links/UnderlineLink';
+import Title from '@/components/atoms/title';
 
 const Summary = () => {
   return (
     <section
       id='summary'
       className={cn(
-        'sticky top-0',
         'background border-t border-slate-200 dark:border-slate-800',
       )}
     >
-      <div className='layout'>
-        <h1>H1</h1>
-        <h2>H2</h2>
-        <h3>H3</h3>
-        <h4>H4</h4>
-        <ImageFallback
-          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
-          width={200}
-          height={200}
-          alt='test'
-        />
-        <ImageFallback
-          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
-          width={200}
-          height={200}
-          alt='test'
-        />
-        <ImageFallback
-          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
-          width={200}
-          height={200}
-          alt='test'
-        />
-        <ImageFallback
-          src='https://magento.femaledaily.com/media/catalog/product/m/a/maxb_ticket_thumbnail_-_platinum_presale_2_.png'
-          width={200}
-          height={200}
-          alt='test'
-        />
-        <p>aa</p>
+      <div className='layout h-fit gap-4 py-6'>
+        <Title title='Sort Story' />
+        <p className='mt-4 md:mt-6 font-primary text-lg'>
+          <span className='font-semibold'>Muhammad Ihsan</span> is a graduate of
+          Agricultural Engineering from Bogor Agriculture University who
+          transitioned into the field of web development, focusing on Frontend
+          Development since 2021 and little Backend knowledge. His expertise
+          lies in using technologies such as{' '}
+          <span className='font-semibold'>
+            React, NextJs, Tailwind, and Typescript
+          </span>
+          . Currently employed as a Frontend Developer at{' '}
+          <UnderlineLink href='https://femaledaily.com/'>
+            Female Daily Network
+          </UnderlineLink>
+          , Muhammad is driven by curiosity and a continuous desire to learn,
+          viewing it as a crucial element for personal growth and improvement in
+          various aspects of life.
+        </p>
       </div>
     </section>
   );
