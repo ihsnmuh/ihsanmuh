@@ -39,7 +39,7 @@ const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
         rel='noopener noreferrer'
         href={href}
         {...rest}
-        className={cn('cursor-newtab', className)}
+        className={cn('newtab', className)}
       >
         {children}
       </a>

@@ -59,7 +59,6 @@ export default function ComponentPage() {
             >
               Set to {theme === 'dark' ? 'light' : 'dark'}
             </Button>
-            {/* <Button onClick={randomize}>Randomize CSS Variable</Button> */}
           </div>
 
           <ol className='mt-8 space-y-6'>
@@ -78,7 +77,7 @@ export default function ComponentPage() {
                     'block max-w-xs rounded',
                     theme === 'dark'
                       ? 'background border border-gray-600'
-                      : 'border-gray-300 bg-white',
+                      : 'border-gray-400 bg-white',
                     'focus:border-primary-400 focus:ring-primary-400 focus:outline-none focus:ring',
                   )}
                   onChange={(e) => setColor(e.target.value as Color)}
