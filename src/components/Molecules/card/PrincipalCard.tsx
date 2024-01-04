@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaCode, FaRobot, FaRocket } from 'react-icons/fa6';
 
 import { cn } from '@/lib/utils';

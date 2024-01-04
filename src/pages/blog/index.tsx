@@ -1,5 +1,4 @@
 // import { useQuery } from "@tanstack/react-query";
-import React from 'react';
 
 const Blog = () => {
   // const { data, isError, isLoading } = useQuery({

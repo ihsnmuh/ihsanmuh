@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TSVG } from '@/types/types/components/svg';
 
 const KufiLogo = ({ fill, className }: TSVG) => {

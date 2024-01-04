@@ -1,5 +1,4 @@
 import { Poppins } from 'next/font/google';
-import React from 'react';
 
 import Footer from './Footer';
 import Header from './Header';
