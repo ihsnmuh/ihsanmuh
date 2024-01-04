@@ -1,5 +1,5 @@
-import Seo from '@/components/atoms/seo/Seo';
-import HomeContainer from '@/containers/Home';
+import Seo from '@/components/molecules/seo';
+import HomeContainer from '@/containers/home';
 
 export default function Home() {
   return (

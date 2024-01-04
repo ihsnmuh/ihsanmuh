@@ -1,11 +1,13 @@
-import Hero from '@/components/organism/Home/Hero';
-import Summary from '@/components/organism/Home/Summary';
+import Hero from '@/components/organism/home/hero';
+import Principles from '@/components/organism/home/principles';
+import Summary from '@/components/organism/home/summary';
 
 const HomeContainer = () => {
   return (
     <>
       <Hero />
       <Summary />
+      <Principles />
     </>
   );
 };

@@ -7,20 +7,15 @@ import Title from '@/components/atoms/title';
 
 const Summary = () => {
   return (
-    <section
-      id='summary'
-      className={cn(
-        'background border-t border-slate-200 dark:border-slate-800',
-      )}
-    >
-      <div className='layout h-fit gap-4 py-6'>
-        <Title title='Sort Story' />
+    <section id='summary' className={cn('background text-balance ', 'mt-8')}>
+      <div className='layout h-fit gap-4'>
+        <Title title='Short Story' />
         <p className='mt-4 md:mt-6 font-primary text-lg'>
           <span className='font-semibold'>Muhammad Ihsan</span> is a graduate of
           Agricultural Engineering from Bogor Agriculture University who
           transitioned into the field of web development, focusing on Frontend
-          Development since 2021 and little Backend knowledge. His expertise
-          lies in using technologies such as{' '}
+          Development since 2021. His expertise lies in using technologies such
+          as{' '}
           <span className='font-semibold'>
             React, NextJs, Tailwind, and Typescript
           </span>

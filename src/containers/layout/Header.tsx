@@ -8,7 +8,7 @@ import UnstyledLink from '@/components/atoms/links/UnstyledLink';
 import KufiLogo from '@/components/atoms/svg/KufiLogo';
 
 const ThemeSwitcher = dynamic(
-  () => import('@/components/molecules/ThemSwicher'),
+  () => import('@/components/molecules/themswicher'),
 );
 
 const links = [

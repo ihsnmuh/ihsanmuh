@@ -6,7 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import '@/styles/main.css';
 import '@/styles/colors.css';
 
-import Layout from '@/containers/Layout/Layout';
+import Layout from '@/containers/layout/Layout';
 
 const queryClient = new QueryClient();
 
