@@ -1,9 +1,10 @@
-import { ChevronUp, Github, Instagram, Linkedin } from 'lucide-react';
-import { FileText } from 'lucide-react';
-import Link from 'next/link';
+import { ChevronUp } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+
+import HeroSocialMedia from './HeroSocialMedia';
+import HeroTech from './HeroTech';
 
 const Hero = () => {
   const [show, setShow] = useState(false);
@@ -20,12 +21,23 @@ const Hero = () => {
     <section
       className={cn(
         'min-h-screen background-img-light dark:background-img-dark flex items-center bg-cover',
+        'border-b border-slate-200 dark:border-slate-800 relative',
         show && 'fade-in-start',
       )}
     >
-      <div className='layout flex flex-col w-full gap-1'>
-        <p className='font-primary text-base sm:text-lg' data-fade='1'>
-          Hello, Everyone! I&lsquo;m
+      <div className='layout flex flex-col w-full gap-1 relative'>
+        <p
+          className='font-primary text-base font-semibold md:text-xl'
+          data-fade='1'
+        >
+          Hi
+          <span
+            className='animate-wave px-1'
+            style={{ transformOrigin: '70% 70%', display: 'inline-block' }}
+          >
+            👋
+          </span>
+          , Everyone! I&lsquo;m
         </p>
         <h1
           className={cn(
@@ -41,43 +53,22 @@ const Hero = () => {
         </h1>
         <p
           className={cn(
-            'capitalize font-primary text-slate-500 dark:text-slate-400',
-            'text-xl sm:text-3xl',
+            'font-primary text-balance',
+            'text-md md:text-lg',
+            'w-full max-w-2xl',
           )}
           data-fade='3'
         >
-          Frontend Developer based in Indonesia
+          Being a good <span className='font-semibold'>Software Engineer</span>{' '}
+          is not just about writing code. It's about creating an excellent user
+          experience and collaborating effectively with other team members.
         </p>
         <div className='flex gap-4 mt-4' data-fade='4'>
-          <Link href='https://github.com/ihsnmuh'>
-            <Github
-              size={24}
-              className='text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white'
-            />
-          </Link>
-          <Link href='https://www.linkedin.com/in/ihsanmuhammad19/'>
-            <Linkedin
-              size={24}
-              className='text-slate-500 dark:text-slate-400 hover:text-[#0077b5] dark:hover:text-[#0077b5]'
-            />
-          </Link>
-          <Link href='https://instagram.com/ihsnmuh'>
-            <Instagram
-              size={24}
-              className='text-slate-500 dark:text-slate-400  hover:text-pink-500 dark:hover:text-pink-500'
-            />
-          </Link>
-          <div className='border-r-2 border-slate-600' />
-          <Link href='https://drive.google.com/file/d/1EsyrBpAz3mU7oJqYwff-B97ddg6XKL3C/view?usp=sharing'>
-            <div className='flex gap-2 items-center text-primary-500 hover:text-primary-400'>
-              <span className='relative flex h-2 w-2'>
-                <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75'></span>
-                <span className='relative inline-flex rounded-full h-2 w-2 bg-primary-500'></span>
-              </span>
-              <FileText size={24} />
-              <p className='font-primary font-semibold'>Resume</p>
-            </div>
-          </Link>
+          <HeroSocialMedia />
+        </div>
+
+        <div className='absolute ml-1 -bottom-36' data-fade='5'>
+          <HeroTech />
         </div>
       </div>
       <a

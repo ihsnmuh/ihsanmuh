@@ -2,8 +2,6 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import DotColor from '@/components/molecules/DotColor';
-
 interface TitleProps {
   title: string;
 }
@@ -11,7 +9,7 @@ interface TitleProps {
 const Title = (props: TitleProps) => {
   return (
     <div className='flex gap-4 items-center'>
-      <DotColor />
+      {/* <DotColor /> */}
       <h1
         className={cn(
           'h1 font-secondary',
