@@ -19,4 +19,5 @@ model Projects {
   stack       String[]
   github      String?
   website     String?
+  create_at  DateTime @default(now())
 }

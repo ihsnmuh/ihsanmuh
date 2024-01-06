@@ -16,6 +16,7 @@ async function main() {
           stack: project.stacks,
           github: project.github,
           website: project.website,
+          create_at: new Date(project.create_at),
         },
       }),
   );
@@ -39,4 +40,5 @@ type Projects = {
   stacks: string[];
   github: string;
   website: string;
+  create_at: Date;
 };

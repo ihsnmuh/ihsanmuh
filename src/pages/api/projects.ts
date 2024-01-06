@@ -8,7 +8,11 @@ export default async function projects(
   res: NextApiResponse,
 ) {
   try {
-    const response = await prisma.projects.findMany();
+    const response = await prisma.projects.findMany({
+      orderBy: {
+        create_at: 'desc',
+      },
+    });
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json(error);
