@@ -8,6 +8,7 @@ import {
   Shield,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import React from 'react';
 
 import Button from '@/components/atoms/buttons/Button';
 import IconButton from '@/components/atoms/buttons/IconButton';
