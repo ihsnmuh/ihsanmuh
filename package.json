@@ -10,6 +10,7 @@
     "lint:fix": "eslint src --fix && yarn format",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
+    "generate": "prisma generate",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -38,17 +39,22 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@prisma/client": "^5.7.1",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^14.0.1",
-    "prettier": "^3.1.0"
+    "prettier": "^3.1.0",
+    "prisma": "^5.7.1"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,html,css,json}": [
       "yarn prettier --write"
     ]
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
