@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { cn } from '@/lib/utils';
+
 import Title from '@/components/atoms/title';
 import ProjectCard from '@/components/molecules/card/ProjectCard';
 
@@ -15,7 +17,7 @@ const Portofolio = () => {
     <section className='background mb-8'>
       <div className='layout'>
         <Title title='Portofolio' />
-        <div>
+        <div className={cn('flex flex-col md:flex-row my-8 gap-6')}>
           {data
             ?.slice(0, 3)
             .map((project) => (
@@ -25,7 +27,7 @@ const Portofolio = () => {
                 image={project.image}
                 category={project.category}
                 description={project.description}
-                stacks={project.stacks}
+                stack={project.stack}
               />
             ))}
         </div>
