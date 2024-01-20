@@ -1,140 +1,166 @@
 [
   {
+    "id": "d45bdb27-c12c-4f40-b29f-ad0b25e9f952",
     "image": "personal-website",
-    "title": "Personal Website v.1",
+    "slug": "personal-website",
+    "title": "Personal Website V1",
     "category": "Personal Challenge",
     "description": "A personal website that explains how I love the world of frontend developer",
-    "stacks": ["Typescript", "Next Js", "React Js", "Tailwind", "Material UI"],
+    "stacks": [
+      "Typescript",
+      "Next.js",
+      "React.js",
+      "TailwindCSS",
+      "MaterialUI"
+    ],
     "github": "https://github.com/ihsnmuh/story-ihsan",
     "website": "https://story-ihsan-ihsnmuh.vercel.app/",
-    "create_at": "2024-01-06"
+    "createAt": "2024-01-06T00:00:00.000Z"
   },
   {
+    "id": "07d8a3a7-1258-4f7e-bef3-4738a30d6a21",
     "image": "krealogi-case",
+    "slug": "krealogi-case",
     "title": "Krealogi: UI/UX Challenge",
     "category": "UX/UI Challenge",
     "description": "This project describes the features of marketplace and logistics integration.",
-    "stacks": ["Figma", "UI", "UX Case Study"],
+    "stacks": ["Figma", "UI/UX"],
     "github": "",
     "website": "https://ihsnmuh.medium.com/integrasi-logistik-expedisi-marketplace-pada-aplikasi-krealogi-ux-case-study-b52f5f9b4563",
-    "create_at": "2024-01-05"
+    "createAt": "2024-01-05T00:00:00.000Z"
   },
   {
+    "id": "717bd90e-5a1c-4efc-95c6-076217d51ddc",
     "image": "dashboard-mmp",
+    "slug": "dashboard-mmp",
     "title": "Matamata Politik Dashboard",
     "category": "Internal Project",
     "description": "This project was created to manage the news on the matamatapolitik.com website",
-    "stacks": ["Typescript", "Next Js", "React Js", "Material UI", "gRPC"],
+    "stacks": ["Typescript", "Next.js", "React.js", "MaterialUI", "GRPC"],
     "github": "",
     "website": "https://www.matamatapolitik.com",
-    "create_at": "2024-01-04"
+    "createAt": "2024-01-04T00:00:00.000Z"
   },
   {
+    "id": "20cff61b-a108-4ab6-a07b-d151b72dbd01",
     "image": "qurantara",
+    "slug": "qurantara",
     "title": "Qurantara",
     "category": "Personal Challenge",
     "description": "This website functions as a medium for reading and listening to the Quran, reading hadith, and also viewing prayer schedules based on regions",
     "stacks": [
-      "Javascript",
-      "Vue Js",
+      "JavaScript",
+      "Vue.js",
       "Bootstrap",
       "Heroku",
       "Firebase",
-      "Express Js",
-      "Postgresql"
+      "Express",
+      "PostgresQL"
     ],
     "github": "https://github.com/ihsnmuh/qurantara-client",
     "website": "https://qurantara-30c57.web.app/",
-    "create_at": "2024-01-03"
+    "createAt": "2024-01-03T00:00:00.000Z"
   },
   {
+    "id": "d630624f-c182-460f-8cb2-dd0f582135d4",
     "image": "sugoku",
+    "slug": "sugoku",
     "title": "Sugoku Mobile App",
     "category": "Personal Challenge",
     "description": "Sugoku Mobile App is An interactive mobile game to play sudoku with 3 level difficulties",
-    "stacks": ["Javascript", "Expo", "React Native"],
+    "stacks": ["Javascript", "Expo", "ReactNative"],
     "github": "https://github.com/ihsnmuh/sugoku",
     "website": "https://expo.dev/@ihsnmuh/sugoku-ihsan",
-    "create_at": "2024-01-02"
+    "createAt": "2024-01-02T00:00:00.000Z"
   },
   {
+    "id": "63592dee-b132-42fb-a567-77b7793f93fb",
     "image": "ecommerce-wannabe",
+    "slug": "ecommerce-wannabe",
     "title": "E-Commerce Wannabe",
     "category": "Personal Challenge",
     "description": "Like Web e-commerce in general, you can order some gadget and add to the cart, but this is very simple",
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgreSQL",
+      "PostgresQL",
       "Jest",
-      "Vue Js",
+      "Vue.js",
       "Bootstrap",
       "Heroku",
       "Firebase"
     ],
     "github": "https://github.com/ihsnmuh/ecommerce-cms-client",
     "website": "https://ecommerce-client-mu.web.app/",
-    "create_at": "2024-01-01"
+    "createAt": "2024-01-01T00:00:00.000Z"
   },
   {
+    "id": "2df45cdd-7173-46ad-96be-c40c092616c8",
     "image": "kanban-mu",
+    "slug": "kanban-mu",
     "title": "Kanban Mu",
     "category": "Personal Challenge",
     "description": "Kanban mu is an application to managing tasks with many users",
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgreSQL",
+      "PostgresQL",
       "JWT",
       "Jest",
-      "Vuejs",
+      "Vue.js",
       "Bootstrap",
       "Heroku",
       "Firebase",
-      "Google Auth"
+      "GoogleAuth"
     ],
     "github": "https://github.com/ihsnmuh/kanban-client",
     "website": "https://kanban-mu.web.app/",
-    "create_at": "2023-12-30"
+    "createAt": "2023-12-30T00:00:00.000Z"
   },
   {
+    "id": "518a6ac9-30af-4f3a-8fa1-1a740ac80f2e",
     "image": "fancy-todo",
+    "slug": "fancy-todo",
     "title": "Fancy Todo",
     "category": "Personal Challenge",
     "description": "Fancy Todo is an application for managing your to-do list with other users.",
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgreSQL",
-      "JWT",
-      "Jquery",
+      "PostgresQL",
+      "JWt",
+      "JQuery",
       "Ajax",
       "Bootstrap",
-      "Google Auth",
+      "GoogleAuth",
       "Heroku",
       "Firebase"
     ],
     "github": "https://github.com/ihsnmuh/fancy-todo-client",
     "website": "https://fancy-todosmu.web.app/",
-    "create_at": "2023-12-29"
+    "createAt": "2023-12-29T00:00:00.000Z"
   },
   {
+    "id": "fab2e395-2d25-40f3-bba6-f064bf0741dd",
     "image": "nonton-movies",
+    "slug": "nonton-movies",
     "title": "Nonton Movies",
     "category": "Personal Challenge",
     "description": "Movie Web is a website to search popular Movie and Tv Series",
-    "stacks": ["Javascript", "Firebase", "React", "Bootstrap"],
+    "stacks": ["Javascript", "Firebase", "React.js", "Bootstrap"],
     "github": "",
     "website": "https://nonton-moviesme.web.app/",
-    "create_at": "2023-12-29"
+    "createAt": "2023-12-29T00:00:00.000Z"
   },
   {
+    "id": "2132b649-773b-485f-8985-88bf606cba9d",
     "image": "entertain-me",
+    "slug": "entertain-me",
     "title": "Entertain Me",
     "category": "Personal Challenge",
     "description": "EntertainMe is a mobile app for managing data movie and series",
     "stacks": [
-      "React Native",
+      "ReactNative",
       "Apollo",
       "GraphQL",
       "Expo",
@@ -146,6 +172,6 @@
     ],
     "github": "https://github.com/ihsnmuh/entertainme",
     "website": "https://expo.dev/@ihsnmuh/entertaime-ihsan",
-    "create_at": "2023-12-28"
+    "createAt": "2023-12-28T00:00:00.000Z"
   }
 ]

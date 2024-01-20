@@ -11,12 +11,13 @@ async function main() {
         data: {
           image: project.image,
           title: project.title,
+          slug: project.slug,
           category: project.category,
           description: project.description,
-          stack: project.stacks,
+          stacks: project.stacks,
           github: project.github,
           website: project.website,
-          create_at: new Date(project.create_at),
+          createAt: new Date(project.createAt),
         },
       }),
   );
@@ -35,10 +36,11 @@ main()
 type Projects = {
   image: string;
   title: string;
+  slug: string;
   category: string;
   description: string;
   stacks: string[];
   github: string;
   website: string;
-  create_at: Date;
+  createAt: Date;
 };

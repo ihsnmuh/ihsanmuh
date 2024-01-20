@@ -14,10 +14,12 @@ model Projects {
   id          String @id @default(uuid())
   image       String
   title       String
+  slug        String @unique
   category    String
   description String
-  stack       String[]
+  stacks      String[]
   github      String?
   website     String?
-  create_at  DateTime @default(now())
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
 }
