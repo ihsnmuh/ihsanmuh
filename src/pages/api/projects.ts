@@ -8,10 +8,13 @@ export default async function projects(
   res: NextApiResponse,
 ) {
   try {
+    const { limit, order } = req.query;
+
     const response = await prisma.projects.findMany({
       orderBy: {
-        create_at: 'desc',
+        createAt: order || 'desc',
       },
+      take: Number(limit) || 3,
     });
     res.status(200).json(response);
   } catch (error) {

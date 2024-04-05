@@ -5,7 +5,7 @@ export interface IProject {
   title: string;
   category: string;
   description: string;
-  stack: string[];
+  stacks: string[];
   github?: string;
   website?: string;
 }

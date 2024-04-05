@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // * prefach data project list
   await queryClient.prefetchQuery({
-    ...queryProjectList(),
+    ...queryProjectList({ limit: 3, order: 'desc' }),
   });
 
   return {

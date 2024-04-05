@@ -1,10 +1,20 @@
+import { filteringObject } from '@/helpers/filteringObject';
+import { IQueryProjectList } from '@/queries/projectList';
+
 import { api } from './API';
 
 import { TProjets } from '@/types/interfaces/projects';
 
-export const fetchProjectList = async () => {
+export const fetchProjectList = async (payload: IQueryProjectList) => {
   try {
-    const url = process.env.NEXT_PUBLIC_API_PROJECT as string;
+    const PARAMS = new URLSearchParams(
+      filteringObject({
+        limit: payload.limit,
+        order: payload.order,
+      }),
+    );
+
+    const url = `${process.env.NEXT_PUBLIC_API_PROJECT}?${PARAMS}` as string;
 
     const options = {
       method: 'GET',

@@ -1,9 +1,14 @@
 import { PROJECT_LIST } from '@/constant/queryKeys/projectList';
 import { fetchProjectList } from '@/services/projectList';
 
-export const queryProjectList = () => {
+export interface IQueryProjectList {
+  limit?: number;
+  order?: 'asc' | 'desc';
+}
+
+export const queryProjectList = (payload: IQueryProjectList) => {
   return {
     queryKey: PROJECT_LIST,
-    queryFn: () => fetchProjectList(),
+    queryFn: async () => fetchProjectList(payload),
   };
 };
