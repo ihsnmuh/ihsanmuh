@@ -2,6 +2,8 @@ import { FaCode, FaRobot, FaRocket } from 'react-icons/fa6';
 
 import { cn } from '@/lib/utils';
 
+import WrapperCard from './WrapperCard';
+
 interface PrincipleCardProps {
   id: number;
   title: string;
@@ -20,13 +22,7 @@ const PrincipleCard = (props: PrincipleCardProps) => {
   const { title, decription, className, color } = props;
 
   return (
-    <div
-      className={cn(
-        'w-full p-4 font-primary',
-        'rounded-xl border border-slate-300 dark:border-slate-700',
-        className,
-      )}
-    >
+    <WrapperCard className={cn('p-4', className)}>
       <div
         className={cn(
           'rounded-full flex',
@@ -51,7 +47,7 @@ const PrincipleCard = (props: PrincipleCardProps) => {
       <div className='mt-4'>
         <p className='text-pretty'>{decription}</p>
       </div>
-    </div>
+    </WrapperCard>
   );
 };
 

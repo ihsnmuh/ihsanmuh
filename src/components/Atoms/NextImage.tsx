@@ -43,13 +43,17 @@ export default function NextImage({
     >
       <Image
         className={cn(
+          'duration-700 ease-in-out',
           classNames?.image,
-          status === 'loading' && cn('animate-pulse', classNames?.blur),
+          status === 'loading'
+            ? cn('scale-[1.02] blur-xl grayscale', classNames?.blur)
+            : 'scale-100 blur-0 grayscale-0',
         )}
         src={src}
         width={width}
         height={height}
         alt={alt}
+        loading='lazy'
         onLoad={() => setStatus('complete')}
         {...rest}
       />

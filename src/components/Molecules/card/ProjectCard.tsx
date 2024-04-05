@@ -1,6 +1,12 @@
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/atoms/NextImage';
+import StackPills from '@/components/atoms/pills/StackPills';
+
+import WrapperCard from './WrapperCard';
 
 import { IProject } from '@/types/interfaces/projects';
 
@@ -9,32 +15,44 @@ interface IProjectProps extends IProject {
 }
 
 const ProjectCard = (props: IProjectProps) => {
-  const { title, className, description, image, stack } = props;
+  const { title, className, description, image, stacks } = props;
 
   return (
-    <div
-      className={cn(
-        'w-full p-4 font-primary',
-        'rounded-xl border border-slate-300 dark:border-slate-700',
-        className,
-      )}
-    >
-      <p className='font-bold'>{title}</p>
-      <p className='text-pretty mt-3'>{description}</p>
-      <div>{stack?.map((data) => <p>{data}</p>)}</div>
-      <div className='relative rounded-lg w-full aspect-video overflow-hidden'>
-        <NextImage
-          src={`/images/project/${image}.png`}
-          alt={title}
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-          fill
-          style={{
-            objectFit: 'cover',
-          }}
-        />
-        di
-      </div>
-    </div>
+    <Link href={`/project/${image}`}>
+      <WrapperCard className={cn('group h-full', className)}>
+        <div className='relative'>
+          <NextImage
+            className='w-full aspect-video'
+            src={`/images/project/${image}.png`}
+            alt={title}
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            fill
+            style={{
+              objectFit: 'cover',
+            }}
+            useSkeleton
+          />
+          <div
+            className={cn(
+              'rounded-t-xl text-sm font-medium',
+              'flex justify-center items-center gap-1 absolute top-0 left-0 w-full h-full',
+              'bg-black opacity-0 group-hover:opacity-80 transition-opacity duration-300',
+              'text-white text-sm',
+            )}
+          >
+            <span>View Project</span>
+            <ArrowRight size={16} />
+          </div>
+        </div>
+        <div className='p-6'>
+          <p className='font-bold text-lg'>{title}</p>
+          <p className='text-pretty text-sm mt-3'>{description}</p>
+          <div className='flex flex-wrap mt-4 gap-2'>
+            {stacks?.map((data) => <StackPills key={data} name={data} />)}
+          </div>
+        </div>
+      </WrapperCard>
+    </Link>
   );
 };
 
