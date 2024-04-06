@@ -55,7 +55,7 @@
 
   .layout {
     /* 1280px */
-    @apply mx-auto w-full px-4 sm:px-8 max-w-7xl;
+    @apply mx-auto w-full px-4 sm:px-8 max-w-6xl;
   }
 
   .background a.custom-link {
@@ -64,6 +64,10 @@
 
   .background {
     @apply dark:bg-slate-900 bg-white;
+  }
+
+  .background-card {
+    @apply dark:bg-slate-800/50 bg-white;
   }
 
   .background-img-light {
