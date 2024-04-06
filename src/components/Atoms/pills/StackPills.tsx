@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { cn } from '@/lib/utils';
+
 import StackIcon from '../Stacks';
 
 interface StackPillsProps {
@@ -11,7 +13,10 @@ const StackPills = (props: StackPillsProps) => {
 
   return (
     <div
-      className='flex items-center gap-1 py-1 px-2 border rounded-full'
+      className={cn(
+        'flex items-center gap-1 py-1 px-2 border rounded-full',
+        'dark:border-zinc-700/40 dark:bg-slate-600/50',
+      )}
       key={name}
     >
       <StackIcon size={10} type={name} />
