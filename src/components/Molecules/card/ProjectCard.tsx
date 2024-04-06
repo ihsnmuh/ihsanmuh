@@ -44,7 +44,7 @@ const ProjectCard = (props: IProjectProps) => {
             <ArrowRight size={16} />
           </div>
         </div>
-        <div className='p-6'>
+        <div className='p-4'>
           <p className='font-bold text-lg'>{title}</p>
           <p className='text-pretty text-sm mt-3'>{description}</p>
           <div className='flex flex-wrap mt-4 gap-2'>
