@@ -5,10 +5,10 @@ import Title from '@/components/atoms/title';
 
 const Summary = () => {
   return (
-    <section id='summary' className={cn('background text-balance ', 'mt-8')}>
+    <section id='summary' className={cn('background text-balance ', 'mt-16')}>
       <div className='layout h-fit gap-4'>
         <Title title='Short Story' />
-        <p className='mt-4 md:mt-6 font-primary text-lg'>
+        <p className='p mt-4 md:mt-6 font-primary md:text-lg'>
           <span className='font-semibold'>Muhammad Ihsan</span> is a graduate of
           Agricultural Engineering from Bogor Agriculture University who
           transitioned into the field of web development, focusing on Frontend

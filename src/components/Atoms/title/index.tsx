@@ -10,7 +10,7 @@ const Title = (props: TitleProps) => {
       {/* <DotColor /> */}
       <h1
         className={cn(
-          'h1 font-secondary',
+          'h0 font-secondary',
           'bg-clip-text text-transparent',
           'bg-gradient-to-r from-primary-400 to-violet-500 dark:to-orange-400',
         )}

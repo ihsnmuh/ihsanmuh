@@ -4,7 +4,7 @@ import { Principles } from '@/constant/principles';
 
 const PrinciplesSection = () => {
   return (
-    <section className='background mb-10'>
+    <section className='background mb-16'>
       <div className='layout'>
         <div
           // className={cn('flex flex-col md:flex-row lg:flex-wrap my-8 gap-6')}

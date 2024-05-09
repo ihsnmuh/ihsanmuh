@@ -16,7 +16,7 @@ const Portofolio = () => {
   });
 
   return (
-    <section className='background mb-10'>
+    <section className='background mb-16'>
       <div className='layout'>
         <div className='flex justify-between'>
           <Title title='Portofolio' />
@@ -25,7 +25,7 @@ const Portofolio = () => {
             className='inline-flex items-center'
             href='/project'
           >
-            View All Portofolio
+            See More
           </ArrowLink>
         </div>
         <div

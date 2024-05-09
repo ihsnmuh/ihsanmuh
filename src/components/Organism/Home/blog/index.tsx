@@ -26,7 +26,7 @@ const Blog = (props: IBlog) => {
             className='inline-flex items-center'
             href='/blog'
           >
-            View All Articles
+            See More
           </ArrowLink>
         </div>
         <div
