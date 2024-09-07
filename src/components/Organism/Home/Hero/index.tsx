@@ -1,21 +1,13 @@
 import { ChevronUp } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
+import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
 
 const Hero = () => {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const setTime = setTimeout(() => {
-      setShow(true);
-    }, 300);
-
-    return () => clearTimeout(setTime);
-  }, []);
+  const show = LoaderView();
 
   return (
     <section

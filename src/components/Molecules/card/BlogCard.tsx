@@ -1,12 +1,11 @@
+import { format } from 'date-fns';
 import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/atoms/NextImage';
-import TagPill from '@/components/atoms/pills/TagPills';
 
-import { formatDate } from '@/helpers/formatDate';
 import { timeReading } from '@/helpers/readingTime';
 
 import WrapperCard from './WrapperCard';
@@ -23,11 +22,13 @@ const PostCard = (props: IPostCard) => {
     slug,
     title,
     banner,
-    tags,
+    // tags,
     content,
     publishedAt,
     description,
   } = props;
+
+  const date = format(new Date(publishedAt), 'MMMM dd, yyyy');
 
   return (
     <Link href={`blog/${slug}`}>
@@ -45,15 +46,15 @@ const PostCard = (props: IPostCard) => {
             useSkeleton
           />
           <div className='absolute flex gap-2 right-2 bottom-2'>
-            {tags.map((tag) => (
+            {/* {tags?.map((tag) => (
               <TagPill key={tag} name={tag} />
-            ))}
+            ))} */}
           </div>
         </div>
         <div className='p-4 flex flex-col gap-2'>
           <p className='font-bold text-lg'>{title}</p>
           <div className='flex gap-1 text-sm items-center'>
-            <p>{formatDate(publishedAt)}</p>•<p>{timeReading(content)}</p>
+            <p>{date}</p>•<p>{timeReading(content)}</p>
           </div>
           <p className='text-sm'>{description}</p>
         </div>

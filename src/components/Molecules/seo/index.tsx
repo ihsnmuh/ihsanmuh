@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 
 const defaultMeta = {
   title: 'Muhammad Ihsan - Personal Website',
-  siteName: 'ihsanmuh.vercel.app',
+  siteName: 'ihsanmuh.com',
   description:
     'Welcome to my personal website. I work with Javascript and React. I hope you like it!',
-  url: 'https://ihsanmuh.vercel.app',
-  image: 'https://ihsanmuh.vercel.app/favicon/android-chrome-512x512.png',
+  url: 'https://ihsanmuh.com',
+  image: 'https://ihsanmuh.com/favicon/android-chrome-512x512.png',
   type: 'website',
   robots: 'follow, index',
 };

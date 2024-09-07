@@ -1,18 +1,37 @@
-// import { useQuery } from "@tanstack/react-query";
+import { GetStaticProps } from 'next';
 
-const Blog = () => {
-  // const { data, isError, isLoading } = useQuery({
-  //   queryKey: ["product"],
-  //   queryFn: async () => {
-  //     const response = await fetch("http://localhost:3004/products?_limit=3");
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     return response.json();
-  //   },
-  // });
+import { getAllPosts } from '@/lib/blog';
 
-  return <div className='layout py-20'>Blog</div>;
+import Seo from '@/components/molecules/seo';
+import BlogContainer from '@/containers/blog';
+
+const Blog = (props: any) => {
+  const { allPosts } = props;
+
+  return (
+    <>
+      <Seo isBlog title='Blog | Muhammad Ihsan' />
+      <BlogContainer posts={allPosts} />
+    </>
+  );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const allPosts = getAllPosts([
+    'title',
+    'publishedAt',
+    'description',
+    'banner',
+    'tags',
+    'slug',
+    'content',
+  ]);
+
+  return {
+    props: {
+      allPosts,
+    },
+  };
 };
 
 export default Blog;

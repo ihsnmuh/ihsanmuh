@@ -6,11 +6,11 @@ import Summary from '@/components/organism/home/summary';
 
 import { TPosts } from '@/types/interfaces/posts';
 
-interface IHomeCOntainer {
+interface IHomeContainer {
   posts: TPosts;
 }
 
-const HomeContainer = (props: IHomeCOntainer) => {
+const HomeContainer = (props: IHomeContainer) => {
   const { posts } = props;
 
   return (

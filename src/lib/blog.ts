@@ -7,6 +7,7 @@ type PostItems = {
 };
 
 export const postsDirectory = join(process.cwd(), 'src/contents/blogs');
+export const themeDirectory = join(process.cwd(), 'src/contents/themes');
 
 export const postFilePaths = fs
   .readdirSync(postsDirectory)

@@ -14,6 +14,8 @@ const IconButtonVariant = [
 ] as const;
 
 type IconButtonProps = {
+  className?: string;
+  disabled?: boolean;
   isLoading?: boolean;
   isDarkBg?: boolean;
   variant?: (typeof IconButtonVariant)[number];

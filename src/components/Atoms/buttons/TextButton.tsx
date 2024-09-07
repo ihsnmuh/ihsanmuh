@@ -6,6 +6,8 @@ const TextButtonVariant = ['primary', 'basic'] as const;
 
 type TextButtonProps = {
   variant?: (typeof TextButtonVariant)[number];
+  className?: string;
+  disabled?: boolean;
 } & React.ComponentPropsWithRef<'button'>;
 
 const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(

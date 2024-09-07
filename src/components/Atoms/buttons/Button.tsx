@@ -9,8 +9,10 @@ const ButtonVariant = ['primary', 'outline', 'ghost', 'light', 'dark'] as const;
 const ButtonSize = ['sm', 'base'] as const;
 
 type ButtonProps = {
+  className?: string;
   isLoading?: boolean;
   isDarkBg?: boolean;
+  disabled?: boolean;
   variant?: (typeof ButtonVariant)[number];
   size?: (typeof ButtonSize)[number];
   leftIcon?: IconType | LucideIcon;
@@ -24,8 +26,8 @@ type ButtonProps = {
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      children,
       className,
+      children,
       disabled: buttonDisabled,
       isLoading,
       variant = 'primary',

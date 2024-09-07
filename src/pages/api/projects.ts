@@ -10,9 +10,14 @@ export default async function projects(
   try {
     const { limit, order } = req.query;
 
+    // Ensure the order parameter is a string and is either 'asc' or 'desc'
+    const sortOrder = Array.isArray(order) ? order[0] : order;
+    const validOrder =
+      sortOrder === 'asc' || sortOrder === 'desc' ? sortOrder : 'desc';
+
     const response = await prisma.projects.findMany({
       orderBy: {
-        createAt: order || 'desc',
+        createAt: validOrder || 'desc',
       },
       take: Number(limit) || 3,
     });

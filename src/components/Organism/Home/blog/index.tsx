@@ -34,18 +34,20 @@ const Blog = (props: IBlog) => {
             'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
           )}
         >
-          {posts?.map((post) => (
-            <PostCard
-              key={post.title}
-              title={post.title}
-              publishedAt={post.publishedAt}
-              description={post.description}
-              tags={post.tags}
-              slug={post.slug}
-              banner={post.banner}
-              content={post.content}
-            />
-          ))}
+          {posts
+            .slice(0, 3)
+            ?.map((post) => (
+              <PostCard
+                key={post.title}
+                title={post.title}
+                publishedAt={post.publishedAt}
+                description={post.description}
+                tags={post.tags}
+                slug={post.slug}
+                banner={post.banner}
+                content={post.content}
+              />
+            ))}
         </div>
       </div>
     </section>
