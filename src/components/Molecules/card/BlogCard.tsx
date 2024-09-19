@@ -5,6 +5,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/atoms/NextImage';
+import TagPill from '@/components/atoms/pills/TagPills';
 
 import { timeReading } from '@/helpers/readingTime';
 
@@ -22,13 +23,13 @@ const PostCard = (props: IPostCard) => {
     slug,
     title,
     banner,
-    // tags,
+    tags,
     content,
     publishedAt,
     description,
   } = props;
 
-  const date = format(new Date(publishedAt), 'MMMM dd, yyyy');
+  const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
 
   return (
     <Link href={`blog/${slug}`}>
@@ -46,9 +47,7 @@ const PostCard = (props: IPostCard) => {
             useSkeleton
           />
           <div className='absolute flex gap-2 right-2 bottom-2'>
-            {/* {tags?.map((tag) => (
-              <TagPill key={tag} name={tag} />
-            ))} */}
+            {tags?.map((tag) => <TagPill key={tag} name={tag} />)}
           </div>
         </div>
         <div className='p-4 flex flex-col gap-2'>

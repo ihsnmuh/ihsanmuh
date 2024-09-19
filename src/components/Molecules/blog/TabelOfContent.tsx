@@ -75,10 +75,10 @@ const TabelOfContent: FC<ITabelOfContent> = () => {
 
   return (
     <>
-      <div className='relative w-full'>
+      <aside className='hidden lg:block'>
         <div
           className={cn(
-            'sticky top-28 mt-8 p-4 shadow',
+            'p-4 shadow',
             'dark:bg-slate-800/75',
             'border border-slate-200 dark:border-slate-500 rounded-lg',
           )}
@@ -93,7 +93,7 @@ const TabelOfContent: FC<ITabelOfContent> = () => {
           </h4>
           <Headings headings={nestedHeadings} activeId={activeId} />
         </div>
-      </div>
+      </aside>
     </>
   );
 };

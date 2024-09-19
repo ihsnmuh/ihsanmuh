@@ -45,6 +45,7 @@ const Post = (props: BlogPostSingleProps) => {
         title={title}
         publishedAt={publishedAt}
         timeReading={timeReading}
+        tags={tags}
       />
     </>
   );
