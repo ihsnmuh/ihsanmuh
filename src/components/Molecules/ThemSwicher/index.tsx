@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import Skeleton from '@/components/atoms/Skeleton';
+
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -17,11 +19,15 @@ const ThemeSwitcher = () => {
   }, []);
 
   if (!mounted) {
-    return null;
+    return (
+      <>
+        <Skeleton className='w-7 h-7 rounded' />
+      </>
+    );
   }
 
   return (
-    <div>
+    <>
       <button
         className={cn(
           'flex justify-center items-center',
@@ -35,7 +41,7 @@ const ThemeSwitcher = () => {
           <MoonStar className='fill-current' size={20} />
         )}
       </button>
-    </div>
+    </>
   );
 };
 
