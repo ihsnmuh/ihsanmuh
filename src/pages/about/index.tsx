@@ -1,5 +1,13 @@
+import Seo from '@/components/molecules/seo';
+import AboutContainer from '@/containers/about';
+
 const About = () => {
-  return <div className='layout py-20'>About</div>;
+  return (
+    <>
+      <Seo title='About | Muhammad Ihsan' />
+      <AboutContainer />
+    </>
+  );
 };
 
 export default About;
