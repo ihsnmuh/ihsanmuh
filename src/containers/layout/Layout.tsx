@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import { Poppins } from 'next/font/google';
 
-import Footer from './Footer';
-import Header from './Header';
+const Header = dynamic(() => import('./Header'));
+
+const Footer = dynamic(() => import('./Footer'));
 
 const poppins = Poppins({
   subsets: ['latin'],

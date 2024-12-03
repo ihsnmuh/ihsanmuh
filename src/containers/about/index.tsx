@@ -8,7 +8,10 @@ import ImageFallback from '@/components/atoms/image/fallback';
 import UnderlineLink from '@/components/atoms/links/UnderlineLink';
 import FullNameSVG from '@/components/atoms/svg/FullName';
 import Title from '@/components/atoms/title';
+import ExperienceCard from '@/components/molecules/card/ExperienceCard';
 import HeroTech from '@/components/organism/home/hero/HeroTech';
+
+import { Experiences } from '@/constant/experience';
 
 const AboutContainer = () => {
   const show = LoaderView();
@@ -23,8 +26,8 @@ const AboutContainer = () => {
         {/* <p className='mt-4 font-primary text-sm md:text-base'>All thing about me</p> */}
       </div>
 
-      <div className='flex justify-between mt-16'>
-        <div className='w-1/3' data-fade='2'>
+      <div className='flex flex-col md:flex-row justify-between mt-16'>
+        <div className='w-full md:w-1/3 mb-8' data-fade='2'>
           <motion.figure
             whileHover={{ scale: 1.1, rotate: -5 }}
             className='relative background-card border border-black dark:border-white rounded shadow-md p-6 pb-20 mx-auto w-72 h-[350px]'
@@ -55,7 +58,7 @@ const AboutContainer = () => {
             </UnderlineLink>
           </p>
           <div>
-            <p className='font-primary text-base mb-4'>
+            <p className='font-primary text-base mb-4 text-pretty'>
               Hello! I'm Ihsan, graduate of Agricultural Engineering, Bogor
               Agriculture University. I became a web developer especially
               Frontend Developer starting in June 2021. I started writing my
@@ -66,14 +69,14 @@ const AboutContainer = () => {
               more, that's why I decided to learn to be a web developer through
               bootcamps and various udemy courses.
             </p>
-            <p className='font-primary text-base mb-4'>
+            <p className='font-primary text-base mb-4 text-pretty'>
               I chose Frontend development because I like something visual like
               UI design, engineering design and everything related to design.
               Many technologies can be learn from frontend development and that
               makes me want to learn as much as possible. Learning and keep
               practicing are two things that make me grow and improve.
             </p>
-            <p className='font-primary text-base mb-4'>
+            <p className='font-primary text-base mb-4 text-pretty'>
               In this website, I dedicate my knowledge in web development and
               UI/UX that I know through blogs and projects I've made before. I
               believe, sharing information and knowledge that I have make myself
@@ -85,6 +88,25 @@ const AboutContainer = () => {
             </p>
             <HeroTech />
           </div>
+        </div>
+      </div>
+
+      <div className='mt-32'>
+        <h2 className='h2 text-center mb-16'>Experiences</h2>
+        <div className={cn('flex flex-col items-center gap-20')}>
+          {Experiences.map((experience) => (
+            <ExperienceCard
+              id={experience.id}
+              key={experience.id}
+              position={experience.position}
+              status={experience.status}
+              company={experience.company}
+              start={experience.start}
+              end={experience.end}
+              location={experience.location}
+              responsibilities={experience.responsibilities}
+            />
+          ))}
         </div>
       </div>
     </section>

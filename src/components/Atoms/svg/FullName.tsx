@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { TSVG } from '@/types/types/components/svg';
 
 const FullNameSVG = (props: TSVG) => (
