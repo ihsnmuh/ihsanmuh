@@ -8,4 +8,5 @@ export interface IPost {
   content: string;
   tags: string[];
   slug: string;
+  isShow?: boolean;
 }

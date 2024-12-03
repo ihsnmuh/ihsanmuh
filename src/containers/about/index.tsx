@@ -91,7 +91,7 @@ const AboutContainer = () => {
         </div>
       </div>
 
-      <div className='mt-32'>
+      <div className='mt-32' data-fade='4'>
         <h2 className='h2 text-center mb-16'>Experiences</h2>
         <div className={cn('flex flex-col items-center gap-20')}>
           {Experiences.map((experience) => (

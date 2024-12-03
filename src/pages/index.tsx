@@ -8,13 +8,21 @@ import HomeContainer from '@/containers/home';
 
 import { queryProjectList } from '@/queries/projectList';
 
-export default function Home(props: any) {
+import { IPost } from '@/types/interfaces/posts';
+
+interface IHomeProps {
+  allPosts: IPost[];
+}
+
+export default function Home(props: IHomeProps) {
   const { allPosts } = props;
+
+  const filteredPost = allPosts.filter((data) => data.isShow);
 
   return (
     <>
       <Seo />
-      <HomeContainer posts={allPosts} />
+      <HomeContainer posts={filteredPost} />
     </>
   );
 }
@@ -29,6 +37,7 @@ export const getStaticProps: GetStaticProps = async () => {
     'tags',
     'slug',
     'content',
+    'isShow',
   ]);
 
   // * prefach data project list

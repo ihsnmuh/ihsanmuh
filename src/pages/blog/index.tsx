@@ -5,13 +5,21 @@ import { getAllPosts } from '@/lib/blog';
 import Seo from '@/components/molecules/seo';
 import BlogContainer from '@/containers/blog';
 
-const Blog = (props: any) => {
+import { IPost } from '@/types/interfaces/posts';
+
+interface IBlogPage {
+  allPosts: IPost[];
+}
+
+const Blog = (props: IBlogPage) => {
   const { allPosts } = props;
+
+  const filteredPost = allPosts.filter((data) => data.isShow);
 
   return (
     <>
       <Seo isBlog title='Blog | Muhammad Ihsan' />
-      <BlogContainer posts={allPosts} />
+      <BlogContainer posts={filteredPost} />
     </>
   );
 };
@@ -25,6 +33,7 @@ export const getStaticProps: GetStaticProps = async () => {
     'tags',
     'slug',
     'content',
+    'isShow',
   ]);
 
   return {
