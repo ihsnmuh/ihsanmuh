@@ -11,6 +11,7 @@ import React from 'react';
 import '@/styles/main.css';
 import '@/styles/colors.css';
 
+import ProgressBar from '@/components/atoms/ProgressBar';
 import Layout from '@/containers/layout/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
+          <ProgressBar />
           <Layout>
             <Component {...pageProps} />
           </Layout>

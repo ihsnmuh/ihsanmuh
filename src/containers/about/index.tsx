@@ -59,15 +59,17 @@ const AboutContainer = () => {
           </p>
           <div>
             <p className='font-primary text-base mb-4 text-pretty'>
-              Hello! I'm Ihsan, graduate of Agricultural Engineering, Bogor
-              Agriculture University. I became a web developer especially
-              Frontend Developer starting in June 2021. I started writing my
-              first line code in February 2021. At that time I decided to change
-              carreers from various job role starting from sales officer,
-              procurement staff, and lastly as a digital marketer in Bogor for 2
-              years to be a web developer. The pandemic forced me to survive
-              more, that's why I decided to learn to be a web developer through
-              bootcamps and various udemy courses.
+              Hello! I'm Ihsan, graduate of Agricultural Engineering,{' '}
+              <UnderlineLink href='https://www.ipb.ac.id/'>
+                Bogor Agriculture University
+              </UnderlineLink>
+              . I became a web developer especially Frontend Developer starting
+              in June 2021. I started writing my first line code in February
+              2021. At that time I decided to change carreers from various job
+              role starting from sales officer, procurement staff, and lastly as
+              a digital marketer in Bogor for 2 years to be a web developer. The
+              pandemic forced me to survive more, that's why I decided to learn
+              to be a web developer through bootcamps and various udemy courses.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
               I chose Frontend development because I like something visual like
@@ -90,6 +92,8 @@ const AboutContainer = () => {
           </div>
         </div>
       </div>
+
+      <div className='divide-x' />
 
       <div className='mt-16 md:mt-32' data-fade='4'>
         <h2 className='h2 text-center mb-10 md:mb-16'>Experiences</h2>
