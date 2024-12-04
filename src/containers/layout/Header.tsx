@@ -14,6 +14,7 @@ const ThemeSwitcher = dynamic(
 const links = [
   { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
+  { href: '/project', label: 'Project' },
   { href: '/about', label: 'About' },
 ];
 

@@ -26,7 +26,7 @@ const AboutContainer = () => {
         {/* <p className='mt-4 font-primary text-sm md:text-base'>All thing about me</p> */}
       </div>
 
-      <div className='flex flex-col md:flex-row justify-between mt-16'>
+      <div className='flex flex-col md:flex-row justify-between mt-10 md:mt-16'>
         <div className='w-full md:w-1/3 mb-8' data-fade='2'>
           <motion.figure
             whileHover={{ scale: 1.1, rotate: -5 }}
@@ -91,8 +91,8 @@ const AboutContainer = () => {
         </div>
       </div>
 
-      <div className='mt-32' data-fade='4'>
-        <h2 className='h2 text-center mb-16'>Experiences</h2>
+      <div className='mt-16 md:mt-32' data-fade='4'>
+        <h2 className='h2 text-center mb-10 md:mb-16'>Experiences</h2>
         <div className={cn('flex flex-col items-center gap-20')}>
           {Experiences.map((experience) => (
             <ExperienceCard

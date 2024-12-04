@@ -55,7 +55,7 @@ const BlogContainer = (props: IBlogContainer) => {
         </p>
       </div>
 
-      <div data-fade='2'>
+      {/* <div data-fade='2'>
         <input
           className={cn(
             'w-full md:w-1/3 py-2 px-4 mt-8',
@@ -66,13 +66,13 @@ const BlogContainer = (props: IBlogContainer) => {
           type='text'
           placeholder='Search..'
         />
-      </div>
+      </div> */}
 
       <div
         className={cn(
           'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
         )}
-        data-fade='3'
+        data-fade='2'
       >
         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
           filteredPosts?.map((post) => (

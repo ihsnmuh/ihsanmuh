@@ -12,7 +12,7 @@ const Hero = () => {
   return (
     <section
       className={cn(
-        'min-h-screen background-img-light dark:background-img-dark flex items-center bg-cover',
+        'h-[100dvh] background-img-light dark:background-img-dark flex items-center bg-cover',
         'border-b border-slate-200 dark:border-slate-800 relative',
         show && 'fade-in-start',
       )}
