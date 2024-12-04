@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 
 const defaultMeta = {
   title: 'Muhammad Ihsan - Personal Website',
-  siteName: 'ihsanmuh.com',
+  siteName: process.env.NEXT_PUBLIC_URL,
   description:
     'Welcome to my personal website. I work with Javascript and React. I hope you like it!',
-  url: 'https://ihsanmuh.com',
-  image: 'https://ihsanmuh.com/favicon/android-chrome-512x512.png',
+  url: `https://${process.env.NEXT_PUBLIC_URL}`,
+  image: `https://${process.env.NEXT_PUBLIC_URL}/favicon/android-chrome-512x512.png`,
   type: 'website',
   robots: 'follow, index',
 };
