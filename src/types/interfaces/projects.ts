@@ -6,6 +6,6 @@ export interface IProject {
   category: string;
   description: string;
   stacks: string[];
-  github?: string;
-  website?: string;
+  github: string;
+  website: string;
 }

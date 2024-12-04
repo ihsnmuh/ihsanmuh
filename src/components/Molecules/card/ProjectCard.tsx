@@ -15,10 +15,11 @@ interface IProjectProps extends IProject {
 }
 
 const ProjectCard = (props: IProjectProps) => {
-  const { title, className, description, image, stacks } = props;
+  const { title, className, description, image, stacks, website, github } =
+    props;
 
   return (
-    <Link href={`/project/${image}`}>
+    <Link href={website ? website : github}>
       <WrapperCard className={cn('group h-full', className)}>
         <div className='relative'>
           <NextImage
@@ -34,7 +35,7 @@ const ProjectCard = (props: IProjectProps) => {
           />
           <div
             className={cn(
-              'rounded-t-xl text-sm font-medium',
+              'rounded-t-lg text-sm font-medium',
               'flex justify-center items-center gap-1 absolute top-0 left-0 w-full h-full',
               'bg-black opacity-0 group-hover:opacity-80 transition-opacity duration-300',
               'text-white text-sm',

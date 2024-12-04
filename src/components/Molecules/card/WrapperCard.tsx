@@ -14,9 +14,9 @@ const WrapperCard = ({ children, className = '', ...others }: IWrapperCard) => {
       className={cn(
         'transition-all ease-in-out duration-300 hover:scale-105',
         'w-full font-primary shadow-sm cursor-pointer',
-        'rounded-2xl border overflow-hidden',
+        'rounded-lg border overflow-hidden',
         'background-card',
-        'hover:bg-zinc-50 hover:dark:bg-slate-800 border-slate-200 dark:border-zinc-700/40',
+        'hover:bg-zinc-50 hover:dark:bg-slate-800 border-slate-300 dark:border-zinc-700/40',
         className,
       )}
       {...others}

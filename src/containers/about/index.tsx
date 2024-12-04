@@ -30,7 +30,7 @@ const AboutContainer = () => {
         <div className='w-full md:w-1/3 mb-8' data-fade='2'>
           <motion.figure
             whileHover={{ scale: 1.1, rotate: -5 }}
-            className='relative background-card border border-black dark:border-white rounded shadow-md p-6 pb-20 mx-auto w-72 h-[350px]'
+            className='relative background-card border border-black dark:border-white rounded-lg shadow-md p-6 pb-20 mx-auto w-72 h-[350px]'
           >
             <ImageFallback
               src='/images/avatar.png'
