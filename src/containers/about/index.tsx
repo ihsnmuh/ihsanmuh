@@ -97,7 +97,7 @@ const AboutContainer = () => {
 
       <div className='mt-16 md:mt-32' data-fade='4'>
         <h2 className='h2 text-center mb-10 md:mb-16'>Experiences</h2>
-        <div className={cn('flex flex-col items-center gap-20')}>
+        <div className={cn('flex flex-col items-center')}>
           {Experiences.map((experience) => (
             <ExperienceCard
               id={experience.id}

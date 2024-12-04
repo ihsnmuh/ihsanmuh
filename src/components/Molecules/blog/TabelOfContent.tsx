@@ -31,7 +31,7 @@ const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
         className={cn(
           heading.id === activeId
             ? 'text-primary-500 font-medium'
-            : 'text-gray-400 dark:text-gray-500 font-medium',
+            : 'text-gray-500 dark:text-gray-400 font-medium',
         )}
       >
         <UnstyledLink
@@ -48,7 +48,7 @@ const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
                 className={cn(
                   item.id === activeId
                     ? 'text-primary-500 font-medium'
-                    : 'text-gray-400 dark:text-gray-500 font-medium',
+                    : 'text-gray-500 dark:text-gray-400 font-medium',
                 )}
               >
                 <UnstyledLink
@@ -80,13 +80,13 @@ const TabelOfContent: FC<ITabelOfContent> = () => {
           className={cn(
             'p-4 shadow',
             'dark:bg-slate-800/75',
-            'border border-slate-200 dark:border-slate-500 rounded-lg',
+            'border border-slate-400 dark:border-slate-500 rounded-lg',
           )}
         >
           <h4
             className={cn(
               'text-xl font-primary text-primary-500 font-semibold pb-2 w-full',
-              'border-b border-slate-200 dark:border-slate-500',
+              'border-b border-slate-400 dark:border-slate-500',
             )}
           >
             Table Of Contents

@@ -54,7 +54,7 @@ const Detail = (props: IDetailBlog) => {
           </div>
         </div>
       </div>
-      <div className='mt-8 pb-4 border-b border-slate-200 dark:border-slate-500'>
+      <div className='mt-8 pb-4 border-b border-slate-400 dark:border-slate-500'>
         <Title title={title} />
         <p className='mt-2 text-sm'>{`Created at ${publishDate} by Muhammad Ihsan • ☕️ ${timeReading}`}</p>
       </div>

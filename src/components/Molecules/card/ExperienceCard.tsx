@@ -28,7 +28,13 @@ const ExperienceCard = (props: IExperience) => {
       : format(end, 'MMM yyyy');
 
   return (
-    <div className={cn('flex flex-col md:flex-row gap-4', 'w-4/5')}>
+    <div
+      className={cn(
+        'flex flex-col md:flex-row gap-4',
+        'w-4/5 py-10',
+        'border-b last:border-none border-slate-400',
+      )}
+    >
       <div className='flex gap-6 flex-none md:w-1/2'>
         <div className='w-14 h-14 rounded bg-white flex-none flex justify-center items-center'>
           <ImageFallback
