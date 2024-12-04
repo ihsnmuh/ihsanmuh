@@ -14,8 +14,8 @@ const StackPills = (props: StackPillsProps) => {
   return (
     <div
       className={cn(
-        'flex items-center gap-1 py-1 px-2 border rounded-full',
-        'dark:border-zinc-700/40 dark:bg-slate-600/50',
+        'flex items-center gap-1 py-1 px-2 border rounded-full shadow-sm',
+        'border-slate-300 dark:border-zinc-700/40 dark:bg-slate-600/50',
       )}
       key={name}
     >
