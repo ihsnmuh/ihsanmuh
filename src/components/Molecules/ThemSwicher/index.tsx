@@ -29,6 +29,8 @@ const ThemeSwitcher = () => {
   return (
     <>
       <button
+        id='button-theme'
+        aria-label='Change theme button'
         className={cn(
           'flex justify-center items-center',
           'rounded hover:bg-slate-200/40 hover:text-primary-500 p-1',

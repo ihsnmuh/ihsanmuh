@@ -53,6 +53,7 @@ const Header = () => {
           <KufiLogo
             fill='currentColor'
             className='w-10 h-10 fill-current text-primary-500'
+            aria-label='Icon Kufi Ihsan'
           />
         </Link>
         <div className='flex gap-4 items-center'>

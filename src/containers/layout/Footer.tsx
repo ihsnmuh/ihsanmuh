@@ -48,16 +48,32 @@ const Footer = () => {
           </p>
           <div className='flex justify-end gap-2 mt-2'>
             <Link href='mailto:ihsanmuhaammad@gmail.com'>
-              <Mail size={16} className='hover:text-primary-500' />
+              <Mail
+                size={16}
+                className='hover:text-primary-500'
+                aria-label='Sent email to ihsan'
+              />
             </Link>
             <Link href='https://github.com/ihsnmuh'>
-              <Github size={16} className='hover:text-primary-500' />
+              <Github
+                size={16}
+                className='hover:text-primary-500'
+                aria-label='Go to Github'
+              />
             </Link>
             <Link href='https://www.linkedin.com/in/ihsanmuhammad19/'>
-              <Linkedin size={16} className='hover:text-primary-500' />
+              <Linkedin
+                size={16}
+                className='hover:text-primary-500'
+                aria-label='Go to Linkedin'
+              />
             </Link>
             <Link href='https://instagram.com/ihsnmuh'>
-              <Instagram size={16} className='hover:text-primary-500' />
+              <Instagram
+                size={16}
+                className='hover:text-primary-500'
+                aria-label='Go to Instagram'
+              />
             </Link>
           </div>
         </div>
