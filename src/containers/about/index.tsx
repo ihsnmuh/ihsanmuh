@@ -4,12 +4,12 @@ import React from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import ImageFallback from '@/components/atoms/image/fallback';
-import UnderlineLink from '@/components/atoms/links/UnderlineLink';
-import FullNameSVG from '@/components/atoms/svg/FullName';
-import Title from '@/components/atoms/title';
-import ExperienceCard from '@/components/molecules/card/ExperienceCard';
-import HeroTech from '@/components/organism/home/hero/HeroTech';
+import ImageFallback from '@/components/Atoms/image/fallback';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
+import FullNameSVG from '@/components/Atoms/svg/FullName';
+import Title from '@/components/Atoms/title';
+import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
+import HeroTech from '@/components/Organism/Home/Hero/HeroTech';
 
 import { Experiences } from '@/constant/experience';
 

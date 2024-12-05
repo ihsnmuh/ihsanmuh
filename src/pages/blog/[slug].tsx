@@ -5,8 +5,8 @@ import React from 'react';
 import { postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
 
-import { components } from '@/components/atoms/MDXComponent';
-import Seo from '@/components/molecules/seo';
+import { components } from '@/components/Atoms/MDXComponent';
+import Seo from '@/components/Molecules/seo';
 import Detail from '@/containers/blog/detail';
 
 type Params = { [param: string]: any };

@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-import NextImage from '@/components/atoms/NextImage';
-import StackPills from '@/components/atoms/pills/StackPills';
+import NextImage from '@/components/Atoms/NextImage';
+import StackPills from '@/components/Atoms/pills/StackPills';
 
 import WrapperCard from './WrapperCard';
 

@@ -1,9 +1,9 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 
 import { getAllPosts } from '@/lib/blog';
 
-import Seo from '@/components/molecules/seo';
+import Seo from '@/components/Molecules/seo';
 import HomeContainer from '@/containers/home';
 
 import { queryProjectList } from '@/queries/projectList';
@@ -27,7 +27,7 @@ export default function Home(props: IHomeProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
   const allPosts = getAllPosts([
     'title',

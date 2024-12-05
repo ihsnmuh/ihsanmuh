@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 
 import { getAllPosts } from '@/lib/blog';
 
-import Seo from '@/components/molecules/seo';
+import Seo from '@/components/Molecules/seo';
 import BlogContainer from '@/containers/blog';
 
 import { IPost } from '@/types/interfaces/posts';

@@ -10,16 +10,16 @@ import {
 import { useTheme } from 'next-themes';
 import React from 'react';
 
-import Button from '@/components/atoms/buttons/Button';
-import IconButton from '@/components/atoms/buttons/IconButton';
-import TextButton from '@/components/atoms/buttons/TextButton';
-import ArrowLink from '@/components/atoms/links/ArrowLink';
-import ButtonLink from '@/components/atoms/links/ButtonLink';
-import PrimaryLink from '@/components/atoms/links/PrimaryLink';
-import UnderlineLink from '@/components/atoms/links/UnderlineLink';
-import UnstyledLink from '@/components/atoms/links/UnstyledLink';
-import NextImage from '@/components/atoms/NextImage';
-import Skeleton from '@/components/atoms/Skeleton';
+import Button from '@/components/Atoms/buttons/Button';
+import IconButton from '@/components/Atoms/buttons/IconButton';
+import TextButton from '@/components/Atoms/buttons/TextButton';
+import ArrowLink from '@/components/Atoms/links/ArrowLink';
+import ButtonLink from '@/components/Atoms/links/ButtonLink';
+import PrimaryLink from '@/components/Atoms/links/PrimaryLink';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
+import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import NextImage from '@/components/Atoms/NextImage';
+import Skeleton from '@/components/Atoms/Skeleton';
 
 type Color = (typeof colorList)[number];
 

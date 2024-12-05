@@ -4,8 +4,8 @@ import React from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/atoms/title';
-import ProjectCard from '@/components/molecules/card/ProjectCard';
+import Title from '@/components/Atoms/title';
+import ProjectCard from '@/components/Molecules/card/ProjectCard';
 
 import { queryProjectList } from '@/queries/projectList';
 

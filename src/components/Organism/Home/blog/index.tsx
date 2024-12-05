@@ -2,10 +2,10 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import ArrowLink from '@/components/atoms/links/ArrowLink';
-import UnstyledLink from '@/components/atoms/links/UnstyledLink';
-import Title from '@/components/atoms/title';
-import PostCard from '@/components/molecules/card/BlogCard';
+import ArrowLink from '@/components/Atoms/links/ArrowLink';
+import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import Title from '@/components/Atoms/title';
+import PostCard from '@/components/Molecules/card/BlogCard';
 
 import { TPosts } from '@/types/interfaces/posts';
 

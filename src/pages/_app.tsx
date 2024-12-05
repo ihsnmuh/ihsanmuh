@@ -11,7 +11,7 @@ import React from 'react';
 import '@/styles/main.css';
 import '@/styles/colors.css';
 
-import ProgressBar from '@/components/atoms/ProgressBar';
+import ProgressBar from '@/components/Atoms/ProgressBar';
 import Layout from '@/containers/layout/Layout';
 
 export default function App({ Component, pageProps }: AppProps) {

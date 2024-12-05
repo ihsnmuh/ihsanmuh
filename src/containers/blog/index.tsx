@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/atoms/title';
-import PostCard from '@/components/molecules/card/BlogCard';
+import Title from '@/components/Atoms/title';
+import PostCard from '@/components/Molecules/card/BlogCard';
 
 import { TPosts } from '@/types/interfaces/posts';
 

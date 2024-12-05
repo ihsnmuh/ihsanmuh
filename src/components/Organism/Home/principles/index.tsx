@@ -1,4 +1,4 @@
-import PrincipleCard from '@/components/molecules/card/PrincipalCard';
+import PrincipleCard from '@/components/Molecules/card/PrincipalCard';
 
 import { Principles } from '@/constant/principles';
 

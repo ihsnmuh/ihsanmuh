@@ -4,8 +4,8 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import NextImage from '@/components/atoms/NextImage';
-import TagPill from '@/components/atoms/pills/TagPills';
+import NextImage from '@/components/Atoms/NextImage';
+import TagPill from '@/components/Atoms/pills/TagPills';
 
 import { timeReading } from '@/helpers/readingTime';
 

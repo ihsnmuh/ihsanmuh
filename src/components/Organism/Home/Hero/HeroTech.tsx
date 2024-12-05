@@ -7,7 +7,7 @@ import {
   TailwindCssIcon,
   TypeScriptIcon,
   VSCodeIcon,
-} from '@/components/atoms/Icon';
+} from '@/components/Atoms/Icon';
 
 const HeroTech = () => {
   return (

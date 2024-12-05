@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/atoms/links/UnderlineLink';
-import Title from '@/components/atoms/title';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
+import Title from '@/components/Atoms/title';
 
 const Summary = () => {
   return (

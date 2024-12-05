@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { cn } from '@/lib/utils';
 
-import ArrowLink from '@/components/atoms/links/ArrowLink';
-import UnstyledLink from '@/components/atoms/links/UnstyledLink';
-import Title from '@/components/atoms/title';
-import ProjectCard from '@/components/molecules/card/ProjectCard';
+import ArrowLink from '@/components/Atoms/links/ArrowLink';
+import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import Title from '@/components/Atoms/title';
+import ProjectCard from '@/components/Molecules/card/ProjectCard';
 
 import { queryProjectList } from '@/queries/projectList';
 

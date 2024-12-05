@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import Skeleton from '@/components/atoms/Skeleton';
+import Skeleton from '@/components/Atoms/Skeleton';
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();

@@ -5,12 +5,12 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import NextImage from '@/components/atoms/NextImage';
-import TagPill from '@/components/atoms/pills/TagPills';
-import Title from '@/components/atoms/title';
+import NextImage from '@/components/Atoms/NextImage';
+import TagPill from '@/components/Atoms/pills/TagPills';
+import Title from '@/components/Atoms/title';
 
 const TabelOfContent = dynamic(
-  () => import('@/components/molecules/blog/TabelOfContent'),
+  () => import('@/components/Molecules/blog/TabelOfContent'),
   { ssr: false },
 );
 

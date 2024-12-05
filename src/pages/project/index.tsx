@@ -1,8 +1,8 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import React from 'react';
 
-import Seo from '@/components/molecules/seo';
+import Seo from '@/components/Molecules/seo';
 import ProjectContainer from '@/containers/project';
 
 import { queryProjectList } from '@/queries/projectList';
@@ -16,7 +16,7 @@ const Project = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   // * prefach data project list

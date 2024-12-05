@@ -4,9 +4,7 @@ import { IconType } from 'react-icons';
 
 import { cn } from '@/lib/utils';
 
-import UnstyledLink, {
-  UnstyledLinkProps,
-} from '@/components/atoms/links/UnstyledLink';
+import UnstyledLink, { UnstyledLinkProps } from './UnstyledLink';
 
 const ButtonLinkVariant = [
   'primary',
