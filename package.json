@@ -6,20 +6,70 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "eslint src --fix && yarn format",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "generate": "prisma generate",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.35.0",
+    "@tanstack/react-query-devtools": "^4.35.0",
+    "autoprefixer": "10.4.14",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "date-fns": "^3.6.0",
+    "eslint": "8.45.0",
+    "eslint-config-next": "^14.0.4",
+    "gray-matter": "^4.0.3",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.268.0",
+    "motion": "^11.11.17",
+    "next": "^14.0.4",
+    "next-nprogress-bar": "^2.3.15",
+    "next-themes": "^0.2.1",
+    "postcss": "8.4.26",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "reading-time-estimator": "^1.11.0",
+    "rehype-pretty-code": "^0.13.2",
+    "sharp": "^0.33.5",
+    "shiki": "^1.6.4",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss": "3.3.3",
+    "tailwindcss-animate": "^1.0.6",
+    "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@prisma/client": "^5.7.1",
+    "@types/lodash": "^4.14.202",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.14",
-    "eslint": "8.45.0",
-    "eslint-config-next": "13.4.10",
-    "next": "13.4.10",
-    "postcss": "8.4.26",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.1",
+    "next-mdx-remote": "^5.0.0",
+    "prettier": "^3.1.0",
+    "prisma": "^5.7.1",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0",
+    "remark-code-titles": "^0.1.2",
+    "remark-gfm": "^4.0.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,html,css,json}": [
+      "yarn prettier --write"
+    ]
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
