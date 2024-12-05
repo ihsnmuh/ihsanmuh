@@ -62,7 +62,7 @@ const Detail = (props: IDetailBlog) => {
         <article className='prose dark:prose-dark flex-auto'>
           <MDXRemote {...source} components={components} />
         </article>
-        <aside className='py-8'>
+        <aside className='py-8 hidden lg:block'>
           <div className='sticky top-24'>
             <TabelOfContent />
           </div>

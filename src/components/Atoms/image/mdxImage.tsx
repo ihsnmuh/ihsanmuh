@@ -39,7 +39,7 @@ const MdxImage: React.FC<IMdxImageProps> = ({
         alt={alt}
         width={width}
         height={height}
-        className='object-contain shadow rounded-md mx-auto'
+        className='object-contain shadow border rounded-md mx-auto'
         loading='lazy'
         onLoad={() => setStatus('complete')}
         {...rest}

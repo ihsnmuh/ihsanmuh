@@ -21,7 +21,7 @@ pre [data-line] {
 }
 
 .prose h3 {
-  @apply mb-2 text-lg font-bold md:text-2xl;
+  @apply mt-4 mb-2 text-lg font-bold md:text-2xl;
 }
 
 .prose h4 {
@@ -66,6 +66,10 @@ pre [data-line] {
 }
 
 .prose > p > code {
+  @apply bg-primary-100 dark:bg-[#707a8c4d] rounded p-1 text-sm font-light;
+}
+
+.prose > ul > li > code {
   @apply bg-primary-100 dark:bg-[#707a8c4d] rounded p-1 text-sm font-light;
 }
 
