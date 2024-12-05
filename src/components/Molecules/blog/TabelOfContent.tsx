@@ -30,7 +30,7 @@ const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
         key={heading.id}
         className={cn(
           heading.id === activeId
-            ? 'text-primary-500 font-medium'
+            ? 'text-primary-500 font-semibold'
             : 'text-gray-500 dark:text-gray-400 font-medium',
         )}
       >
@@ -47,7 +47,7 @@ const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
                 key={item.id}
                 className={cn(
                   item.id === activeId
-                    ? 'text-primary-500 font-medium'
+                    ? 'text-primary-500 font-semibold'
                     : 'text-gray-500 dark:text-gray-400 font-medium',
                 )}
               >
