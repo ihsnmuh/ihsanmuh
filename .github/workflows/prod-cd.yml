@@ -43,10 +43,9 @@ jobs:
 
             # Load Node.js environment
             echo "Setting up Node.js environment..."
-            eval "$(fnm env --use-on-cd --shell bash)"
-            source ~/.profile
-            source ~/.bashrc || echo "Failed to source .bashrc. Ensure this file exists and is properly configured."
-            fnm use 18 || (echo "fnm command failed. Ensure fnm is installed." && exit 1)
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            nvm use 18 || (echo "nvm command failed. Ensure nvm is installed." && exit 1)
             node -v || (echo "Node.js is not available. Ensure it is installed." && exit 1)
 
             # Install dependencies
