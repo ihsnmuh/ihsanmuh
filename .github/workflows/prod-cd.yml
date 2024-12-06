@@ -35,12 +35,12 @@ jobs:
             echo "Fetching latest code from master branch..."
             git fetch
             git checkout master
-            git pull origin master --rebase
+            git pull origin master
             echo "Setting up Node.js environment..."
-            fnm use 18 || source ~/.bashrc
+            fnm use 18
             node -v
             echo "Installing dependencies..."
-            yarn install --frozen-lockfile
+            yarn
             echo "Building application..."
             yarn build
             echo "Restarting application using PM2..."
