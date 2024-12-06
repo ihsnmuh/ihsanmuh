@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    tags: /^master-v\d+\.\d+\.\d+$/
+    branches: ['master']
 
 jobs:
   build:
