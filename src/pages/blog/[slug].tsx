@@ -36,7 +36,7 @@ const Post = (props: BlogPostSingleProps) => {
         isBlog
         title={`${frontMatter.title} | Muhammad Ihsan`}
         description={frontMatter.description}
-        image={frontMatter.banner}
+        image={`${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner}`}
       />
       <Detail
         source={source}
