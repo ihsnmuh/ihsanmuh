@@ -37,6 +37,7 @@ jobs:
             git checkout master
             git pull origin master
             echo "Setting up Node.js environment..."
+            source ~/.bashrc
             fnm use 18
             node -v
             echo "Installing dependencies..."
