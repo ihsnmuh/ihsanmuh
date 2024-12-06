@@ -38,4 +38,4 @@ jobs:
             node -v
             yarn
             yarn build
-            pm2 restart ihsanmuh-prod 
+            pm2 restart ihsanmuh-prod
