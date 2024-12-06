@@ -25,7 +25,7 @@ const HeroSocialMedia = () => {
         />
       </Link>
       <div className='border-r-2 border-slate-600' />
-      <Link href='https://drive.google.com/file/d/1EsyrBpAz3mU7oJqYwff-B97ddg6XKL3C/view?usp=sharing'>
+      <Link href='https://drive.google.com/file/d/1q6F9Y4L572rcuAeYt9GXzhiBAyYdwrNY/view?usp=drive_link'>
         <div
           className={cn(
             'flex gap-2 items-center text-primary-500 hover:text-primary-400',
