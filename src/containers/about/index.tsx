@@ -86,7 +86,7 @@ const AboutContainer = () => {
             </p>
             <p className='font-primary text-base mb-6'>
               Thank you for visiting my website, if you have any questions don't
-              hesitate to contact me on social media. 😊 🚀
+              hesitate to contact me on social media. 🚀
             </p>
             <HeroTech />
           </div>
