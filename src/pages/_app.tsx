@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
 
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 import '@/styles/main.css';
 import '@/styles/colors.css';
 
