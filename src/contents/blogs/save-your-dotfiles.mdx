@@ -1,0 +1,154 @@
+---
+title: 'Ngga takut kehilangan dotfiles, setelah tau GNU Stow!'
+publishedAt: '2025-02-09'
+description: 'Ga perlu lama setting ulang device, karena ada Stow yang bisa manage dotfiles kalian tanpa takut hilang'
+banner: 'niklas-ohlrogge-niamoh-de-j-0olYcaihg-unsplash.jpg'
+tags: ['setup', 'dotfiles', 'symlink']
+isShow: true
+---
+
+## Pendahuluan
+
+Pernah ngga sih kalian ngalamin kehilangan konfigurasi terminal atau aplikasi favorit setelah install ulang?
+Gw pernah, dan itu ngga enak banget! Harus setting ulang satu-satu, browsing ulang lagi cara settingnnya gimana.
+Kadang malah ilang aja udah tanpa jejak, hadehhhh~
+
+Sampai pada akhirnya gw ketemu [GNU Stow](https://www.gnu.org/software/stow/)! Dan mulai saat itu gw udah ngga takut lagi kehilangan dotfiles gw 😎.
+GNU Stow bantu gw untuk manage semua dotfiles gw dengan rapih dan mudah di berbagai perangkat. Yuk gw bahas gimana cara pakainya!
+
+## Apa itu GNU Stow?
+
+Berdasarkan sumbernya [GNU Stow](https://www.gnu.org/software/stow/) adalah tools berbasis **symlink** yang
+digunakan untuk mengelola file config berupa dotfiles, terletak di direktori berbeda dalam satu folder terpusat
+dan seperti menginstall di tempat yang sama menggunakan metode **symlink**. Sebagai contoh, directory `/Users/ihsan/.config/`
+bisa bersumber dari `/Users/ihsan/dotfiles` dan `/Users/ihsan/documents/dotfiles`, dan bisa secara recursive untuk sub directory didalamnya secara otomatis.
+
+Banyak keuntungan yang bisa diambil dari GNU Stow, salah satunya:
+
+- **Mudah digunakan**: Cukup satu perintah untuk mengelola dotfiles.
+- **Bersih & terorganisir**: Nggak ada lagi copy-paste manual.
+- **Portabel**: Bisa digunakan di berbagai perangkat dengan cepat.
+
+### Apa itu Dotfiles?
+
+Dotfiles adalah file konfigurasi yang biasa digunakan oleh berbagai aplikasi atau sistem operasi seperti Linux untuk menyimpan preferensi pengguna.
+Nama `dotfiles` sendiri berasal dari sebuah fakta bahwa file ini biasanya diawali dengan titik (`.`) yang membuatnya tersembunyi secara default
+di sistem berbasis UNIX/LINUX.
+
+Contoh dotfiles yang umum digunakan:
+
+- `.bashrc` atau `.zshrc` untuk konfigurasi shell
+- `.vimrc` atau `.config/nvim/init.vim` untuk konfigurasi editor Vim/Neovim
+- `.tmux.conf` untuk konfigurasi Tmux
+- `.gitconfig` untuk pengaturan Git
+
+### Apa itu Symlink?
+
+Sekarang mari kita bahas symlink. **Symlink** adalah file khusus yang bertindak sebagai shortcut atau referensi ke file atau folder lain.
+Dengan symlink, kita bisa membuat file atau folder di satu lokasi tapi tetap bisa diakses dari lokasi lain seolah-olah berada di sana secara fisik.
+
+Misalnya, jika kita punya file `config.txt` di `/home/user/dotfiles/config.txt`, kita bisa membuat symlink di `~/.config/config.txt` yang merujuk ke file asli dengan perintah berikut:
+
+```bash
+ln -s /home/user/dotfiles/config.txt ~/.config/config.txt
+```
+
+Dengan cara ini, saat kita mengedit `~/.config/config.txt`, sebenarnya kita mengedit file asli di `/home/user/dotfiles/config.txt`.
+Kalo kalian biasa menggunakan `nginx` kalian akan sadar kalau config pada `/etc/nginx/sites-enabled` itu symlink dengan `/etc/nginx/sites-available`.
+
+<MdxImage
+  alt='Example description'
+  src='/images/blog/stow/symlink-nginx.png'
+  width={600}
+  height={300}
+  useSkeleton
+/>
+
+## Struktur direktori dotfiles
+
+Sebelum menggunakan Stow ada yang perlu kita lakukan terlebih dahulu, yaitu membuat struktur direktori dengan baik.
+
+Pertama membuat direktori untuk menyimpan dotfiles yang ingin kita manage. Untuk lokasi, kalian bebas meletakannya dimana saja.
+Sebagai contoh gw meletakannya di home (`~`) direktori.
+
+```bash title="~"
+mkdir dotfiles
+```
+
+Kemudian susun struktur yang kita butuhkan. Sebagai contoh saya ingin menyimpan dotfile untuk `nvim`, konfigurasi shell `zsh`, dan juga setup teminal `ghostty`.
+
+```plaintext
+~/dotfiles/
+  ├── nvim/
+  │   ├── .config/nvim/
+  │   │   ├── init.lua
+  │   │   ├── plugin/
+  ├── starship/
+  │   ├── .config/starship.toml
+  ├── ghostty/
+  │   ├── .config/ghostty/config
+  ├── zsh/
+  │   ├── .zshrc
+```
+
+Setiap subfolder berisi konfigurasi aplikasi yang bersangkutan. Struktur ini memudahkan kita untuk mengelola setiap konfigurasi secara modular.
+
+## Cara install GNU Stow
+
+GNU Stow bisa kita install pada berbagai sistem operasi. Berikut caranya:
+
+- **Ubuntu/Debian**:
+
+```bash
+sudo apt install stow
+```
+
+- **macOS (Homebrew)**:
+
+```bash
+brew install stow
+```
+
+Setelah menginstallnya kita dapat langsung menggunakannya. 🚀
+
+## Cara Menggunakan GNU Stow
+
+Misalnya, kita ingin menerapkan konfigurasi **Nvim** ke sistem kita, cukup jalankan perintah berikut dari dalam folder `dotfiles/`:
+
+```bash
+stow ~ nvim
+```
+
+Perintah ini akan membuat symlink dari `dotfiles/nvim/.config/nvim/` ke `~/.config/nvim/`.
+Sebagai ada tonton video dibawah ini.
+
+Jika ingin menghapus symlink yang dibuat oleh Stow:
+
+```bash
+stow -D ~ nvim
+```
+
+Sebagai contoh implementasi ada di video ini.
+
+<LiteYouTubeEmbed
+  id='-4ka3JJ_JII'
+  poster='maxresdefault'
+  title='Try stow for nvim folder'
+  noCookie={true}
+  aspectHeight={9}
+  aspectWidth={16}
+  muted={true}
+/>
+
+## Kesimpulan
+
+GNU Stow benar-benar mempermudah hidup gue dalam mengelola dotfiles. Beberapa manfaat utama:
+
+- Tidak perlu lagi copy-paste manual.
+- Dotfiles lebih terorganisir.
+- Mudah diterapkan di perangkat lain.
+
+Kalau lo sering mengatur ulang sistem atau suka bereksperimen dengan konfigurasi,
+gue sangat merekomendasikan untuk mulai pakai GNU Stow. Cobain deh, dan rasakan sendiri manfaatnya!
+
+Udah siap pakai GNU Stow? Jangan lupa backup dotfiles ke **GitHub** atau **GitLab** ya biar makin aman! 🚀
