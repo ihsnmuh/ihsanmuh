@@ -52,7 +52,7 @@ const ExperienceCard = (props: IExperience) => {
       </div>
       <div className='flex-auto'>
         <p className='font-primary text-base font-semibold mb-2'>
-          Responsibilities:
+          📌 Responsibilities:
         </p>
         <ul className='list-disc pl-4'>
           {responsibilities.map((responsibility) => (

@@ -47,11 +47,11 @@ const BlogContainer = (props: IBlogContainer) => {
         data-fade='1'
       >
         <Title title='Personal Blog' />
-        <p className='mt-4 font-primary text-sm md:text-base'>
-          This page is a fusion of writing about programing and personal
-          reflections. Delve into insightful discussions on programming
-          intricacies alongside introspective musings, creating a unique blend
-          of technical knowledge and personal growth.
+        <p className='mt-2 font-primary text-sm md:text-base'>
+          A space where programming meets personal growth. Explore deep dives
+          into coding concepts alongside thoughtful reflections on experiences,
+          challenges, and lessons learned—blending technical insights with
+          personal development.
         </p>
       </div>
 
