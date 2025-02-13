@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -20,6 +21,8 @@ const links = [
 
 const Header = () => {
   const [isTop, setIsTop] = useState(true);
+  const { asPath } = useRouter();
+  const pathSplit = asPath.split('/')[1].toLowerCase();
 
   const handleScroll = () => {
     setIsTop(window.scrollY === 0);
@@ -57,23 +60,32 @@ const Header = () => {
           />
         </Link>
         <div className='flex gap-4 items-center'>
-          {links.map((link, label) => (
-            <UnstyledLink
-              key={`${link}${label}`}
-              href={link.href}
-              className='group'
-            >
-              <span
-                className={cn(
-                  'transition-colors',
-                  'hover:text-primary-500',
-                  'bg-primary-300/0 group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
-                )}
+          {links.map((link, label) => {
+            const isActive =
+              pathSplit === link.label.toLowerCase() ||
+              (link.label === 'Home' && !pathSplit);
+
+            return (
+              <UnstyledLink
+                key={`${link}${label}`}
+                href={link.href}
+                className='group'
               >
-                {link.label}
-              </span>
-            </UnstyledLink>
-          ))}
+                <span
+                  className={cn(
+                    'transition-colors',
+                    'hover:text-primary-500',
+                    isActive
+                      ? 'bg-primary-300/20 text-primary-500'
+                      : 'bg-primary-300/0',
+                    'group-hover:bg-primary-300/20 dark:group-hover:bg-primary-300/0',
+                  )}
+                >
+                  {link.label}
+                </span>
+              </UnstyledLink>
+            );
+          })}
           <ThemeSwitcher />
         </div>
       </div>
