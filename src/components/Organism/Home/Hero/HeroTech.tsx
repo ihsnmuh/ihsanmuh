@@ -12,7 +12,9 @@ import {
 const HeroTech = () => {
   return (
     <>
-      <p className='font-primary text-sm'>Current Favorite Tech Stacks:</p>
+      <p className='font-primary text-sm font-bold'>
+        🔥 Current Favorite Tech Stacks:
+      </p>
       <div className='flex gap-4 mt-2'>
         <div
           className={cn(

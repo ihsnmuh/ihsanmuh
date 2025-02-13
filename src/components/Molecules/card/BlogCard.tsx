@@ -53,7 +53,8 @@ const PostCard = (props: IPostCard) => {
         <div className='p-4 flex flex-col gap-2'>
           <p className='font-bold text-lg'>{title}</p>
           <div className='flex gap-1 text-sm items-center'>
-            <p>{date}</p>•<p>{timeReading(content)}</p>
+            <p className='font-semibold'>{date}</p>•
+            <p className='font-medium'>{timeReading(content)}</p>
           </div>
           <p className='text-sm'>{description}</p>
         </div>

@@ -24,13 +24,12 @@ const ProjectContainer = () => {
         data-fade='1'
       >
         <Title title='Projects' />
-        <p className='mt-4 font-primary text-sm md:text-base'>
-          On this page, you’ll find a showcase of my projects, ideas, and
-          experiences that reflect my journey in Frontend Developer. Each
-          project tells a story of creativity, dedication, and the joy of
-          building something meaningful. Whether it’s crafting elegant designs,
-          writing clean code, or turning innovative ideas into reality, my goal
-          is to inspire, connect, and create a positive impact.
+        <p className='mt-2 font-primary text-sm md:text-base'>
+          A curated showcase of my work, ideas, and experiences as a Frontend
+          Developer. Each project tells a story of problem-solving, creativity,
+          and continuous learning. From sleek UI designs to well-structured
+          code, my goal is to inspire, connect, and bring impactful ideas to
+          life.
         </p>
       </div>
 

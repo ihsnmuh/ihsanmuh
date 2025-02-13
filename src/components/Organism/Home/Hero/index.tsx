@@ -22,14 +22,14 @@ const Hero = () => {
           className='font-primary text-base font-semibold md:text-xl'
           data-fade='1'
         >
-          Hi
+          Hi Everyone!
           <span
             className='animate-wave px-1'
             style={{ transformOrigin: '70% 70%', display: 'inline-block' }}
           >
             👋
           </span>
-          , Everyone! I&lsquo;m
+          I&lsquo;m
         </p>
         <h1
           className={cn(

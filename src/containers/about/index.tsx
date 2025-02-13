@@ -23,7 +23,10 @@ const AboutContainer = () => {
         data-fade='1'
       >
         <Title title='About' />
-        {/* <p className='mt-4 font-primary text-sm md:text-base'>All thing about me</p> */}
+        <p className='mt-2 font-primary text-sm md:text-base'>
+          Everything you need to know about me. my journey, passions, and what
+          drives me as a developer.
+        </p>
       </div>
 
       <div className='flex flex-col md:flex-row justify-between mt-10 md:mt-16'>
@@ -52,14 +55,18 @@ const AboutContainer = () => {
         <div className='flex-1' data-fade='3'>
           <h2 className='h2 font-primary mb-2'>Muhammad Ihsan</h2>
           <p className='font-primary text-base mb-6'>
-            Frontend developer at{' '}
+            <span className='font-semibold'>Frontend developer</span> at{' '}
             <UnderlineLink href='https://femaledaily.com/'>
               Female Daily Network
             </UnderlineLink>
           </p>
           <div>
             <p className='font-primary text-base mb-4 text-pretty'>
-              Hello! I'm Ihsan, graduate of Agricultural Engineering,{' '}
+              Hello! I'm Ihsan, graduate of
+              <span className='font-semibold'>
+                {' '}
+                Agricultural Engineering
+              </span>,{' '}
               <UnderlineLink href='https://www.ipb.ac.id/'>
                 Bogor Agriculture University
               </UnderlineLink>
