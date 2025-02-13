@@ -58,6 +58,6 @@ jobs:
 
             # Restart the application
             echo "Restarting application using PM2..."
-            pm2 restart ihsanmuh-prod || (echo "Failed to restart application using PM2!" && exit 1)
+            pm2 restart ihsanmuh-web || (echo "Failed to restart application using PM2!" && exit 1)
 
             echo "Deployment completed successfully."
