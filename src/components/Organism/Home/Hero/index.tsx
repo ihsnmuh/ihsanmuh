@@ -66,7 +66,7 @@ const Hero = () => {
       <a
         href='#summary'
         className={cn(
-          'flex flex-col items-center justify-center w-screen mx-auto',
+          'flex flex-col items-center justify-center w-full mx-auto',
           'absolute bottom-1',
           'animate-bounce',
         )}
