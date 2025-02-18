@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import UnstyledLink from '@/components/Atoms/Links/UnstyledLink';
 
 import useHeadingsData from '@/helpers/useHeadingData';
 import useIntersectionObserver from '@/helpers/useIntersectionObserver';
@@ -16,14 +16,14 @@ interface INestedHeading extends IHeadingItem {
   items: IHeadingItem[];
 }
 
-interface IHeadingList {
+export interface IHeadingList {
   headings: INestedHeading[];
   activeId: any;
 }
 
 interface ITabelOfContent {}
 
-const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
+export const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
   <ul className='mt-2'>
     {headings.map((heading) => (
       <li

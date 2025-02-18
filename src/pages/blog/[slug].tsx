@@ -6,7 +6,7 @@ import { postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
 
 import { components } from '@/components/Atoms/MDXComponent';
-import Seo from '@/components/Molecules/seo';
+import Seo from '@/components/Molecules/Seo';
 import Detail from '@/containers/blog/detail';
 
 type Params = { [param: string]: any };

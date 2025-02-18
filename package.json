@@ -24,7 +24,7 @@
     "eslint-config-next": "^14.0.4",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.268.0",
+    "lucide-react": "^0.475.0",
     "motion": "^11.11.17",
     "next": "^14.0.4",
     "next-nprogress-bar": "^2.3.15",

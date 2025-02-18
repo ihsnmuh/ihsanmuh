@@ -1,7 +1,7 @@
-import Blog from '@/components/Organism/Home/blog';
+import Blog from '@/components/Organism/Home/Blog';
 import Hero from '@/components/Organism/Home/Hero';
-import Portofolio from '@/components/Organism/Home/portofolio';
-import PrinciplesSection from '@/components/Organism/Home/principles';
+import Portofolio from '@/components/Organism/Home/Portofolio';
+import PrinciplesSection from '@/components/Organism/Home/Principles';
 import Summary from '@/components/Organism/Home/Summary';
 
 import { TPosts } from '@/types/interfaces/posts';
