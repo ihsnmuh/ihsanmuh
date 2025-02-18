@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import UnstyledLink from '@/components/Atoms/Links/UnstyledLink';
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
 const ThemeSwitcher = dynamic(

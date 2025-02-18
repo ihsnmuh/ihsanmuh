@@ -6,12 +6,12 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
-import TagPill from '@/components/Atoms/pills/TagPills';
-import Title from '@/components/Atoms/title';
-import TOCMobile from '@/components/Molecules/blog/TOCMobile';
+import TagPill from '@/components/Atoms/Pills/TagPills';
+import Title from '@/components/Atoms/Title';
+import TOCMobile from '@/components/Molecules/Blog/TOCMobile';
 
 const TabelOfContent = dynamic(
-  () => import('@/components/Molecules/blog/TabelOfContent'),
+  () => import('@/components/Molecules/Blog/TabelOfContent'),
   { ssr: false },
 );
 

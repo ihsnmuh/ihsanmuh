@@ -1,4 +1,4 @@
-import Seo from '@/components/Molecules/seo';
+import Seo from '@/components/Molecules/Seo';
 import AboutContainer from '@/containers/about';
 
 const About = () => {

@@ -10,14 +10,14 @@ import {
 import { useTheme } from 'next-themes';
 import React from 'react';
 
-import Button from '@/components/Atoms/buttons/Button';
-import IconButton from '@/components/Atoms/buttons/IconButton';
-import TextButton from '@/components/Atoms/buttons/TextButton';
-import ArrowLink from '@/components/Atoms/links/ArrowLink';
-import ButtonLink from '@/components/Atoms/links/ButtonLink';
-import PrimaryLink from '@/components/Atoms/links/PrimaryLink';
-import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
-import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import Button from '@/components/Atoms/Buttons/Button';
+import IconButton from '@/components/Atoms/Buttons/IconButton';
+import TextButton from '@/components/Atoms/Buttons/TextButton';
+import ArrowLink from '@/components/Atoms/Links/ArrowLink';
+import ButtonLink from '@/components/Atoms/Links/ButtonLink';
+import PrimaryLink from '@/components/Atoms/Links/PrimaryLink';
+import UnderlineLink from '@/components/Atoms/Links/UnderlineLink';
+import UnstyledLink from '@/components/Atoms/Links/UnstyledLink';
 import NextImage from '@/components/Atoms/NextImage';
 import Skeleton from '@/components/Atoms/Skeleton';
 
