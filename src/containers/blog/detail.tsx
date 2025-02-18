@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 import Title from '@/components/Atoms/title';
+import TOCMobile from '@/components/Molecules/blog/TOCMobile';
 
 const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
@@ -56,7 +57,7 @@ const Detail = (props: IDetailBlog) => {
       </div>
       <div className='mt-8 pb-4 border-b border-slate-400 dark:border-slate-500'>
         <Title title={title} />
-        <p className='mt-2 text-sm'>{`Created at ${publishDate} by Muhammad Ihsan • ☕️ ${timeReading}`}</p>
+        <p className='mt-2 text-sm'>{`Created at ${publishDate} • ☕️ ${timeReading}`}</p>
       </div>
       <div className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>
         <article className='prose dark:prose-dark flex-auto'>
@@ -68,6 +69,7 @@ const Detail = (props: IDetailBlog) => {
           </div>
         </aside>
       </div>
+      <TOCMobile />
     </section>
   );
 };
