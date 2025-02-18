@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/Atoms/Links/UnderlineLink';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
 const Footer = () => {

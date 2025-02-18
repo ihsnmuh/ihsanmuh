@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnstyledLink from '@/components/Atoms/Links/UnstyledLink';
+import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 
 import useHeadingsData from '@/helpers/useHeadingData';
 import useIntersectionObserver from '@/helpers/useIntersectionObserver';

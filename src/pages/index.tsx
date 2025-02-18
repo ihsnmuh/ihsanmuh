@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 
 import { getAllPosts } from '@/lib/blog';
 
-import Seo from '@/components/Molecules/Seo';
+import Seo from '@/components/Molecules/seo';
 import HomeContainer from '@/containers/home';
 
 import { queryProjectList } from '@/queries/projectList';

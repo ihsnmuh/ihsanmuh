@@ -2,7 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 
-import Seo from '@/components/Molecules/Seo';
+import Seo from '@/components/Molecules/seo';
 import ProjectContainer from '@/containers/project';
 
 import { queryProjectList } from '@/queries/projectList';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import ImageFallback from '@/components/Atoms/Image/fallback';
+import ImageFallback from '@/components/Atoms/image/fallback';
 
 import { IExperience } from '@/types/interfaces/experience';
 

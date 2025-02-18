@@ -4,11 +4,11 @@ import React from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import ImageFallback from '@/components/Atoms/Image/fallback';
-import UnderlineLink from '@/components/Atoms/Links/UnderlineLink';
+import ImageFallback from '@/components/Atoms/image/fallback';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 import FullNameSVG from '@/components/Atoms/svg/FullName';
-import Title from '@/components/Atoms/Title';
-import ExperienceCard from '@/components/Molecules/Card/ExperienceCard';
+import Title from '@/components/Atoms/title';
+import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
 import HeroTech from '@/components/Organism/Home/Hero/HeroTech';
 
 import { Experiences } from '@/constant/experience';
