@@ -5,7 +5,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
-import TagPill from '@/components/Atoms/Pills/TagPills';
+import TagPill from '@/components/Atoms/pills/TagPills';
 
 import { timeReading } from '@/helpers/readingTime';
 

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
-import StackPills from '@/components/Atoms/Pills/StackPills';
+import StackPills from '@/components/Atoms/pills/StackPills';
 
 import WrapperCard from './WrapperCard';
 
