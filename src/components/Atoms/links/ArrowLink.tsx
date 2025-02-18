@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/Atoms/Links/UnderlineLink';
+import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 
 import { UnstyledLinkProps } from './UnstyledLink';
 

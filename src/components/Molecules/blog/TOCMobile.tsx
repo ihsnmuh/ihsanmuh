@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import IconButton from '@/components/Atoms/Buttons/IconButton';
+import IconButton from '@/components/Atoms/buttons/IconButton';
 
 import useHeadingsData from '@/helpers/useHeadingData';
 import useIntersectionObserver from '@/helpers/useIntersectionObserver';
