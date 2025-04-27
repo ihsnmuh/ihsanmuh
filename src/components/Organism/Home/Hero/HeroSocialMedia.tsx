@@ -25,7 +25,7 @@ const HeroSocialMedia = () => {
         />
       </Link>
       <div className='border-r-2 border-slate-600' />
-      <Link href='https://drive.google.com/file/d/1q6F9Y4L572rcuAeYt9GXzhiBAyYdwrNY/view?usp=drive_link'>
+      <Link href={process.env.NEXT_PUBLIC_CV_LINK || ''}>
         <div
           className={cn(
             'flex gap-2 items-center text-primary-500 hover:text-primary-400',
@@ -36,7 +36,7 @@ const HeroSocialMedia = () => {
             <span className='relative inline-flex rounded-full h-2 w-2 bg-primary-500'></span>
           </span>
           <FileText size={24} />
-          <p className='font-primary'>Resume</p>
+          <p className='font-primary'>CV</p>
         </div>
       </Link>
     </>
