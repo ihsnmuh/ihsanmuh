@@ -16,8 +16,8 @@ export default function Document() {
         <script
           async
           defer
-          src='https://analytic.ihsanmuh.my.id/script.js'
-          data-website-id='59b2fd70-9256-4b86-819a-ba97a021c10d'
+          src={`${process.env.NEXT_PUBLIC_UMAMI_DOMAIN}/script.js`}
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
         />
       </Head>
       <body>
