@@ -68,7 +68,7 @@ const Footer = () => {
                 aria-label='Go to Linkedin'
               />
             </Link>
-            <Link href='https://instagram.com/ihsnmuh'>
+            <Link href='https://instagram.com/chernodev'>
               <Instagram
                 size={16}
                 className='hover:text-primary-500'
