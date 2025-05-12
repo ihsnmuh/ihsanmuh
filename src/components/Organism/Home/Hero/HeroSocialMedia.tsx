@@ -18,7 +18,7 @@ const HeroSocialMedia = () => {
           className='text-slate-500 dark:text-slate-400 hover:text-[#0077b5] dark:hover:text-[#0077b5]'
         />
       </Link>
-      <Link href='https://instagram.com/ihsnmuh'>
+      <Link href='https://instagram.com/chernodev'>
         <Instagram
           size={24}
           className='text-slate-500 dark:text-slate-400  hover:text-pink-500 dark:hover:text-pink-500'
