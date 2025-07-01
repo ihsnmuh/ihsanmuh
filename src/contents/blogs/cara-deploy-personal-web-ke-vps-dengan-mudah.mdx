@@ -87,16 +87,16 @@ sudo apt update
 sudo apt upgrade
 ```
 
-### 1. Install NGIX
+### 1. Install NGINX
 
-Secara singkat **NGIX** adalah sebuah web server. Tidak hanya web server, NGINX digunakan untuk `load balancing`, `content caching`, `reverse proxying`, dan `web streaming server`.
+Secara singkat **NGINX** adalah sebuah web server. Tidak hanya web server, NGINX digunakan untuk `load balancing`, `content caching`, `reverse proxying`, dan `web streaming server`.
 Intinya, software ini bersifat multifungsi dan membuat website makin canggih serta lebih cepat diakses. Cara menginstallnya dengan:
 
 ```shell
-sudo apt install ngix
+sudo apt install nginx
 ```
 
-Setelah terinstall kemudian kita cek dengan `sudo systemctl status nginx`. NGIX dipastikan berjalan normal diserver kita.
+Setelah terinstall kemudian kita cek dengan `sudo systemctl status nginx`. NGINX dipastikan berjalan normal diserver kita.
 
 <MdxImage
   alt='Example description'
@@ -130,7 +130,7 @@ tapi kalo kalian prefer tetap menggunakan `npm` tidak masalah.
 
 ### 3. Testing Clone Web
 
-Disini gw mencoba untuk pull project dari github gw, tapi sebelum itu karena kita menggunakan ngix jadi gw mengikuti pathnya si ngix di `/var/www/`. Kemudian gw buat folder baru `fe-app` dengan command `mkdir fe-app`
+Disini gw mencoba untuk pull project dari github gw, tapi sebelum itu karena kita menggunakan nginx jadi gw mengikuti pathnya si nginx di `/var/www/`. Kemudian gw buat folder baru `fe-app` dengan command `mkdir fe-app`
 
 ```shell title="~/var/www/fe-app/"
 # clone project
@@ -174,10 +174,10 @@ dengan cara **pointing** domain kita ke IP public server seperti di bawah ini.
   useSkeleton
 />
 
-setelah itu kita pergi ke configurasi nginx `cd /etc/nginx/site-available` dan ada 1 file configurasi bawaan dengan nama `default` yang akan kita gunakan sebagai panduan untuk **reverse proxy** web kita.
+setelah itu kita pergi ke configurasi nginx `cd /etc/nginx/sites-available` dan ada 1 file configurasi bawaan dengan nama `default` yang akan kita gunakan sebagai panduan untuk **reverse proxy** web kita.
 Caranya:
 
-- Buat satu file config ngix dengan nama bebas, dan gw buat `ihsnmuh.prod.config`
+- Buat satu file config nginx dengan nama bebas, dan gw buat `ihsnmuh.prod.config`
 
 ```config {4,7} title="/etc/nginx/sites-available/ihsnmuh.prod.config"
 server {
@@ -194,7 +194,7 @@ server {
 - Check error config nginx dengan cara menjalankan command ini
 
 ```shell
-sudo ngix -t
+sudo nginx -t
 
 # Jika success muncul seperti ini
 # nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
@@ -252,7 +252,7 @@ Sejauh ini kita sudah berhasil melakukan deployment aplikasi. Walaupun website k
 ### Setup SSL dengan Certbot
 
 Secara umum Sertifikat SSL/TLS bertindak sebagai **kartu identitas digital** untuk **mengamankan** komunikasi jaringan, **menetapkan identitas** situs web melalui Internet serta sumber daya di jaringan privat.
-Kali ini kita menambahkan ssl certificate secara gratis menggunakan [cerbot](https://certbot.eff.org/) dengan cara:
+Kali ini kita menambahkan ssl certificate secara gratis menggunakan [certbot](https://certbot.eff.org/) dengan cara:
 
 - Install certbot melalui snap
 
@@ -307,7 +307,7 @@ server {
 
 ### Mengaktifkan Firewall
 
-Firewall digunakan untuk mengatur lalu litas sehingga secara explisit kita bisa mengatur koneksi apa saja yang bisa mengakses server kita keluar atau pun masuk.
+Firewall digunakan untuk mengatur lalu lintas sehingga secara eksplisit kita bisa mengatur koneksi apa saja yang bisa mengakses server kita keluar atau pun masuk.
 Sebelumnya jika kita coba akses melalui port web akan jalan normal, dan ini yang akan kita block. Firewall untuk ubuntu yang kita gunakan ini adalah ufw. Langkah-langkahnya sebagai berikut:
 
 - Cek status ufw
@@ -333,13 +333,11 @@ sudo ufw default allow outgoing
 - Setup apa saja yang bisa mengakses server, secara default gw hanya menambahkan 2 ini saja
 
 ```shell
-
 # Mengizinkan akses dari OpenSSH
 sudo ufw allow OpenSSH
 
 # Mengizinkan seluruh akses dari Nginx
 sudo ufw allow 'Nginx Full'
-
 ```
 
 - Mengaktifkan ufw
