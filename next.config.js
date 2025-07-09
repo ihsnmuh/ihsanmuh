@@ -4,6 +4,7 @@ require('./checkEnvVars.ts')();
 
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   images: {
     domains: [],
   },
