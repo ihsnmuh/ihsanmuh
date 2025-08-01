@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
-require('./checkEnvVars.ts')();
+// Only check env vars if not in Docker build
+if (process.env.NODE_ENV !== 'production' || !process.env.DOCKER_BUILD) {
+  require('./checkEnvVars.ts')();
+}
 
 const nextConfig = {
   reactStrictMode: true,

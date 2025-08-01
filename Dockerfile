@@ -8,11 +8,17 @@ RUN yarn install --frozen-lockfile
 # 2. Build the app with standalone output
 FROM node:18-slim AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
 
+# Create .env file first before copying source code
 ARG ENV_CONTENT
 RUN echo "$ENV_CONTENT" > .env
+
+# Set Docker build environment variable
+ENV DOCKER_BUILD=true
+
+# Copy dependencies and source code
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
 RUN yarn prisma generate
 RUN yarn build
