@@ -7,7 +7,6 @@ on:
   push:
     tags:
       - 'v*'
-    branches: ['feature/implement-docker']
 
 jobs:
   build-and-push-image:
