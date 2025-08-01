@@ -11,6 +11,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG ENV_CONTENT
+RUN echo "$ENV_CONTENT" > .env
+
 RUN yarn prisma generate
 RUN yarn build
 
@@ -21,14 +24,14 @@ WORKDIR /app
 # Install OpenSSL if you use Prisma
 RUN apt-get update && apt-get install -y openssl
 
-# Copy .env if needed
-COPY .env .env
-
 # Copy the standalone output and static files
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
+
+# Copy .env file to production
+COPY --from=builder /app/.env .env
 
 EXPOSE 3000
 
