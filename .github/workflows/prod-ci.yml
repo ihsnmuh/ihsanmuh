@@ -6,8 +6,8 @@ name: Build and Push Image to Docker Hub 🛠️
 on:
   push:
     tags:
-      - 'development-v*'
-      - 'production-v*'
+      - 'v*'
+    branches: ['feature/implement-docker']
 
 jobs:
   build-and-push-image:
