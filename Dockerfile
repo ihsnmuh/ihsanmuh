@@ -11,7 +11,10 @@ WORKDIR /app
 
 # Create .env file first before copying source code
 ARG ENV_CONTENT
-RUN echo "$ENV_CONTENT" > .env
+# Use cat with heredoc to properly handle multi-line content
+RUN cat > .env << 'EOF'
+$ENV_CONTENT
+EOF
 
 # Set Docker build environment variable
 ENV DOCKER_BUILD=true
