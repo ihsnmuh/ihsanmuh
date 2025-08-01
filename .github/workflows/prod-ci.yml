@@ -32,6 +32,10 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
 
+      - name: Write .env file from secret
+        run: |
+          echo "${{ secrets.ENV_CONTENT }}" > .env
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -39,5 +43,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            ENV_CONTENT=${{ secrets.ENV_CONTENT }}

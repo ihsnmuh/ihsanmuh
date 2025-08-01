@@ -9,10 +9,8 @@ RUN yarn install --frozen-lockfile
 FROM node:18-slim AS builder
 WORKDIR /app
 
-# Create .env file first before copying source code
-ARG ENV_CONTENT
-# Use printf to properly handle multi-line content with proper escaping
-RUN printf '%s\n' "$ENV_CONTENT" > .env
+# Copy .env file from build context
+COPY .env .env
 
 # Set Docker build environment variable
 ENV DOCKER_BUILD=true
