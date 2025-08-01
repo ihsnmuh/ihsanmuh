@@ -11,7 +11,8 @@ WORKDIR /app
 
 # Create .env file first before copying source code
 ARG ENV_CONTENT
-RUN echo "$ENV_CONTENT" | base64 -d > .env
+# Use printf to properly handle multi-line content with proper escaping
+RUN printf '%s\n' "$ENV_CONTENT" > .env
 
 # Set Docker build environment variable
 ENV DOCKER_BUILD=true
