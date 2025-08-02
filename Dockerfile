@@ -3,7 +3,10 @@ FROM node:18-slim AS deps
 
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+
+# Install dependencies with better error handling for multi-platform builds
+RUN yarn install --frozen-lockfile --network-timeout 1000000 || \
+    (rm -rf node_modules yarn.lock && yarn install --frozen-lockfile --network-timeout 1000000)
 
 # 2. Build the app with standalone output
 FROM node:18-slim AS builder
@@ -19,6 +22,7 @@ ENV DOCKER_BUILD=true
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Generate Prisma client and build the app
 RUN yarn prisma generate
 RUN yarn build
 
