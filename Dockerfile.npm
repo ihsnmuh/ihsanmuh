@@ -1,3 +1,4 @@
+# Alternative Dockerfile using npm instead of yarn
 # 1. Install dependencies only when needed
 FROM node:18-slim AS deps
 
@@ -10,15 +11,16 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy package files
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json* ./
 
-# Configure npm/yarn for better network handling
-RUN yarn config set network-timeout 300000
-RUN yarn config set network-concurrency 1
+# Configure npm for better network handling
+RUN npm config set fetch-timeout 300000
+RUN npm config set fetch-retry-mintimeout 20000
+RUN npm config set fetch-retry-maxtimeout 120000
 
-# Install dependencies with retry mechanism and better error handling
-RUN --mount=type=cache,target=/root/.yarn \
-    yarn install --frozen-lockfile --network-timeout 300000 --verbose
+# Install dependencies with retry mechanism
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline --no-audit
 
 # 2. Build the app with standalone output
 FROM node:18-slim AS builder
@@ -40,8 +42,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma client and build the app
-RUN yarn prisma generate
-RUN yarn build
+RUN npx prisma generate
+RUN npm run build
 
 # 3. Production image, copy only necessary files
 FROM node:18-slim AS runner
@@ -61,4 +63,4 @@ COPY --from=builder /app/.env .env
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "server.js"] 

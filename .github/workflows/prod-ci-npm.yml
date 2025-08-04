@@ -1,12 +1,17 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Build and Push Image to Docker Hub 🛠️
+# Alternative workflow using npm-based Dockerfile
+name: Build and Push Image to Docker Hub (npm) 🛠️
 
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      use_npm:
+        description: 'Use npm-based Dockerfile'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   build-and-push-image:
@@ -40,7 +45,23 @@ jobs:
         run: |
           echo "${{ secrets.ENV_CONTENT }}" > .env
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image (npm)
+        if: github.event.inputs.use_npm == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.npm
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+
+      - name: Build and push Docker image (yarn)
+        if: github.event.inputs.use_npm != 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
