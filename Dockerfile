@@ -20,7 +20,7 @@ COPY package.json yarn.lock ./
 # Install dependencies with caching and verbose logging
 RUN --mount=type=cache,target=/root/.yarn \
     --mount=type=cache,target=/app/node_modules \
-    RUN for i in 1 2 3 4 5; do yarn install --frozen-lockfile --network-timeout 600000 && break || sleep 10; done
+    yarn install --frozen-lockfile --network-timeout 600000
 
 # ----------------------------------
 # 2. Build the app with standalone
