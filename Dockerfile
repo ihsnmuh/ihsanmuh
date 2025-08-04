@@ -5,22 +5,20 @@ FROM node:18-slim AS deps
 
 WORKDIR /app
 
-# Install necessary tools and enable Yarn with stable settings
+# Install necessary packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    && corepack enable \
-    && yarn config set network-timeout 300000 \
-    && yarn config set network-concurrency 1 \
     && rm -rf /var/lib/apt/lists/*
+
+# Enable corepack for Yarn
+RUN corepack enable
 
 # Copy dependency manifests
 COPY package.json yarn.lock ./
 
-# Install dependencies with caching and verbose logging
-RUN --mount=type=cache,target=/root/.yarn \
-    --mount=type=cache,target=/app/node_modules \
-    yarn install --frozen-lockfile --network-timeout 600000
+# Install dependencies with extended timeout
+RUN yarn install --frozen-lockfile --network-timeout 600000
 
 # ----------------------------------
 # 2. Build the app with standalone
@@ -65,8 +63,6 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
-
-# Copy .env for runtime config
 COPY --from=builder /app/.env .env
 
 EXPOSE 3000
