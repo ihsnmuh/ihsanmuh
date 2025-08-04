@@ -17,9 +17,8 @@ RUN corepack enable
 # Copy dependency manifests
 COPY package.json yarn.lock ./
 
-# Install dependencies with caching and optimized settings
-RUN --mount=type=cache,target=/root/.yarn \
-    yarn install --frozen-lockfile --network-timeout 300000 --prefer-offline
+# Install dependencies with extended timeout
+RUN yarn install --frozen-lockfile --network-timeout 600000
 
 # ----------------------------------
 # 2. Build the app with standalone
