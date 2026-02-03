@@ -15,7 +15,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Header />
-      <main className={poppins.className}>{children}</main>
+      <main id='main-content' className={poppins.className}>
+        {children}
+      </main>
       <Footer />
     </>
   );

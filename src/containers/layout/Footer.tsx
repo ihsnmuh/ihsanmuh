@@ -46,34 +46,34 @@ const Footer = () => {
           <p className='text-sm font-semibold underline underline-offset-2 decoration-primary-400'>
             Reach me out
           </p>
-          <div className='flex justify-end gap-2 mt-2'>
-            <Link href='mailto:ihsanmuhaammad@gmail.com'>
-              <Mail
-                size={16}
-                className='hover:text-primary-500'
-                aria-label='Sent email to ihsan'
-              />
+          <div className='flex justify-end gap-1 mt-2'>
+            <Link
+              href='mailto:ihsanmuhaammad@gmail.com'
+              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
+              aria-label='Send email to Ihsan'
+            >
+              <Mail size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href='https://github.com/ihsnmuh'>
-              <Github
-                size={16}
-                className='hover:text-primary-500'
-                aria-label='Go to Github'
-              />
+            <Link
+              href='https://github.com/ihsnmuh'
+              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
+              aria-label='Go to GitHub'
+            >
+              <Github size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href='https://www.linkedin.com/in/ihsanmuhammad19/'>
-              <Linkedin
-                size={16}
-                className='hover:text-primary-500'
-                aria-label='Go to Linkedin'
-              />
+            <Link
+              href='https://www.linkedin.com/in/ihsanmuhammad19/'
+              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
+              aria-label='Go to LinkedIn'
+            >
+              <Linkedin size={16} className='hover:text-primary-500' />
             </Link>
-            <Link href='https://instagram.com/chernodev'>
-              <Instagram
-                size={16}
-                className='hover:text-primary-500'
-                aria-label='Go to Instagram'
-              />
+            <Link
+              href='https://instagram.com/chernodev'
+              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
+              aria-label='Go to Instagram'
+            >
+              <Instagram size={16} className='hover:text-primary-500' />
             </Link>
           </div>
         </div>

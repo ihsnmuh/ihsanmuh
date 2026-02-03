@@ -26,12 +26,12 @@ export const Experiences: IExperience[] = [
       {
         id: 3,
         responsibility:
-          "Developed personalized homepage features and a custom product-matching engine to increase user engagement at scale.",
+          'Developed personalized homepage features and a custom product-matching engine to increase user engagement at scale.',
       },
       {
         id: 4,
         responsibility:
-          "Created a secure custom checkout and payment widget for high-traffic events, contributing to a 30% increase in ticket sales.",
+          'Created a secure custom checkout and payment widget for high-traffic events, contributing to a 30% increase in ticket sales.',
       },
       {
         id: 5,
