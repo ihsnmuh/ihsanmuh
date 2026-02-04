@@ -6,10 +6,14 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import Skeleton from '@/components/Atoms/Skeleton';
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
 const ThemeSwitcher = dynamic(
   () => import('@/components/Molecules/ThemSwicher'),
+  {
+    loading: () => <Skeleton className='h-9 w-9 rounded' />,
+  },
 );
 
 const links = [

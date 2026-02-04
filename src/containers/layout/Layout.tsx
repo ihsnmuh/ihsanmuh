@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { Poppins } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 
 const Header = dynamic(() => import('./Header'));
 
@@ -11,15 +11,19 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
+    <div className={`${inter.className} ${inter.variable} ${poppins.variable}`}>
       <Header />
-      <main id='main-content' className={poppins.className}>
-        {children}
-      </main>
+      <main id='main-content'>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 };
 
