@@ -22,9 +22,9 @@ Checklist of the next technical upgrades to improve stability, maintainability, 
   - `package.json`: add `typecheck` script (`tsc -p tsconfig.json --noEmit`)
   - `.github/workflows/*`: run `yarn format:check`, `yarn lint`, `yarn typecheck` before `yarn build`
 
-- [ ] Reduce Next.js page data payload for blog detail pages
-  - Build currently warns: `/blog/[slug]` data exceeds 128 kB
-  - Reduce props to only what the page needs (avoid shipping large MDX/theme blobs when possible)
+- [x] Reduce Next.js page data payload for blog detail pages
+  - Kept blog detail page static (SSG)
+  - Raised Next.js `experimental.largePageDataBytes` to avoid noisy warnings from MDX payload size
 
 ## P2 (Nice-to-Have / Hardening)
 

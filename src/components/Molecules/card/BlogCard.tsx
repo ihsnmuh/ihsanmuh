@@ -7,8 +7,6 @@ import { cn } from '@/lib/utils';
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 
-import { timeReading } from '@/helpers/readingTime';
-
 import WrapperCard from './WrapperCard';
 
 import { IPost } from '@/types/interfaces/posts';
