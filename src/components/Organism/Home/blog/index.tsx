@@ -45,7 +45,7 @@ const Blog = (props: IBlog) => {
                 tags={post.tags}
                 slug={post.slug}
                 banner={post.banner}
-                content={post.content}
+                timeReading={post.timeReading}
               />
             ))}
         </div>

@@ -37,12 +37,6 @@ const ThemeSwitcher = () => {
           'p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
         )}
         onClick={() => darkModeHandler()}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            darkModeHandler();
-          }
-        }}
       >
         {theme === 'light' ? (
           <Sun className='fill-current' size={20} />

@@ -27,8 +27,8 @@ module.exports = {
         },
       },
       animation: {
-        gradient: 'gradient 5s ease infinite motion-reduce:animate-none',
-        wave: 'wave 2.5s infinite motion-reduce:animate-none',
+        gradient: 'gradient 5s ease infinite',
+        wave: 'wave 2.5s infinite',
       },
       keyframes: {
         gradient: {

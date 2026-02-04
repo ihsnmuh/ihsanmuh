@@ -20,4 +20,7 @@ jobs:
       - run: |
           yarn
           echo "${{ secrets.ENV_PROD }}" > .env
+          yarn format:check
+          yarn lint
+          yarn typecheck
           yarn build

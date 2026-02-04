@@ -59,7 +59,7 @@ const useIntersectionObserver = (setActiveId: TSetActiveId) => {
 
     //* Cleanup the observer on unmount
     return () => observer.disconnect();
-  }, []);
+  }, [setActiveId]);
 };
 
 export default useIntersectionObserver;

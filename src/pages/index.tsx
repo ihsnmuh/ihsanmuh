@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     'banner',
     'tags',
     'slug',
-    'content',
+    'timeReading',
     'isShow',
   ]);
 

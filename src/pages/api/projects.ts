@@ -23,6 +23,9 @@ export default async function projects(
     });
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Internal server error',
+    });
   }
 }

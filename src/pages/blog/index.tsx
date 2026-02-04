@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
     'banner',
     'tags',
     'slug',
-    'content',
+    'timeReading',
     'isShow',
   ]);
 

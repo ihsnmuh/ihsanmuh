@@ -2,6 +2,8 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import { join } from 'path';
 
+import { timeReading } from '@/helpers/readingTime';
+
 type PostItems = {
   [key: string]: string;
 };
@@ -32,6 +34,9 @@ export function getPostsData(slug: string, fields: string[] = []): PostItems {
     }
     if (field === 'content') {
       items[field] = content;
+    }
+    if (field === 'timeReading') {
+      items[field] = timeReading(content);
     }
     if (data[field]) {
       items[field] = data[field];

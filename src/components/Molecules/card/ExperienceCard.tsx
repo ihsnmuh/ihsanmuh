@@ -8,16 +8,8 @@ import ImageFallback from '@/components/Atoms/image/fallback';
 import { IExperience } from '@/types/interfaces/experience';
 
 const ExperienceCard = (props: IExperience) => {
-  const {
-    id,
-    position,
-    status,
-    company,
-    start,
-    end,
-    location,
-    responsibilities,
-  } = props;
+  const { position, status, company, start, end, location, responsibilities } =
+    props;
 
   const dateRange = formatDistanceStrict(new Date(start), new Date(end));
 
