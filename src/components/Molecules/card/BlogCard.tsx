@@ -7,8 +7,6 @@ import { cn } from '@/lib/utils';
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 
-import { timeReading } from '@/helpers/readingTime';
-
 import WrapperCard from './WrapperCard';
 
 import { IPost } from '@/types/interfaces/posts';
@@ -24,12 +22,13 @@ const PostCard = (props: IPostCard) => {
     title,
     banner,
     tags,
-    content,
+    timeReading: timeReadingText,
     publishedAt,
     description,
   } = props;
 
   const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
+  const reading = timeReadingText ?? '';
 
   return (
     <Link href={`blog/${slug}`}>
@@ -54,7 +53,7 @@ const PostCard = (props: IPostCard) => {
           <p className='font-bold text-lg'>{title}</p>
           <div className='flex gap-1 text-sm items-center'>
             <p className='font-semibold'>{date}</p>•
-            <p className='font-medium'>{timeReading(content)}</p>
+            {reading ? <p className='font-medium'>{reading}</p> : null}
           </div>
           <p className='text-sm'>{description}</p>
         </div>

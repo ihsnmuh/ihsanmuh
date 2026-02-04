@@ -10,6 +10,7 @@
     "lint:fix": "eslint src --fix && yarn format",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "generate": "prisma generate",
     "prepare": "husky install"
   },

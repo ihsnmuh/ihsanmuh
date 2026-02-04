@@ -16,42 +16,32 @@ export const Experiences: IExperience[] = [
       {
         id: 1,
         responsibility:
-          'Integrated APIs, such as Fetch API, API routes Next.js, and Redux-saga, to create API proxies and enhance website functionalities',
+          'Improved website performance and SEO by implementing SSR, ISR, and image optimization, increasing Lighthouse score from below 50 to 90+',
       },
       {
         id: 2,
         responsibility:
-          'Created a video widget with Webpack 5 and React, which enabled streaming videos to be displayed on all web pages of the Female Daily website.',
+          'Built a reusable UI component library using a monorepo (Lerna), reducing code duplication and speeding up development across multiple teams.',
       },
       {
         id: 3,
         responsibility:
-          "Developed reusable components monorepo with Lerna to optimize the website's overall performance and reduce code repetition.",
+          'Developed personalized homepage features and a custom product-matching engine to increase user engagement at scale.',
       },
       {
         id: 4,
         responsibility:
-          "Revamped the Female Daily Beauty Review Page by implementing Server Side Rendering (SSR), which led to significant improvements in the page's loading speed and overall user experience.",
+          'Created a secure custom checkout and payment widget for high-traffic events, contributing to a 30% increase in ticket sales.',
       },
       {
         id: 5,
         responsibility:
-          'Revamped the Female Daily homepage by dynamic content from the dashboard, resulting in a more personalized and engaging user experience.',
+          'Built internal tools including a video streaming widget and CMS dashboard, enabling non-technical teams to manage content independently.',
       },
       {
         id: 6,
         responsibility:
-          'Created a user dashboard to manage content for several Female Daily websites, enabling users to efficiently manage and customize their preferences.',
-      },
-      {
-        id: 7,
-        responsibility:
-          'Revamped the Mommies Daily website and implemented Incremental Static Regeneration (ISR) and SSR, resulting in improved website performance and faster loading times.',
-      },
-      {
-        id: 8,
-        responsibility:
-          'Developed and maintained web applications in content tribes, enabling the website to provide fresh and engaging content regularly.',
+          'Maintained and scaled multiple high-traffic web platforms in an Agile environment with consistent code standards and uptime',
       },
     ],
   },
@@ -60,8 +50,8 @@ export const Experiences: IExperience[] = [
     position: 'Frontend Developer',
     status: 'Full-time',
     company: {
-      name: 'PT Digital Vision Publishing',
-      logo: '/images/experience/dvp.jpg',
+      name: 'Dealio',
+      logo: '/images/experience/dealio.jpeg',
     },
     start: '2021-05-01',
     end: '2022-03-01',
@@ -70,17 +60,17 @@ export const Experiences: IExperience[] = [
       {
         id: 1,
         responsibility:
-          'Designed and developed 2 dashboards and web views to manage news for website matamatapolitik.com and content for survei.io.',
+          'Built centralized dashboards and web views for matamatapolitik.com and survei.io to streamline content and data management.',
       },
       {
         id: 2,
         responsibility:
-          'Collaborated with the development team to solve website issues.',
+          'Improved product stability by working closely with QA to implement better bug tracking and error reporting processes.',
       },
       {
         id: 3,
         responsibility:
-          'Worked with the QA team to track and report every bug and error.',
+          'Collaborated with cross-functional teams to solve complex web issues, ensuring consistent uptime and smooth user experience',
       },
     ],
   },

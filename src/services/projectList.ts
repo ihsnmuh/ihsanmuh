@@ -30,11 +30,6 @@ export const fetchProjectList = async (payload: IQueryProjectList) => {
       return result;
     }
   } catch (error) {
-    console.log(
-      '🚀 ~ file: projectList.ts:27 ~ fetchProjectList ~ error:',
-      error,
-    );
-
-    return Promise.reject(null);
+    return Promise.reject(error);
   }
 };

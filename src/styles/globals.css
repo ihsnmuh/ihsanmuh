@@ -68,7 +68,7 @@ body {
 img,
 picture,
 video,
-twvas,
+canvas,
 svg {
   display: block;
   max-width: 100%;

@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
@@ -15,7 +14,7 @@ interface IBlogContainer {
 
 const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
-  const [search, setSearch] = useState('');
+  const [search, _setSearch] = useState('');
   const [filteredPosts, setFilteredPosts] = useState<TPosts>([]);
 
   const show = LoaderView();
@@ -30,15 +29,11 @@ const BlogContainer = (props: IBlogContainer) => {
     }, 500);
 
     return () => clearTimeout(searchDebounce);
-  }, [search]);
+  }, [posts, search]);
 
   useEffect(() => {
     setFilteredPosts(posts);
-  }, []);
-
-  const handleSearch = (value: string) => {
-    setSearch(value);
-  };
+  }, [posts]);
 
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
@@ -62,7 +57,7 @@ const BlogContainer = (props: IBlogContainer) => {
             'border rounded-lg border-gray-300 dark:border-gray-600',
           )}
           value={search}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={(e) => _setSearch(e.target.value)}
           type='text'
           placeholder='Search..'
         />
@@ -79,12 +74,12 @@ const BlogContainer = (props: IBlogContainer) => {
             <PostCard
               key={post.title}
               title={post.title}
-              publishedAt={format(new Date(post.publishedAt), 'MMMM dd, yyyy')}
+              publishedAt={post.publishedAt}
               description={post.description}
               tags={post.tags}
               slug={post.slug}
               banner={post.banner}
-              content={post.content}
+              timeReading={post.timeReading}
             />
           ))
         ) : (

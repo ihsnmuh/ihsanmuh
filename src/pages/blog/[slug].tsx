@@ -9,8 +9,6 @@ import { components } from '@/components/Atoms/MDXComponent';
 import Seo from '@/components/Molecules/seo';
 import Detail from '@/containers/blog/detail';
 
-type Params = { [param: string]: any };
-
 type PostType = {
   title: string;
   publishedAt: string;
@@ -51,22 +49,22 @@ const Post = (props: BlogPostSingleProps) => {
   );
 };
 
+type Params = { [param: string]: any };
+
 export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
   const { source, frontMatter } = await getFileDatabySlug(params.slug);
 
   return {
     props: {
-      source: source,
-      frontMatter: frontMatter,
+      source,
+      frontMatter,
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = postFilePaths
-    // Remove file extensions for page paths
     .map((path) => path.replace(/\.mdx?$/, ''))
-    // Map the path into the static paths object required by Next.js
     .map((slug) => ({ params: { slug } }));
 
   return {
