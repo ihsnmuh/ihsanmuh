@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -18,42 +19,61 @@ interface INestedHeading extends IHeadingItem {
 
 export interface IHeadingList {
   headings: INestedHeading[];
-  activeId: any;
+  activeId: string;
+  className?: string;
+  onNavigate?: () => void;
+  variant?: 'desktop' | 'mobile';
 }
 
 interface ITabelOfContent {}
 
-export const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
-  <ul className='mt-2'>
+export const Headings: FC<IHeadingList> = ({
+  headings,
+  activeId,
+  className,
+  onNavigate,
+  variant = 'desktop',
+}) => (
+  <ul className={cn('mt-2', className)}>
     {headings.map((heading) => (
-      <li
-        key={heading.id}
-        className={cn(
-          heading.id === activeId
-            ? 'text-primary-500 font-semibold'
-            : 'text-gray-500 dark:text-gray-400 font-medium',
-        )}
-      >
+      <li key={heading.id} className='mt-1'>
         <UnstyledLink
-          className='text-sm font-primary mt-2 hover:text-primary-500'
+          className={cn(
+            'block rounded-md',
+            variant === 'mobile' && [
+              'px-3 py-2',
+              'hover:bg-slate-200/60 dark:hover:bg-slate-700/40',
+              'transition-colors',
+            ],
+            variant === 'desktop' && ['text-sm font-primary px-1 py-1'],
+            heading.id === activeId
+              ? 'text-primary-500 font-semibold'
+              : 'text-gray-600 dark:text-gray-300 font-medium hover:text-primary-500',
+          )}
           href={`#${heading.id}`}
+          onClick={onNavigate}
         >
           {heading.title}
         </UnstyledLink>
         {heading.items.length > 0 && (
-          <ul className='ml-4'>
+          <ul className={cn('ml-3 border-l border-slate-200 dark:border-slate-700')}>
             {heading.items.map((item) => (
-              <li
-                key={item.id}
-                className={cn(
-                  item.id === activeId
-                    ? 'text-primary-500 font-semibold'
-                    : 'text-gray-500 dark:text-gray-400 font-medium',
-                )}
-              >
+              <li key={item.id} className='mt-1'>
                 <UnstyledLink
-                  className='text-sm font-primary hover:text-primary-500 mt-2'
+                  className={cn(
+                    'block rounded-md',
+                    variant === 'mobile' && [
+                      'px-3 py-2',
+                      'hover:bg-slate-200/60 dark:hover:bg-slate-700/40',
+                      'transition-colors',
+                    ],
+                    variant === 'desktop' && ['text-sm font-primary px-3 py-1'],
+                    item.id === activeId
+                      ? 'text-primary-500 font-semibold'
+                      : 'text-gray-600 dark:text-gray-300 font-medium hover:text-primary-500',
+                  )}
                   href={`#${item.id}`}
+                  onClick={onNavigate}
                 >
                   {item.title}
                 </UnstyledLink>
@@ -67,11 +87,12 @@ export const Headings: FC<IHeadingList> = ({ headings, activeId }) => (
 );
 
 const TabelOfContent: FC<ITabelOfContent> = () => {
+  const { asPath } = useRouter();
   const [activeId, setActiveId] = useState<string>('');
 
-  useIntersectionObserver(setActiveId);
+  useIntersectionObserver(setActiveId, asPath);
 
-  const { nestedHeadings } = useHeadingsData();
+  const { nestedHeadings } = useHeadingsData(asPath);
 
   return (
     <>

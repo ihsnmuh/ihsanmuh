@@ -11,7 +11,10 @@ interface IntersectionObserverEntryWithId extends IntersectionObserverEntry {
 
 type TSetActiveId = (id: string) => void;
 
-const useIntersectionObserver = (setActiveId: TSetActiveId) => {
+const useIntersectionObserver = (
+  setActiveId: TSetActiveId,
+  depsKey?: string,
+) => {
   //* Define the reference type as a dictionary of IntersectionObserverEntry objects
   const headingElementsRef = useRef<
     Record<string, IntersectionObserverEntryWithId>
@@ -59,7 +62,7 @@ const useIntersectionObserver = (setActiveId: TSetActiveId) => {
 
     //* Cleanup the observer on unmount
     return () => observer.disconnect();
-  }, [setActiveId]);
+  }, [setActiveId, depsKey]);
 };
 
 export default useIntersectionObserver;
