@@ -1,6 +1,6 @@
-import { TableOfContents } from 'lucide-react';
+import { TableOfContents, X } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -15,41 +15,76 @@ interface IDrawerMobile extends IHeadingList {
   OnClick: () => void;
 }
 
-const Drawer = (props: IDrawerMobile) => (
-  <div
-    className='fixed inset-0 bg-black bg-opacity-50 z-10'
-    onClick={() => props.OnClick()}
-  >
+const Drawer = (props: IDrawerMobile) => {
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  return (
     <div
-      className='fixed bottom-0 right-0 w-full bg-slate-100 dark:bg-slate-800 rounded-t-xl max-h-[80vh] flex flex-col'
-      onClick={(e) => e.stopPropagation()}
+      className='fixed inset-0 z-50'
+      onClick={() => props.OnClick()}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') props.OnClick();
+      }}
+      role='presentation'
     >
-      <div className='flex flex-col p-4'>
-        <div className='bg-slate-400 w-1/4 rounded-full h-1 mx-auto mb-2' />
-        <p
-          className={cn(
-            'w-full text-xl font-primary text-primary-500 font-semibold py-4',
-            'border-b border-slate-400 dark:border-slate-500',
-          )}
-        >
-          Table of Contents
-        </p>
-        <div className='w-full mb-6 overflow-y-auto max-h-[calc(80vh-120px)]'>
-          <Headings headings={props.headings} activeId={props.activeId} />
+      <div className='absolute inset-0 bg-black/50 backdrop-blur-[2px]' />
+      <div
+        className={cn(
+          'absolute inset-x-0 bottom-0',
+          'w-full bg-slate-50 dark:bg-slate-900',
+          'rounded-t-2xl shadow-xl',
+          'max-h-[80vh] flex flex-col',
+          'pb-[calc(env(safe-area-inset-bottom)+12px)]',
+        )}
+        onClick={(e) => e.stopPropagation()}
+        role='dialog'
+        aria-modal='true'
+        aria-label='Table of contents'
+      >
+        <div className='px-4 pt-3'>
+          <div className='bg-slate-300 dark:bg-slate-700 w-12 rounded-full h-1 mx-auto' />
+          <div className='mt-3 flex items-center justify-between gap-2'>
+            <p className='text-base font-semibold text-slate-900 dark:text-slate-100'>
+              Table of contents
+            </p>
+            <IconButton
+              ref={closeButtonRef}
+              variant='ghost'
+              icon={X}
+              aria-label='Close table of contents'
+              onClick={props.OnClick}
+              className='shadow-none'
+              classNames={{ icon: 'text-lg' }}
+            />
+          </div>
         </div>
+
+        <nav className='mt-2 px-2 overflow-y-auto'>
+          <Headings
+            headings={props.headings}
+            activeId={props.activeId}
+            onNavigate={props.OnClick}
+            variant='mobile'
+            className='pb-4'
+          />
+        </nav>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const TOCMobile = () => {
   const { asPath } = useRouter();
-  const { nestedHeadings } = useHeadingsData();
+  const { nestedHeadings } = useHeadingsData(asPath);
 
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>('');
 
-  useIntersectionObserver(setActiveId);
+  useIntersectionObserver(setActiveId, asPath);
 
   useEffect(() => {
     setIsOpen(false);
@@ -73,7 +108,7 @@ const TOCMobile = () => {
     <>
       <div className='fixed bottom-4 right-4 block lg:hidden'>
         <IconButton
-          className='w-9 h-9'
+          className='h-10 w-10 rounded-full shadow-lg'
           icon={TableOfContents}
           onClick={() => setIsOpen(true)}
           aria-label='Open Table of Contents'

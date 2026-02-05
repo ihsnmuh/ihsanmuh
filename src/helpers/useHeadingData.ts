@@ -29,7 +29,7 @@ const getNestedHeadings = (headingElements: HTMLElement[]): NestedHeading[] => {
 };
 
 // Hook to use headings data
-const useHeadingsData = () => {
+const useHeadingsData = (depsKey?: string) => {
   const [nestedHeadings, setNestedHeadings] = useState<NestedHeading[]>([]);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const useHeadingsData = () => {
 
     const newNestedHeadings = getNestedHeadings(headingElements);
     setNestedHeadings(newNestedHeadings);
-  }, []);
+  }, [depsKey]);
 
   return { nestedHeadings };
 };
