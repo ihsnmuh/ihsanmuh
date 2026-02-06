@@ -1,0 +1,10 @@
+# robots.txt for ihsanmuh personal website
+
+User-agent: *
+Allow: /
+
+# Disallow admin/API routes
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://ihsanmuh.com/sitemap.xml

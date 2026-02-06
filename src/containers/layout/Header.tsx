@@ -12,6 +12,7 @@ import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 const ThemeSwitcher = dynamic(
   () => import('@/components/Molecules/ThemSwicher'),
   {
+    ssr: false,
     loading: () => <Skeleton className='h-9 w-9 rounded' />,
   },
 );
@@ -25,6 +26,7 @@ const links = [
 
 const Header = () => {
   const [isTop, setIsTop] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const { asPath } = useRouter();
   const pathSplit = asPath.split('/')[1].toLowerCase();
 
@@ -33,6 +35,8 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setMounted(true);
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -41,22 +45,11 @@ const Header = () => {
 
   return (
     <>
-      <a
-        href='#main-content'
-        className={cn(
-          'absolute -top-full left-4 z-50 px-4 py-2',
-          'bg-primary-500 text-white rounded',
-          'focus:top-4 transition-all',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
-        )}
-      >
-        Skip to content
-      </a>
       <header
         className={cn(
           'bg-transparent',
           'fixed top-0 z-10 w-full',
-          !isTop
+          mounted && !isTop
             ? 'shadow-sm bg-white/70 dark:bg-slate-900/70 backdrop-blur'
             : '',
         )}
