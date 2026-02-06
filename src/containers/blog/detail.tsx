@@ -9,6 +9,7 @@ import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 import Title from '@/components/Atoms/title';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
+import { RelatedPosts } from '@/components/Molecules/blog/RelatedPosts';
 import TOCMobile from '@/components/Molecules/blog/TOCMobile';
 import { ViewCounter } from '@/components/Molecules/blog/ViewCounter';
 
@@ -16,6 +17,16 @@ const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
   { ssr: false },
 );
+
+type RelatedPost = {
+  slug: string;
+  title: string;
+  description?: string;
+  banner?: string;
+  publishedAt: string;
+  tags?: string[];
+  timeReading?: string;
+};
 
 interface IDetailBlog {
   source: MDXRemoteSerializeResult;
@@ -26,6 +37,7 @@ interface IDetailBlog {
   timeReading: string;
   tags: string[];
   slug: string;
+  relatedPosts: RelatedPost[];
 }
 
 const Detail = (props: IDetailBlog) => {
@@ -38,6 +50,7 @@ const Detail = (props: IDetailBlog) => {
     timeReading,
     tags,
     slug,
+    relatedPosts,
   } = props;
   const publishDate = format(new Date(publishedAt), 'MMMM dd, yyyy');
 
@@ -89,6 +102,7 @@ const Detail = (props: IDetailBlog) => {
           </aside>
         </div>
         <TOCMobile />
+        <RelatedPosts posts={relatedPosts} />
       </section>
     </>
   );

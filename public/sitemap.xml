@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>ihsanmuh.com</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/about</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/project</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/baru-ini-article</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/galau-karier-dan-cara-gw-menentukan-arah</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/react-ahay-dududu</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/save-your-dotfiles</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/semua-ngga-ada-yang-siap</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>ihsanmuh.com/blog/test-blog-1</loc><lastmod>2026-02-06T10:51:35.549Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com</loc><lastmod>2026-02-06T10:57:10.607Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/about</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/project</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/baru-ini-article</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/galau-karier-dan-cara-gw-menentukan-arah</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/react-ahay-dududu</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/save-your-dotfiles</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/semua-ngga-ada-yang-siap</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>ihsanmuh.com/blog/test-blog-1</loc><lastmod>2026-02-06T10:57:10.608Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

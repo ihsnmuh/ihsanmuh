@@ -20,7 +20,7 @@ export function getPostsFiles(): string[] {
 }
 
 export function getPostsData(slug: string, fields: string[] = []): PostItems {
-  const postSlug = slug.replace(/\.mdx$/, ''); // remove the file extension
+  const postSlug = slug.replace(/\.mdx$/, '');
   const filePath = join(postsDirectory, `${postSlug}.mdx`);
 
   const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -50,7 +50,6 @@ export function getAllPosts(fields: string[] = []): PostItems[] {
   const slugs = getPostsFiles();
   const posts = slugs
     .map((slug) => getPostsData(slug, fields))
-    // sort posts by date in descending order
     .sort((post1, post2) => {
       const date1 = post1.publishedAt || '';
       const date2 = post2.publishedAt || '';
@@ -58,4 +57,62 @@ export function getAllPosts(fields: string[] = []): PostItems[] {
     });
 
   return posts;
+}
+
+export function getRelatedPosts(
+  currentSlug: string,
+  currentTags: string[],
+  fields: string[] = [],
+  limit: number = 3,
+): PostItems[] {
+  const allPosts = getAllPosts(fields);
+
+  const postsWithScores = allPosts
+    .filter((post) => post.slug !== currentSlug)
+    .map((post) => {
+      const postTagsRaw = post.tags || '';
+      const postTags = Array.isArray(postTagsRaw)
+        ? postTagsRaw
+        : typeof postTagsRaw === 'string'
+          ? (postTagsRaw as string).split(',').map((tag) => tag.trim())
+          : [];
+
+      const commonTags = currentTags.filter((tag) =>
+        (postTags as string[]).some(
+          (postTag) => postTag.toLowerCase() === tag.toLowerCase(),
+        ),
+      );
+
+      return {
+        post,
+        score: commonTags.length,
+      };
+    });
+
+  const relatedPosts = postsWithScores
+    .filter((item) => item.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+      const dateA = a.post.publishedAt || '';
+      const dateB = b.post.publishedAt || '';
+      return dateA > dateB ? -1 : 1;
+    })
+    .slice(0, limit)
+    .map((item) => item.post);
+
+  if (relatedPosts.length < limit) {
+    const recentPosts = allPosts
+      .filter(
+        (post) =>
+          post.slug !== currentSlug &&
+          !relatedPosts.find((rp) => rp.slug === post.slug),
+      )
+      .slice(0, limit - relatedPosts.length);
+
+    return [...relatedPosts, ...recentPosts];
+  }
+
+  return relatedPosts;
 }

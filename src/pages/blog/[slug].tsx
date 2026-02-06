@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import React from 'react';
 
-import { postFilePaths } from '@/lib/blog';
+import { getRelatedPosts, postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
 
 import { components } from '@/components/Atoms/MDXComponent';
@@ -22,10 +22,11 @@ type PostType = {
 type BlogPostSingleProps = {
   source: MDXRemoteSerializeResult;
   frontMatter: PostType;
+  relatedPosts: PostType[];
 };
 
 const Post = (props: BlogPostSingleProps) => {
-  const { source, frontMatter } = props;
+  const { source, frontMatter, relatedPosts } = props;
   const { banner, tags, title, publishedAt, timeReading, slug } = frontMatter;
 
   return (
@@ -45,6 +46,7 @@ const Post = (props: BlogPostSingleProps) => {
         timeReading={timeReading}
         tags={tags}
         slug={slug}
+        relatedPosts={relatedPosts}
       />
     </>
   );
@@ -55,10 +57,33 @@ type Params = { [param: string]: any };
 export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
   const { source, frontMatter } = await getFileDatabySlug(params.slug);
 
+  const tags = Array.isArray((frontMatter as any).tags)
+    ? (frontMatter as any).tags
+    : [];
+
+  const relatedPosts = getRelatedPosts(
+    params.slug,
+    tags,
+    [
+      'title',
+      'slug',
+      'description',
+      'banner',
+      'publishedAt',
+      'tags',
+      'timeReading',
+    ],
+    3,
+  );
+
   return {
     props: {
       source,
-      frontMatter,
+      frontMatter: {
+        ...frontMatter,
+        slug: params.slug,
+      },
+      relatedPosts,
     },
   };
 };
