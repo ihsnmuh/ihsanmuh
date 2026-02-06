@@ -22,37 +22,20 @@ export function useViewCounter(slug: string) {
           method: 'POST',
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to increment view count');
-        }
-
         const data = await response.json();
+
         setState({
           views: data.count || 0,
           isLoading: false,
           error: null,
         });
       } catch (error) {
-        console.error('Error tracking view:', error);
+        console.warn('View counter error (non-critical):', error);
         setState((prev) => ({
           ...prev,
           isLoading: false,
-          error:
-            error instanceof Error ? error.message : 'Unknown error occurred',
+          views: 0,
         }));
-
-        try {
-          const response = await fetch(`/api/views/${slug}`);
-          if (response.ok) {
-            const data = await response.json();
-            setState((prev) => ({
-              ...prev,
-              views: data.count || 0,
-            }));
-          }
-        } catch {
-          // Ignore fallback error
-        }
       }
     };
 

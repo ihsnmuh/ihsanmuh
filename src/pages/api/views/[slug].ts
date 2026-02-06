@@ -19,33 +19,41 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const post = await prisma.postViews.findUnique({
-        where: { slug },
-      });
-
-      return res.status(200).json({ count: post?.count ?? 0 });
+      try {
+        const post = await prisma.postViews.findUnique({
+          where: { slug },
+        });
+        return res.status(200).json({ count: post?.count ?? 0 });
+      } catch (dbError) {
+        console.warn('Database not ready for views:', dbError);
+        return res.status(200).json({ count: 0 });
+      }
     }
 
     if (req.method === 'POST') {
-      const post = await prisma.postViews.upsert({
-        where: { slug },
-        update: {
-          count: {
-            increment: 1,
+      try {
+        const post = await prisma.postViews.upsert({
+          where: { slug },
+          update: {
+            count: {
+              increment: 1,
+            },
           },
-        },
-        create: {
-          slug,
-          count: 1,
-        },
-      });
-
-      return res.status(200).json({ count: post.count });
+          create: {
+            slug,
+            count: 1,
+          },
+        });
+        return res.status(200).json({ count: post.count });
+      } catch (dbError) {
+        console.warn('Database not ready for view increment:', dbError);
+        return res.status(200).json({ count: 0 });
+      }
     }
 
     return res.status(405).json({ message: 'Method not allowed' });
   } catch (error) {
     console.error('Error handling view count:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(200).json({ count: 0 });
   }
 }
