@@ -8,3 +8,6 @@ Disallow: /api/
 
 # Sitemap
 Sitemap: https://ihsanmuh.com/sitemap.xml
+
+# RSS Feed
+# Subscribe to blog updates at: https://ihsanmuh.com/feed.xml

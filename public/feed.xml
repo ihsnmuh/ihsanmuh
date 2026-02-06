@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Muhammad Ihsan - Blog]]></title>
+        <description><![CDATA[Articles about technology, software development, and personal experiences]]></description>
+        <link>https://ihsanmuh.com</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Fri, 06 Feb 2026 07:45:06 GMT</lastBuildDate>
+        <atom:link href="https://ihsanmuh.com/feed.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Fri, 06 Feb 2026 07:45:06 GMT</pubDate>
+        <copyright><![CDATA[All rights reserved 2026, Muhammad Ihsan]]></copyright>
+        <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[Tidak Takut Kehilangan Dotfiles Lagi dengan GNU Stow!]]></title>
+            <description><![CDATA[Kelola dotfiles dengan mudah dan rapi menggunakan GNU Stow! Tidak perlu setting ulang dari nol setelah reinstall sistem.]]></description>
+            <link>https://ihsanmuh.com/blog/save-your-dotfiles</link>
+            <guid isPermaLink="false">https://ihsanmuh.com/blog/save-your-dotfiles</guid>
+            <pubDate>Sun, 09 Feb 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Deploy Personal Web NextJs ke VPS Dengan Mudah]]></title>
+            <description><![CDATA[Panduan lengkap langkah demi langkah untuk mendeploy aplikasi Next.js ke VPS, mulai dari pemilihan VPS, konfigurasi server, hingga pengaturan domain dan keamanan.]]></description>
+            <link>https://ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah</link>
+            <guid isPermaLink="false">https://ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah</guid>
+            <pubDate>Wed, 04 Dec 2024 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Galau Karir dan Cara Gw Menentukan Arah]]></title>
+            <description><![CDATA[Artikel ini menceritakan tentang perjalanan gw dalam menemukan passion dan karier setelah lulus kuliah]]></description>
+            <link>https://ihsanmuh.com/blog/galau-karier-dan-cara-gw-menentukan-arah</link>
+            <guid isPermaLink="false">https://ihsanmuh.com/blog/galau-karier-dan-cara-gw-menentukan-arah</guid>
+            <pubDate>Sat, 18 Dec 2021 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
