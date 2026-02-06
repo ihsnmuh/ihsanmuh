@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/generate-rss.mjs && next-sitemap",
+    "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "eslint src --fix && yarn format",
@@ -51,6 +52,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@next/bundle-analyzer": "^16.1.6",
     "@prisma/client": "^5.7.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
