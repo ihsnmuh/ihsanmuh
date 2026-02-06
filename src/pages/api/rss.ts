@@ -33,11 +33,11 @@ export default async function handler(
 
     publishedPosts.forEach((post) => {
       feed.item({
-        title: post.title,
+        title: post.title || 'Untitled',
         description: post.description || '',
-        url: `${siteUrl}/blog/${post.slug}`,
-        date: post.publishedAt,
-        guid: `${siteUrl}/blog/${post.slug}`,
+        url: `${siteUrl}/blog/${post.slug || ''}`,
+        date: post.publishedAt || new Date().toISOString(),
+        guid: `${siteUrl}/blog/${post.slug || ''}`,
       });
     });
 

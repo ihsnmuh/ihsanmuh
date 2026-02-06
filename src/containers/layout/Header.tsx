@@ -28,7 +28,7 @@ const Header = () => {
   const [isTop, setIsTop] = useState(true);
   const [mounted, setMounted] = useState(false);
   const { asPath } = useRouter();
-  const pathSplit = asPath.split('/')[1].toLowerCase();
+  const pathSplit = asPath.split('/')[1]?.toLowerCase() || '';
 
   const handleScroll = () => {
     setIsTop(window.scrollY === 0);
