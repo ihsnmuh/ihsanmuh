@@ -1,5 +1,5 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 
 import { getAllPosts } from '@/lib/blog';
@@ -45,7 +45,7 @@ export default function Home(props: IHomeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
   const allPosts = getAllPosts([
     'title',
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     'isShow',
   ]);
 
-  // * prefach data project list
+  // * prefetch data project list
   await queryClient.prefetchQuery({
     ...queryProjectList({ limit: 3, order: 'desc' }),
   });
@@ -68,5 +68,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       dehydratedState: dehydrate(queryClient),
       allPosts,
     },
+    revalidate: 3600,
   };
 };
