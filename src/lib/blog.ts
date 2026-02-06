@@ -59,6 +59,16 @@ export function getAllPosts(fields: string[] = []): PostItems[] {
   return posts;
 }
 
+function isPostActive(post: PostItems): boolean {
+  const isShow = post.isShow;
+  if (isShow === undefined || isShow === null) return true;
+  if (typeof isShow === 'boolean') return isShow;
+  if (typeof isShow === 'string') {
+    return isShow.toLowerCase() !== 'false' && isShow !== '0';
+  }
+  return true;
+}
+
 export function getRelatedPosts(
   currentSlug: string,
   currentTags: string[],
@@ -68,7 +78,7 @@ export function getRelatedPosts(
   const allPosts = getAllPosts([...fields, 'isShow']);
 
   const postsWithScores = allPosts
-    .filter((post) => post.slug !== currentSlug && post.isShow !== 'false')
+    .filter((post) => post.slug !== currentSlug && isPostActive(post))
     .map((post) => {
       const postTagsRaw = post.tags || '';
       const postTags = Array.isArray(postTagsRaw)
@@ -107,7 +117,7 @@ export function getRelatedPosts(
       .filter(
         (post) =>
           post.slug !== currentSlug &&
-          post.isShow !== 'false' &&
+          isPostActive(post) &&
           !relatedPosts.find((rp) => rp.slug === post.slug),
       )
       .slice(0, limit - relatedPosts.length);
