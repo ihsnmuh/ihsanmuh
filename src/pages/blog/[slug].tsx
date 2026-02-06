@@ -26,7 +26,7 @@ type BlogPostSingleProps = {
 
 const Post = (props: BlogPostSingleProps) => {
   const { source, frontMatter } = props;
-  const { banner, tags, title, publishedAt, timeReading } = frontMatter;
+  const { banner, tags, title, publishedAt, timeReading, slug } = frontMatter;
 
   return (
     <>
@@ -44,6 +44,7 @@ const Post = (props: BlogPostSingleProps) => {
         publishedAt={publishedAt}
         timeReading={timeReading}
         tags={tags}
+        slug={slug}
       />
     </>
   );
