@@ -9,7 +9,7 @@ import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 import Title from '@/components/Atoms/title';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
-import { RelatedPosts } from '@/components/Molecules/blog/RelatedPosts';
+import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
 import TOCMobile from '@/components/Molecules/blog/TOCMobile';
 import { ViewCounter } from '@/components/Molecules/blog/ViewCounter';
 
@@ -18,15 +18,7 @@ const TabelOfContent = dynamic(
   { ssr: false },
 );
 
-type RelatedPost = {
-  slug: string;
-  title: string;
-  description?: string;
-  banner?: string;
-  publishedAt: string;
-  tags?: string[];
-  timeReading?: string;
-};
+import { IPost } from '@/types/interfaces/posts';
 
 interface IDetailBlog {
   source: MDXRemoteSerializeResult;
@@ -34,10 +26,10 @@ interface IDetailBlog {
   image: string | undefined;
   title: string;
   publishedAt: string;
-  timeReading: string;
+  timeReading: string | undefined;
   tags: string[];
   slug: string;
-  relatedPosts: RelatedPost[];
+  relatedPosts: IPost[];
 }
 
 const Detail = (props: IDetailBlog) => {

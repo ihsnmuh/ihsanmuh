@@ -65,10 +65,10 @@ export function getRelatedPosts(
   fields: string[] = [],
   limit: number = 3,
 ): PostItems[] {
-  const allPosts = getAllPosts(fields);
+  const allPosts = getAllPosts([...fields, 'isShow']);
 
   const postsWithScores = allPosts
-    .filter((post) => post.slug !== currentSlug)
+    .filter((post) => post.slug !== currentSlug && post.isShow !== 'false')
     .map((post) => {
       const postTagsRaw = post.tags || '';
       const postTags = Array.isArray(postTagsRaw)
@@ -107,6 +107,7 @@ export function getRelatedPosts(
       .filter(
         (post) =>
           post.slug !== currentSlug &&
+          post.isShow !== 'false' &&
           !relatedPosts.find((rp) => rp.slug === post.slug),
       )
       .slice(0, limit - relatedPosts.length);
