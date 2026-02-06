@@ -46,7 +46,7 @@ const ReadingProgress = () => {
       >
         <div className='relative w-1 h-64 bg-gray-200 dark:bg-gray-700/50 rounded-full overflow-hidden'>
           <div
-            className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-500 via-primary-600 to-primary-700 rounded-full transition-all duration-75 ease-out'
+            className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-500 via-primary-600 to-primary-700 rounded-full'
             style={{ height: `${progress}%` }}
           />
         </div>
