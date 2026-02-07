@@ -14,8 +14,8 @@ const Hero = () => {
       className={cn(
         'h-[100dvh] background-img-light dark:background-img-dark flex items-center bg-cover',
         'border-b border-slate-200 dark:border-slate-800 relative',
-        show && 'fade-in-start',
       )}
+      data-fade-in={show ? 'true' : 'false'}
     >
       <div className='layout flex flex-col w-full gap-1 relative'>
         <p

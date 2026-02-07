@@ -65,11 +65,11 @@ const Seo = (props: SeoProps) => {
           <meta
             name='author'
             property='article:author'
-            content='Theodorus Clarence'
+            content='Muhammad Ihsan'
           />
         </>
       )}
-      {meta.isBlog && (
+      {meta.isBlog && meta.date && (
         <script
           key='structured-data'
           type='application/ld+json'
@@ -79,18 +79,28 @@ const Seo = (props: SeoProps) => {
               '@type': 'BlogPosting',
               headline: meta.title,
               description: meta.description,
-              author: [
-                {
-                  '@type': 'Person',
-                  name: 'Muhammad Ihsan',
-                },
-              ],
+              author: {
+                '@type': 'Person',
+                name: 'Muhammad Ihsan',
+              },
               image: meta.image,
               datePublished: meta.date,
+              publisher: {
+                '@type': 'Person',
+                name: 'Muhammad Ihsan',
+              },
             }),
           }}
         />
       )}
+
+      {/* RSS Feed */}
+      <link
+        rel='alternate'
+        type='application/rss+xml'
+        title='Muhammad Ihsan - Blog RSS Feed'
+        href={`${meta.url}/feed.xml`}
+      />
 
       {/* Favicons */}
       {favicons.map((linkProps) => (

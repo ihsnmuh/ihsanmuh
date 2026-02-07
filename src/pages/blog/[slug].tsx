@@ -2,39 +2,32 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import React from 'react';
 
-import { postFilePaths } from '@/lib/blog';
+import { IPost } from '@/types/interfaces/posts';
+
+import { getRelatedPosts, postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
 
 import { components } from '@/components/Atoms/MDXComponent';
 import Seo from '@/components/Molecules/seo';
 import Detail from '@/containers/blog/detail';
 
-type PostType = {
-  title: string;
-  publishedAt: string;
-  description?: string;
-  banner?: string;
-  tags: string[];
-  slug: string;
-  timeReading: string;
-};
-
 type BlogPostSingleProps = {
   source: MDXRemoteSerializeResult;
-  frontMatter: PostType;
+  frontMatter: IPost;
+  relatedPosts: IPost[];
 };
 
 const Post = (props: BlogPostSingleProps) => {
-  const { source, frontMatter } = props;
-  const { banner, tags, title, publishedAt, timeReading } = frontMatter;
+  const { source, frontMatter, relatedPosts } = props;
+  const { banner, tags, title, publishedAt, timeReading, slug } = frontMatter;
 
   return (
     <>
       <Seo
         isBlog
         title={`${frontMatter.title} | Muhammad Ihsan`}
-        description={frontMatter.description}
-        image={`${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner}`}
+        description={frontMatter.description || ''}
+        image={`${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner || ''}`}
       />
       <Detail
         source={source}
@@ -44,6 +37,8 @@ const Post = (props: BlogPostSingleProps) => {
         publishedAt={publishedAt}
         timeReading={timeReading}
         tags={tags}
+        slug={slug}
+        relatedPosts={relatedPosts}
       />
     </>
   );
@@ -52,12 +47,53 @@ const Post = (props: BlogPostSingleProps) => {
 type Params = { [param: string]: any };
 
 export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
-  const { source, frontMatter } = await getFileDatabySlug(params.slug);
+  const { source, frontMatter: rawFrontMatter } = await getFileDatabySlug(
+    params.slug,
+  );
+
+  const tags = Array.isArray((rawFrontMatter as any).tags)
+    ? (rawFrontMatter as any).tags
+    : [];
+
+  const relatedPosts = getRelatedPosts(
+    params.slug,
+    tags,
+    [
+      'title',
+      'slug',
+      'description',
+      'banner',
+      'publishedAt',
+      'tags',
+      'timeReading',
+      'isShow',
+    ],
+    3,
+  );
+
+  const relatedPostsFiltered = relatedPosts.filter((post) => (
+    post.isShow === 'true' || 
+    post.isShow === '1' || 
+    (post.isShow && typeof post.isShow === 'boolean' && post.isShow === true)
+  ));
+
+  // Ensure frontMatter has all required IPost fields
+  const frontMatter: IPost = {
+    title: (rawFrontMatter as any).title || '',
+    publishedAt: (rawFrontMatter as any).publishedAt || '',
+    description: (rawFrontMatter as any).description || '',
+    banner: (rawFrontMatter as any).banner || '',
+    tags: tags,
+    slug: params.slug,
+    timeReading: (rawFrontMatter as any).timeReading || '',
+    isShow: (rawFrontMatter as any).isShow,
+  };
 
   return {
     props: {
       source,
       frontMatter,
+      relatedPosts: relatedPostsFiltered,
     },
   };
 };

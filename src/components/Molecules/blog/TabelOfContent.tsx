@@ -56,7 +56,11 @@ export const Headings: FC<IHeadingList> = ({
           {heading.title}
         </UnstyledLink>
         {heading.items.length > 0 && (
-          <ul className={cn('ml-3 border-l border-slate-200 dark:border-slate-700')}>
+          <ul
+            className={cn(
+              'ml-3 border-l border-slate-200 dark:border-slate-700',
+            )}
+          >
             {heading.items.map((item) => (
               <li key={item.id} className='mt-1'>
                 <UnstyledLink

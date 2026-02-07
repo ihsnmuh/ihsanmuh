@@ -23,3 +23,11 @@ model Projects {
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 }
+
+model PostViews {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
