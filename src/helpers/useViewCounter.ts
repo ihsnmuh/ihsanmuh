@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type ViewCounterState = {
   views: number;
@@ -12,12 +12,15 @@ export function useViewCounter(slug: string) {
     isLoading: true,
     error: null,
   });
+  const hasIncremented = useRef(false);
 
   useEffect(() => {
     if (!slug) return;
+    if (hasIncremented.current) return;
 
     const fetchAndIncrementViews = async () => {
       try {
+        hasIncremented.current = true;
         const response = await fetch(`/api/views/${slug}`, {
           method: 'POST',
         });
