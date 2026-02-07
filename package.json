@@ -79,6 +79,7 @@
     "rehype-slug": "^6.0.0",
     "remark-code-titles": "^0.1.2",
     "remark-gfm": "^4.0.0",
+    "ts-node": "^10.9.2",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   },
@@ -88,6 +89,6 @@
     ]
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "yarn ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
