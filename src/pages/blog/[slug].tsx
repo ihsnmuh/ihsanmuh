@@ -66,6 +66,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
       'publishedAt',
       'tags',
       'timeReading',
+      'isShow',
     ],
     3,
   );

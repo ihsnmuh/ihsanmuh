@@ -18,22 +18,7 @@ function isPostActive(post: IPost): boolean {
 }
 
 export default function RelatedPosts({ posts }: RelatedPostsProps) {
-  // Debug: log posts and their isShow values
-  console.log(
-    'RelatedPosts received:',
-    posts.map((p) => ({
-      slug: p.slug,
-      isShow: p.isShow,
-      type: typeof p.isShow,
-    })),
-  );
-
   const activePosts = posts.filter(isPostActive);
-
-  console.log(
-    'Active posts after filter:',
-    activePosts.map((p) => p.slug),
-  );
 
   if (activePosts.length === 0) {
     return null;
