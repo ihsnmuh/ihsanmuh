@@ -6,8 +6,19 @@ type RelatedPostsProps = {
   posts: IPost[];
 };
 
+function isPostActive(post: IPost): boolean {
+  const isShow = post.isShow;
+  if (isShow === undefined || isShow === null) return true;
+  if (typeof isShow === 'boolean') return isShow;
+  if (typeof isShow === 'string') {
+    const strValue = isShow as string;
+    return strValue.toLowerCase() !== 'false' && strValue !== '0';
+  }
+  return true;
+}
+
 export default function RelatedPosts({ posts }: RelatedPostsProps) {
-  const activePosts = posts.filter((post) => post.isShow !== false);
+  const activePosts = posts.filter(isPostActive);
 
   if (activePosts.length === 0) {
     return null;

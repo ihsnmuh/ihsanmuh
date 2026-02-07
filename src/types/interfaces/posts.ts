@@ -9,5 +9,5 @@ export interface IPost {
   timeReading?: string;
   tags: string[];
   slug: string;
-  isShow?: boolean;
+  isShow?: boolean | string;
 }
