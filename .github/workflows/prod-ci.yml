@@ -17,17 +17,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get yarn cache directory
+        id: yarn-cache
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-berry-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-berry-
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install
 
       - name: Create .env file
         run: echo "${{ secrets.ENV_PROD }}" > .env
