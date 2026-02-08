@@ -2,14 +2,14 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import React from 'react';
 
-import { IPost } from '@/types/interfaces/posts';
-
 import { getRelatedPosts, postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
 
 import { components } from '@/components/Atoms/MDXComponent';
 import Seo from '@/components/Molecules/seo';
 import Detail from '@/containers/blog/detail';
+
+import { IPost } from '@/types/interfaces/posts';
 
 type BlogPostSingleProps = {
   source: MDXRemoteSerializeResult;

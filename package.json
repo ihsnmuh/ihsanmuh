@@ -8,7 +8,7 @@
     "build": "next build && node scripts/generate-rss.mjs && next-sitemap",
     "build:analyze": "ANALYZE=true yarn build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint src/",
     "lint:fix": "eslint src --fix && yarn format",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
