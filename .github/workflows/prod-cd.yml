@@ -2,7 +2,7 @@ name: Deploy App 🚀
 
 on:
   workflow_run:
-    workflows: ["Build App 🛠️"]
+    workflows: ['Build App 🛠️']
     types:
       - completed
     branches: ['master']
@@ -26,41 +26,41 @@ jobs:
           port: 22
           script: |
             set -e  # Exit on error
-            
+
             echo "🚀 Starting deployment process..."
-            
+
             # Navigate to the application directory
             cd /var/www/fe-app/ihsanmuh/ || (echo "❌ Directory not found!" && exit 1)
-            
+
             # Store current commit for potential rollback
             CURRENT_COMMIT=$(git rev-parse HEAD)
             echo "📌 Current commit: $CURRENT_COMMIT"
-            
+
             # Fetch and update the latest code from GitHub
             echo "📥 Fetching latest code from master branch..."
             git fetch --all
             git checkout master || (echo "❌ Failed to checkout master!" && exit 1)
             git pull origin master || (echo "❌ Git pull failed!" && exit 1)
-            
+
             NEW_COMMIT=$(git rev-parse HEAD)
             echo "✨ New commit: $NEW_COMMIT"
-            
+
             # Check if there are actual changes
             if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
               echo "ℹ️ No new changes to deploy."
               exit 0
             fi
-            
+
             # Load Node.js environment
             echo "⚙️ Setting up Node.js environment..."
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             nvm use 22 || (echo "❌ nvm command failed. Ensure nvm is installed." && exit 1)
-            
+
             # Install dependencies
             echo "📦 Installing dependencies..."
             yarn install --frozen-lockfile || (echo "❌ Failed to install dependencies using yarn!" && exit 1)
-            
+
             # Build the application
             echo "🔨 Building application..."
             yarn build || {
@@ -68,11 +68,11 @@ jobs:
               git reset --hard $CURRENT_COMMIT
               exit 1
             }
-            
+
             # Restart the application
             echo "🔄 Restarting application using PM2..."
             pm2 restart ihsanmuh-web || (echo "❌ Failed to restart application using PM2!" && exit 1)
-            
+
             echo "✅ Deployment completed successfully."
             echo "📊 Deployed commit: $NEW_COMMIT"
 
