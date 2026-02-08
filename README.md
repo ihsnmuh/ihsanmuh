@@ -47,6 +47,7 @@ This is my personal corner of the internet, built with modern web technologies a
 - **Node.js**: v18.18.2 or higher (v18.x recommended)
 - **Package Manager**: Yarn 4.12.0 (automatically used via `packageManager` field)
 - **Database**: PostgreSQL instance (for Prisma)
+- **Docker** (optional): For containerized development and deployment
 
 ## Getting Started
 
@@ -101,6 +102,59 @@ yarn dev
 
 Visit [http://localhost:3000](http://localhost:3000) to see the site running locally!
 
+## Docker Setup (Alternative)
+
+If you prefer using Docker for development:
+
+### Quick Start with Docker
+
+```bash
+# Copy the Docker environment example
+cp docker/.env.example .env
+
+# Start the development environment (includes PostgreSQL)
+yarn docker:dev:build
+
+# Access the app at http://localhost:3000
+```
+
+The Docker setup includes:
+
+- **PostgreSQL database** (automatically configured)
+- **Hot reload** for development
+- **Automatic Prisma migrations**
+- **Volume persistence** for database data
+
+### Docker Commands
+
+```bash
+# Development
+yarn docker:dev              # Start dev environment
+yarn docker:dev:build        # Rebuild and start
+yarn docker:dev:down         # Stop containers
+yarn docker:dev:clean        # Stop and remove volumes
+
+# Production Testing
+yarn docker:prod:build       # Build and start production setup
+# Access at http://localhost:3001
+
+# Database Operations in Docker
+docker-compose -f docker/docker-compose.yml exec app yarn prisma migrate dev
+docker-compose -f docker/docker-compose.yml exec app yarn prisma studio
+docker-compose -f docker/docker-compose.yml exec app npx prisma db seed
+```
+
+### Docker Files Location
+
+All Docker-related files are organized in the `docker/` folder:
+
+- `docker/Dockerfile` - Production multi-stage build
+- `docker/Dockerfile.dev` - Development build
+- `docker/docker-compose.yml` - Development environment
+- `docker/docker-compose.prod.yml` - Production environment
+- `docker/.env.example` - Environment variables template
+- `docker/.dockerignore` - Files excluded from builds
+
 ## Available Scripts
 
 ### Development
@@ -131,6 +185,18 @@ Visit [http://localhost:3000](http://localhost:3000) to see the site running loc
 - `npx prisma studio` - Open Prisma Studio GUI
 - `npx prisma db seed` - Seed the database
 
+### Docker
+
+- `yarn docker:dev` - Start development environment with Docker
+- `yarn docker:dev:build` - Rebuild and start development environment
+- `yarn docker:dev:down` - Stop development environment
+- `yarn docker:dev:clean` - Stop and remove volumes (clean slate)
+- `yarn docker:prod` - Start production environment
+- `yarn docker:prod:build` - Rebuild and start production environment
+- `yarn docker:prod:down` - Stop production environment
+- `yarn docker:build` - Build production Docker image
+- `yarn docker:run` - Run production container
+
 ## Project Structure
 
 ```
@@ -148,6 +214,11 @@ ihsanmuh/
 │   ├── services/           # External API services
 │   ├── styles/             # Global styles
 │   └── types/              # TypeScript type definitions
+├── docker/                 # Docker configuration files
+│   ├── Dockerfile          # Production build
+│   ├── Dockerfile.dev      # Development build
+│   ├── docker-compose.yml  # Dev environment
+│   └── docker-compose.prod.yml # Prod environment
 ├── prisma/
 │   ├── schema.prisma       # Database schema
 │   └── seed.ts             # Database seeding script
