@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '22.x'
 
       - name: Deploy using ssh
         uses: appleboy/ssh-action@v0.1.9
@@ -45,7 +45,7 @@ jobs:
             echo "Setting up Node.js environment..."
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            nvm use 18 || (echo "nvm command failed. Ensure nvm is installed." && exit 1)
+            nvm use 22 || (echo "nvm command failed. Ensure nvm is installed." && exit 1)
             node -v || (echo "Node.js is not available. Ensure it is installed." && exit 1)
 
             # Install dependencies
