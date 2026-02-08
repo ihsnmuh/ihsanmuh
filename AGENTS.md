@@ -1,6 +1,7 @@
 # Agent Guidelines (Repo: ihsanmuh)
 
-This repo is a Next.js 14 + TypeScript personal site with Tailwind CSS, MDX content, and Prisma (Postgres).
+This repo is a Next.js 16 + TypeScript personal site with Tailwind CSS, MDX content, and Prisma (Postgres).
+Supports both local development and Docker-based development.
 There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot rules in `.github/copilot-instructions.md`.
 
 ## Quick Commands
@@ -15,6 +16,14 @@ There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot 
 - Format check: `yarn format:check`
 - Prisma client: `yarn generate`
 
+### Docker Commands
+
+- Dev environment: `yarn docker:dev:build` (app + PostgreSQL)
+- Stop dev: `yarn docker:dev:down`
+- Clean volumes: `yarn docker:dev:clean`
+- Production build: `yarn docker:prod:build` (http://localhost:3001)
+- See `docker/README.md` for detailed Docker documentation
+
 ## Environment Variables
 
 - Builds fail early if required env vars are missing (see `checkEnvVars.ts`).
@@ -27,6 +36,7 @@ There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot 
 
 - Package manager: Yarn (see `yarn.lock`, `.yarnrc.yml` uses `node-modules` linker)
 - Node: 18.x in CI; local version pinned in `.npmrc` as `v18.18.2`
+- Docker: Node 20.x Alpine (required for Next.js 16)
 
 ## Lint / Format Details
 

@@ -231,6 +231,46 @@ Example GitHub Actions workflow:
   run: docker push ihsanmuh:${{ github.sha }}
 ```
 
+## Known Issues & Solutions
+
+### Prisma OpenSSL Error
+
+**Error:**
+
+```
+prisma:warn Prisma failed to detect the libssl/openssl version to use
+```
+
+**Solution:** Already fixed! OpenSSL is included in the Docker images.
+
+### Node.js Version Warning
+
+**Error:**
+
+```
+You are using Node.js 18.x. For Next.js, Node.js version ">=20.9.0" is required.
+```
+
+**Solution:** Already fixed! Using Node 20 Alpine images.
+
+### Port Already in Use
+
+**Error:**
+
+```
+Error starting userland proxy: listen tcp4 0.0.0.0:3000: bind: address already in use
+```
+
+**Solution:**
+
+```bash
+# Stop the conflicting service
+lsof -i :3000
+kill -9 <PID>
+
+# Or change port in docker-compose.yml
+```
+
 ## Additional Resources
 
 - [Next.js Docker Documentation](https://nextjs.org/docs/deployment#docker-image)

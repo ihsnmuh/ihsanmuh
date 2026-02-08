@@ -3,8 +3,8 @@
 # ============================================
 # Base stage - Setup base image
 # ============================================
-FROM node:18-alpine AS base
-RUN apk add --no-cache libc6-compat
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Enable Corepack for Yarn 4
@@ -42,8 +42,11 @@ RUN yarn build
 # ============================================
 # Runner stage - Production image
 # ============================================
-FROM node:18-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
+
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
