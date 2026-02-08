@@ -1,6 +1,6 @@
-import { IPost } from '@/types/interfaces/posts';
-
 import PostCard from '@/components/Molecules/card/BlogCard';
+
+import { IPost } from '@/types/interfaces/posts';
 
 type RelatedPostsProps = {
   posts: IPost[];
