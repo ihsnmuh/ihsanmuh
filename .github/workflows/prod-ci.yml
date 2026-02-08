@@ -5,6 +5,8 @@ name: Build App 🛠️
 
 on:
   push:
+    branches: ['**']
+  pull_request:
     branches: ['master']
 
 jobs:
@@ -12,15 +14,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js 22
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 22.x
-      - run: |
-          yarn
-          echo "${{ secrets.ENV_PROD }}" > .env
-          yarn format:check
-          yarn lint
-          yarn typecheck
-          yarn build
+          node-version: '22.x'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_PROD }}" > .env
+
+      - name: Check code formatting
+        run: yarn format:check
+
+      - name: Lint code
+        run: yarn lint
+
+      - name: Type check
+        run: yarn typecheck
+
+      - name: Build application
+        run: yarn build
+
+      - name: Upload build artifacts
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: .next
+          retention-days: 1

@@ -31,7 +31,7 @@ const PostCard = (props: IPostCard) => {
   const reading = timeReadingText ?? '';
 
   return (
-    <Link href={`blog/${slug}`}>
+    <Link href={`/blog/${slug}`}>
       <WrapperCard className={cn('group h-full', className)}>
         <div className='relative'>
           <NextImage

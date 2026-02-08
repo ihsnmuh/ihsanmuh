@@ -71,11 +71,12 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
     3,
   );
 
-  const relatedPostsFiltered = relatedPosts.filter((post) => (
-    post.isShow === 'true' || 
-    post.isShow === '1' || 
-    (post.isShow && typeof post.isShow === 'boolean' && post.isShow === true)
-  ));
+  const relatedPostsFiltered = relatedPosts.filter(
+    (post) =>
+      post.isShow === 'true' ||
+      post.isShow === '1' ||
+      (post.isShow && typeof post.isShow === 'boolean' && post.isShow === true),
+  );
 
   // Ensure frontMatter has all required IPost fields
   const frontMatter: IPost = {

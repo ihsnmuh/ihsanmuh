@@ -1,63 +1,86 @@
 name: Deploy App 🚀
 
 on:
-  push:
+  workflow_run:
+    workflows: ['Build App 🛠️']
+    types:
+      - completed
     branches: ['master']
 
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.x'
-
       - name: Deploy using ssh
-        uses: appleboy/ssh-action@v0.1.9
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            echo "Starting deployment process..."
+            set -e  # Exit on error
 
-            # Debug who is running and the current directory
-            whoami
-            pwd
+            echo "🚀 Starting deployment process..."
 
             # Navigate to the application directory
-            cd /var/www/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd /var/www/fe-app/ihsanmuh/ || (echo "❌ Directory not found!" && exit 1)
+
+            # Store current commit for potential rollback
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            echo "📌 Current commit: $CURRENT_COMMIT"
 
             # Fetch and update the latest code from GitHub
-            echo "Fetching latest code from master branch..."
+            echo "📥 Fetching latest code from master branch..."
             git fetch --all
-            git reset --hard origin/master
-            git checkout master || (echo "Failed to checkout master!" && exit 1)
-            git pull origin master || (echo "Git pull failed!" && exit 1)
+            git checkout master || (echo "❌ Failed to checkout master!" && exit 1)
+            git pull origin master || (echo "❌ Git pull failed!" && exit 1)
+
+            NEW_COMMIT=$(git rev-parse HEAD)
+            echo "✨ New commit: $NEW_COMMIT"
+
+            # Check if there are actual changes
+            if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
+              echo "ℹ️ No new changes to deploy."
+              exit 0
+            fi
 
             # Load Node.js environment
-            echo "Setting up Node.js environment..."
+            echo "⚙️ Setting up Node.js environment..."
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            nvm use 22 || (echo "nvm command failed. Ensure nvm is installed." && exit 1)
-            node -v || (echo "Node.js is not available. Ensure it is installed." && exit 1)
+            nvm use 22 || (echo "❌ nvm command failed. Ensure nvm is installed." && exit 1)
 
             # Install dependencies
-            echo "Installing dependencies..."
-            yarn || (echo "Failed to install dependencies using yarn!" && exit 1)
+            echo "📦 Installing dependencies..."
+            yarn install --frozen-lockfile || (echo "❌ Failed to install dependencies using yarn!" && exit 1)
 
             # Build the application
-            echo "Building application..."
-            yarn build || (echo "Application build failed!" && exit 1)
+            echo "🔨 Building application..."
+            yarn build || {
+              echo "❌ Application build failed! Rolling back..."
+              git reset --hard $CURRENT_COMMIT
+              exit 1
+            }
 
             # Restart the application
-            echo "Restarting application using PM2..."
-            pm2 restart ihsanmuh-web || (echo "Failed to restart application using PM2!" && exit 1)
+            echo "🔄 Restarting application using PM2..."
+            pm2 restart ihsanmuh-web || (echo "❌ Failed to restart application using PM2!" && exit 1)
 
-            echo "Deployment completed successfully."
+            echo "✅ Deployment completed successfully."
+            echo "📊 Deployed commit: $NEW_COMMIT"
+
+      - name: Deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi
