@@ -2,6 +2,7 @@
   "name": "ihsanmuh",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@4.12.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/generate-rss.mjs && next-sitemap",
