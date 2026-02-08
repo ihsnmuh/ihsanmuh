@@ -13,85 +13,213 @@ This is my personal corner of the internet, built with modern web technologies a
 - 🎨 **Modern Design**: Clean, responsive interface with dark mode support
 - ⚡ **Performance**: Built for speed and optimal user experience
 - 📱 **Mobile First**: Perfect experience across all devices
+- 🔍 **SEO Optimized**: Automatic sitemap and RSS feed generation
 
 ## Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) 14 - For blazing fast performance
-- **Language**: [TypeScript](https://www.typescriptlang.org/) - For type-safe code
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) - For beautiful, responsive design
-- **Content**: MDX with syntax highlighting - For beautiful code snippets
-- **State Management**: [TanStack Query](https://tanstack.com/query/latest) - For efficient data fetching
-- **Database**: [Prisma](https://www.prisma.io/) - For robust data management
+### Core
 
-## Development
+- **Framework**: [Next.js](https://nextjs.org/) 16 - React framework with App Router
+- **Language**: [TypeScript](https://www.typescriptlang.org/) 5 - Type-safe development
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) 3 - Utility-first CSS framework
+- **Database**: [Prisma](https://www.prisma.io/) 5 + PostgreSQL - Type-safe database ORM
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest) v4 - Server state management
 
-This site is built with developer experience in mind:
+### Content & Media
+
+- **Content**: [MDX](https://mdxjs.com/) via next-mdx-remote - Enhanced markdown with React components
+- **Syntax Highlighting**: [Shiki](https://shiki.matsu.io/) + rehype-pretty-code
+- **Animations**: [Motion](https://motion.dev/) - Smooth, performant animations
+- **Icons**: [Lucide React](https://lucide.dev/) + React Icons
+- **Themes**: [next-themes](https://github.com/pacocoursey/next-themes) - Dark mode support
+
+### Developer Experience
 
 - 🛠 **Code Quality**: ESLint + Prettier for consistent code style
-- 🔍 **Type Safety**: TypeScript for catching errors early
-- 📦 **Modern Tooling**: Husky + Commitlint for clean git history
+- 🔍 **Type Safety**: Strict TypeScript configuration
+- 🧪 **Testing**: [Vitest](https://vitest.dev/) + React Testing Library
+- 📦 **Git Hooks**: Husky + lint-staged + Commitlint
 - 🚀 **Fast Development**: Hot reloading and efficient build process
+- 📊 **Bundle Analysis**: Next.js Bundle Analyzer for optimization insights
+
+## Prerequisites
+
+- **Node.js**: v18.18.2 or higher (v18.x recommended)
+- **Package Manager**: Yarn 4.12.0 (automatically used via `packageManager` field)
+- **Database**: PostgreSQL instance (for Prisma)
 
 ## Getting Started
 
-Want to run this site locally? Here's how:
+### 1. Clone the repository
 
-1. Clone the repository
-2. Install dependencies:
+```bash
+git clone <repository-url>
+cd ihsanmuh
+```
+
+### 2. Install dependencies
 
 ```bash
 yarn install
 ```
 
-3. Set up your environment:
+### 3. Set up environment variables
 
 ```bash
-# create your own .env based on .env.example
+# Create your own .env based on .env.example
 cp .env.example .env
 ```
 
-4. Generate Prisma client:
+Required environment variables:
+
+- `NEXT_PUBLIC_ROOT` - Root URL of the site
+- `NEXT_PUBLIC_URL` - Public URL
+- `NEXT_PUBLIC_API` - API endpoint
+- `NEXT_PUBLIC_API_PROJECT` - API project identifier
+- `DATABASE_URL` - PostgreSQL connection string
+
+See `.env.example` for the complete list.
+
+### 4. Set up the database
 
 ```bash
+# Generate Prisma client
 yarn generate
+
+# Run database migrations (if needed)
+npx prisma migrate dev
+
+# (Optional) Seed the database
+npx prisma db seed
 ```
 
-5. Start the development server:
+### 5. Start the development server
 
 ```bash
 yarn dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the magic happen!
+Visit [http://localhost:3000](http://localhost:3000) to see the site running locally!
 
 ## Available Scripts
 
-- `yarn dev` - Start development server
-- `yarn build` - Build for production
+### Development
+
+- `yarn dev` - Start development server at http://localhost:3000
+- `yarn build` - Build for production (includes RSS + sitemap generation)
+- `yarn build:analyze` - Build with bundle size analysis
 - `yarn start` - Start production server
-- `yarn lint` - Run ESLint
-- `yarn lint:fix` - Fix ESLint issues
-- `yarn format` - Format code with Prettier
-- `yarn format:check` - Check code formatting
+
+### Code Quality
+
+- `yarn lint` - Run ESLint on src/
+- `yarn lint:fix` - Fix ESLint issues and format code
+- `yarn format` - Format all files with Prettier
+- `yarn format:check` - Check code formatting without changes
+- `yarn typecheck` - Run TypeScript type checking
+
+### Testing
+
+- `yarn test` - Run tests with Vitest
+- `yarn test:ui` - Run tests with Vitest UI
+- `yarn test:coverage` - Run tests with coverage report
+
+### Database
+
 - `yarn generate` - Generate Prisma client
+- `npx prisma migrate dev` - Create and apply migrations
+- `npx prisma studio` - Open Prisma Studio GUI
+- `npx prisma db seed` - Seed the database
 
 ## Project Structure
 
 ```
-src/
-├── components/     # Reusable UI components
-├── containers/     # Page-specific components
-├── contents/       # Blog posts and MDX content
-├── constant/       # Site configuration
-├── helpers/        # Utility functions
-├── lib/           # Core functionality
-├── pages/         # Next.js pages
-├── queries/       # Data fetching logic
-├── services/      # API services
-├── styles/        # Global styles
-└── types/         # TypeScript definitions
+ihsanmuh/
+├── src/
+│   ├── components/         # Reusable UI components (Atoms/Molecules/Organism)
+│   ├── containers/         # Page-level compositions
+│   ├── contents/           # Blog posts and MDX content
+│   ├── constant/           # Site configuration and constants
+│   ├── helpers/            # Utility functions
+│   ├── lib/                # Core functionality (Prisma client, utils)
+│   ├── pages/              # Next.js pages and API routes
+│   │   └── api/            # API endpoints
+│   ├── queries/            # TanStack Query hooks
+│   ├── services/           # External API services
+│   ├── styles/             # Global styles
+│   └── types/              # TypeScript type definitions
+├── prisma/
+│   ├── schema.prisma       # Database schema
+│   └── seed.ts             # Database seeding script
+├── public/                 # Static assets
+└── scripts/                # Build and utility scripts
 ```
+
+### Import Aliases
+
+The project uses TypeScript path aliases for cleaner imports:
+
+```typescript
+import { Component } from '@/components/Component';
+import { helper } from '@/helpers/utils';
+```
+
+The `@/*` alias maps to `src/*`.
+
+## Code Style & Conventions
+
+This project enforces strict code quality standards:
+
+### Formatting
+
+- **Prettier**: Automatic code formatting (single quotes, semicolons, 2-space tabs)
+- **ESLint**: Linting with auto-sort imports and unused import detection
+- All code must pass `yarn format:check` and `yarn lint`
+
+### Commits
+
+The project uses [Conventional Commits](https://www.conventionalcommits.org/) enforced by Commitlint:
+
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting, etc.)
+- `refactor:` - Code refactoring
+- `test:` - Test updates
+- `chore:` - Maintenance tasks
+- `ci:` - CI/CD changes
+- `perf:` - Performance improvements
+- `revert:` - Revert previous changes
+
+### Git Hooks
+
+Husky enforces quality at commit time:
+
+- **pre-commit**: Runs Prettier and ESLint on staged files via lint-staged
+- **commit-msg**: Validates commit message format
+- **pre-push**: Runs production build to catch errors
+
+### TypeScript
+
+- Strict mode enabled
+- Avoid `any` types
+- Prefix unused variables with `_`
+- Use `type` for props/unions, `interface` for extendable objects
+
+## Contributing
+
+While this is a personal project, contributions follow these guidelines:
+
+1. Fork and create a feature branch
+2. Follow the code style conventions above
+3. Write meaningful commit messages
+4. Ensure all checks pass: `yarn typecheck && yarn lint && yarn test`
+5. Submit a pull request
 
 ## License
 
 This project is private and not licensed for public use. All rights reserved.
+
+---
+
+Built with ❤️ using Next.js, TypeScript, and modern web technologies.
