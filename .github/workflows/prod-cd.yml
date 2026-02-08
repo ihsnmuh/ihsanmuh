@@ -40,7 +40,7 @@ jobs:
             echo "📥 Fetching latest code from master branch..."
             git fetch --all
             git checkout master || (echo "❌ Failed to checkout master!" && exit 1)
-            git pull origin master || (echo "❌ Git pull failed!" && exit 1)
+            git reset --hard origin/master || (echo "❌ Failed to reset to origin/master!" && exit 1)
 
             NEW_COMMIT=$(git rev-parse HEAD)
             echo "✨ New commit: $NEW_COMMIT"
