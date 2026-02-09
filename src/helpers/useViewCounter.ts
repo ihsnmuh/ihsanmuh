@@ -12,15 +12,18 @@ export function useViewCounter(slug: string) {
     isLoading: true,
     error: null,
   });
-  const hasIncremented = useRef(false);
+  const incrementedSlug = useRef<string | null>(null);
 
   useEffect(() => {
     if (!slug) return;
-    if (hasIncremented.current) return;
+    if (incrementedSlug.current === slug) return;
+
+    // Reset loading state when slug changes
+    setState({ views: 0, isLoading: true, error: null });
 
     const fetchAndIncrementViews = async () => {
       try {
-        hasIncremented.current = true;
+        incrementedSlug.current = slug;
         const response = await fetch(`/api/views/${slug}`, {
           method: 'POST',
         });
