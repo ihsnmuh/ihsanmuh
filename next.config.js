@@ -8,6 +8,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   reactStrictMode: true,
+  output: 'standalone',
   experimental: {
     // MDX + syntax highlighting can create large page-data JSON for static blog pages.
     // Keep the page static, but raise the warning threshold.

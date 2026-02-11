@@ -1,8 +1,8 @@
-name: Deploy App 🚀
+name: Deploy App
 
 on:
   workflow_run:
-    workflows: ['Build App 🛠️']
+    workflows: ['Build App']
     types:
       - completed
     branches: ['master']
@@ -17,7 +17,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Deploy using ssh
+      - name: Deploy using SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -25,65 +25,48 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            set -e  # Exit on error
+            set -e
 
-            echo "🚀 Starting deployment process..."
+            echo "Starting deployment..."
 
             # Navigate to the application directory
-            cd /var/www/fe-app/ihsanmuh/ || (echo "❌ Directory not found!" && exit 1)
+            cd /var/www/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
 
-            # Store current commit for potential rollback
-            CURRENT_COMMIT=$(git rev-parse HEAD)
-            echo "📌 Current commit: $CURRENT_COMMIT"
+            # Pull the latest image from Docker Hub
+            echo "Pulling latest Docker image..."
+            docker compose pull || (echo "Failed to pull image!" && exit 1)
 
-            # Fetch and update the latest code from GitHub
-            echo "📥 Fetching latest code from master branch..."
-            git fetch --all
-            git checkout master || (echo "❌ Failed to checkout master!" && exit 1)
-            git reset --hard origin/master || (echo "❌ Failed to reset to origin/master!" && exit 1)
+            # Run database migrations (if any pending)
+            echo "Running database migrations..."
+            docker compose run --rm app node node_modules/prisma/build/index.js migrate deploy || (echo "Migration failed!" && exit 1)
 
-            NEW_COMMIT=$(git rev-parse HEAD)
-            echo "✨ New commit: $NEW_COMMIT"
+            # Restart the application with the new image
+            echo "Starting application..."
+            docker compose up -d --remove-orphans || (echo "Failed to start container!" && exit 1)
 
-            # Check if there are actual changes
-            if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
-              echo "ℹ️ No new changes to deploy."
-              exit 0
+            # Wait for health check
+            echo "Waiting for health check..."
+            sleep 10
+
+            # Verify container is running and healthy
+            if docker compose ps | grep -q "healthy"; then
+              echo "Container is healthy!"
+            else
+              echo "Warning: Container may not be healthy yet, check logs"
+              docker compose logs --tail=20 app
             fi
 
-            # Load Node.js environment
-            echo "⚙️ Setting up Node.js environment..."
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            nvm use 22 || (echo "❌ nvm command failed. Ensure nvm is installed." && exit 1)
+            # Cleanup old images to save disk space
+            echo "Cleaning up old images..."
+            docker image prune -f
 
-            # Enable corepack for Yarn Berry
-            corepack enable
-
-            # Install dependencies
-            echo "📦 Installing dependencies..."
-            yarn install --immutable || (echo "❌ Failed to install dependencies using yarn!" && exit 1)
-
-            # Build the application
-            echo "🔨 Building application..."
-            yarn build || {
-              echo "❌ Application build failed! Rolling back..."
-              git reset --hard $CURRENT_COMMIT
-              exit 1
-            }
-
-            # Restart the application
-            echo "🔄 Restarting application using PM2..."
-            pm2 restart ihsanmuh-web || (echo "❌ Failed to restart application using PM2!" && exit 1)
-
-            echo "✅ Deployment completed successfully."
-            echo "📊 Deployed commit: $NEW_COMMIT"
+            echo "Deployment completed successfully."
 
       - name: Deployment status
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Deployment successful!"
+            echo "Deployment successful!"
           else
-            echo "❌ Deployment failed!"
+            echo "Deployment failed!"
           fi
