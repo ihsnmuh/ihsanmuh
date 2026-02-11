@@ -33,7 +33,7 @@ jobs:
             echo "Starting deployment..."
 
             # Navigate to the application directory
-            cd /apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd ~/apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
 
             # Pull the latest image from Docker Hub
             echo "Pulling latest Docker image..."
