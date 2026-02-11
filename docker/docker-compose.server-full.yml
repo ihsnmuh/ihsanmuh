@@ -1,0 +1,82 @@
+# Full Docker server compose (app + PostgreSQL)
+# Use this if you want everything in Docker, no PostgreSQL installed on host.
+# Deploy to server at /var/www/fe-app/ihsanmuh/docker-compose.yml
+#
+# Usage:
+#   docker compose pull && docker compose up -d
+#
+# Prerequisites:
+#   - Docker + Docker Compose installed on server
+#   - .env file with production environment variables
+#
+# Note: DATABASE_URL in .env must use "postgres" as hostname (Docker service name)
+#   DATABASE_URL=postgresql://user:password@postgres:5432/ihsanmuh_prod
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ihsanmuh-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.50'
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+  app:
+    image: ${DOCKERHUB_USERNAME}/ihsanmuh-web:latest
+    container_name: ihsanmuh-web
+    restart: always
+    init: true
+    stop_grace_period: 30s
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.00'
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '5'
+
+volumes:
+  postgres_data:
+    driver: local
