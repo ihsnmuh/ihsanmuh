@@ -31,6 +31,10 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Cache bust when env variables change (e.g. NEXT_PUBLIC_*)
+ARG CACHE_BUST
+RUN echo "Cache bust: ${CACHE_BUST:-none}"
+
 # Generate Prisma Client
 RUN yarn generate
 

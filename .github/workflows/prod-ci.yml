@@ -81,6 +81,10 @@ jobs:
             type=sha,prefix=
             type=raw,value=latest
 
+      - name: Generate env hash for cache busting
+        id: env-hash
+        run: echo "hash=$(echo "${{ secrets.ENV_PROD }}" | sha256sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -91,6 +95,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            CACHE_BUST=${{ steps.env-hash.outputs.hash }}
 
       - name: Check image size
         run: |
