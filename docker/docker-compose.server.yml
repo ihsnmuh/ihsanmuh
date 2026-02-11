@@ -1,0 +1,47 @@
+# Production server compose file
+# This file is deployed to the server at /var/www/fe-app/ihsanmuh/docker-compose.yml
+# It pulls the pre-built image from Docker Hub (no local build needed)
+#
+# Usage on server:
+#   docker compose pull && docker compose up -d
+#
+# Prerequisites:
+#   - Docker + Docker Compose installed on server
+#   - .env file with production environment variables
+#   - Existing PostgreSQL database (DATABASE_URL in .env)
+
+services:
+  app:
+    image: ${DOCKERHUB_USERNAME:-ihsanmuh}/ihsanmuh-web:latest
+    container_name: ihsanmuh-web
+    restart: always
+    init: true
+    stop_grace_period: 30s
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.00'
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '5'

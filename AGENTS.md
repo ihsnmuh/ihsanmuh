@@ -18,10 +18,9 @@ There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot 
 
 ### Docker Commands
 
-- Dev environment: `yarn docker:dev:build` (app + PostgreSQL)
-- Stop dev: `yarn docker:dev:down`
-- Clean volumes: `yarn docker:dev:clean`
-- Production build: `yarn docker:prod:build` (http://localhost:3001)
+- Build image locally: `yarn docker:build`
+- Run container locally: `yarn docker:run`
+- CI/CD builds and pushes to Docker Hub automatically on `master`
 - See `docker/README.md` for detailed Docker documentation
 
 ## Environment Variables
