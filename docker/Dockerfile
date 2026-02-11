@@ -61,9 +61,9 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
-# Copy Prisma CLI for running migrations on deployment
+# Copy Prisma CLI and all its dependencies for running migrations on deployment
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/@prisma/engines ./node_modules/@prisma/engines
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Create cache directory for Next.js image optimization
 RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next/cache
