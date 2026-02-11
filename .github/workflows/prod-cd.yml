@@ -20,17 +20,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Copy compose file to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: 22
-          source: docker/docker-compose.server.yml
-          target: /apps/fe/ihsanmuh/
-          strip_components: 1
-
       - name: Deploy using SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
