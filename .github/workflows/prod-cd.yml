@@ -28,7 +28,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           source: docker/docker-compose.server.yml
-          target: /apps/fe-app/ihsanmuh/
+          target: /apps/fe/ihsanmuh/
           strip_components: 1
 
       - name: Deploy using SSH
@@ -44,7 +44,7 @@ jobs:
             echo "Starting deployment..."
 
             # Navigate to the application directory
-            cd /apps/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd /apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
 
             # Rename compose file if needed
             if [ -f "docker-compose.server.yml" ] && [ ! -f "docker-compose.yml" ]; then
