@@ -1,0 +1,78 @@
+# Local Docker Compose - builds and runs the app with PostgreSQL
+#
+# Usage:
+#   docker compose -f docker/docker-compose.local.yml up --build
+#   docker compose -f docker/docker-compose.local.yml down
+#   docker compose -f docker/docker-compose.local.yml down -v  (remove DB data)
+
+services:
+  postgres:
+    image: postgres:16.11-alpine
+    container_name: ihsanmuh-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password1
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: builder
+    container_name: ihsanmuh-migrate
+    env_file:
+      - ../.env
+    environment:
+      - DATABASE_URL=postgresql://postgres:password1@postgres:5432/postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "yarn generate && node node_modules/prisma/build/index.js migrate deploy && node node_modules/prisma/build/index.js db seed"
+    restart: 'no'
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: runner
+    container_name: ihsanmuh-app
+    restart: unless-stopped
+    init: true
+    ports:
+      - '3000:3000'
+    env_file:
+      - ../.env
+    environment:
+      - DATABASE_URL=postgresql://postgres:password1@postgres:5432/postgres
+      - NODE_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+    driver: local
