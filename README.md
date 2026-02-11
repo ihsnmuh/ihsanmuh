@@ -104,56 +104,58 @@ Visit [http://localhost:3000](http://localhost:3000) to see the site running loc
 
 ## Docker Setup (Alternative)
 
-If you prefer using Docker for development:
+If you prefer running the app with Docker instead of installing Node.js locally:
 
 ### Quick Start with Docker
 
 ```bash
-# Copy the Docker environment example
-cp docker/.env.example .env
+# Make sure .env is configured (see step 3 above)
 
-# Start the development environment (includes PostgreSQL)
-yarn docker:dev:build
+# Start everything (build image + PostgreSQL + auto migrate + seed)
+yarn docker:up
 
 # Access the app at http://localhost:3000
+
+# View logs
+yarn docker:logs
+
+# Stop containers
+yarn docker:down
+
+# Stop and remove database data (clean slate)
+yarn docker:clean
 ```
 
 The Docker setup includes:
 
 - **PostgreSQL database** (automatically configured)
-- **Hot reload** for development
-- **Automatic Prisma migrations**
+- **Automatic Prisma migrations and seeding**
 - **Volume persistence** for database data
+- **Health checks** for all services
 
-### Docker Commands
+### Build and Run Manually
 
 ```bash
-# Development
-yarn docker:dev              # Start dev environment
-yarn docker:dev:build        # Rebuild and start
-yarn docker:dev:down         # Stop containers
-yarn docker:dev:clean        # Stop and remove volumes
+# Build the production Docker image
+yarn docker:build
 
-# Production Testing
-yarn docker:prod:build       # Build and start production setup
-# Access at http://localhost:3001
-
-# Database Operations in Docker
-docker-compose -f docker/docker-compose.yml exec app yarn prisma migrate dev
-docker-compose -f docker/docker-compose.yml exec app yarn prisma studio
-docker-compose -f docker/docker-compose.yml exec app npx prisma db seed
+# Run the container (connects to your own PostgreSQL)
+yarn docker:run
 ```
 
-### Docker Files Location
+### Docker Files
 
 All Docker-related files are organized in the `docker/` folder:
 
-- `docker/Dockerfile` - Production multi-stage build
-- `docker/Dockerfile.dev` - Development build
-- `docker/docker-compose.yml` - Development environment
-- `docker/docker-compose.prod.yml` - Production environment
-- `docker/.env.example` - Environment variables template
-- `docker/.dockerignore` - Files excluded from builds
+| File                                    | Purpose                                            |
+| --------------------------------------- | -------------------------------------------------- |
+| `docker/Dockerfile`                     | Multi-stage production build                       |
+| `docker/docker-compose.local.yml`       | Local development (build + PostgreSQL + auto seed) |
+| `docker/docker-compose.server.yml`      | Server deployment with existing host PostgreSQL    |
+| `docker/docker-compose.server-full.yml` | Server deployment with PostgreSQL in Docker        |
+| `docker/.env.example`                   | Environment variables template                     |
+
+See [`docker/README.md`](docker/README.md) for detailed Docker documentation, CI/CD integration, and server setup guides.
 
 ## Available Scripts
 
@@ -187,13 +189,10 @@ All Docker-related files are organized in the `docker/` folder:
 
 ### Docker
 
-- `yarn docker:dev` - Start development environment with Docker
-- `yarn docker:dev:build` - Rebuild and start development environment
-- `yarn docker:dev:down` - Stop development environment
-- `yarn docker:dev:clean` - Stop and remove volumes (clean slate)
-- `yarn docker:prod` - Start production environment
-- `yarn docker:prod:build` - Rebuild and start production environment
-- `yarn docker:prod:down` - Stop production environment
+- `yarn docker:up` - Start local environment (build + PostgreSQL + migrate + seed)
+- `yarn docker:down` - Stop containers
+- `yarn docker:clean` - Stop and remove volumes (clean slate)
+- `yarn docker:logs` - View app container logs
 - `yarn docker:build` - Build production Docker image
 - `yarn docker:run` - Run production container
 
@@ -215,10 +214,10 @@ ihsanmuh/
 │   ├── styles/             # Global styles
 │   └── types/              # TypeScript type definitions
 ├── docker/                 # Docker configuration files
-│   ├── Dockerfile          # Production build
-│   ├── Dockerfile.dev      # Development build
-│   ├── docker-compose.yml  # Dev environment
-│   └── docker-compose.prod.yml # Prod environment
+│   ├── Dockerfile          # Multi-stage production build
+│   ├── docker-compose.local.yml    # Local dev (app + PostgreSQL)
+│   ├── docker-compose.server.yml   # Server deploy (host DB)
+│   └── docker-compose.server-full.yml # Server deploy (Docker DB)
 ├── prisma/
 │   ├── schema.prisma       # Database schema
 │   └── seed.ts             # Database seeding script

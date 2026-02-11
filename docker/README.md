@@ -1,13 +1,17 @@
 # Docker Setup for Ihsan Muh's Personal Website
 
-This directory contains Docker configuration for building and deploying the application.
+This directory contains Docker configuration for building, running locally, and deploying the application.
 
 ## Files Overview
 
-- **Dockerfile** - Multi-stage production build (used by CI to build the image)
-- **docker-compose.server.yml** - Server deployment compose (pull image from Docker Hub)
-- **.env.example** - Template for environment variables
-- **.dockerignore** - Files excluded from Docker builds
+| File                             | Purpose                                                    |
+| -------------------------------- | ---------------------------------------------------------- |
+| `Dockerfile`                     | Multi-stage production build (used by CI and local builds) |
+| `docker-compose.local.yml`       | Local development (build + PostgreSQL + auto seed)         |
+| `docker-compose.server.yml`      | Server deployment with existing PostgreSQL on host         |
+| `docker-compose.server-full.yml` | Server deployment with PostgreSQL in Docker                |
+| `.env.example`                   | Template for environment variables                         |
+| `.dockerignore`                  | Files excluded from Docker builds                          |
 
 ## How It Works
 
@@ -20,15 +24,41 @@ Push to master → CI: lint + build image + push to Docker Hub → CD: SSH → d
 
 The server only needs Docker -- no Node.js, yarn, PM2, or git.
 
-## Local Usage
+## Local Development
 
-Build and run the production image locally:
+Run the full app locally with PostgreSQL using Docker:
+
+```bash
+# Start everything (build image + PostgreSQL + migrate + seed)
+yarn docker:up
+
+# View app logs
+yarn docker:logs
+
+# Access the app at http://localhost:3000
+
+# Stop containers
+yarn docker:down
+
+# Stop and remove database data
+yarn docker:clean
+```
+
+What happens on `yarn docker:up`:
+
+```
+1. PostgreSQL starts → waits until healthy
+2. migrate service → runs prisma migrate deploy + db seed
+3. migrate exits → app starts with seeded database
+```
+
+### Build and run manually (without compose)
 
 ```bash
 # Build the image
 yarn docker:build
 
-# Run the container
+# Run the container (connects to your local PostgreSQL)
 yarn docker:run
 ```
 
@@ -89,22 +119,52 @@ After CI succeeds on `master`:
 One-time setup on the production server:
 
 1. Install Docker + Docker Compose
-2. Create the app directory and compose file:
+2. Create the app directory:
 
    ```bash
    mkdir -p /var/www/fe-app/ihsanmuh
-   # Copy docker-compose.server.yml to the server as docker-compose.yml
+   cd /var/www/fe-app/ihsanmuh
    ```
 
-3. Create `.env` with production values:
+3. Choose your compose file and copy it to the server as `docker-compose.yml`:
 
-   ```env
-   DATABASE_URL=postgresql://user:password@localhost:5432/ihsanmuh_prod
-   NEXT_PUBLIC_ROOT=https://yourdomain.com
-   NEXT_PUBLIC_URL=https://yourdomain.com
-   NEXT_PUBLIC_API=https://yourdomain.com/api
-   NEXT_PUBLIC_API_PROJECT=ihsanmuh
-   ```
+### Option A: Existing PostgreSQL on host (`docker-compose.server.yml`)
+
+Use this if PostgreSQL is already installed on the server.
+
+- Uses `network_mode: host` so the container can reach `localhost` on the server
+- No port mapping needed (app listens directly on host port 3000)
+
+`.env` on server:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/ihsanmuh_prod
+NEXT_PUBLIC_ROOT=https://yourdomain.com
+NEXT_PUBLIC_URL=yourdomain.com
+NEXT_PUBLIC_API=https://yourdomain.com/api
+NEXT_PUBLIC_API_PROJECT=/projects
+```
+
+### Option B: Full Docker with PostgreSQL (`docker-compose.server-full.yml`)
+
+Use this if you want everything in Docker, no PostgreSQL installed on the server.
+
+- PostgreSQL runs as a Docker service
+- App connects via Docker network using `postgres` as hostname
+- Database data persisted in a Docker volume
+
+`.env` on server:
+
+```env
+DATABASE_URL=postgresql://postgres:yourpassword@postgres:5432/ihsanmuh_prod
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=yourpassword
+POSTGRES_DB=ihsanmuh_prod
+NEXT_PUBLIC_ROOT=https://yourdomain.com
+NEXT_PUBLIC_URL=yourdomain.com
+NEXT_PUBLIC_API=https://yourdomain.com/api
+NEXT_PUBLIC_API_PROJECT=/projects
+```
 
 After setup, deployments happen automatically via the CI/CD pipeline.
 
@@ -127,16 +187,27 @@ docker compose logs --tail=50 app
 ### Rebuild Without Cache
 
 ```bash
-docker build --no-cache -f docker/Dockerfile -t ihsanmuh:latest .
+docker builder prune -f
+yarn docker:up
+```
+
+### Database Empty (no projects)
+
+The local compose runs migrations and seeds automatically. If projects are still empty:
+
+```bash
+docker exec -it ihsanmuh-app node node_modules/prisma/build/index.js db seed
 ```
 
 ## Known Issues & Solutions
 
-| Issue                   | Solution                                   |
-| ----------------------- | ------------------------------------------ |
-| Prisma OpenSSL error    | Already fixed -- OpenSSL included in image |
-| Node.js version warning | Already fixed -- using Node 20 Alpine      |
-| Port already in use     | Stop conflicting service or change port    |
+| Issue                        | Solution                                       |
+| ---------------------------- | ---------------------------------------------- |
+| Prisma OpenSSL error         | Already fixed -- OpenSSL included in image     |
+| Node.js version warning      | Already fixed -- using Node 20 Alpine          |
+| Port already in use          | Stop conflicting service or change port        |
+| PostgreSQL version mismatch  | `yarn docker:clean` to remove old volume       |
+| `NEXT_PUBLIC_*` wrong values | Rebuild image -- these are baked at build time |
 
 ## Additional Resources
 
