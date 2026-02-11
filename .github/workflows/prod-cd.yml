@@ -17,6 +17,20 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy compose file to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          source: docker/docker-compose.server.yml
+          target: /apps/fe-app/ihsanmuh/
+          strip_components: 1
+
       - name: Deploy using SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -30,7 +44,16 @@ jobs:
             echo "Starting deployment..."
 
             # Navigate to the application directory
-            cd /var/www/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd /apps/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+
+            # Rename compose file if needed
+            if [ -f "docker-compose.server.yml" ] && [ ! -f "docker-compose.yml" ]; then
+              mv docker-compose.server.yml docker-compose.yml
+              echo "Compose file set up."
+            elif [ -f "docker-compose.server.yml" ]; then
+              mv -f docker-compose.server.yml docker-compose.yml
+              echo "Compose file updated."
+            fi
 
             # Pull the latest image from Docker Hub
             echo "Pulling latest Docker image..."

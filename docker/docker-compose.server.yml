@@ -1,14 +1,17 @@
 # Production server compose file
-# This file is deployed to the server at /var/www/fe-app/ihsanmuh/docker-compose.yml
-# It pulls the pre-built image from Docker Hub (no local build needed)
+# Deploy to server at /var/www/fe-app/ihsanmuh/docker-compose.yml
 #
-# Usage on server:
+# Usage:
 #   docker compose pull && docker compose up -d
 #
 # Prerequisites:
 #   - Docker + Docker Compose installed on server
 #   - .env file with production environment variables
-#   - Existing PostgreSQL database (DATABASE_URL in .env)
+#   - Existing PostgreSQL on the host (DATABASE_URL in .env)
+#
+# Note: network_mode "host" makes the container share the host network,
+# so localhost in the container = localhost on the server.
+# This allows the app to connect to PostgreSQL running on the host.
 
 services:
   app:
@@ -17,8 +20,7 @@ services:
     restart: always
     init: true
     stop_grace_period: 30s
-    ports:
-      - '3000:3000'
+    network_mode: host
     env_file:
       - .env
     environment:
