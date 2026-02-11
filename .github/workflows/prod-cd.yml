@@ -46,15 +46,6 @@ jobs:
             # Navigate to the application directory
             cd /apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
 
-            # Rename compose file if needed
-            if [ -f "docker-compose.server.yml" ] && [ ! -f "docker-compose.yml" ]; then
-              mv docker-compose.server.yml docker-compose.yml
-              echo "Compose file set up."
-            elif [ -f "docker-compose.server.yml" ]; then
-              mv -f docker-compose.server.yml docker-compose.yml
-              echo "Compose file updated."
-            fi
-
             # Pull the latest image from Docker Hub
             echo "Pulling latest Docker image..."
             docker compose pull || (echo "Failed to pull image!" && exit 1)
