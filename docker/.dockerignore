@@ -29,10 +29,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# Environment
-.env
+# Environment (keep .env for NEXT_PUBLIC_* vars needed at build time)
 .env*.local
 .env.development
+.env.production
 .env.test
 
 # Vercel

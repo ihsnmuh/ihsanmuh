@@ -19,7 +19,11 @@
     "generate": "prisma generate",
     "prepare": "husky install",
     "docker:build": "docker build -f docker/Dockerfile -t ihsanmuh:latest .",
-    "docker:run": "docker run -p 3000:3000 --env-file .env ihsanmuh:latest"
+    "docker:run": "docker run -p 3000:3000 --env-file .env ihsanmuh:latest",
+    "docker:up": "docker compose -f docker/docker-compose.local.yml up --build -d",
+    "docker:down": "docker compose -f docker/docker-compose.local.yml down",
+    "docker:clean": "docker compose -f docker/docker-compose.local.yml down -v",
+    "docker:logs": "docker compose -f docker/docker-compose.local.yml logs -f app"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.35.0",
