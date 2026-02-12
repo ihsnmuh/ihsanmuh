@@ -96,8 +96,8 @@ const AboutContainer = () => {
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
               Through this website, I share my knowledge in web development and
-              software engineering via blogs and projects. I believe sharing what
-              I learn helps me grow even further.
+              software engineering via blogs and projects. I believe sharing
+              what I learn helps me grow even further.
             </p>
             <p className='font-primary text-base mb-6'>
               Thank you for visiting! If you have any questions, don&apos;t
