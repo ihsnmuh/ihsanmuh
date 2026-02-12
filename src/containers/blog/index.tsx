@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -12,36 +12,41 @@ interface IBlogContainer {
   posts: TPosts;
 }
 
+const filterPosts = (posts: TPosts, search: string): TPosts => {
+  const searchLower = search.toLowerCase();
+  return posts.filter((el) => {
+    const titleMatch = el.title.toLowerCase().includes(searchLower);
+    const descriptionMatch = el.description
+      ?.toLowerCase()
+      .includes(searchLower);
+    const tagsMatch = el.tags?.some((tag) =>
+      tag.toLowerCase().includes(searchLower),
+    );
+    return titleMatch || descriptionMatch || tagsMatch;
+  });
+};
+
 const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
   const [search, _setSearch] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState<TPosts>([]);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const show = LoaderView();
 
+  // Debounce only the search input, not the initial render
   useEffect(() => {
-    const searchLower = search.toLowerCase();
-    const postFiltered = posts.filter((el) => {
-      const titleMatch = el.title.toLowerCase().includes(searchLower);
-      const descriptionMatch = el.description
-        ?.toLowerCase()
-        .includes(searchLower);
-      const tagsMatch = el.tags?.some((tag) =>
-        tag.toLowerCase().includes(searchLower),
-      );
-      return titleMatch || descriptionMatch || tagsMatch;
-    });
-
-    const searchDebounce = setTimeout(() => {
-      setFilteredPosts(postFiltered);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
     }, 300);
 
-    return () => clearTimeout(searchDebounce);
-  }, [posts, search]);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  useEffect(() => {
-    setFilteredPosts(posts);
-  }, [posts]);
+  // Filter posts synchronously based on debounced search — no empty initial state
+  const filteredPosts = useMemo(
+    () => filterPosts(posts, debouncedSearch),
+    [posts, debouncedSearch],
+  );
 
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
@@ -51,10 +56,9 @@ const BlogContainer = (props: IBlogContainer) => {
       >
         <Title title='Personal Blog' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          A space where programming meets personal growth. Explore deep dives
-          into coding concepts alongside thoughtful reflections on experiences,
-          challenges, and lessons learned—blending technical insights with
-          personal development.
+          Writing helps me think clearly. Here I break down what I learn, from
+          frontend patterns and performance tricks to lessons picked up along
+          the way. If it made me a better engineer, it might help you too.
         </p>
       </div>
 
@@ -121,22 +125,27 @@ const BlogContainer = (props: IBlogContainer) => {
             </button>
           )}
         </div>
-        {search && (
-          <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
-            Found {filteredPosts.length} article
-            {filteredPosts.length !== 1 ? 's' : ''} for "{search}"
-          </p>
-        )}
+        {/* Always reserve space to prevent CLS when search text appears */}
+        <div className='h-8 mt-2 flex items-center'>
+          {search && (
+            <p className='text-sm text-gray-600 dark:text-gray-400'>
+              Found {filteredPosts.length} article
+              {filteredPosts.length !== 1 ? 's' : ''} for &ldquo;{search}&rdquo;
+            </p>
+          )}
+        </div>
       </div>
 
+      {/* min-h prevents CLS when switching between cards and empty state */}
       <div
         className={cn(
           'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
+          'min-h-[280px]',
         )}
         data-fade='2'
       >
         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-          filteredPosts?.map((post) => (
+          filteredPosts.map((post) => (
             <PostCard
               key={post.title}
               title={post.title}
@@ -149,7 +158,14 @@ const BlogContainer = (props: IBlogContainer) => {
             />
           ))
         ) : (
-          <p className='font-primary'>{`Sorry, Article for "${search}" is not found`}</p>
+          <div className='col-span-full flex flex-col items-center justify-center text-center py-10'>
+            <p className='font-primary text-lg font-semibold text-slate-500 dark:text-slate-400'>
+              No articles found
+            </p>
+            <p className='font-primary text-sm text-slate-400 dark:text-slate-500 mt-1'>
+              No results for &ldquo;{search}&rdquo;. Try a different keyword.
+            </p>
+          </div>
         )}
       </div>
     </section>

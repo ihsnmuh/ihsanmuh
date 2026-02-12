@@ -24,8 +24,8 @@ const AboutContainer = () => {
       >
         <Title title='About' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          Everything you need to know about me. my journey, passions, and what
-          drives me as a developer.
+          From agricultural engineering to software engineering. A story of
+          reinvention, curiosity, and building things that matter on the web.
         </p>
       </div>
 
@@ -55,45 +55,53 @@ const AboutContainer = () => {
         <div className='flex-1' data-fade='3'>
           <h2 className='h2 font-primary mb-2'>Muhammad Ihsan</h2>
           <p className='font-primary text-base mb-6'>
-            <span className='font-semibold'>Frontend developer</span> at{' '}
-            <UnderlineLink href='https://femaledaily.com/'>
-              Female Daily Network
-            </UnderlineLink>
+            <span className='font-semibold'>Software Engineer</span> with a
+            strong frontend foundation
           </p>
           <div>
             <p className='font-primary text-base mb-4 text-pretty'>
-              Hello! I'm Ihsan, graduate of
-              <span className='font-semibold'>
-                {' '}
-                Agricultural Engineering
-              </span>,{' '}
-              <UnderlineLink href='https://www.ipb.ac.id/'>
-                Bogor Agriculture University
+              Hello! I&apos;m Ihsan, a Software Engineer with 4+ years of
+              experience building and maintaining scalable web applications.
+              Starting from frontend development, I&apos;ve been expanding my
+              skills across the full stack — from building pixel-perfect UIs to
+              designing backend APIs and managing infrastructure. Most recently,
+              I spent 4 years at{' '}
+              <UnderlineLink href='https://femaledaily.com/'>
+                Female Daily Network
               </UnderlineLink>
-              . I became a web developer especially Frontend Developer starting
-              in June 2021. I started writing my first line code in February
-              2021. At that time I decided to change carreers from various job
-              role starting from sales officer, procurement staff, and lastly as
-              a digital marketer in Bogor for 2 years to be a web developer. The
-              pandemic forced me to survive more, that's why I decided to learn
-              to be a web developer through bootcamps and various udemy courses.
+              , Indonesia&apos;s largest beauty ecosystem platform, where I
+              shipped production-ready features and collaborated across multiple
+              engineering tribes.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
-              I chose Frontend development because I like something visual like
-              UI design, engineering design and everything related to design.
-              Many technologies can be learn from frontend development and that
-              makes me want to learn as much as possible. Learning and keep
-              practicing are two things that make me grow and improve.
+              My journey into tech started in 2021 when I decided to pivot from
+              a career spanning sales, procurement, and digital marketing. I
+              graduated from{' '}
+              <UnderlineLink href='https://www.ipb.ac.id/'>
+                Bogor Agricultural University (IPB)
+              </UnderlineLink>{' '}
+              with a degree in
+              <span className='font-semibold'> Agricultural Engineering</span>,
+              then completed a Fullstack JavaScript Developer program at{' '}
+              <span className='font-semibold'>Hacktiv8</span>, where I was
+              awarded Best Individual Project.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
-              In this website, I dedicate my knowledge in web development and
-              UI/UX that I know through blogs and projects I've made before. I
-              believe, sharing information and knowledge that I have make myself
-              grow and improve more.
+              I started with frontend because I&apos;m drawn to the visual and
+              interactive side of building products. Over time, my curiosity led
+              me deeper — into backend services, databases, DevOps, and
+              system-level architecture. I thrive on solving complex problems
+              end-to-end, from the UI layer all the way to deployment. Learning
+              and consistent practice are the two things that keep me growing.
+            </p>
+            <p className='font-primary text-base mb-4 text-pretty'>
+              Through this website, I share my knowledge in web development and
+              software engineering via blogs and projects. I believe sharing
+              what I learn helps me grow even further.
             </p>
             <p className='font-primary text-base mb-6'>
-              Thank you for visiting my website, if you have any questions don't
-              hesitate to contact me on social media. 🚀
+              Thank you for visiting! If you have any questions, don&apos;t
+              hesitate to reach out on social media. 🚀
             </p>
             <HeroTech />
           </div>
@@ -104,11 +112,11 @@ const AboutContainer = () => {
 
       <div className='mt-16 md:mt-32' data-fade='4'>
         <h2 className='h2 text-center mb-10 md:mb-16'>Experiences</h2>
-        <div className={cn('flex flex-col items-center')}>
-          {Experiences.map((experience) => (
+        <div className='max-w-3xl mx-auto'>
+          {Experiences.map((experience, index) => (
             <ExperienceCard
-              id={experience.id}
               key={experience.id}
+              id={experience.id}
               position={experience.position}
               status={experience.status}
               company={experience.company}
@@ -116,6 +124,7 @@ const AboutContainer = () => {
               end={experience.end}
               location={experience.location}
               responsibilities={experience.responsibilities}
+              isLast={index === Experiences.length - 1}
             />
           ))}
         </div>

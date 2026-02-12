@@ -19,7 +19,7 @@ const Portofolio = () => {
     <section className='background mb-16'>
       <div className='layout'>
         <div className='flex justify-between'>
-          <Title title='Portofolio' />
+          <Title title='Projects' />
           <ArrowLink
             as={UnstyledLink}
             className='inline-flex items-center'

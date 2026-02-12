@@ -51,9 +51,9 @@ const Hero = () => {
           )}
           data-fade='3'
         >
-          Being a good <span className='font-semibold'>Software Engineer</span>{' '}
-          is not just about writing code. It's about creating an excellent user
-          experience and collaborating effectively with other team members.
+          <span className='font-semibold'>Software Engineer</span> with a strong
+          frontend foundation. 4+ years building scalable web applications, from
+          pixel-perfect UIs to backend APIs and infrastructure.
         </p>
         <div className='flex gap-4 mt-4' data-fade='4'>
           <HeroSocialMedia />
