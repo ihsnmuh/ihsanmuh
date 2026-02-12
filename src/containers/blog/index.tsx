@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -12,36 +12,41 @@ interface IBlogContainer {
   posts: TPosts;
 }
 
+const filterPosts = (posts: TPosts, search: string): TPosts => {
+  const searchLower = search.toLowerCase();
+  return posts.filter((el) => {
+    const titleMatch = el.title.toLowerCase().includes(searchLower);
+    const descriptionMatch = el.description
+      ?.toLowerCase()
+      .includes(searchLower);
+    const tagsMatch = el.tags?.some((tag) =>
+      tag.toLowerCase().includes(searchLower),
+    );
+    return titleMatch || descriptionMatch || tagsMatch;
+  });
+};
+
 const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
   const [search, _setSearch] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState<TPosts>([]);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const show = LoaderView();
 
+  // Debounce only the search input, not the initial render
   useEffect(() => {
-    const searchLower = search.toLowerCase();
-    const postFiltered = posts.filter((el) => {
-      const titleMatch = el.title.toLowerCase().includes(searchLower);
-      const descriptionMatch = el.description
-        ?.toLowerCase()
-        .includes(searchLower);
-      const tagsMatch = el.tags?.some((tag) =>
-        tag.toLowerCase().includes(searchLower),
-      );
-      return titleMatch || descriptionMatch || tagsMatch;
-    });
-
-    const searchDebounce = setTimeout(() => {
-      setFilteredPosts(postFiltered);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
     }, 300);
 
-    return () => clearTimeout(searchDebounce);
-  }, [posts, search]);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-  useEffect(() => {
-    setFilteredPosts(posts);
-  }, [posts]);
+  // Filter posts synchronously based on debounced search — no empty initial state
+  const filteredPosts = useMemo(
+    () => filterPosts(posts, debouncedSearch),
+    [posts, debouncedSearch],
+  );
 
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
