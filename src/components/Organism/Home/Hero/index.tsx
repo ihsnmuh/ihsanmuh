@@ -51,10 +51,10 @@ const Hero = () => {
           )}
           data-fade='3'
         >
-          <span className='font-semibold'>Frontend Developer</span> with 4+
-          years of experience building scalable web applications. Focused on
-          performance, maintainable architecture, and delivering excellent user
-          experiences.
+          <span className='font-semibold'>Software Engineer</span> with a
+          strong frontend foundation. 4+ years building scalable web
+          applications, from pixel-perfect UIs to backend APIs and
+          infrastructure.
         </p>
         <div className='flex gap-4 mt-4' data-fade='4'>
           <HeroSocialMedia />

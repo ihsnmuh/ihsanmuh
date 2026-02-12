@@ -55,21 +55,22 @@ const AboutContainer = () => {
         <div className='flex-1' data-fade='3'>
           <h2 className='h2 font-primary mb-2'>Muhammad Ihsan</h2>
           <p className='font-primary text-base mb-6'>
-            <span className='font-semibold'>Frontend Developer</span> with 4+
-            years of experience
+            <span className='font-semibold'>Software Engineer</span> with a
+            strong frontend foundation
           </p>
           <div>
             <p className='font-primary text-base mb-4 text-pretty'>
-              Hello! I'm Ihsan, a Frontend Developer with 4+ years of
-              experience building and maintaining scalable web applications
-              within the modern JavaScript ecosystem. I have a strong focus on
-              performance, maintainable frontend architecture, and system-level
-              improvements. Most recently, I spent 4 years at{' '}
+              Hello! I&apos;m Ihsan, a Software Engineer with 4+ years of
+              experience building and maintaining scalable web applications.
+              Starting from frontend development, I&apos;ve been expanding my
+              skills across the full stack — from building pixel-perfect UIs to
+              designing backend APIs and managing infrastructure. Most recently,
+              I spent 4 years at{' '}
               <UnderlineLink href='https://femaledaily.com/'>
                 Female Daily Network
               </UnderlineLink>
-              , Indonesia's largest beauty ecosystem platform, where I delivered
-              production-ready features and collaborated across multiple
+              , Indonesia&apos;s largest beauty ecosystem platform, where I
+              shipped production-ready features and collaborated across multiple
               engineering tribes.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
@@ -86,21 +87,21 @@ const AboutContainer = () => {
               awarded Best Individual Project.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
-              I chose Frontend development because I'm drawn to the visual and
-              interactive side of building products. From optimizing web
-              performance and SEO to engineering reusable component libraries
-              and end-to-end feature platforms, I thrive on solving complex
-              problems that directly impact users. Learning and consistent
-              practice are the two things that keep me growing and improving.
+              I started with frontend because I&apos;m drawn to the visual and
+              interactive side of building products. Over time, my curiosity led
+              me deeper — into backend services, databases, DevOps, and
+              system-level architecture. I thrive on solving complex problems
+              end-to-end, from the UI layer all the way to deployment. Learning
+              and consistent practice are the two things that keep me growing.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
               Through this website, I share my knowledge in web development and
-              UI/UX via blogs and projects. I believe sharing what I learn helps
-              me grow even further.
+              software engineering via blogs and projects. I believe sharing what
+              I learn helps me grow even further.
             </p>
             <p className='font-primary text-base mb-6'>
-              Thank you for visiting! If you have any questions, don't hesitate
-              to reach out on social media. 🚀
+              Thank you for visiting! If you have any questions, don&apos;t
+              hesitate to reach out on social media. 🚀
             </p>
             <HeroTech />
           </div>
