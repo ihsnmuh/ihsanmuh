@@ -94,7 +94,7 @@ export const Experiences: IExperience[] = [
       logo: '/images/experience/dealio.jpeg',
     },
     start: '2021-06-01',
-    end: '2022-02-01',
+    end: '2022-03-31',
     location: 'Jakarta, Indonesia 🇮🇩',
     responsibilities: [
       {

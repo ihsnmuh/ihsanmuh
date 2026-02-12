@@ -111,11 +111,11 @@ const AboutContainer = () => {
 
       <div className='mt-16 md:mt-32' data-fade='4'>
         <h2 className='h2 text-center mb-10 md:mb-16'>Experiences</h2>
-        <div className={cn('flex flex-col items-center')}>
-          {Experiences.map((experience) => (
+        <div className='max-w-3xl mx-auto'>
+          {Experiences.map((experience, index) => (
             <ExperienceCard
-              id={experience.id}
               key={experience.id}
+              id={experience.id}
               position={experience.position}
               status={experience.status}
               company={experience.company}
@@ -123,6 +123,7 @@ const AboutContainer = () => {
               end={experience.end}
               location={experience.location}
               responsibilities={experience.responsibilities}
+              isLast={index === Experiences.length - 1}
             />
           ))}
         </div>
