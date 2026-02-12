@@ -9,21 +9,23 @@ const Summary = () => {
       <div className='layout h-fit gap-4'>
         <Title title='Short Story' />
         <p className='p mt-4 md:mt-6 font-primary md:text-lg'>
-          <span className='font-semibold'>Muhammad Ihsan</span> is a graduate of
-          Agricultural Engineering from Bogor Agriculture University who
-          transitioned into the field of web development, focusing on Frontend
-          Development since 2021. His expertise lies in using technologies such
-          as{' '}
-          <span className='font-semibold'>
-            React, NextJs, Tailwind, and Typescript
-          </span>
-          . Currently employed as a Frontend Developer at{' '}
+          <span className='font-semibold'>Muhammad Ihsan</span> is a Frontend
+          Developer with 4+ years of experience building and maintaining
+          scalable web applications within the modern JavaScript ecosystem. He
+          spent 4 years at{' '}
           <UnderlineLink href='https://femaledaily.com/'>
             Female Daily Network
           </UnderlineLink>
-          , Muhammad is driven by curiosity and a continuous desire to learn,
-          viewing it as a crucial element for personal growth and improvement in
-          various aspects of life.
+          , Indonesia&apos;s largest beauty ecosystem platform, delivering
+          production-ready features across multiple engineering tribes. His
+          expertise spans{' '}
+          <span className='font-semibold'>
+            React, Next.js, TypeScript, Tailwind, and monorepo architectures
+          </span>
+          , with a strong focus on performance optimization, maintainable
+          frontend architecture, and system-level improvements. Driven by
+          curiosity and a continuous desire to learn, he views growth as a
+          crucial element in every aspect of life.
         </p>
       </div>
     </section>
