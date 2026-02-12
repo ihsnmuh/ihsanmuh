@@ -25,11 +25,10 @@ const ProjectContainer = () => {
       >
         <Title title='Projects' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          A curated showcase of my work, ideas, and experiences as a Frontend
-          Developer. Each project tells a story of problem-solving, creativity,
-          and continuous learning. From sleek UI designs to well-structured
-          code, my goal is to inspire, connect, and bring impactful ideas to
-          life.
+          Ideas only matter when they ship. These are real projects I&apos;ve
+          built — from AI-powered platforms to internal tools — each one a
+          chance to solve problems, learn something new, and push my skills
+          further.
         </p>
       </div>
 

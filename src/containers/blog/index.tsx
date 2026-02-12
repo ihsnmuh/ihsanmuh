@@ -56,10 +56,10 @@ const BlogContainer = (props: IBlogContainer) => {
       >
         <Title title='Personal Blog' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          A space where programming meets personal growth. Explore deep dives
-          into coding concepts alongside thoughtful reflections on experiences,
-          challenges, and lessons learned—blending technical insights with
-          personal development.
+          Writing helps me think clearly. Here I break down what I learn —
+          from frontend patterns and performance tricks to lessons picked up
+          along the way. If it made me a better engineer, it might help you
+          too.
         </p>
       </div>
 

@@ -24,8 +24,8 @@ const AboutContainer = () => {
       >
         <Title title='About' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          Everything you need to know about me. my journey, passions, and what
-          drives me as a developer.
+          From agricultural engineering to software engineering — a story of
+          reinvention, curiosity, and building things that matter on the web.
         </p>
       </div>
 
