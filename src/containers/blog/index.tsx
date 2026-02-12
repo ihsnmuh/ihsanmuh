@@ -126,22 +126,27 @@ const BlogContainer = (props: IBlogContainer) => {
             </button>
           )}
         </div>
-        {search && (
-          <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
-            Found {filteredPosts.length} article
-            {filteredPosts.length !== 1 ? 's' : ''} for "{search}"
-          </p>
-        )}
+        {/* Always reserve space to prevent CLS when search text appears */}
+        <div className='h-8 mt-2 flex items-center'>
+          {search && (
+            <p className='text-sm text-gray-600 dark:text-gray-400'>
+              Found {filteredPosts.length} article
+              {filteredPosts.length !== 1 ? 's' : ''} for &ldquo;{search}&rdquo;
+            </p>
+          )}
+        </div>
       </div>
 
+      {/* min-h prevents CLS when switching between cards and empty state */}
       <div
         className={cn(
           'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
+          'min-h-[280px]',
         )}
         data-fade='2'
       >
         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-          filteredPosts?.map((post) => (
+          filteredPosts.map((post) => (
             <PostCard
               key={post.title}
               title={post.title}
@@ -154,7 +159,14 @@ const BlogContainer = (props: IBlogContainer) => {
             />
           ))
         ) : (
-          <p className='font-primary'>{`Sorry, Article for "${search}" is not found`}</p>
+          <div className='col-span-full flex flex-col items-center justify-center text-center py-10'>
+            <p className='font-primary text-lg font-semibold text-slate-500 dark:text-slate-400'>
+              No articles found
+            </p>
+            <p className='font-primary text-sm text-slate-400 dark:text-slate-500 mt-1'>
+              No results for &ldquo;{search}&rdquo;. Try a different keyword.
+            </p>
+          </div>
         )}
       </div>
     </section>
