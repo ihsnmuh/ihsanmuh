@@ -24,7 +24,7 @@ const AboutContainer = () => {
       >
         <Title title='About' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          From agricultural engineering to software engineering — a story of
+          From agricultural engineering to software engineering. A story of
           reinvention, curiosity, and building things that matter on the web.
         </p>
       </div>

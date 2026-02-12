@@ -56,7 +56,7 @@ const BlogContainer = (props: IBlogContainer) => {
       >
         <Title title='Personal Blog' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          Writing helps me think clearly. Here I break down what I learn —
+          Writing helps me think clearly. Here I break down what I learn,
           from frontend patterns and performance tricks to lessons picked up
           along the way. If it made me a better engineer, it might help you
           too.

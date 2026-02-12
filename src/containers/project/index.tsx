@@ -26,7 +26,7 @@ const ProjectContainer = () => {
         <Title title='Projects' />
         <p className='mt-2 font-primary text-sm md:text-base'>
           Ideas only matter when they ship. These are real projects I&apos;ve
-          built — from AI-powered platforms to internal tools — each one a
+          built, from AI-powered platforms to internal tools. Each one a
           chance to solve problems, learn something new, and push my skills
           further.
         </p>
