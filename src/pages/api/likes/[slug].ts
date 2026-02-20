@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 type ResponseData = {
   count?: number;
   message?: string;
+  code?: string;
 };
 
 export default async function handler(
@@ -45,12 +46,16 @@ export default async function handler(
         });
         return res.status(200).json({ count: post.count });
       } catch (dbError) {
-        return res.status(200).json({ count: 0 });
+        return res
+          .status(500)
+          .json({ message: 'Failed to update like count', code: 'DB_ERROR' });
       }
     }
 
     return res.status(405).json({ message: 'Method not allowed' });
   } catch (error) {
-    return res.status(200).json({ count: 0 });
+    return res
+      .status(500)
+      .json({ message: 'Internal server error', code: 'UNKNOWN' });
   }
 }
