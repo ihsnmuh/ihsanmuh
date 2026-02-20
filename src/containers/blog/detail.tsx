@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
 import Title from '@/components/Atoms/title';
+import { LikeButton } from '@/components/Molecules/blog/LikeButton';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
 import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
 import TOCMobile from '@/components/Molecules/blog/TOCMobile';
@@ -81,6 +82,8 @@ const Detail = (props: IDetailBlog) => {
             <span>{`☕️ ${timeReading}`}</span>
             <span>•</span>
             <ViewCounter slug={slug} />
+            <span>•</span>
+            <LikeButton slug={slug} />
           </div>
         </div>
         <div className='lg:grid lg:grid-cols-[auto,250px] lg:gap-8'>

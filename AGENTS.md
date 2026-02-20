@@ -2,18 +2,19 @@
 
 This repo is a Next.js 16 + TypeScript personal site with Tailwind CSS, MDX content, and Prisma (Postgres).
 Supports both local development and Docker-based development.
-There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot rules in `.github/copilot-instructions.md`.
+No Cursor rules (`.cursor/rules/`, `.cursorrules`) or Copilot rules (`.github/copilot-instructions.md`) exist.
 
 ## Quick Commands
 
 - Install: `yarn`
 - Dev server: `yarn dev` (http://localhost:3000)
-- Production build: `yarn build`
+- Production build: `yarn build` (runs `next build` + `generate-rss` + `next-sitemap`)
 - Start built app: `yarn start`
-- Lint: `yarn lint` (runs `next lint`)
-- Lint + auto-fix: `yarn lint:fix` (eslint fixes + format)
+- Lint: `yarn lint` (runs `eslint src/`)
+- Lint + auto-fix: `yarn lint:fix`
 - Format: `yarn format` (Prettier write)
 - Format check: `yarn format:check`
+- Type check: `yarn typecheck` (runs `tsc --noEmit`)
 - Prisma client: `yarn generate`
 
 ### Docker Commands
@@ -22,6 +23,17 @@ There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot 
 - Run container locally: `yarn docker:run`
 - CI/CD builds and pushes to Docker Hub automatically on `master`
 - See `docker/README.md` for detailed Docker documentation
+
+## Tests (Vitest)
+
+- Run all tests: `yarn test`
+- Run a single test file: `yarn vitest src/__tests__/helpers/formatDate.test.ts`
+- Run tests matching a name: `yarn vitest -t "should format date"`
+- Interactive UI: `yarn test:ui`
+- Coverage: `yarn test:coverage`
+- Config: `vitest.config.ts` (globals: true, environment: jsdom, setup: `vitest.setup.ts`)
+- Test files live in `src/__tests__/` mirroring the `src/` structure.
+- Uses `@testing-library/react` + `@testing-library/jest-dom` for component tests.
 
 ## Environment Variables
 
@@ -33,76 +45,82 @@ There are no Cursor rules in `.cursor/rules/` or `.cursorrules`, and no Copilot 
 
 ## Node / Package Manager
 
-- Package manager: Yarn (see `yarn.lock`, `.yarnrc.yml` uses `node-modules` linker)
-- Node: 18.x in CI; local version pinned in `.npmrc` as `v18.18.2`
-- Docker: Node 20.x Alpine (required for Next.js 16)
+- Package manager: Yarn 4.12.0 (`.yarnrc.yml` uses `node-modules` linker)
+- CI: Node 22.x with corepack enabled
+- Docker: Node 20.x Alpine
+- Local pin: `.npmrc` specifies `v18.18.2`
 
 ## Lint / Format Details
 
 ### Lint
 
-- Primary: `yarn lint` (Next.js ESLint)
+- Primary: `yarn lint` (ESLint on `src/`)
 - Fix: `yarn lint:fix`
-- Lint a single file:
-  - `yarn eslint src/pages/index.tsx`
-  - `yarn eslint src --max-warnings=0`
-- Rules: `.eslintrc.js` (notable: `no-console` warn; `unused-imports`; `simple-import-sort` groups)
-- `no-console`: warn (avoid console in production paths; use sparingly)
+- Lint a single file: `yarn eslint src/pages/index.tsx`
+- Config: `.eslintrc.js`
+- Key rules: `no-console` warn, `unused-imports/no-unused-imports` warn, `simple-import-sort/imports` with grouped ordering
 - Prefix intentionally-unused args/vars with `_`
 
 ### Format
 
 - Format all: `yarn format`
-- Check formatting: `yarn format:check`
-- Format one file: `yarn prettier --write src/lib/utils.ts`
-- Prettier: `.prettierrc.js` (single quotes incl JSX; semicolons; tabWidth 2)
+- Check: `yarn format:check`
+- Single file: `yarn prettier --write src/lib/utils.ts`
+- Config: `.prettierrc.js` (single quotes incl JSX, semicolons, tabWidth 2)
 
 ### TypeScript
 
-- Strict TypeScript is enabled (see `tsconfig.json`).
-- Type-check (no script provided):
-  - `npx tsc -p tsconfig.json --noEmit`
-
-## Tests
-
-- No test runner is configured (no `test` script; no `*.test.*`/`*.spec.*`/`__tests__`).
-- If adding tests, document single-test commands (examples):
-  - Jest: `yarn jest path/to/file.test.ts` or `yarn jest -t "test name"`
-  - Vitest: `yarn vitest path/to/file.test.ts` or `yarn vitest -t "test name"`
+- Strict mode enabled with `noUncheckedIndexedAccess` and `noFallthroughCasesInSwitch`.
+- Type check: `yarn typecheck`
 
 ## Prisma / Database
 
 - Generate client: `yarn generate`
-- Common local workflows (run manually as needed):
-  - Migrate: `npx prisma migrate dev`
-  - Studio: `npx prisma studio`
-  - Seed (configured in `package.json`): `npx prisma db seed`
-    Prisma schema: `prisma/schema.prisma`
+- Migrate: `npx prisma migrate dev`
+- Studio: `npx prisma studio`
+- Seed: `npx prisma db seed`
+- Schema: `prisma/schema.prisma` (Models: `Projects`, `PostViews`)
 
-## Git Hooks / CI Expectations
+## Git Hooks / CI
 
-Husky hooks (see `.husky/`):
+Husky hooks (`.husky/`):
 
-- pre-commit: `yarn format` + `yarn lint` + `yarn lint-staged`
-- commit-msg: commitlint (conventional commits)
-- pre-push: `yarn build`
-- Lint-staged: Prettier on `**/*.{js,jsx,ts,tsx,html,css,json}`
-- Commitlint types (see `commitlint.config.js`): `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `ci`, `test`, `revert`, `perf`, `vercel`
+- **pre-commit:** `yarn lint-staged` (runs Prettier on staged `*.{js,jsx,ts,tsx,html,css,json}`)
+- **commit-msg:** commitlint (conventional commits)
+- **pre-push:** `yarn build`
+- Commitlint types: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `ci`, `test`, `revert`, `perf`, `vercel`
 
-## Project Structure (High Level)
+CI pipeline (`.github/workflows/prod-ci.yml`): format:check, lint, typecheck, then Docker build+push on master.
 
-- `src/pages/*`: Next.js pages + API routes (`src/pages/api/*`)
-- `src/components/*`: UI building blocks (Atoms/Molecules/Organism)
-- `src/containers/*`: page-level compositions
-- `src/lib/*`, `src/helpers/*`, `src/contents/*`, `prisma/*`
+## Project Structure
+
+- `src/pages/*` -- Next.js pages + API routes (`src/pages/api/*`)
+- `src/components/*` -- UI components (Atoms / Molecules / Organism)
+- `src/containers/*` -- Page-level compositions (home, blog, about, project, layout)
+- `src/lib/*` -- Core utilities (prisma client, MDX server helpers, utils, structured data)
+- `src/helpers/*` -- Reusable hooks and pure helpers (formatDate, readingTime, etc.)
+- `src/services/*` -- API fetch wrappers
+- `src/queries/*` -- TanStack Query configurations (queryKey + queryFn)
+- `src/constant/*` -- Static data and query key constants
+- `src/contents/*` -- MDX blog posts and project data
+- `src/types/*` -- Shared TypeScript types and interfaces
+- `src/__tests__/*` -- Vitest test files mirroring src/ structure
 
 ## Code Style Guidelines
 
 ### Imports
 
-- Use absolute imports via the TS path alias: `@/*` (maps to `src/*`).
-- Keep imports sorted; do not hand-fight the linter.
-- Import group rules are enforced by `simple-import-sort` (see `.eslintrc.js`).
+- Use absolute imports via the path alias `@/*` (maps to `src/*`).
+- Keep imports sorted; `simple-import-sort` enforces this grouping order:
+  1. External packages
+  2. CSS imports
+  3. `@/lib`, `@/hooks`
+  4. `@/data`
+  5. `@/components`, `@/container`
+  6. `@/store`
+  7. Other `@/` paths
+  8. Relative paths
+  9. `@/types`
 
 ### Formatting
 
@@ -114,42 +132,42 @@ Husky hooks (see `.husky/`):
 
 - TypeScript strict mode is on; avoid `any` unless truly unavoidable.
 - Prefer typed function boundaries for exported helpers.
-- For React props:
-  - Use `type` for props/union-heavy shapes.
-  - Use `interface` for extendable/public object shapes.
-  - Match nearby file conventions when editing existing code.
+- Convention: prefix interfaces with `I` (e.g., `IProject`), type aliases with `T` (e.g., `TPosts`).
+- For React props: use `type` for props/union shapes, `interface` for extendable objects.
+- Match nearby file conventions when editing existing code.
 
 ### Naming
 
-- React components: `PascalCase` (files generally match component name).
-- Hooks: `useSomething`.
+- React components: `PascalCase` (files match component name).
+- Hooks: `useSomething` (e.g., `useViewCounter`, `useHeadingData`).
 - Variables/functions: `camelCase`.
 - Constants: `SCREAMING_SNAKE_CASE`.
-- Prisma models/fields: match schema naming; avoid renaming DB-facing fields casually.
+- Prisma models/fields: match schema naming; avoid renaming DB-facing fields.
 
 ### Error Handling
 
 - API routes (`src/pages/api/*`):
   - Validate/normalize query params (see `src/pages/api/projects.ts`).
-  - Prefer returning a stable error shape (message/code) instead of raw thrown objects.
+  - Return stable error shape `{ message, code }` instead of raw thrown objects.
   - Avoid leaking sensitive error details.
-- Server-side utilities: surface actionable errors; include context.
+- Server-side utilities: surface actionable errors with context.
 
 ### React / Next.js Patterns
 
-- Use `next/dynamic` for large layout pieces where appropriate (see `src/containers/layout/Layout.tsx`).
-- Use `next/font` for font loading where configured.
-- For links:
-  - Prefer the shared link components in `src/components/Atoms/links/*`.
-  - External links should set `target="_blank"` + `rel="noopener noreferrer"` (handled by `UnstyledLink`).
+- Use `next/dynamic` for heavy components (e.g., ThemeSwitcher in Header).
+- Use `next/font` for font loading (Inter + Poppins configured in Layout).
+- Use `React.forwardRef` for link/button wrapper components.
+- Prefer shared link components in `src/components/Atoms/links/*` (UnstyledLink handles external links with `target="_blank"` + `rel="noopener noreferrer"`).
+- Use TanStack Query v4 for server-state; query configs live in `src/queries/`.
 
 ### Prisma Client Usage
 
-- Use the singleton pattern from `src/lib/prisma.ts` (prevents exhausting connections in dev).
+- Use the singleton from `src/lib/prisma.ts` (prevents connection exhaustion in dev).
 - Disconnect in scripts (see `prisma/seed.ts`).
 
 ## When Editing
 
 - Keep changes focused; avoid drive-by refactors.
-- Run: `yarn format && yarn lint` before considering work done.
-- If you touch DB/schema: run `yarn generate` and update migrations appropriately.
+- Run `yarn format && yarn lint` before considering work done.
+- If you touch DB/schema: run `yarn generate` and create migrations with `npx prisma migrate dev`.
+- Add comments only for function/component documentation, not inline explanations.
