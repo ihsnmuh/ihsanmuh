@@ -9,23 +9,41 @@ type LikeCounterState = {
 
 type UseLikeCounterOptions = {
   interactive?: boolean;
+  /** When provided, skip fetch and use this value (e.g. from batch pre-fetch) */
+  initialLikes?: number;
 };
 
 export function useLikeCounter(
   slug: string,
   options: UseLikeCounterOptions = {},
 ) {
-  const { interactive = true } = options;
+  const { interactive = true, initialLikes } = options;
   const [state, setState] = useState<LikeCounterState>({
-    likes: 0,
+    likes: typeof initialLikes === 'number' ? initialLikes : 0,
     isLiked: false,
-    isLoading: true,
+    isLoading: typeof initialLikes !== 'number',
     error: null,
   });
   const hasLikedRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (!slug) return;
+    if (typeof initialLikes === 'number') {
+      let isLiked = false;
+      if (interactive) {
+        const likedPosts =
+          JSON.parse(localStorage.getItem('likedPosts') || '[]') || [];
+        isLiked = likedPosts.includes(slug);
+        hasLikedRef.current = isLiked;
+      }
+      setState({
+        likes: initialLikes,
+        isLiked,
+        isLoading: false,
+        error: null,
+      });
+      return;
+    }
 
     const fetchLikes = async () => {
       try {
@@ -56,7 +74,7 @@ export function useLikeCounter(
     };
 
     fetchLikes();
-  }, [slug, interactive]);
+  }, [slug, interactive, initialLikes]);
 
   const handleLike = async () => {
     if (!interactive) return;

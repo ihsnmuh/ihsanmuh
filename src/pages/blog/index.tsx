@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next';
 
 import { getAllPosts } from '@/lib/blog';
+import { getViewsAndLikesForSlugs } from '@/lib/viewsLikes';
 
 import Seo from '@/components/Molecules/seo';
 import BlogContainer from '@/containers/blog';
@@ -36,10 +37,26 @@ export const getStaticProps: GetStaticProps = async () => {
     'isShow',
   ]);
 
+  const slugs = allPosts
+    .map((p) => p.slug)
+    .filter((s): s is string => Boolean(s));
+  const viewsLikes = await getViewsAndLikesForSlugs(slugs);
+
+  const allPostsWithStats: IPost[] = allPosts.map((post) => {
+    const slug = post.slug as string;
+    const stats = slug ? viewsLikes[slug] : undefined;
+    return {
+      ...post,
+      views: stats?.views ?? 0,
+      likes: stats?.likes ?? 0,
+    } as IPost;
+  });
+
   return {
     props: {
-      allPosts,
+      allPosts: allPostsWithStats,
     },
+    revalidate: 3600,
   };
 };
 

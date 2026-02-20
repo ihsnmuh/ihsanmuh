@@ -155,6 +155,8 @@ const BlogContainer = (props: IBlogContainer) => {
               slug={post.slug}
               banner={post.banner}
               timeReading={post.timeReading}
+              views={post.views}
+              likes={post.likes}
             />
           ))
         ) : (

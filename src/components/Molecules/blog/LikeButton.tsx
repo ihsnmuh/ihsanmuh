@@ -9,16 +9,45 @@ type LikeButtonProps = {
   showIcon?: boolean;
   className?: string;
   interactive?: boolean;
+  /** Pre-fetched count; when provided with interactive=false, render statically without API call */
+  initialLikes?: number;
 };
+
+/** Display-only, no API call. Use in lists when likes are pre-fetched. */
+export function LikeButtonStats({
+  likes,
+  showIcon = true,
+  className,
+}: {
+  likes: number;
+  showIcon?: boolean;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
+        className,
+      )}
+    >
+      {showIcon && <Heart className='h-4 w-4' />}
+      <span>
+        {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
+      </span>
+    </span>
+  );
+}
 
 export function LikeButton({
   slug,
   showIcon = true,
   className,
   interactive = true,
+  initialLikes,
 }: LikeButtonProps) {
   const { likes, isLiked, isLoading, handleLike } = useLikeCounter(slug, {
     interactive,
+    initialLikes,
   });
 
   if (isLoading) {
@@ -37,17 +66,11 @@ export function LikeButton({
 
   if (!interactive) {
     return (
-      <span
-        className={cn(
-          'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-          className,
-        )}
-      >
-        {showIcon && <Heart className='h-4 w-4' />}
-        <span>
-          {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
-        </span>
-      </span>
+      <LikeButtonStats
+        likes={likes}
+        showIcon={showIcon}
+        className={className}
+      />
     );
   }
 

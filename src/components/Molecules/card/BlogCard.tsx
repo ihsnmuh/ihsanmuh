@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
-import { LikeButton } from '@/components/Molecules/blog/LikeButton';
-import { ViewCounter } from '@/components/Molecules/blog/ViewCounter';
+import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
+import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
 import WrapperCard from './WrapperCard';
 
@@ -86,8 +86,8 @@ const PostCard = (props: IPostCard) => {
               )}
 
               <div className='flex items-center gap-3'>
-                <ViewCounter slug={slug} showIcon increment={false} />
-                <LikeButton slug={slug} showIcon />
+                <ViewCounterStats views={props.views ?? 0} showIcon />
+                <LikeButtonStats likes={props.likes ?? 0} showIcon />
               </div>
             </div>
           </div>
