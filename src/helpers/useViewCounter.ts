@@ -6,7 +6,15 @@ type ViewCounterState = {
   error: string | null;
 };
 
-export function useViewCounter(slug: string) {
+type UseViewCounterOptions = {
+  increment?: boolean;
+};
+
+export function useViewCounter(
+  slug: string,
+  options: UseViewCounterOptions = {},
+) {
+  const { increment = true } = options;
   const [state, setState] = useState<ViewCounterState>({
     views: 0,
     isLoading: true,
@@ -16,16 +24,18 @@ export function useViewCounter(slug: string) {
 
   useEffect(() => {
     if (!slug) return;
-    if (incrementedSlug.current === slug) return;
+    if (increment && incrementedSlug.current === slug) return;
 
-    // Reset loading state when slug changes
     setState({ views: 0, isLoading: true, error: null });
 
-    const fetchAndIncrementViews = async () => {
+    const fetchViews = async () => {
       try {
-        incrementedSlug.current = slug;
+        if (increment) {
+          incrementedSlug.current = slug;
+        }
+
         const response = await fetch(`/api/views/${slug}`, {
-          method: 'POST',
+          method: increment ? 'POST' : 'GET',
         });
 
         const data = await response.json();
@@ -45,8 +55,8 @@ export function useViewCounter(slug: string) {
       }
     };
 
-    fetchAndIncrementViews();
-  }, [slug]);
+    fetchViews();
+  }, [slug, increment]);
 
   return state;
 }
