@@ -46,6 +46,8 @@ const Blog = (props: IBlog) => {
                 slug={post.slug}
                 banner={post.banner}
                 timeReading={post.timeReading}
+                views={post.views}
+                likes={post.likes}
               />
             ))}
         </div>

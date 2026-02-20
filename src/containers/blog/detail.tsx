@@ -12,7 +12,7 @@ import { LikeButton } from '@/components/Molecules/blog/LikeButton';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
 import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
 import TOCMobile from '@/components/Molecules/blog/TOCMobile';
-import { ViewCounter } from '@/components/Molecules/blog/ViewCounter';
+import { ViewIncrement } from '@/components/Molecules/blog/ViewCounter';
 
 const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
@@ -81,7 +81,7 @@ const Detail = (props: IDetailBlog) => {
             <span>•</span>
             <span>{`☕️ ${timeReading}`}</span>
             <span>•</span>
-            <ViewCounter slug={slug} />
+            <ViewIncrement slug={slug} />
             <span>•</span>
             <LikeButton slug={slug} />
           </div>

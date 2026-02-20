@@ -4,6 +4,7 @@ import Head from 'next/head';
 
 import { getAllPosts } from '@/lib/blog';
 import { getPersonSchema, getWebsiteSchema } from '@/lib/structuredData';
+import { getViewsAndLikesForSlugs } from '@/lib/viewsLikes';
 
 import Seo from '@/components/Molecules/seo';
 import HomeContainer from '@/containers/home';
@@ -58,6 +59,21 @@ export const getStaticProps: GetStaticProps = async () => {
     'isShow',
   ]);
 
+  const slugs = allPosts
+    .map((p) => p.slug)
+    .filter((s): s is string => Boolean(s));
+  const viewsLikes = await getViewsAndLikesForSlugs(slugs);
+
+  const allPostsWithStats: IPost[] = allPosts.map((post) => {
+    const slug = post.slug as string;
+    const stats = slug ? viewsLikes[slug] : undefined;
+    return {
+      ...post,
+      views: stats?.views ?? 0,
+      likes: stats?.likes ?? 0,
+    } as IPost;
+  });
+
   // * prefetch data project list
   await queryClient.prefetchQuery({
     ...queryProjectList({ limit: 3, order: 'desc' }),
@@ -66,7 +82,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      allPosts,
+      allPosts: allPostsWithStats,
     },
     revalidate: 3600,
   };

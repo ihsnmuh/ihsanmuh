@@ -10,4 +10,6 @@ export interface IPost {
   tags: string[];
   slug: string;
   isShow?: boolean | string;
+  views?: number;
+  likes?: number;
 }
