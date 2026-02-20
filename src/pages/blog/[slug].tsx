@@ -4,6 +4,7 @@ import React from 'react';
 
 import { getRelatedPosts, postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
+import { getViewsAndLikesForSlugs } from '@/lib/viewsLikes';
 
 import { components } from '@/components/Atoms/MDXComponent';
 import Seo from '@/components/Molecules/seo';
@@ -78,6 +79,21 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
       (post.isShow && typeof post.isShow === 'boolean' && post.isShow === true),
   );
 
+  const relatedSlugs = relatedPostsFiltered
+    .map((p) => p.slug)
+    .filter((s): s is string => Boolean(s));
+  const viewsLikes = await getViewsAndLikesForSlugs(relatedSlugs);
+
+  const relatedPostsWithStats: IPost[] = relatedPostsFiltered.map((post) => {
+    const slug = post.slug as string;
+    const stats = slug ? viewsLikes[slug] : undefined;
+    return {
+      ...post,
+      views: stats?.views ?? 0,
+      likes: stats?.likes ?? 0,
+    } as IPost;
+  });
+
   // Ensure frontMatter has all required IPost fields
   const frontMatter: IPost = {
     title: (rawFrontMatter as any).title || '',
@@ -94,7 +110,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
     props: {
       source,
       frontMatter,
-      relatedPosts: relatedPostsFiltered,
+      relatedPosts: relatedPostsWithStats,
     },
   };
 };
