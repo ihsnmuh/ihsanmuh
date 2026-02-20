@@ -31,3 +31,11 @@ model PostViews {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model PostLikes {
+  id        String   @id @default(uuid())
+  slug      String   @unique
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
