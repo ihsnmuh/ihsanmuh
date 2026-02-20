@@ -1,5 +1,5 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import { getAllPosts } from '@/lib/blog';
@@ -46,7 +46,7 @@ export default function Home(props: IHomeProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
   const allPosts = getAllPosts([
     'title',
@@ -84,6 +84,5 @@ export const getStaticProps: GetStaticProps = async () => {
       dehydratedState: dehydrate(queryClient),
       allPosts: allPostsWithStats,
     },
-    revalidate: 3600,
   };
 };

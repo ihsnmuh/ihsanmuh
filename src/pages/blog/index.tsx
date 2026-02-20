@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 
 import { getAllPosts } from '@/lib/blog';
 import { getViewsAndLikesForSlugs } from '@/lib/viewsLikes';
@@ -25,7 +25,7 @@ const Blog = (props: IBlogPage) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const allPosts = getAllPosts([
     'title',
     'publishedAt',
@@ -56,7 +56,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       allPosts: allPostsWithStats,
     },
-    revalidate: 3600,
   };
 };
 

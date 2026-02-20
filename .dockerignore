@@ -70,5 +70,4 @@ docker-compose*.yml
 .github
 .husky
 
-# Prisma
-prisma/migrations
+# Prisma (migrations must be included for migrate deploy on server)
