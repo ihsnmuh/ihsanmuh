@@ -7,7 +7,15 @@ type LikeCounterState = {
   error: string | null;
 };
 
-export function useLikeCounter(slug: string) {
+type UseLikeCounterOptions = {
+  interactive?: boolean;
+};
+
+export function useLikeCounter(
+  slug: string,
+  options: UseLikeCounterOptions = {},
+) {
+  const { interactive = true } = options;
   const [state, setState] = useState<LikeCounterState>({
     likes: 0,
     isLiked: false,
@@ -24,10 +32,13 @@ export function useLikeCounter(slug: string) {
         const response = await fetch(`/api/likes/${slug}`);
         const data = await response.json();
 
-        const likedPosts =
-          JSON.parse(localStorage.getItem('likedPosts') || '[]') || [];
-        const isLiked = likedPosts.includes(slug);
-        hasLikedRef.current = isLiked;
+        let isLiked = false;
+        if (interactive) {
+          const likedPosts =
+            JSON.parse(localStorage.getItem('likedPosts') || '[]') || [];
+          isLiked = likedPosts.includes(slug);
+          hasLikedRef.current = isLiked;
+        }
 
         setState({
           likes: data.count ?? 0,
@@ -45,9 +56,10 @@ export function useLikeCounter(slug: string) {
     };
 
     fetchLikes();
-  }, [slug]);
+  }, [slug, interactive]);
 
   const handleLike = async () => {
+    if (!interactive) return;
     if (hasLikedRef.current || state.isLoading) return;
 
     setState((prev) => ({ ...prev, isLoading: true }));

@@ -86,7 +86,7 @@ const PostCard = (props: IPostCard) => {
               )}
 
               <div className='flex items-center gap-3'>
-                <ViewCounter slug={slug} showIcon />
+                <ViewCounter slug={slug} showIcon increment={false} />
                 <LikeButton slug={slug} showIcon />
               </div>
             </div>
