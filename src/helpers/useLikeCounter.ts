@@ -58,6 +58,15 @@ export function useLikeCounter(slug: string) {
       });
       const data = await response.json();
 
+      if (!response.ok) {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: data.message ?? 'Failed to like',
+        }));
+        return;
+      }
+
       const likedPosts =
         JSON.parse(localStorage.getItem('likedPosts') || '[]') || [];
       likedPosts.push(slug);
@@ -65,11 +74,16 @@ export function useLikeCounter(slug: string) {
 
       hasLikedRef.current = true;
 
-      setState({
-        likes: data.count ?? state.likes + 1,
-        isLiked: true,
-        isLoading: false,
-        error: null,
+      setState((prev) => {
+        const newCount =
+          typeof data.count === 'number' ? data.count : prev.likes + 1;
+        return {
+          ...prev,
+          likes: newCount,
+          isLiked: true,
+          isLoading: false,
+          error: null,
+        };
       });
     } catch (error) {
       setState((prev) => ({
