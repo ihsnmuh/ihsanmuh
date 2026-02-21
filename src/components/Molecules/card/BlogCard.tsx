@@ -16,6 +16,7 @@ import { IPost } from '@/types/interfaces/posts';
 
 interface IPostCard extends IPost {
   className?: string;
+  excludeFromToC?: boolean;
 }
 
 const PostCard = (props: IPostCard) => {
@@ -28,6 +29,7 @@ const PostCard = (props: IPostCard) => {
     timeReading: timeReadingText,
     publishedAt,
     description,
+    excludeFromToC = false,
   } = props;
 
   const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
@@ -61,7 +63,10 @@ const PostCard = (props: IPostCard) => {
         </div>
 
         <div className='flex flex-col gap-3 p-5'>
-          <h3 className='font-bold text-lg leading-tight line-clamp-2 transition-colors group-hover:text-primary-500 dark:group-hover:text-primary-400'>
+          <h3
+            {...(excludeFromToC && { 'data-toc-exclude': 'true' })}
+            className='font-bold text-lg leading-tight line-clamp-2 transition-colors group-hover:text-primary-500 dark:group-hover:text-primary-400'
+          >
             {title}
           </h3>
 

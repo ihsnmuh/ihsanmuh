@@ -36,9 +36,14 @@ const useHeadingsData = (depsKey?: string) => {
   const [nestedHeadings, setNestedHeadings] = useState<NestedHeading[]>([]);
 
   useEffect(() => {
-    const headingElements = Array.from(
-      document.querySelectorAll('h2, h3'),
-    ) as HTMLElement[];
+    const allHeadings = document.querySelectorAll('h2, h3');
+    const headingElements = Array.from(allHeadings).filter((el) => {
+      const element = el as HTMLElement;
+      return (
+        !element.hasAttribute('data-toc-exclude') &&
+        !element.closest('[data-toc-exclude]')
+      );
+    }) as HTMLElement[];
 
     const newNestedHeadings = getNestedHeadings(headingElements);
     setNestedHeadings(newNestedHeadings);
