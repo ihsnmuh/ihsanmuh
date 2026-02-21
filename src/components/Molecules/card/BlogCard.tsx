@@ -10,12 +10,15 @@ import TagPill from '@/components/Atoms/pills/TagPills';
 import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
 import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
+import { usePostStats } from '@/helpers/usePostStats';
+
 import WrapperCard from './WrapperCard';
 
 import { IPost } from '@/types/interfaces/posts';
 
 interface IPostCard extends IPost {
   className?: string;
+  excludeFromToC?: boolean;
 }
 
 const PostCard = (props: IPostCard) => {
@@ -28,7 +31,10 @@ const PostCard = (props: IPostCard) => {
     timeReading: timeReadingText,
     publishedAt,
     description,
+    excludeFromToC = false,
   } = props;
+
+  const { views, likes, isLoading } = usePostStats(slug);
 
   const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
   const reading = timeReadingText ?? '';
@@ -61,7 +67,10 @@ const PostCard = (props: IPostCard) => {
         </div>
 
         <div className='flex flex-col gap-3 p-5'>
-          <h3 className='font-bold text-lg leading-tight line-clamp-2 transition-colors group-hover:text-primary-500 dark:group-hover:text-primary-400'>
+          <h3
+            {...(excludeFromToC && { 'data-toc-exclude': 'true' })}
+            className='font-bold text-lg leading-tight line-clamp-2 transition-colors group-hover:text-primary-500 dark:group-hover:text-primary-400'
+          >
             {title}
           </h3>
 
@@ -86,8 +95,17 @@ const PostCard = (props: IPostCard) => {
               )}
 
               <div className='flex items-center gap-3'>
-                <ViewCounterStats views={props.views ?? 0} showIcon />
-                <LikeButtonStats likes={props.likes ?? 0} showIcon />
+                {isLoading ? (
+                  <div className='flex items-center gap-3'>
+                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
+                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
+                  </div>
+                ) : (
+                  <>
+                    <ViewCounterStats views={views} showIcon />
+                    <LikeButtonStats likes={likes} showIcon />
+                  </>
+                )}
               </div>
             </div>
           </div>
