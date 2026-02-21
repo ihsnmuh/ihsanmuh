@@ -11,56 +11,80 @@ import {
 
 const HeroTech = () => {
   return (
-    <>
-      <p className='font-primary text-sm font-bold'>
-        🔥 Current Favorite Tech Stacks:
+    <div className='flex flex-col gap-2'>
+      <p className='font-mono text-xs uppercase tracking-widest text-slate-400'>
+        Built with
       </p>
-      <div className='flex gap-4 mt-2'>
+      <div className='flex items-center gap-3 flex-wrap'>
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#3178C6]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#3178C6] transition-colors duration-200',
           )}
+          title='TypeScript'
         >
-          <TypeScriptIcon className={cn('h-6 w-6')} />
+          <TypeScriptIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>TypeScript</span>
         </div>
+
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#61DAFB]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#61DAFB] transition-colors duration-200',
           )}
+          title='React'
         >
-          <ReactIcon className={cn('h-6 w-6')} />
+          <ReactIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>React</span>
         </div>
+
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#06B6D4]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors duration-200',
           )}
+          title='Next.js'
         >
-          <TailwindCssIcon className={cn('h-6 w-6')} />
+          <NextJsIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>Next.js</span>
         </div>
+
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500 duration-200 hover:text-[#000000] dark:hover:text-[#FFFFFF]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#06B6D4] transition-colors duration-200',
           )}
+          title='Tailwind CSS'
         >
-          <NextJsIcon className={cn('h-6 w-6')} />
+          <TailwindCssIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>Tailwind</span>
         </div>
-        <div className='border-r-2 border-slate-600' />
+
+        <div className='h-4 border-r border-slate-300 dark:border-slate-700' />
+
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#007ACC]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#007ACC] transition-colors duration-200',
           )}
+          title='VS Code'
         >
-          <VSCodeIcon className={cn('h-6 w-6')} />
+          <VSCodeIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>VS Code</span>
         </div>
+
         <div
           className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#F24E1E]',
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#F24E1E] transition-colors duration-200',
           )}
+          title='Figma'
         >
-          <FigmaIcon className={cn('h-6 w-6')} />
+          <FigmaIcon className='h-5 w-5' />
+          <span className='text-xs font-mono'>Figma</span>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

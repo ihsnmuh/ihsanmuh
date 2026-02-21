@@ -1,4 +1,4 @@
-import { ChevronUp } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -12,67 +12,130 @@ const Hero = () => {
   return (
     <section
       className={cn(
-        'h-[100dvh] background-img-light dark:background-img-dark flex items-center bg-cover',
-        'border-b border-slate-200 dark:border-slate-800 relative',
+        'h-[100dvh] flex items-center relative overflow-hidden',
+        'bg-white dark:bg-slate-900',
+        'border-b border-slate-200 dark:border-slate-800',
       )}
       data-fade-in={show ? 'true' : 'false'}
     >
-      <div className='layout flex flex-col w-full gap-1 relative'>
-        <p
-          className='font-primary text-base font-semibold md:text-xl'
-          data-fade='1'
-        >
-          Hi Everyone!
-          <span
-            className='animate-wave px-1'
-            style={{ transformOrigin: '70% 70%', display: 'inline-block' }}
-          >
-            👋
+      {/* Subtle grid background */}
+      <div className='background-grid pointer-events-none' />
+
+      {/* Radial glow accent */}
+      <div
+        className={cn(
+          'absolute -top-32 -left-32 h-96 w-96 rounded-full',
+          'bg-primary-500/10 dark:bg-primary-500/5 blur-3xl',
+          'pointer-events-none',
+        )}
+      />
+
+      {/* Left accent bar — Swiss International signature */}
+      <div className='absolute left-0 top-16 bottom-16 w-1 bg-primary-500 rounded-r-full' />
+
+      <div className='layout flex flex-col w-full gap-4 relative z-10 pl-6 sm:pl-10'>
+        {/* Available badge */}
+        <div className='flex items-center gap-2' data-fade='1'>
+          <span className='relative flex h-2 w-2'>
+            <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75' />
+            <span className='relative inline-flex h-2 w-2 rounded-full bg-green-500' />
           </span>
-          I&lsquo;m
-        </p>
-        <h1
-          className={cn(
-            'capitalize text-transparent font-bold font-secondary',
-            'text-5xl sm:text-7xl',
-            'bg-clip-text text-transparent',
-            'animate-gradient bg-[length:200%_200%]',
-            'bg-gradient-to-r from-primary-500 from-10% via-cyan-500 dark:via-orange-500 via-30% to-emerald-500 dark:to-red-500',
-          )}
+          <span className='font-mono text-xs uppercase tracking-widest text-green-600 dark:text-green-400'>
+            Available for opportunities
+          </span>
+        </div>
+
+        {/* Role label */}
+        <p
+          className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'
           data-fade='2'
         >
-          Muhammad Ihsan
-        </h1>
-        <p
+          Frontend-focused Full-Stack Engineer
+        </p>
+
+        {/* Name */}
+        <h1
           className={cn(
-            'font-primary text-balance',
-            'text-md md:text-lg',
-            'w-full max-w-2xl',
+            'font-bold font-secondary leading-none',
+            'text-5xl sm:text-7xl md:text-8xl',
+            'bg-clip-text text-transparent',
+            'animate-gradient bg-[length:200%_200%]',
+            'bg-gradient-to-r from-primary-500 via-cyan-500 dark:via-orange-400 to-primary-700 dark:to-yellow-500',
           )}
           data-fade='3'
         >
-          <span className='font-semibold'>Software Engineer</span> with a strong
-          frontend foundation. 4+ years building scalable web applications, from
-          pixel-perfect UIs to backend APIs and infrastructure.
+          Muhammad
+          <br />
+          Ihsan
+        </h1>
+
+        {/* Tagline */}
+        <p
+          className={cn(
+            'font-primary text-slate-600 dark:text-slate-300',
+            'text-base md:text-lg max-w-xl',
+          )}
+          data-fade='4'
+        >
+          Specializes in building web applications that deliver
+          business value, exceptional user experiences, and empower
+          collaborative teams.{' '}
+          <span className='font-semibold text-primary-500'>4+ years</span>{' '}
+          shipping products that matter.
         </p>
-        <div className='flex gap-4 mt-4' data-fade='4'>
+
+        {/* CTAs + social icons */}
+        <div className='flex flex-wrap items-center gap-3 mt-2' data-fade='5'>
           <HeroSocialMedia />
         </div>
 
-        <div className='absolute ml-1 -bottom-36' data-fade='5'>
+        {/* Divider + tech + stats */}
+        <div
+          className={cn(
+            'flex flex-col sm:flex-row sm:items-center gap-6 mt-2 pt-5',
+            'border-t border-slate-200 dark:border-slate-800',
+          )}
+          data-fade='6'
+        >
           <HeroTech />
+
+          {/* Stats */}
+          <div className='flex gap-6 sm:ml-auto'>
+            <div className='flex flex-col'>
+              <span className='text-xl font-bold text-primary-500'>4+</span>
+              <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
+                Years
+              </span>
+            </div>
+            <div className='flex flex-col'>
+              <span className='text-xl font-bold text-primary-500'>10+</span>
+              <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
+                Projects
+              </span>
+            </div>
+            <div className='flex flex-col'>
+              <span className='text-xl font-bold text-primary-500'>2</span>
+              <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
+                Companies
+              </span>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
       <a
         href='#summary'
         className={cn(
-          'flex flex-col items-center justify-center w-full mx-auto',
-          'absolute bottom-1',
-          'animate-bounce',
+          'flex flex-col items-center gap-1',
+          'absolute bottom-6 left-1/2 -translate-x-1/2',
+          'animate-bounce text-slate-400 hover:text-primary-500 transition-colors duration-200',
         )}
       >
-        <ChevronUp />
-        <p className='text-xs'>scroll up</p>
+        <span className='font-mono text-xs uppercase tracking-widest'>
+          scroll
+        </span>
+        <ChevronDown size={16} />
       </a>
     </section>
   );
