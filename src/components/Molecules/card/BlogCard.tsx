@@ -10,6 +10,8 @@ import TagPill from '@/components/Atoms/pills/TagPills';
 import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
 import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
+import { usePostStats } from '@/helpers/usePostStats';
+
 import WrapperCard from './WrapperCard';
 
 import { IPost } from '@/types/interfaces/posts';
@@ -31,6 +33,8 @@ const PostCard = (props: IPostCard) => {
     description,
     excludeFromToC = false,
   } = props;
+
+  const { views, likes, isLoading } = usePostStats(slug);
 
   const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
   const reading = timeReadingText ?? '';
@@ -91,8 +95,17 @@ const PostCard = (props: IPostCard) => {
               )}
 
               <div className='flex items-center gap-3'>
-                <ViewCounterStats views={props.views ?? 0} showIcon />
-                <LikeButtonStats likes={props.likes ?? 0} showIcon />
+                {isLoading ? (
+                  <div className='flex items-center gap-3'>
+                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
+                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
+                  </div>
+                ) : (
+                  <>
+                    <ViewCounterStats views={views} showIcon />
+                    <LikeButtonStats likes={likes} showIcon />
+                  </>
+                )}
               </div>
             </div>
           </div>
