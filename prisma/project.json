@@ -71,7 +71,7 @@
       "Heroku",
       "Firebase",
       "Express",
-      "PostgresQL"
+      "PostgreSQL"
     ],
     "github": "https://github.com/ihsnmuh/qurantara-client",
     "website": "https://qurantara-30c57.web.app/",
@@ -101,7 +101,7 @@
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgresQL",
+      "PostgreSQL",
       "Jest",
       "Vue.js",
       "Bootstrap",
@@ -123,7 +123,7 @@
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgresQL",
+      "PostgreSQL",
       "JWT",
       "Jest",
       "Vue.js",
@@ -147,8 +147,8 @@
     "stacks": [
       "Sequelize",
       "Express",
-      "PostgresQL",
-      "JWt",
+      "PostgreSQL",
+      "JWT",
       "JQuery",
       "Ajax",
       "Bootstrap",

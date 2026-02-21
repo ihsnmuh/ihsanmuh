@@ -26,6 +26,7 @@
     "docker:logs": "docker compose -f docker/docker-compose.local.yml logs -f app"
   },
   "dependencies": {
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^4.35.0",
     "@tanstack/react-query-devtools": "^4.35.0",
     "autoprefixer": "10.4.14",
