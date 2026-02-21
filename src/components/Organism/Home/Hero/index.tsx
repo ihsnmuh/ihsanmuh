@@ -33,7 +33,7 @@ const Hero = () => {
       {/* Left accent bar — Swiss International signature */}
       <div className='absolute left-0 top-16 bottom-16 w-1 bg-primary-500 rounded-r-full' />
 
-      <div className='layout flex flex-col w-full gap-4 relative z-10 pl-6 sm:pl-10'>
+      <div className='layout flex flex-col w-full gap-3 sm:gap-4 relative z-10 pl-6 sm:pl-10'>
         {/* Available badge */}
         <div className='flex items-center gap-2' data-fade='1'>
           <span className='relative flex h-2 w-2'>
@@ -50,14 +50,14 @@ const Hero = () => {
           className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'
           data-fade='2'
         >
-          Frontend-focused Full-Stack Engineer
+          Software Engineer
         </p>
 
         {/* Name */}
         <h1
           className={cn(
             'font-bold font-secondary leading-none',
-            'text-5xl sm:text-7xl md:text-8xl',
+            'text-4xl sm:text-6xl md:text-8xl',
             'bg-clip-text text-transparent',
             'animate-gradient bg-[length:200%_200%]',
             'bg-gradient-to-r from-primary-500 via-cyan-500 dark:via-orange-400 to-primary-700 dark:to-yellow-500',
@@ -73,48 +73,57 @@ const Hero = () => {
         <p
           className={cn(
             'font-primary text-slate-600 dark:text-slate-300',
-            'text-base md:text-lg max-w-xl',
+            'text-sm sm:text-base md:text-lg max-w-xl',
           )}
           data-fade='4'
         >
-          Specializes in building web applications that deliver
-          business value, exceptional user experiences, and empower
-          collaborative teams.{' '}
+          Specializes in building web applications that deliver business value,
+          exceptional user experiences, and empower collaborative teams.{' '}
           <span className='font-semibold text-primary-500'>4+ years</span>{' '}
           shipping products that matter.
         </p>
 
         {/* CTAs + social icons */}
-        <div className='flex flex-wrap items-center gap-3 mt-2' data-fade='5'>
+        <div className='mt-0 sm:mt-1' data-fade='5'>
           <HeroSocialMedia />
         </div>
 
         {/* Divider + tech + stats */}
         <div
           className={cn(
-            'flex flex-col sm:flex-row sm:items-center gap-6 mt-2 pt-5',
+            'flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6',
+            'mt-1 sm:mt-2 pt-4 sm:pt-5',
             'border-t border-slate-200 dark:border-slate-800',
           )}
           data-fade='6'
         >
-          <HeroTech />
+          {/* Tech stack — hidden on mobile to save space */}
+          <div className='hidden sm:block'>
+            <HeroTech />
+          </div>
 
-          {/* Stats */}
+          {/* Stats — always visible */}
           <div className='flex gap-6 sm:ml-auto'>
             <div className='flex flex-col'>
-              <span className='text-xl font-bold text-primary-500'>4+</span>
+              <span className='text-lg sm:text-xl font-bold text-primary-500'>
+                4+
+              </span>
               <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
                 Years
               </span>
             </div>
             <div className='flex flex-col'>
-              <span className='text-xl font-bold text-primary-500'>10+</span>
+              <span className='text-lg sm:text-xl font-bold text-primary-500'>
+                10+
+              </span>
               <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
                 Projects
               </span>
             </div>
             <div className='flex flex-col'>
-              <span className='text-xl font-bold text-primary-500'>2</span>
+              <span className='text-lg sm:text-xl font-bold text-primary-500'>
+                2
+              </span>
               <span className='font-mono text-xs uppercase tracking-wider text-slate-400'>
                 Companies
               </span>
@@ -127,7 +136,7 @@ const Hero = () => {
       <a
         href='#summary'
         className={cn(
-          'flex flex-col items-center gap-1',
+          'flex flex-col items-center gap-1 w-auto',
           'absolute bottom-6 left-1/2 -translate-x-1/2',
           'animate-bounce text-slate-400 hover:text-primary-500 transition-colors duration-200',
         )}

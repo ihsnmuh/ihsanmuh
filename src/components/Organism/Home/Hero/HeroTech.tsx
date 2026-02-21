@@ -60,29 +60,6 @@ const HeroTech = () => {
           <span className='text-xs font-mono'>Tailwind</span>
         </div>
 
-        <div className='h-4 border-r border-slate-300 dark:border-slate-700' />
-
-        <div
-          className={cn(
-            'flex items-center gap-1.5 cursor-default',
-            'text-slate-500 dark:text-slate-400 hover:text-[#007ACC] transition-colors duration-200',
-          )}
-          title='VS Code'
-        >
-          <VSCodeIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>VS Code</span>
-        </div>
-
-        <div
-          className={cn(
-            'flex items-center gap-1.5 cursor-default',
-            'text-slate-500 dark:text-slate-400 hover:text-[#F24E1E] transition-colors duration-200',
-          )}
-          title='Figma'
-        >
-          <FigmaIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>Figma</span>
-        </div>
       </div>
     </div>
   );
