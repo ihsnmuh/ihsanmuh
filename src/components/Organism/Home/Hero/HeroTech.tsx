@@ -57,7 +57,6 @@ const HeroTech = () => {
           <TailwindCssIcon className='h-5 w-5' />
           <span className='text-xs font-mono hidden sm:block'>Tailwind</span>
         </div>
-
       </div>
     </div>
   );
