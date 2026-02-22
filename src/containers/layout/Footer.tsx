@@ -3,79 +3,128 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/project', label: 'Project' },
+  { href: '/about', label: 'About' },
+];
+
+const socialLinks = [
+  {
+    href: 'mailto:me@ihsanmuh.com',
+    label: 'Email',
+    icon: Mail,
+    hoverClass: 'hover:text-primary-500',
+  },
+  {
+    href: 'https://github.com/ihsnmuh',
+    label: 'GitHub',
+    icon: Github,
+    hoverClass: 'hover:text-black dark:hover:text-white',
+  },
+  {
+    href: 'https://www.linkedin.com/in/ihsanmuhammad19/',
+    label: 'LinkedIn',
+    icon: Linkedin,
+    hoverClass: 'hover:text-[#0077b5]',
+  },
+  {
+    href: 'https://instagram.com/chernodev',
+    label: 'Instagram',
+    icon: Instagram,
+    hoverClass: 'hover:text-pink-500',
+  },
+];
+
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
-    <footer>
-      <div
-        className={cn(
-          'layout flex justify-between',
-          'w-full py-4 sm:py-8',
-          'border-t border-slate-200 dark:border-slate-800',
-        )}
-      >
-        <div className='flex flex-col gap-4'>
-          <div>
-            <KufiLogo
-              fill='currentColor'
-              className='w-10 h-10 fill-current text-primary-500'
-            />
-            <p
-              className={cn(
-                'text-md font-semibold text-slate-900 dark:text-white',
-                'mt-2 underline underline-offset-2 decoration-primary-400',
-              )}
-            >
-              Thanks for coming!
+    <footer className='border-t border-slate-200 dark:border-slate-800'>
+      <div className={cn('layout', 'py-8 sm:py-12')}>
+        {/* Main footer grid */}
+        <div className='grid grid-cols-2 gap-8 sm:grid-cols-3'>
+          {/* Brand column */}
+          <div className='col-span-2 sm:col-span-1 flex flex-col gap-3'>
+            <Link href='/' aria-label='Home'>
+              <KufiLogo
+                fill='currentColor'
+                className='w-9 h-9 fill-current text-primary-500'
+              />
+            </Link>
+            <p className='text-sm text-slate-600 dark:text-slate-400 max-w-xs'>
+              Software engineer building web applications that deliver value and
+              meaningful user experiences.
             </p>
           </div>
-          <p className='text-xs text-slate-900 dark:text-slate-200'>
-            © 2023,{' '}
-            <UnderlineLink
-              className='text-slate-600/70 dark:text-white/70'
-              href='/'
-            >
-              Muhammad Ihsan
-            </UnderlineLink>
-            . All rights reserved.
-          </p>
-        </div>
-        <div>
-          <p className='text-sm font-semibold underline underline-offset-2 decoration-primary-400'>
-            Reach me out
-          </p>
-          <div className='flex justify-end gap-1 mt-2'>
-            <Link
-              href='mailto:ihsanmuhaammad@gmail.com'
-              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
-              aria-label='Send email to Ihsan'
-            >
-              <Mail size={16} className='hover:text-primary-500' />
-            </Link>
-            <Link
-              href='https://github.com/ihsnmuh'
-              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
-              aria-label='Go to GitHub'
-            >
-              <Github size={16} className='hover:text-primary-500' />
-            </Link>
-            <Link
-              href='https://www.linkedin.com/in/ihsanmuhammad19/'
-              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
-              aria-label='Go to LinkedIn'
-            >
-              <Linkedin size={16} className='hover:text-primary-500' />
-            </Link>
-            <Link
-              href='https://instagram.com/chernodev'
-              className='p-2 rounded hover:bg-slate-200/50 dark:hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
-              aria-label='Go to Instagram'
-            >
-              <Instagram size={16} className='hover:text-primary-500' />
-            </Link>
+
+          {/* Pages column */}
+          <div className='flex flex-col gap-3'>
+            <p className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'>
+              Pages
+            </p>
+            <ul className='flex flex-col gap-2'>
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      'text-sm text-slate-600 dark:text-slate-400',
+                      'hover:text-primary-500 dark:hover:text-primary-400',
+                      'transition-colors duration-200',
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+
+          {/* Connect column */}
+          <div className='flex flex-col gap-3'>
+            <p className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'>
+              Connect
+            </p>
+            <ul className='flex flex-col gap-2'>
+              {socialLinks.map(({ href, label, icon: Icon, hoverClass }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    aria-label={label}
+                    className={cn(
+                      'flex items-center gap-2 text-sm',
+                      'text-slate-600 dark:text-slate-400',
+                      hoverClass,
+                      'transition-colors duration-200',
+                    )}
+                  >
+                    <Icon size={15} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className={cn(
+            'flex flex-col sm:flex-row sm:items-center sm:justify-between',
+            'gap-2 mt-8 pt-6',
+            'border-t border-slate-200 dark:border-slate-800',
+          )}
+        >
+          <p className='text-xs text-slate-400 dark:text-slate-500'>
+            © {year} Muhammad Ihsan. All rights reserved.
+          </p>
+          <p className='font-mono text-xs text-slate-400 dark:text-slate-500'>
+            Built with Next.js &amp; TypeScript
+          </p>
         </div>
       </div>
     </footer>
