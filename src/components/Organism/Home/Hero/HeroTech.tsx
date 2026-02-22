@@ -62,7 +62,7 @@ const HeroTech = () => {
         <div
           className={cn(
             'flex items-center gap-1.5 cursor-default',
-            'text-slate-500 dark:text-slate-400 hover:text-[#06B6D4] transition-colors duration-200',
+            'text-slate-500 dark:text-slate-400 hover:text-[#ef4444] transition-colors duration-200',
           )}
           title='Tanstack Query'
         >
