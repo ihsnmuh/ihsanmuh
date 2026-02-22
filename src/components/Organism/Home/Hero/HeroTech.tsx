@@ -67,7 +67,9 @@ const HeroTech = () => {
           title='Tanstack Query'
         >
           <TanStackQueryIcon className='h-5 w-5' />
-          <span className='text-xs font-mono hidden sm:block'>Tanstack Query</span>
+          <span className='text-xs font-mono hidden sm:block'>
+            Tanstack Query
+          </span>
         </div>
       </div>
     </div>
