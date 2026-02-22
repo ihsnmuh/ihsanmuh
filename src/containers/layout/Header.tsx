@@ -66,10 +66,11 @@ const Header = () => {
     <>
       <header
         className={cn(
-          'fixed top-0 z-50 w-full transition-all duration-300',
+          'fixed top-0 z-50 w-full',
+          'border-b transition-colors duration-500',
           mounted && !isTop
-            ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 dark:border-slate-800/50'
-            : 'bg-transparent',
+            ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-slate-200/60 dark:border-slate-800/60'
+            : 'bg-transparent border-transparent',
         )}
       >
         <div className='layout h-16 w-full flex justify-between items-center'>
