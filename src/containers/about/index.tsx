@@ -1,8 +1,4 @@
-import {
-  GraduationCap,
-  MapPin,
-  Trophy,
-} from 'lucide-react';
+import { GraduationCap, MapPin, Trophy } from 'lucide-react';
 import { motion } from 'motion/react';
 
 import { LoaderView } from '@/lib/loader';
@@ -46,8 +42,8 @@ const AboutContainer = () => {
       >
         <Title title='About' />
         <p className='mt-2 font-primary text-sm md:text-base'>
-          From agricultural engineering to software engineering. A story of
-          reinvention, curiosity, and building things that matter on the web.
+          Agronomist turned engineer. I build for the web, and I&apos;m always
+          pulling the thread to understand how things work underneath.
         </p>
       </div>
 
@@ -90,40 +86,43 @@ const AboutContainer = () => {
               'font-primary text-sm md:text-base italic text-slate-600 dark:text-slate-300',
             )}
           >
-            &ldquo;I started with frontend because I&apos;m drawn to the visual
-            and interactive side of building products. Over time, curiosity led
-            me deeper into backend services, databases, DevOps, and system-level
-            architecture.&rdquo;
+            &ldquo;Curiosity is what drives me, I started on the frontend and
+            kept pulling the thread until I understood the full picture, from UI
+            to infrastructure.&rdquo;
           </blockquote>
 
           <div>
             <p className='font-primary text-base mb-4 text-pretty'>
               I&apos;m a Software Engineer with 4+ years of experience building
-              and maintaining scalable web applications. I recently spent 4
-              years at{' '}
+              scalable web applications, with a strong foundation on the
+              frontend. Most of that time was spent at{' '}
               <UnderlineLink href='https://femaledaily.com/'>
                 Female Daily Network
               </UnderlineLink>
-              , Indonesia&apos;s largest beauty ecosystem platform, shipping
-              production-ready features across content, editorial, commerce, and
-              events.
+              , Indonesia&apos;s largest beauty platform, where I built
+              everything from event ticketing systems and video streaming
+              widgets to CMS dashboards and a dynamic product recommendation
+              engine, collaborating across multiple engineering tribes in a
+              fast-paced Agile environment.
             </p>
             <p className='font-primary text-base mb-4 text-pretty'>
-              My journey into tech began as a deliberate pivot from a background
-              in sales, procurement, and digital marketing. I hold a degree in{' '}
-              <span className='font-semibold'>Agricultural Engineering</span>{' '}
-              from{' '}
+              My path into tech wasn&apos;t a straight line. I pivoted in 2021
+              after years in sales, procurement, and digital marketing, and
+              before that. I studied{' '}
+              <span className='font-semibold'>Agricultural Engineering</span> at{' '}
               <UnderlineLink href='https://www.ipb.ac.id/'>
                 IPB University
               </UnderlineLink>
-              , and completed a Fullstack JavaScript Developer program at{' '}
-              <span className='font-semibold'>Hacktiv8</span>, where I was
-              awarded Best Individual Project.
+              . I retrained through{' '}
+              <span className='font-semibold'>Hacktiv8</span>&apos;s Fullstack
+              JavaScript bootcamp, where I was awarded Best Individual Project.
+              That pivot taught me that with deliberate practice, you can get
+              good at almost anything.
             </p>
             <p className='font-primary text-base mb-6 text-pretty'>
-              Through this site I share what I learn in form of blog posts,
-              projects, and experiments across the web stack. If you have any
-              questions, don&apos;t hesitate to reach out. 🚀
+              I write about what I build and learn here, mostly web development
+              and engineering craft. If something resonates or you just want to
+              talk tech, feel free to reach out.
             </p>
           </div>
 
@@ -231,7 +230,7 @@ const AboutContainer = () => {
         </h2>
         <p className='font-primary text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6'>
           Whether it&apos;s a new project, an opportunity, or just a chat about
-          tech — I&apos;d love to hear from you.
+          tech, I&apos;d love to hear from you.
         </p>
         <div className='flex items-center justify-center gap-4 flex-wrap'>
           <a
