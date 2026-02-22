@@ -5,6 +5,7 @@ import {
   ReactIcon,
   TailwindCssIcon,
   TypeScriptIcon,
+  TanStackQueryIcon,
 } from '@/components/Atoms/Icon';
 
 const HeroTech = () => {
@@ -56,6 +57,19 @@ const HeroTech = () => {
         >
           <TailwindCssIcon className='h-5 w-5' />
           <span className='text-xs font-mono hidden sm:block'>Tailwind</span>
+        </div>
+
+        <div
+          className={cn(
+            'flex items-center gap-1.5 cursor-default',
+            'text-slate-500 dark:text-slate-400 hover:text-[#ef4444] transition-colors duration-200',
+          )}
+          title='Tanstack Query'
+        >
+          <TanStackQueryIcon className='h-5 w-5' />
+          <span className='text-xs font-mono hidden sm:block'>
+            Tanstack Query
+          </span>
         </div>
       </div>
     </div>
