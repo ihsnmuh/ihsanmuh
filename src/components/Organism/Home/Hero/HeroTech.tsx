@@ -1,12 +1,10 @@
 import { cn } from '@/lib/utils';
 
 import {
-  FigmaIcon,
   NextJsIcon,
   ReactIcon,
   TailwindCssIcon,
   TypeScriptIcon,
-  VSCodeIcon,
 } from '@/components/Atoms/Icon';
 
 const HeroTech = () => {
@@ -24,7 +22,7 @@ const HeroTech = () => {
           title='TypeScript'
         >
           <TypeScriptIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>TypeScript</span>
+          <span className='text-xs font-mono hidden sm:block'>TypeScript</span>
         </div>
 
         <div
@@ -35,7 +33,7 @@ const HeroTech = () => {
           title='React'
         >
           <ReactIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>React</span>
+          <span className='text-xs font-mono hidden sm:block'>React</span>
         </div>
 
         <div
@@ -46,7 +44,7 @@ const HeroTech = () => {
           title='Next.js'
         >
           <NextJsIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>Next.js</span>
+          <span className='text-xs font-mono hidden sm:block'>Next.js</span>
         </div>
 
         <div
@@ -57,7 +55,7 @@ const HeroTech = () => {
           title='Tailwind CSS'
         >
           <TailwindCssIcon className='h-5 w-5' />
-          <span className='text-xs font-mono'>Tailwind</span>
+          <span className='text-xs font-mono hidden sm:block'>Tailwind</span>
         </div>
 
       </div>

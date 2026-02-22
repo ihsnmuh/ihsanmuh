@@ -97,10 +97,7 @@ const Hero = () => {
           )}
           data-fade='6'
         >
-          {/* Tech stack — hidden on mobile to save space */}
-          <div className='hidden sm:block'>
-            <HeroTech />
-          </div>
+          <HeroTech />
 
           {/* Stats — always visible */}
           <div className='flex gap-6 sm:ml-auto'>
@@ -136,15 +133,16 @@ const Hero = () => {
       <a
         href='#summary'
         className={cn(
-          'flex flex-col items-center gap-1 w-auto',
           'absolute bottom-6 left-1/2 -translate-x-1/2',
-          'animate-bounce text-slate-400 hover:text-primary-500 transition-colors duration-200',
+          'text-slate-400 hover:text-primary-500 transition-colors duration-200',
         )}
       >
-        <span className='font-mono text-xs uppercase tracking-widest'>
-          scroll
+        <span className='flex flex-col items-center gap-1 animate-bounce'>
+          <span className='font-mono text-xs uppercase tracking-widest'>
+            scroll
+          </span>
+          <ChevronDown size={16} />
         </span>
-        <ChevronDown size={16} />
       </a>
     </section>
   );

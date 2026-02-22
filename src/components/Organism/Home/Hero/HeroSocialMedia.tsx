@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 const HeroSocialMedia = () => {
   return (
-    <div className='flex flex-wrap items-center gap-2 sm:gap-3'>
+    <div className='flex flex-wrap items-center gap-3 sm:gap-4'>
       {/* Primary CTA — Download CV */}
       <Link
         href={process.env.NEXT_PUBLIC_CV_LINK || ''}
@@ -37,7 +37,7 @@ const HeroSocialMedia = () => {
       </Link>
 
       {/* Divider */}
-      <div className='h-6 w-px bg-slate-300 dark:bg-slate-700' />
+      <div className='h-6 w-px hidden sm:block bg-slate-300 dark:bg-slate-700' />
 
       {/* Social icons — same row, same baseline */}
       <div className='flex items-center gap-2'>
