@@ -9,8 +9,8 @@ import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 import FullNameSVG from '@/components/Atoms/svg/FullName';
 import Title from '@/components/Atoms/title';
 import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
-
 import HeroTech from '@/components/Organism/Home/Hero/HeroTech';
+
 import { Experiences } from '@/constant/experience';
 
 const EDUCATION = [

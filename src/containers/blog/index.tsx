@@ -3,11 +3,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
+import Title from '@/components/Atoms/title';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
 
 import { TPosts } from '@/types/interfaces/posts';
-import Title from '@/components/Atoms/title';
 
 interface IBlogContainer {
   posts: TPosts;
