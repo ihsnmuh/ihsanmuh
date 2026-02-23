@@ -63,9 +63,7 @@ const BlogContainer = (props: IBlogContainer) => {
         >
           Journal
         </p>
-        <Title
-          title='Personal Blog'
-        />
+        <Title title='Personal Blog' />
         <p
           className={cn(
             'mt-4 text-base md:text-lg leading-relaxed',
