@@ -4,8 +4,8 @@ import {
   NextJsIcon,
   ReactIcon,
   TailwindCssIcon,
-  TypeScriptIcon,
   TanStackQueryIcon,
+  TypeScriptIcon,
 } from '@/components/Atoms/Icon';
 
 const HeroTech = () => {
