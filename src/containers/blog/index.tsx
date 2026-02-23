@@ -3,10 +3,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/Atoms/title';
-import PostCard from '@/components/Molecules/card/BlogCard';
+import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
+import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
 
 import { TPosts } from '@/types/interfaces/posts';
+import Title from '@/components/Atoms/title';
 
 interface IBlogContainer {
   posts: TPosts;
@@ -33,7 +34,6 @@ const BlogContainer = (props: IBlogContainer) => {
 
   const show = LoaderView();
 
-  // Debounce only the search input, not the initial render
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -42,27 +42,42 @@ const BlogContainer = (props: IBlogContainer) => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Filter posts synchronously based on debounced search — no empty initial state
   const filteredPosts = useMemo(
     () => filterPosts(posts, debouncedSearch),
     [posts, debouncedSearch],
   );
 
+  const isSearching = debouncedSearch.length > 0;
+  const featuredPost = !isSearching ? filteredPosts[0] : undefined;
+  const remainingPosts = !isSearching ? filteredPosts.slice(1) : filteredPosts;
+
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
-      <div
-        className={cn('flex flex-col h-fit rounded-2xl mt-10', 'max-w-2xl')}
-        data-fade='1'
-      >
+      <div className='mt-10 max-w-3xl' data-fade='1'>
+        <p
+          className={cn(
+            'text-[11px] font-semibold uppercase tracking-[0.2em]',
+            'text-primary-500 dark:text-primary-400',
+            'mb-3',
+          )}
+        >
+          Journal
+        </p>
         <Title title='Personal Blog' />
-        <p className='mt-2 font-primary text-sm md:text-base'>
+        <p
+          className={cn(
+            'mt-4 text-base md:text-lg leading-relaxed',
+            'text-gray-500 dark:text-gray-400',
+            'max-w-2xl',
+          )}
+        >
           Writing helps me think clearly. Here I break down what I learn, from
           frontend patterns and performance tricks to lessons picked up along
-          the way. If it made me a better engineer, it might help you too.
+          the way.
         </p>
       </div>
 
-      <div data-fade='2' className='mt-8'>
+      <div data-fade='2' className='mt-10'>
         <label htmlFor='search-input' className='sr-only'>
           Search blog posts
         </label>
@@ -70,14 +85,15 @@ const BlogContainer = (props: IBlogContainer) => {
           <input
             id='search-input'
             className={cn(
-              'w-full py-3 px-4 pl-11',
-              'border rounded-lg',
-              'border-gray-300 dark:border-gray-600',
-              'bg-white dark:bg-gray-800',
+              'w-full py-2.5 px-4 pl-10',
+              'border-b border-x-0 border-t-0',
+              'border-gray-200 dark:border-gray-700',
+              'bg-transparent',
               'text-gray-900 dark:text-gray-100',
-              'placeholder:text-gray-500 dark:placeholder:text-gray-400',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
-              'transition-colors',
+              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+              'focus:outline-none focus:border-primary-500 dark:focus:border-primary-400',
+              'transition-colors duration-300',
+              'text-sm',
             )}
             value={search}
             onChange={(e) => _setSearch(e.target.value)}
@@ -86,7 +102,7 @@ const BlogContainer = (props: IBlogContainer) => {
             aria-label='Search blog posts'
           />
           <svg
-            className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400'
+            className='absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -95,7 +111,7 @@ const BlogContainer = (props: IBlogContainer) => {
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
-              strokeWidth={2}
+              strokeWidth={1.5}
               d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
             />
           </svg>
@@ -103,14 +119,15 @@ const BlogContainer = (props: IBlogContainer) => {
             <button
               onClick={() => _setSearch('')}
               className={cn(
-                'absolute right-3 top-1/2 -translate-y-1/2',
+                'absolute right-0 top-1/2 -translate-y-1/2',
                 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 rounded',
+                'transition-colors',
               )}
               aria-label='Clear search'
             >
               <svg
-                className='w-5 h-5'
+                className='w-4 h-4'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'
@@ -118,53 +135,80 @@ const BlogContainer = (props: IBlogContainer) => {
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                   d='M6 18L18 6M6 6l12 12'
                 />
               </svg>
             </button>
           )}
         </div>
-        {/* Always reserve space to prevent CLS when search text appears */}
-        <div className='h-8 mt-2 flex items-center'>
+        <div className='h-7 mt-1.5 flex items-center'>
           {search && (
-            <p className='text-sm text-gray-600 dark:text-gray-400'>
+            <p className='text-xs text-gray-400 dark:text-gray-500'>
               Found {filteredPosts.length} article
-              {filteredPosts.length !== 1 ? 's' : ''} for &ldquo;{search}&rdquo;
+              {filteredPosts.length !== 1 ? 's' : ''} for &ldquo;{search}
+              &rdquo;
             </p>
           )}
         </div>
       </div>
 
-      {/* min-h prevents CLS when switching between cards and empty state */}
-      <div
-        className={cn(
-          'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
-          'min-h-[280px]',
-        )}
-        data-fade='2'
-      >
+      <div className='min-h-[320px]' data-fade='3'>
         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <PostCard
-              key={post.title}
-              title={post.title}
-              publishedAt={post.publishedAt}
-              description={post.description}
-              tags={post.tags}
-              slug={post.slug}
-              banner={post.banner}
-              timeReading={post.timeReading}
-              views={post.views}
-              likes={post.likes}
-            />
-          ))
+          <>
+            {featuredPost && (
+              <div className='mt-4'>
+                <FeaturedPostCard {...featuredPost} />
+              </div>
+            )}
+
+            {remainingPosts.length > 0 && (
+              <>
+                {featuredPost && (
+                  <div className='my-10 flex items-center gap-4'>
+                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
+                    <span
+                      className={cn(
+                        'text-[10px] font-semibold uppercase tracking-[0.2em]',
+                        'text-gray-400 dark:text-gray-500',
+                        'shrink-0',
+                      )}
+                    >
+                      All Articles
+                    </span>
+                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
+                  </div>
+                )}
+
+                <div
+                  className={cn(
+                    'grid grid-cols-1 lg:grid-cols-2 gap-x-8',
+                    'divide-y lg:divide-y-0 divide-gray-100 dark:divide-gray-800',
+                  )}
+                >
+                  {remainingPosts.map((post) => (
+                    <div
+                      key={post.slug}
+                      className={cn(
+                        'lg:border-b lg:border-gray-100 lg:dark:border-gray-800',
+                      )}
+                    >
+                      <EditorialPostCard {...post} />
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
         ) : (
-          <div className='col-span-full flex flex-col items-center justify-center text-center py-10'>
-            <p className='font-primary text-lg font-semibold text-slate-500 dark:text-slate-400'>
+          <div className='flex flex-col items-center justify-center text-center py-20'>
+            <div
+              className={cn('w-16 h-px mb-6', 'bg-gray-200 dark:bg-gray-700')}
+            />
+            <p className='font-secondary text-lg font-semibold text-gray-400 dark:text-gray-500'>
               No articles found
             </p>
-            <p className='font-primary text-sm text-slate-400 dark:text-slate-500 mt-1'>
+            <p className='text-sm text-gray-400 dark:text-gray-500 mt-1.5'>
               No results for &ldquo;{search}&rdquo;. Try a different keyword.
             </p>
           </div>
