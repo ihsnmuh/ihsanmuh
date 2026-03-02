@@ -5,20 +5,34 @@ import projectData from './project.json';
 async function main() {
   const data = projectData as unknown as Projects[];
 
-  await prisma.projects.createMany({
-    data: data.map((project) => ({
-      image: project.image,
-      title: project.title,
-      slug: project.slug,
-      category: project.category,
-      description: project.description,
-      stacks: project.stacks,
-      github: project.github,
-      website: project.website,
-      createAt: new Date(project.createAt),
-    })),
-    skipDuplicates: true,
-  });
+  await Promise.all(
+    data.map((project) =>
+      prisma.projects.upsert({
+        where: { slug: project.slug },
+        create: {
+          image: project.image,
+          title: project.title,
+          slug: project.slug,
+          category: project.category,
+          description: project.description,
+          stacks: project.stacks,
+          github: project.github,
+          website: project.website,
+          createAt: new Date(project.createAt),
+        },
+        update: {
+          image: project.image,
+          title: project.title,
+          category: project.category,
+          description: project.description,
+          stacks: project.stacks,
+          github: project.github,
+          website: project.website,
+          createAt: new Date(project.createAt),
+        },
+      }),
+    ),
+  );
 }
 
 main()

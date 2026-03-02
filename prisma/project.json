@@ -1,5 +1,31 @@
 [
   {
+    "id": "d45bdb27-c12c-4f40-b29f-ad0b25e9f952",
+    "image": "femaledaily-website",
+    "title": "Femaledaily Website",
+    "slug": "femaledaily-website",
+    "category": "Internal Project",
+    "description": "Female Daily is a comprehensive beauty platform and community based in Indonesia. It serves as a central hub for beauty enthusiasts to find information, share experiences, and discover products.",
+    "stacks": ["JavaScript", "React.js", "Monorepo", "Docker", "Redux"],
+    "github": "",
+    "website": "https://www.femaledaily.com",
+    "createAt": "2025-01-07T00:00:00.000Z",
+    "updateAt": "2025-01-07T00:00:00.000Z"
+  },
+  {
+    "id": "d45bdb27-c12c-4f40-b29f-ad0b25e9f953",
+    "image": "studio-website",
+    "title": "Femaledaily Studio",
+    "slug": "femaledaily-studio",
+    "category": "Internal Project",
+    "description": "Female Daily Studio is the dedicated e-commerce branch of the Female Daily Network. While the main Female Daily site focuses on community reviews and editorial content, the Studio serves as an online retail destination for beauty products.",
+    "stacks": ["TypeScript", "Next.js", "Monorepo", "Docker", "RTKQuery"],
+    "github": "",
+    "website": "https://studio.femaledaily.com",
+    "createAt": "2025-01-06T00:00:00.000Z",
+    "updateAt": "2025-01-06T00:00:00.000Z"
+  },
+  {
     "id": "59666387-2d17-49a8-b107-f5870e6768f6",
     "image": "personal-website-v2",
     "title": "Personal Website V2",
