@@ -43,7 +43,7 @@ import {
   SiVuedotjs,
   SiWebpack,
   SiWordpress,
-  SiDocker
+  SiDocker,
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 
