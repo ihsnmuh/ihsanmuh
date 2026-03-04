@@ -111,7 +111,7 @@ const ShowcaseProjectCard = (props: IProject) => {
           className={cn(
             'mt-2 text-sm leading-relaxed',
             'text-gray-500 dark:text-gray-400',
-            'line-clamp-2',
+            'line-clamp-3',
             'flex-1',
           )}
         >

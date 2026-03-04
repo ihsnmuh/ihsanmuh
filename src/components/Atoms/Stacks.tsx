@@ -43,6 +43,7 @@ import {
   SiVuedotjs,
   SiWebpack,
   SiWordpress,
+  SiDocker
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 
@@ -90,6 +91,7 @@ const Stacks: stacksProps = {
   'Node.js': <SiNodedotjs size={iconSize} className='text-green-600' />,
   Gatsby: <SiGatsby size={iconSize} className='text-purple-600' />,
   Redux: <SiRedux size={iconSize} className='text-purple-500' />,
+  RTKQuery: <SiRedux size={iconSize} className='text-purple-500' />,
   Webpack: <SiWebpack size={iconSize} className='text-blue-500' />,
   'Styled Components': (
     <SiStyledcomponents size={iconSize} className='text-pink-500' />
@@ -135,6 +137,7 @@ const Stacks: stacksProps = {
     <LuLayers size={iconSize} className='text-slate-500 dark:text-slate-400' />
   ),
   'UI/UX': <LuPalette size={iconSize} className='text-pink-500' />,
+  Docker: <SiDocker size={iconSize} className='text-blue-500' />,
 };
 
 interface StackIconProps {
