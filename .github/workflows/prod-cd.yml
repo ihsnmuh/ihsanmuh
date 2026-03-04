@@ -43,6 +43,10 @@ jobs:
             echo "Running database migrations..."
             docker compose run --rm app node node_modules/prisma/build/index.js migrate deploy || (echo "Migration failed!" && exit 1)
 
+            # Sync project data from project.json
+            echo "Running database seed..."
+            docker compose run --rm app npx prisma db seed || (echo "Seed failed!" && exit 1)
+
             # Restart the application with the new image
             echo "Starting application..."
             docker compose up -d --remove-orphans || (echo "Failed to start container!" && exit 1)
