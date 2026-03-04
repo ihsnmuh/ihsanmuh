@@ -38,6 +38,9 @@ RUN echo "Cache bust: ${CACHE_BUST:-none}"
 # Generate Prisma Client
 RUN yarn generate
 
+# Compile seed.ts to seed.js for use at runtime (avoids ts-node dependency in runner)
+RUN node_modules/.bin/tsc prisma/seed.ts --outDir prisma --module commonjs --esModuleInterop --resolveJsonModule --skipLibCheck
+
 # Build Next.js application
 # Disable telemetry during build
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -69,14 +72,8 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
-# Copy ts-node and typescript for running seed during deployment
-COPY --from=builder /app/node_modules/ts-node ./node_modules/ts-node
-COPY --from=builder /app/node_modules/typescript ./node_modules/typescript
-COPY --from=builder /app/node_modules/arg ./node_modules/arg
-COPY --from=builder /app/node_modules/create-require ./node_modules/create-require
-COPY --from=builder /app/node_modules/diff ./node_modules/diff
-COPY --from=builder /app/node_modules/make-error ./node_modules/make-error
-COPY --from=builder /app/node_modules/yn ./node_modules/yn
+# Copy original package.json so Prisma can read the seed config
+COPY --from=builder /app/package.json ./package.json
 
 # Create cache directory for Next.js image optimization
 RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next/cache
