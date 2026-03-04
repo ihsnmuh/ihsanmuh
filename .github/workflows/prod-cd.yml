@@ -45,7 +45,7 @@ jobs:
 
             # Sync project data from project.json
             echo "Running database seed..."
-            docker compose run --rm app npx prisma db seed || (echo "Seed failed!" && exit 1)
+            docker compose run --rm app node node_modules/prisma/build/index.js db seed || (echo "Seed failed!" && exit 1)
 
             # Restart the application with the new image
             echo "Starting application..."
