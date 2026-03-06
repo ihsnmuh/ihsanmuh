@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 const defaultMeta = {
   title: 'Muhammad Ihsan - Personal Website',
-  siteName: process.env.NEXT_PUBLIC_URL,
+  siteName: 'Muhammad Ihsan',
   description:
     'Welcome to my personal website. I work with Javascript and React. I hope you like it!',
   url: `https://${process.env.NEXT_PUBLIC_URL}`,
@@ -19,6 +19,7 @@ type SeoProps = {
   banner?: string;
   canonical?: string;
   tags?: string;
+  modifiedDate?: string;
 } & Partial<typeof defaultMeta>;
 
 const Seo = (props: SeoProps) => {
@@ -31,6 +32,8 @@ const Seo = (props: SeoProps) => {
   meta['title'] = props.templateTitle
     ? `${props.templateTitle} | ${meta.siteName}`
     : meta.title;
+
+  meta['type'] = props.isBlog ? 'article' : (props.type ?? defaultMeta.type);
 
   return (
     <Head>
@@ -47,10 +50,15 @@ const Seo = (props: SeoProps) => {
       <meta property='og:site_name' content={meta.siteName} />
       <meta property='og:description' content={meta.description} />
       <meta property='og:title' content={meta.title} />
-      <meta name='image' property='og:image' content={meta.image} />
+      <meta property='og:image' content={meta.image} />
+      <meta property='og:image:width' content='1200' />
+      <meta property='og:image:height' content='630' />
+      <meta property='og:image:alt' content={meta.title} />
+      <meta property='og:locale' content='en_US' />
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@ihsnmuh' />
+      <meta name='twitter:creator' content='@ihsnmuh' />
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
@@ -67,6 +75,12 @@ const Seo = (props: SeoProps) => {
             property='article:author'
             content='Muhammad Ihsan'
           />
+          {meta.modifiedDate && (
+            <meta
+              property='article:modified_time'
+              content={meta.modifiedDate}
+            />
+          )}
         </>
       )}
       {meta.isBlog && meta.date && (
@@ -126,7 +140,7 @@ type Favicons = {
 const favicons: Array<Favicons> = [
   {
     rel: 'apple-touch-icon',
-    sizes: '57x57',
+    sizes: '180x180',
     href: '/favicon/apple-touch-icon.png',
   },
   {
