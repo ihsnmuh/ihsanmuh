@@ -29,7 +29,8 @@ async function loadPoppinsFont(weight: number): Promise<ArrayBuffer> {
   const fontUrl = match?.[1];
   if (!fontUrl) throw new Error(`Failed to load Poppins ${weight}`);
   const res = await fetch(fontUrl);
-  if (res.status !== 200) throw new Error(`Failed to fetch font: ${res.status}`);
+  if (res.status !== 200)
+    throw new Error(`Failed to fetch font: ${res.status}`);
   return res.arrayBuffer();
 }
 
@@ -38,7 +39,9 @@ export default async function handler(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const titleRaw = searchParams.get('title') || 'Muhammad Ihsan';
-    const title = titleRaw.replace(/\s*\|\s*Muhammad Ihsan$/, '').trim() || 'Muhammad Ihsan';
+    const title =
+      titleRaw.replace(/\s*\|\s*Muhammad Ihsan$/, '').trim() ||
+      'Muhammad Ihsan';
     const description =
       searchParams.get('description') ||
       'Software Engineer passionate about creating excellent user experiences. I work with TypeScript, React, and Next.js.';
@@ -46,7 +49,10 @@ export default async function handler(req: NextRequest) {
     const tagsParam = searchParams.get('tags');
     let tags: string[];
     if (tagsParam) {
-      tags = tagsParam.split(',').map((t) => t.trim()).filter(Boolean);
+      tags = tagsParam
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean);
     } else if (type === 'article') {
       tags = ['blog'];
     } else {
@@ -168,17 +174,17 @@ export default async function handler(req: NextRequest) {
                 gap: '20px',
               }}
             >
-            <img
-              src={`${new URL(req.url).origin}/images/avatar.png`}
-              alt=''
-              width={64}
-              height={64}
-              style={{
-                borderRadius: '9999px',
-                objectFit: 'cover',
-                background: `linear-gradient(135deg, ${COLORS.accent} 0%, ${COLORS.accentMuted} 100%)`,
-              }}
-            />
+              <img
+                src={`${new URL(req.url).origin}/images/avatar.png`}
+                alt=''
+                width={64}
+                height={64}
+                style={{
+                  borderRadius: '9999px',
+                  objectFit: 'cover',
+                  background: `linear-gradient(135deg, ${COLORS.accent} 0%, ${COLORS.accentMuted} 100%)`,
+                }}
+              />
               <div
                 style={{
                   display: 'flex',
