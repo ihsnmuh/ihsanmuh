@@ -4,10 +4,10 @@ import React, { useMemo, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
+import Title from '@/components/Atoms/title';
 import ShowcaseProjectCard from '@/components/Molecules/card/ShowcaseProjectCard';
 
 import { queryProjectList } from '@/queries/projectList';
-import Title from '@/components/Atoms/title';
 
 const ALL_CATEGORY = 'All';
 

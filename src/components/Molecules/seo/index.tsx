@@ -47,7 +47,6 @@ const Seo = (props: SeoProps) => {
   if (props.image) ogParams.set('image', props.image);
   meta['image'] = `${meta.url}/api/og?${ogParams.toString()}`;
 
-  console.log(meta.image);
   return (
     <Head>
       <title>{meta.title}</title>
