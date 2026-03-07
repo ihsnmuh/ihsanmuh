@@ -5,6 +5,7 @@ import {
   SiAngular,
   SiApollographql,
   SiCss3,
+  SiDocker,
   SiExpo,
   SiExpress,
   SiFigma,
@@ -43,7 +44,6 @@ import {
   SiVuedotjs,
   SiWebpack,
   SiWordpress,
-  SiDocker,
 } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 
