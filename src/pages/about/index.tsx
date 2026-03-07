@@ -4,7 +4,7 @@ import AboutContainer from '@/containers/about';
 const About = () => {
   return (
     <>
-      <Seo title='About | Muhammad Ihsan' />
+      <Seo title='About | Muhammad Ihsan' tags={['about']} />
       <AboutContainer />
     </>
   );

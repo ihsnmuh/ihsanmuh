@@ -10,7 +10,7 @@ import { queryProjectList } from '@/queries/projectList';
 const Project = () => {
   return (
     <>
-      <Seo title='Project | Muhammad Ihsan' />
+      <Seo title='Project | Muhammad Ihsan' tags={['project']} />
       <ProjectContainer />
     </>
   );

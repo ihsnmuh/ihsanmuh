@@ -26,7 +26,7 @@ export default function Home(props: IHomeProps) {
 
   return (
     <>
-      <Seo />
+      <Seo tags={['home']} />
       <Head>
         <script
           type='application/ld+json'
