@@ -21,12 +21,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy using SSH
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
+          envs: DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
           script: |
             set -e
 
@@ -34,6 +38,10 @@ jobs:
 
             # Navigate to the application directory
             cd ~/apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+
+            # Login to Docker Hub (required for private images)
+            echo "Logging in to Docker Hub..."
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
             # Pull the latest image from Docker Hub
             echo "Pulling latest Docker image..."
