@@ -19,7 +19,7 @@ const Blog = (props: IBlogPage) => {
 
   return (
     <>
-      <Seo isBlog title='Blog | Muhammad Ihsan' />
+      <Seo isBlog title='Blog | Muhammad Ihsan' tags={['blog']} />
       <BlogContainer posts={filteredPost} />
     </>
   );

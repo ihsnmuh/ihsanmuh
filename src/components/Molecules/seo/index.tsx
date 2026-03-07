@@ -2,10 +2,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const defaultMeta = {
-  title: 'Muhammad Ihsan - Personal Website',
-  siteName: process.env.NEXT_PUBLIC_URL,
+  title: 'Personal Website',
+  siteName: 'Muhammad Ihsan',
   description:
-    'Welcome to my personal website. I work with Javascript and React. I hope you like it!',
+    'Software Engineer passionate about creating excellent user experiences',
   url: `https://${process.env.NEXT_PUBLIC_URL}`,
   image: `https://${process.env.NEXT_PUBLIC_URL}/favicon/android-chrome-512x512.png`,
   type: 'website',
@@ -18,7 +18,8 @@ type SeoProps = {
   isBlog?: boolean;
   banner?: string;
   canonical?: string;
-  tags?: string;
+  tags?: string | string[];
+  modifiedDate?: string;
 } & Partial<typeof defaultMeta>;
 
 const Seo = (props: SeoProps) => {
@@ -32,6 +33,21 @@ const Seo = (props: SeoProps) => {
     ? `${props.templateTitle} | ${meta.siteName}`
     : meta.title;
 
+  meta['type'] = props.isBlog ? 'article' : (props.type ?? defaultMeta.type);
+
+  const tagList: string[] = [];
+  if (typeof meta.tags === 'string' && meta.tags) tagList.push(meta.tags);
+  else if (Array.isArray(meta.tags)) tagList.push(...meta.tags.filter(Boolean));
+  const ogParams = new URLSearchParams({
+    title: meta.title,
+    description: meta.description,
+    type: meta.type,
+  });
+  if (tagList.length > 0) ogParams.set('tags', tagList.join(','));
+  if (props.image) ogParams.set('image', props.image);
+  meta['image'] = `${meta.url}/api/og?${ogParams.toString()}`;
+
+  console.log(meta.image);
   return (
     <Head>
       <title>{meta.title}</title>
@@ -47,10 +63,15 @@ const Seo = (props: SeoProps) => {
       <meta property='og:site_name' content={meta.siteName} />
       <meta property='og:description' content={meta.description} />
       <meta property='og:title' content={meta.title} />
-      <meta name='image' property='og:image' content={meta.image} />
+      <meta property='og:image' content={meta.image} />
+      <meta property='og:image:width' content='1200' />
+      <meta property='og:image:height' content='630' />
+      <meta property='og:image:alt' content={meta.title} />
+      <meta property='og:locale' content='en_US' />
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@ihsnmuh' />
+      <meta name='twitter:creator' content='@ihsnmuh' />
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
@@ -67,6 +88,12 @@ const Seo = (props: SeoProps) => {
             property='article:author'
             content='Muhammad Ihsan'
           />
+          {meta.modifiedDate && (
+            <meta
+              property='article:modified_time'
+              content={meta.modifiedDate}
+            />
+          )}
         </>
       )}
       {meta.isBlog && meta.date && (
@@ -126,7 +153,7 @@ type Favicons = {
 const favicons: Array<Favicons> = [
   {
     rel: 'apple-touch-icon',
-    sizes: '57x57',
+    sizes: '180x180',
     href: '/favicon/apple-touch-icon.png',
   },
   {
