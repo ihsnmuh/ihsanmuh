@@ -61,9 +61,7 @@ export default async function handler(req: NextRequest) {
 
     const [fontData, avatarSrc] = await Promise.all([
       Promise.all(FONT_WEIGHTS.map((w) => loadPoppinsFont(w))),
-      loadImageAsDataUrl(`${SITE_URL}/images/avatar.png`).catch(
-        () => null,
-      ),
+      loadImageAsDataUrl(`${SITE_URL}/images/avatar.png`).catch(() => null),
     ]);
 
     const titleRaw = searchParams.get('title') || 'Muhammad Ihsan';
