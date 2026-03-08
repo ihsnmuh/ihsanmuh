@@ -1,9 +1,11 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
 export const config = {
   runtime: 'edge',
 };
+
+const SITE_URL = `https://${process.env.NEXT_PUBLIC_URL}`;
 
 // Theme colors from globals.css (dark mode primary palette)
 const COLORS = {
@@ -17,15 +19,34 @@ const COLORS = {
   border: 'rgba(148, 163, 184, 0.2)',
 };
 
+const FONT_WEIGHTS = [400, 600, 700, 800] as const;
+
 function extractYearFromTitle(title: string): string | null {
   const match = /\b(19|20)\d{2}\b/.exec(title);
   return match ? match[0] : null;
 }
 
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCodePoint(bytes[i]!);
+  }
+  return btoa(binary);
+}
+
+async function loadImageAsDataUrl(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch image: ${res.status}`);
+  const contentType = res.headers.get('content-type') || 'image/png';
+  const buffer = await res.arrayBuffer();
+  return `data:${contentType};base64,${arrayBufferToBase64(buffer)}`;
+}
+
 async function loadPoppinsFont(weight: number): Promise<ArrayBuffer> {
   const url = `https://fonts.googleapis.com/css2?family=Poppins:wght@${weight}&display=swap`;
   const css = await fetch(url).then((r) => r.text());
-  const match = css.match(/url\((https:\/\/[^)]+)\)/);
+  const match = /url\((https:\/\/[^)]+)\)/.exec(css);
   const fontUrl = match?.[1];
   if (!fontUrl) throw new Error(`Failed to load Poppins ${weight}`);
   const res = await fetch(fontUrl);
@@ -37,6 +58,11 @@ async function loadPoppinsFont(weight: number): Promise<ArrayBuffer> {
 export default async function handler(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
+
+    const [fontData, avatarSrc] = await Promise.all([
+      Promise.all(FONT_WEIGHTS.map((w) => loadPoppinsFont(w))),
+      loadImageAsDataUrl(`${SITE_URL}/images/avatar.png`).catch(() => null),
+    ]);
 
     const titleRaw = searchParams.get('title') || 'Muhammad Ihsan';
     const title =
@@ -174,17 +200,19 @@ export default async function handler(req: NextRequest) {
                 gap: '20px',
               }}
             >
-              <img
-                src={`${new URL(req.url).origin}/images/avatar.png`}
-                alt=''
-                width={64}
-                height={64}
-                style={{
-                  borderRadius: '9999px',
-                  objectFit: 'cover',
-                  background: `linear-gradient(135deg, ${COLORS.accent} 0%, ${COLORS.accentMuted} 100%)`,
-                }}
-              />
+              {avatarSrc && (
+                <img
+                  src={avatarSrc}
+                  alt=''
+                  width={64}
+                  height={64}
+                  style={{
+                    borderRadius: '9999px',
+                    objectFit: 'cover',
+                    background: `linear-gradient(135deg, ${COLORS.accent} 0%, ${COLORS.accentMuted} 100%)`,
+                  }}
+                />
+              )}
               <div
                 style={{
                   display: 'flex',
@@ -269,32 +297,12 @@ export default async function handler(req: NextRequest) {
       {
         width: 1200,
         height: 630,
-        fonts: [
-          {
-            name: 'Poppins',
-            data: await loadPoppinsFont(400),
-            style: 'normal',
-            weight: 400,
-          },
-          {
-            name: 'Poppins',
-            data: await loadPoppinsFont(600),
-            style: 'normal',
-            weight: 600,
-          },
-          {
-            name: 'Poppins',
-            data: await loadPoppinsFont(700),
-            style: 'normal',
-            weight: 700,
-          },
-          {
-            name: 'Poppins',
-            data: await loadPoppinsFont(800),
-            style: 'normal',
-            weight: 800,
-          },
-        ],
+        fonts: FONT_WEIGHTS.map((weight, i) => ({
+          name: 'Poppins',
+          data: fontData[i]!,
+          style: 'normal' as const,
+          weight,
+        })),
       },
     );
   } catch (e: unknown) {
