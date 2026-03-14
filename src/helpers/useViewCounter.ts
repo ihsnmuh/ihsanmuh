@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type ViewCounterState = {
   views: number;
@@ -64,16 +64,18 @@ type ViewIncrementState = {
   error: string | null;
 };
 
-/** POSTs to increment view count once on mount. Use on article detail page. */
+/** POSTs to increment view count once per page load. Use on article detail page. */
 export function useViewIncrement(slug: string) {
   const [state, setState] = useState<ViewIncrementState>({
     views: 0,
     isLoading: true,
     error: null,
   });
+  const hasFired = useRef(false);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slug || hasFired.current) return;
+    hasFired.current = true;
 
     const incrementView = async () => {
       try {
