@@ -9,7 +9,11 @@ import { ThemeProvider } from 'next-themes';
 import React from 'react';
 
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
+import '@/styles/base.css';
 import '@/styles/main.css';
+import '@/styles/utilities.css';
+import '@/styles/globals.css';
+import '@/styles/mdx.css';
 import '@/styles/colors.css';
 
 import ProgressBar from '@/components/Atoms/ProgressBar';

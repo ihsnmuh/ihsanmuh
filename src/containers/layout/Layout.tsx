@@ -1,9 +1,15 @@
+import dynamic from 'next/dynamic';
 import { Inter, Poppins } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 
 import Footer from './Footer';
 import Header from './Header';
+
+const CommandPalette = dynamic(
+  () => import('@/components/Molecules/CommandPalette'),
+  { ssr: false },
+);
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -34,6 +40,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <main id='main-content'>{children}</main>
       <Footer />
+      <CommandPalette />
     </div>
   );
 };

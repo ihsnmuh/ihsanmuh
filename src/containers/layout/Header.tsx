@@ -1,4 +1,4 @@
-import { Menu, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -110,6 +110,31 @@ const Header = () => {
                 )}
               </UnstyledLink>
             ))}
+
+            {/* Desktop Search Button */}
+            <button
+              onClick={() => window.dispatchEvent(new Event('open-search'))}
+              type='button'
+              className={cn(
+                'group flex items-center justify-between gap-3 px-3 py-1.5 rounded-lg border text-[11px] font-medium ml-2 mr-1',
+                'bg-slate-100/50 hover:bg-slate-200/50 dark:bg-slate-800/40 dark:hover:bg-slate-800/80',
+                'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
+                'border-slate-200 dark:border-slate-800 transition-all duration-200',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
+              )}
+            >
+              <span className='flex items-center gap-2'>
+                <Search
+                  size={14}
+                  className='transition-colors duration-200 text-slate-400 dark:text-slate-500 group-hover:text-primary-500'
+                />
+                <span>Search...</span>
+              </span>
+              <kbd className='font-sans text-[9px] font-semibold text-slate-400 dark:text-slate-500 border border-slate-200/60 dark:border-slate-800/60 rounded px-1.5 py-0.5 bg-white dark:bg-slate-900 shadow-sm'>
+                ⌘K
+              </kbd>
+            </button>
+
             <div className='ml-2 pl-2 border-l border-slate-200 dark:border-slate-700'>
               <ThemeSwitcher />
             </div>
@@ -117,6 +142,18 @@ const Header = () => {
 
           {/* Mobile: theme + hamburger */}
           <div className='flex items-center gap-1 md:hidden relative z-[60]'>
+            <button
+              onClick={() => window.dispatchEvent(new Event('open-search'))}
+              type='button'
+              aria-label='Search'
+              className={cn(
+                'inline-flex items-center justify-center h-9 w-9 rounded',
+                'hover:bg-slate-200/40 dark:hover:bg-slate-800/40 hover:text-primary-500 text-slate-600 dark:text-slate-400',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
+              )}
+            >
+              <Search size={18} />
+            </button>
             <ThemeSwitcher />
             <button
               type='button'
