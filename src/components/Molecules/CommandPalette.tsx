@@ -162,7 +162,8 @@ const CommandPalette = () => {
         id: 'nav-project',
         category: 'Navigation',
         title: 'Projects',
-        description: 'Browse the collection of applications and projects I have built.',
+        description:
+          'Browse the collection of applications and projects I have built.',
         url: '/project',
         icon: <FolderKanban className='h-4 w-4' />,
       },
