@@ -1,15 +1,14 @@
 import { GraduationCap, MapPin, Trophy } from 'lucide-react';
-import { motion } from 'motion/react';
+import Image from 'next/image';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import ImageFallback from '@/components/Atoms/image/fallback';
 import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
-import FullNameSVG from '@/components/Atoms/svg/FullName';
 import Title from '@/components/Atoms/title';
+import CareerJourney from '@/components/Molecules/card/CareerJourney';
 import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
-import HeroTech from '@/components/Organism/Home/Hero/HeroTech';
+import GroupedTechStack from '@/components/Molecules/card/GroupedTechStack';
 
 import { Experiences } from '@/constant/experience';
 
@@ -48,31 +47,31 @@ const AboutContainer = () => {
       </div>
 
       {/* ── Profile + Bio ─────────────────────────────────── */}
-      <div className='flex flex-col md:flex-row justify-between mt-10 md:mt-16'>
-        <div className='w-full md:w-1/3 mb-8' data-fade='3'>
-          <motion.figure
-            whileHover={{ scale: 1.1, rotate: -5 }}
-            className='relative background-card border border-black dark:border-white rounded-lg shadow-md p-6 pb-20 mx-auto w-72 h-[350px]'
-          >
-            <ImageFallback
-              src='/images/avatar.png'
-              width={200}
-              height={200}
-              alt='profile'
-              sizes='100vw'
-              style={{
-                width: '100%',
-                height: 'auto',
-              }}
-              className='float-right bg-gradient-to-r from-primary-400 to-violet-500 dark:to-orange-400'
-            />
-            <figcaption className='absolute bottom-6 right-8'>
-              <FullNameSVG className='dark:fill-white scale-125' />
-            </figcaption>
-          </motion.figure>
+      <div className='flex flex-col md:flex-row justify-between mt-10 md:mt-16 gap-8 md:gap-0'>
+        <div
+          className='w-full md:w-1/3 mb-8 flex flex-col items-center md:items-start gap-8 group/avatar'
+          data-fade='3'
+        >
+          <div className='relative p-4 pb-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-zinc-700/40 rounded-2xl shadow-xl transition-all duration-500 group-hover/avatar:-rotate-2 group-hover/avatar:scale-105 mx-auto'>
+            <div className='relative overflow-hidden rounded-xl w-60 h-60 lg:w-68 lg:h-68 bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900'>
+              <Image
+                src='/images/avatar.png'
+                alt='Muhammad Ihsan'
+                width={300}
+                height={300}
+                className='object-cover w-full h-full grayscale group-hover/avatar:grayscale-0 transition-all duration-500 scale-105 group-hover/avatar:scale-100'
+                priority
+              />
+            </div>
+            <div className='mt-4 text-center'>
+              <span className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-zinc-500 group-hover/avatar:text-primary-500 dark:group-hover/avatar:text-primary-400 transition-colors duration-300'>
+                @chernodev
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className='flex-1 md:pl-10' data-fade='4'>
+        <div className='flex-1' data-fade='4'>
           <h2 className='h2 font-primary mb-1'>Muhammad Ihsan</h2>
           <p className='font-primary text-base mb-5'>
             <span className='font-semibold'>Software Engineer</span> with a
@@ -86,13 +85,13 @@ const AboutContainer = () => {
               'font-primary text-sm md:text-base italic text-slate-600 dark:text-slate-300',
             )}
           >
-            &ldquo;Curiosity is what drives me, I started on the frontend and
+            &ldquo;Curiosity is what drives me. I started on the frontend and
             kept pulling the thread until I understood the full picture, from UI
             to infrastructure.&rdquo;
           </blockquote>
 
-          <div>
-            <p className='font-primary text-base mb-4 text-pretty'>
+          <div className='prose dark:prose-invert max-w-none'>
+            <p className='font-primary text-base mb-4 text-pretty text-slate-600 dark:text-zinc-300'>
               I&apos;m a Software Engineer with 4+ years of experience building
               scalable web applications, with a strong foundation on the
               frontend. Most of that time was spent at{' '}
@@ -105,34 +104,62 @@ const AboutContainer = () => {
               engine, collaborating across multiple engineering tribes in a
               fast-paced Agile environment.
             </p>
-            <p className='font-primary text-base mb-4 text-pretty'>
+            <p className='font-primary text-base mb-4 text-pretty text-slate-600 dark:text-zinc-300'>
               My path into tech wasn&apos;t a straight line. I pivoted in 2021
-              after years in sales, procurement, and digital marketing, and
-              before that. I studied{' '}
-              <span className='font-semibold'>Agricultural Engineering</span> at{' '}
+              after years in sales, procurement, and digital marketing. Before
+              that, I studied{' '}
+              <span className='font-semibold text-slate-800 dark:text-zinc-100'>
+                Agricultural Engineering
+              </span>{' '}
+              at{' '}
               <UnderlineLink href='https://www.ipb.ac.id/'>
                 IPB University
               </UnderlineLink>
               . I retrained through{' '}
-              <span className='font-semibold'>Hacktiv8</span>&apos;s Fullstack
-              JavaScript bootcamp, where I was awarded Best Individual Project.
-              That pivot taught me that with deliberate practice, you can get
-              good at almost anything.
+              <span className='font-semibold text-slate-800 dark:text-zinc-100'>
+                Hacktiv8
+              </span>
+              &apos;s Fullstack JavaScript bootcamp, where I was awarded Best
+              Individual Project. That pivot taught me that with deliberate
+              practice, you can get good at almost anything.
             </p>
-            <p className='font-primary text-base mb-6 text-pretty'>
+            <p className='font-primary text-base mb-6 text-pretty text-slate-600 dark:text-zinc-300'>
               I write about what I build and learn here, mostly web development
               and engineering craft. If something resonates or you just want to
               talk tech, feel free to reach out.
             </p>
           </div>
-
-          {/* ── Skills ──────────────────────────────────────── */}
-          <HeroTech />
         </div>
       </div>
 
-      {/* ── Section divider ───────────────────────────────── */}
+      {/* ── Career Pivot Journey ──────────────────────────── */}
       <div className='my-16 md:my-24 flex items-center gap-4' data-fade='5'>
+        <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
+        <span className='font-mono text-xs uppercase tracking-widest text-slate-400'>
+          Evolution
+        </span>
+        <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
+      </div>
+
+      <div className='max-w-3xl mx-auto' data-fade='5'>
+        <CareerJourney />
+      </div>
+
+      {/* ── Tech Stack ────────────────────────────────────── */}
+      <div className='my-16 md:my-24 flex items-center gap-4' data-fade='5'>
+        <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
+        <span className='font-mono text-xs uppercase tracking-widest text-slate-400'>
+          Skills
+        </span>
+        <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
+      </div>
+
+      <div className='max-w-4xl mx-auto' data-fade='5'>
+        <GroupedTechStack />
+      </div>
+
+      {/* ── Section divider ───────────────────────────────── */}
+      <div className='my-16 md:my-24 flex items-center gap-4' data-fade='6'>
         <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
         <span className='font-mono text-xs uppercase tracking-widest text-slate-400'>
           Education
@@ -141,7 +168,7 @@ const AboutContainer = () => {
       </div>
 
       {/* ── Education ─────────────────────────────────────── */}
-      <div className='max-w-3xl mx-auto' data-fade='5'>
+      <div className='max-w-3xl mx-auto' data-fade='6'>
         <div className='flex flex-col gap-4'>
           {EDUCATION.map((edu) => (
             <div
@@ -191,7 +218,7 @@ const AboutContainer = () => {
       </div>
 
       {/* ── Section divider ───────────────────────────────── */}
-      <div className='my-16 md:my-24 flex items-center gap-4' data-fade='6'>
+      <div className='my-16 md:my-24 flex items-center gap-4' data-fade='7'>
         <div className='flex-1 h-px bg-slate-200 dark:bg-zinc-700/40' />
         <span className='font-mono text-xs uppercase tracking-widest text-slate-400'>
           Experience
@@ -200,7 +227,7 @@ const AboutContainer = () => {
       </div>
 
       {/* ── Experience ────────────────────────────────────── */}
-      <div className='max-w-3xl mx-auto' data-fade='6'>
+      <div className='max-w-3xl mx-auto' data-fade='7'>
         {Experiences.map((experience, index) => (
           <ExperienceCard
             key={experience.id}
@@ -223,7 +250,7 @@ const AboutContainer = () => {
           'mt-16 md:mt-24 rounded-2xl border px-6 py-10 text-center',
           'background-card border-slate-200 dark:border-zinc-700/40',
         )}
-        data-fade='7'
+        data-fade='8'
       >
         <h2 className='h2 font-primary mb-3'>
           Let&apos;s build something together
