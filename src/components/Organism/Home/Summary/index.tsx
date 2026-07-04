@@ -82,34 +82,57 @@ const Summary = () => {
 
           {/* Stats — right col */}
           <div className='lg:col-span-2 grid grid-cols-2 gap-4'>
-            {stats.map(({ icon: Icon, value, label }) => (
-              <div
-                key={label}
-                className={cn(
-                  'group relative flex flex-col gap-2 p-4 rounded-xl overflow-hidden',
-                  'border border-slate-200 dark:border-zinc-700/40',
-                  'bg-white dark:bg-slate-800/50',
-                  'shadow-sm cursor-default',
-                  'transition-all duration-300 ease-in-out',
-                  'hover:-translate-y-1 hover:shadow-md',
-                  'hover:border-primary-300 dark:hover:border-primary-700',
-                )}
-              >
-                {/* Background glow on hover */}
-                <div className='absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent dark:from-primary-900/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+            {stats.map(({ icon: Icon, value, label }) => {
+              const isRunning = label === 'km Running';
+              return (
+                <div
+                  key={label}
+                  className={cn(
+                    'group relative flex flex-col gap-2 p-4 rounded-xl overflow-hidden',
+                    'border shadow-sm cursor-default',
+                    'transition-all duration-300 ease-in-out',
+                    'hover:-translate-y-1 hover:shadow-md',
+                    isRunning
+                      ? 'border-orange-200 dark:border-orange-900/40 hover:border-orange-400 dark:hover:border-orange-500/50 bg-orange-50/5 dark:bg-orange-950/5'
+                      : 'border-slate-200 dark:border-zinc-700/40 hover:border-primary-300 dark:hover:border-primary-700 bg-white dark:bg-slate-800/50',
+                  )}
+                >
+                  {/* Background glow on hover */}
+                  <div
+                    className={cn(
+                      'absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+                      isRunning
+                        ? 'bg-gradient-to-br from-orange-500/10 to-transparent dark:from-orange-500/5 dark:to-transparent'
+                        : 'bg-gradient-to-br from-primary-50 to-transparent dark:from-primary-900/20 dark:to-transparent',
+                    )}
+                  />
 
-                <Icon
-                  size={18}
-                  className='relative text-slate-400 dark:text-slate-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'
-                />
-                <p className='relative font-secondary font-bold text-2xl text-slate-900 dark:text-slate-100 leading-none'>
-                  {value}
-                </p>
-                <p className='relative font-primary text-xs text-slate-500 dark:text-slate-400'>
-                  {label}
-                </p>
-              </div>
-            ))}
+                  {/* Pulsing activity dot for Running */}
+                  {isRunning && (
+                    <span className='absolute top-3 right-3 flex h-2 w-2'>
+                      <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75' />
+                      <span className='relative inline-flex rounded-full h-2 w-2 bg-orange-500' />
+                    </span>
+                  )}
+
+                  <Icon
+                    size={18}
+                    className={cn(
+                      'relative text-slate-400 dark:text-slate-500 transition-colors duration-300',
+                      isRunning
+                        ? 'group-hover:text-orange-500 dark:group-hover:text-orange-400'
+                        : 'group-hover:text-primary-500 dark:group-hover:text-primary-400',
+                    )}
+                  />
+                  <p className='relative font-secondary font-bold text-2xl text-slate-900 dark:text-slate-100 leading-none'>
+                    {value}
+                  </p>
+                  <p className='relative font-primary text-xs text-slate-500 dark:text-slate-400'>
+                    {label}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

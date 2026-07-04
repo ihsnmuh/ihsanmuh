@@ -19,6 +19,7 @@ const HomeContainer = (props: IHomeContainer) => {
       <Summary />
       <PrinciplesSection />
       <Portofolio />
+      {/* <TestimonialsSection /> */}
       <Blog posts={posts} />
     </>
   );

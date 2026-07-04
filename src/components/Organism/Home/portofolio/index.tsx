@@ -33,7 +33,7 @@ const Portofolio = () => {
             'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 gap-10',
           )}
         >
-          {data?.map((project) => (
+          {data?.map((project, index) => (
             <ProjectCard
               key={project.title}
               title={project.title}
@@ -43,6 +43,7 @@ const Portofolio = () => {
               stacks={project.stacks}
               github={project.github}
               website={project.website}
+              isFeatured={index === 0}
             />
           ))}
         </div>

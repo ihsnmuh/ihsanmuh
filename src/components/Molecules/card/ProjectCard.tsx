@@ -14,6 +14,7 @@ import { IProject } from '@/types/interfaces/projects';
 
 interface IProjectProps extends IProject {
   className?: string;
+  isFeatured?: boolean;
 }
 
 const ProjectCard = (props: IProjectProps) => {
@@ -26,6 +27,7 @@ const ProjectCard = (props: IProjectProps) => {
     website,
     github,
     category,
+    isFeatured,
   } = props;
 
   const projectUrl = website || github;
@@ -33,9 +35,23 @@ const ProjectCard = (props: IProjectProps) => {
   const hiddenStacks = stacks?.slice(STACKS_VISIBLE) ?? [];
 
   return (
-    <WrapperCard className={cn('group h-full flex flex-col', className)}>
+    <WrapperCard
+      className={cn(
+        'group h-full flex flex-col',
+        isFeatured &&
+          'ring-2 ring-primary-500/10 dark:ring-primary-400/10 border-primary-500/40 dark:border-primary-500/30 shadow-md',
+        className,
+      )}
+    >
       {/* Accent gradient top border */}
-      <div className='h-1 w-full bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 flex-shrink-0' />
+      <div
+        className={cn(
+          'h-1 w-full flex-shrink-0',
+          isFeatured
+            ? 'bg-gradient-to-r from-primary-500 via-violet-500 to-pink-500 dark:from-primary-400 dark:via-orange-400 dark:to-yellow-400'
+            : 'bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600',
+        )}
+      />
 
       {/* Clickable image area */}
       <a
@@ -67,6 +83,20 @@ const ProjectCard = (props: IProjectProps) => {
             )}
           >
             {category}
+          </span>
+        )}
+
+        {/* Featured badge */}
+        {isFeatured && (
+          <span
+            className={cn(
+              'absolute top-3 right-3 z-10',
+              'text-[10px] font-bold uppercase tracking-widest',
+              'bg-gradient-to-r from-primary-500 to-violet-600 dark:from-primary-500 dark:to-orange-500 text-white',
+              'rounded-full px-2.5 py-0.5 shadow-sm border border-primary-400/20',
+            )}
+          >
+            Featured
           </span>
         )}
 
