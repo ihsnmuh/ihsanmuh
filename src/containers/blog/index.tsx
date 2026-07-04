@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -31,6 +31,8 @@ const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
   const [search, _setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedTag, setSelectedTag] = useState('All');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const show = LoaderView();
 
@@ -42,14 +44,48 @@ const BlogContainer = (props: IBlogContainer) => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const filteredPosts = useMemo(
-    () => filterPosts(posts, debouncedSearch),
-    [posts, debouncedSearch],
-  );
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement !== inputRef.current) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  const isSearching = debouncedSearch.length > 0;
-  const featuredPost = !isSearching ? filteredPosts[0] : undefined;
-  const remainingPosts = !isSearching ? filteredPosts.slice(1) : filteredPosts;
+  // Extract unique tags dynamically
+  const allTags = useMemo(() => {
+    const tagsSet = new Set<string>();
+    posts.forEach((post) => {
+      post.tags?.forEach((tag) => tagsSet.add(tag));
+    });
+    return ['All', ...Array.from(tagsSet).sort()];
+  }, [posts]);
+
+  const filteredPosts = useMemo(() => {
+    let result = posts;
+
+    if (debouncedSearch) {
+      result = filterPosts(result, debouncedSearch);
+    }
+
+    if (selectedTag !== 'All') {
+      result = result.filter((post) =>
+        post.tags?.some((t) => t.toLowerCase() === selectedTag.toLowerCase()),
+      );
+    }
+
+    return result;
+  }, [posts, debouncedSearch, selectedTag]);
+
+  const isSearchingOrFiltering =
+    debouncedSearch.length > 0 || selectedTag !== 'All';
+  const featuredPost = !isSearchingOrFiltering ? filteredPosts[0] : undefined;
+  const remainingPosts = !isSearchingOrFiltering
+    ? filteredPosts.slice(1)
+    : filteredPosts;
 
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
@@ -84,16 +120,17 @@ const BlogContainer = (props: IBlogContainer) => {
         <div className='relative max-w-md'>
           <input
             id='search-input'
+            ref={inputRef}
             className={cn(
-              'w-full py-2.5 px-4 pl-10',
-              'border-b border-x-0 border-t-0',
-              'border-gray-200 dark:border-gray-700',
-              'bg-transparent',
-              'text-gray-900 dark:text-gray-100',
-              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-              'focus:outline-none focus:border-primary-500 dark:focus:border-primary-400',
-              'transition-colors duration-300',
-              'text-sm',
+              'w-full py-2.5 pl-10 pr-16',
+              'rounded-xl border',
+              'border-slate-200 dark:border-zinc-700/50',
+              'bg-slate-50/50 dark:bg-slate-800/20',
+              'text-slate-900 dark:text-slate-100',
+              'placeholder:text-slate-400 dark:placeholder:text-slate-500',
+              'focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400',
+              'transition-all duration-300',
+              'text-sm shadow-sm',
             )}
             value={search}
             onChange={(e) => _setSearch(e.target.value)}
@@ -102,7 +139,7 @@ const BlogContainer = (props: IBlogContainer) => {
             aria-label='Search blog posts'
           />
           <svg
-            className='absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400'
+            className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -111,17 +148,22 @@ const BlogContainer = (props: IBlogContainer) => {
             <path
               strokeLinecap='round'
               strokeLinejoin='round'
-              strokeWidth={1.5}
+              strokeWidth={1.8}
               d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
             />
           </svg>
+          {!search && (
+            <kbd className='absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-[10px] font-mono text-slate-400 dark:text-slate-500 pointer-events-none select-none'>
+              /
+            </kbd>
+          )}
           {search && (
             <button
               onClick={() => _setSearch('')}
               className={cn(
-                'absolute right-0 top-1/2 -translate-y-1/2',
-                'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300',
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 rounded',
+                'absolute right-3.5 top-1/2 -translate-y-1/2',
+                'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
+                'focus:outline-none rounded',
                 'transition-colors',
               )}
               aria-label='Clear search'
@@ -135,19 +177,62 @@ const BlogContainer = (props: IBlogContainer) => {
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  strokeWidth={1.5}
+                  strokeWidth={1.8}
                   d='M6 18L18 6M6 6l12 12'
                 />
               </svg>
             </button>
           )}
         </div>
-        <div className='h-7 mt-1.5 flex items-center'>
-          {search && (
-            <p className='text-xs text-gray-400 dark:text-gray-500'>
+
+        {/* Dynamic Tag Filters */}
+        <div className='mt-5 flex flex-wrap gap-2 items-center'>
+          <span className='text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1.5 hidden sm:inline'>
+            Filter by:
+          </span>
+          <div className='flex flex-wrap gap-1.5'>
+            {allTags.map((tag) => {
+              const isActive = selectedTag === tag;
+              return (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={cn(
+                    'px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 border',
+                    isActive
+                      ? 'bg-primary-500 border-primary-500 text-white shadow-sm shadow-primary-500/10'
+                      : 'border-slate-200 dark:border-zinc-700/60 text-slate-600 dark:text-slate-400 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-slate-300 dark:hover:border-zinc-600',
+                  )}
+                >
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Articles count status description */}
+        <div className='h-7 mt-3 flex items-center'>
+          {(search || selectedTag !== 'All') && (
+            <p className='text-xs text-slate-400 dark:text-slate-500'>
               Found {filteredPosts.length} article
-              {filteredPosts.length !== 1 ? 's' : ''} for &ldquo;{search}
-              &rdquo;
+              {filteredPosts.length !== 1 ? 's' : ''}{' '}
+              {selectedTag !== 'All' && (
+                <span>
+                  under tag &ldquo;
+                  <span className='font-semibold text-primary-500 dark:text-primary-400'>
+                    {selectedTag}
+                  </span>
+                  &rdquo;
+                </span>
+              )}
+              {search && (
+                <span>
+                  {' '}
+                  for &ldquo;<span className='font-semibold'>{search}</span>
+                  &rdquo;
+                </span>
+              )}
             </p>
           )}
         </div>

@@ -1,6 +1,9 @@
 import { BookOpen, Rocket, Scissors } from 'lucide-react';
+import { useRef } from 'react';
 
 import { cn } from '@/lib/utils';
+
+import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 
 interface PrincipleCardProps {
   id: number;
@@ -33,8 +36,12 @@ const PrincipleCard = ({
   hoverBorder = 'hover:border-primary-300 dark:hover:border-primary-700/50',
   hoverTitle = 'group-hover:text-primary-500 dark:group-hover:text-primary-400',
 }: PrincipleCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  useMouseMoveSpotlight(cardRef);
+
   return (
     <div
+      ref={cardRef}
       className={cn(
         'group relative flex flex-col p-5 rounded-xl overflow-hidden',
         'border border-slate-200 dark:border-zinc-700/40',
@@ -45,6 +52,8 @@ const PrincipleCard = ({
         className,
       )}
     >
+      {/* Spotlight overlay effect */}
+      <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
       {/* Gradient top bar — always visible, intensifies on hover */}
       <div
         className={cn(

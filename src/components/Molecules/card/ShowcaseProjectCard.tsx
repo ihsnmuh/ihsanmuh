@@ -1,10 +1,13 @@
 import { ArrowUpRight, ExternalLink, Github } from 'lucide-react';
+import { useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
 import StackPills from '@/components/Atoms/pills/StackPills';
 import { Tooltip } from '@/components/Atoms/Tooltip';
+
+import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 
 import { IProject } from '@/types/interfaces/projects';
 
@@ -18,10 +21,14 @@ const ShowcaseProjectCard = (props: IProject) => {
   const visibleStacks = stacks?.slice(0, STACKS_VISIBLE) ?? [];
   const hiddenStacks = stacks?.slice(STACKS_VISIBLE) ?? [];
 
+  const cardRef = useRef<HTMLElement>(null);
+  useMouseMoveSpotlight(cardRef);
+
   return (
     <article
+      ref={cardRef}
       className={cn(
-        'group flex flex-col h-full',
+        'group relative flex flex-col h-full',
         'rounded-xl overflow-hidden',
         'border border-gray-200/80 dark:border-gray-700/40',
         'bg-white dark:bg-slate-800/30',
@@ -30,6 +37,8 @@ const ShowcaseProjectCard = (props: IProject) => {
         'hover:border-gray-300 dark:hover:border-gray-600',
       )}
     >
+      {/* Spotlight overlay effect */}
+      <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
       <a
         href={projectUrl}
         target='_blank'

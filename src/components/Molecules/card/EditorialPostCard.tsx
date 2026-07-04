@@ -24,10 +24,11 @@ const EditorialPostCard = (props: IPost) => {
       <article
         className={cn(
           'grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] gap-4 sm:gap-5',
-          'py-5 px-1',
-          'transition-all duration-300',
-          'rounded-lg',
+          'py-5 px-2.5',
+          'transition-all duration-300 ease-in-out',
+          'rounded-xl',
           'hover:bg-gray-50/80 dark:hover:bg-slate-800/40',
+          'group-hover:translate-x-1.5',
         )}
       >
         <div
@@ -38,6 +39,9 @@ const EditorialPostCard = (props: IPost) => {
         >
           <NextImage
             className='w-full h-full'
+            classNames={{
+              image: 'transition-transform duration-500 group-hover:scale-105',
+            }}
             src={`/images/blog/${banner}`}
             alt={title}
             sizes='160px'
@@ -96,13 +100,13 @@ const EditorialPostCard = (props: IPost) => {
 
           <div className='flex items-center gap-3 mt-2 flex-wrap'>
             <div className='flex items-center gap-3 text-[11px] text-gray-400 dark:text-gray-500'>
-              <span className='flex items-center gap-1'>
-                <Calendar className='h-3 w-3' />
+              <span className='flex items-center gap-1 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300'>
+                <Calendar className='h-3 w-3 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
                 <time dateTime={publishedAt}>{date}</time>
               </span>
               {timeReading && (
-                <span className='flex items-center gap-1'>
-                  <Clock className='h-3 w-3' />
+                <span className='flex items-center gap-1 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300'>
+                  <Clock className='h-3 w-3 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
                   <span>{timeReading}</span>
                 </span>
               )}
@@ -119,12 +123,12 @@ const EditorialPostCard = (props: IPost) => {
                   <ViewCounterStats
                     views={views}
                     showIcon
-                    className='text-[11px] text-gray-400 dark:text-gray-500'
+                    className='text-[11px] text-gray-400 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'
                   />
                   <LikeButtonStats
                     likes={likes}
                     showIcon
-                    className='text-[11px] text-gray-400 dark:text-gray-500'
+                    className='text-[11px] text-gray-400 dark:text-gray-500 group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors duration-300'
                   />
                 </>
               )}

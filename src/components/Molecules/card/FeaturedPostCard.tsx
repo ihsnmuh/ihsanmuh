@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -8,6 +9,7 @@ import NextImage from '@/components/Atoms/NextImage';
 import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
 import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
+import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 import { usePostStats } from '@/helpers/usePostStats';
 
 import { IPost } from '@/types/interfaces/posts';
@@ -18,12 +20,15 @@ const FeaturedPostCard = (props: IPost) => {
 
   const { views, likes, isLoading } = usePostStats(slug);
   const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
+  const cardRef = useRef<HTMLDivElement>(null);
+  useMouseMoveSpotlight(cardRef);
 
   return (
     <Link href={`/blog/${slug}`} className='group block'>
       <article
+        ref={cardRef}
         className={cn(
-          'grid grid-cols-1 lg:grid-cols-2 gap-0',
+          'grid grid-cols-1 lg:grid-cols-2 gap-0 relative',
           'rounded-xl overflow-hidden',
           'border border-gray-200 dark:border-gray-700/50',
           'bg-white dark:bg-slate-800/40',
@@ -31,9 +36,15 @@ const FeaturedPostCard = (props: IPost) => {
           'hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600',
         )}
       >
+        {/* Spotlight overlay effect */}
+        <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
+
         <div className='relative aspect-[16/10] lg:aspect-auto overflow-hidden'>
           <NextImage
             className='w-full h-full'
+            classNames={{
+              image: 'transition-transform duration-500 group-hover:scale-105',
+            }}
             src={`/images/blog/${banner}`}
             alt={title}
             sizes='(max-width: 1024px) 100vw, 50vw'
@@ -111,13 +122,13 @@ const FeaturedPostCard = (props: IPost) => {
             )}
           >
             <div className='flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400'>
-              <span className='flex items-center gap-1.5'>
-                <Calendar className='h-3.5 w-3.5' />
+              <span className='flex items-center gap-1.5 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300'>
+                <Calendar className='h-3.5 w-3.5 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
                 <time dateTime={publishedAt}>{date}</time>
               </span>
               {timeReading && (
-                <span className='flex items-center gap-1.5'>
-                  <Clock className='h-3.5 w-3.5' />
+                <span className='flex items-center gap-1.5 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300'>
+                  <Clock className='h-3.5 w-3.5 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
                   <span>{timeReading}</span>
                 </span>
               )}
@@ -134,9 +145,13 @@ const FeaturedPostCard = (props: IPost) => {
                   <ViewCounterStats
                     views={views}
                     showIcon
-                    className='text-xs'
+                    className='text-xs group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'
                   />
-                  <LikeButtonStats likes={likes} showIcon className='text-xs' />
+                  <LikeButtonStats
+                    likes={likes}
+                    showIcon
+                    className='text-xs group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors duration-300'
+                  />
                 </>
               )}
             </div>

@@ -96,3 +96,20 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+/* Custom premium hover spotlight gradient */
+.card-spotlight {
+  background: radial-gradient(
+    300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(148, 163, 184, 0.075),
+    transparent 80%
+  );
+}
+
+:root[class~='dark'] .card-spotlight {
+  background: radial-gradient(
+    300px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 255, 255, 0.05),
+    transparent 80%
+  );
+}
