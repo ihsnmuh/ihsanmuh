@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import Title from '@/components/Atoms/title';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
+import SearchFilter from '@/components/Molecules/SearchFilter';
 
 import { TPosts } from '@/types/interfaces/posts';
 
@@ -32,7 +33,6 @@ const BlogContainer = (props: IBlogContainer) => {
   const [search, _setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('All');
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const show = LoaderView();
 
@@ -43,17 +43,6 @@ const BlogContainer = (props: IBlogContainer) => {
 
     return () => clearTimeout(timer);
   }, [search]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && document.activeElement !== inputRef.current) {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   // Extract unique tags dynamically
   const allTags = useMemo(() => {
@@ -113,129 +102,41 @@ const BlogContainer = (props: IBlogContainer) => {
         </p>
       </div>
 
-      <div data-fade='2' className='mt-10'>
-        <label htmlFor='search-input' className='sr-only'>
-          Search blog posts
-        </label>
-        <div className='relative max-w-md'>
-          <input
-            id='search-input'
-            ref={inputRef}
-            className={cn(
-              'w-full py-2.5 pl-10 pr-16',
-              'rounded-xl border',
-              'border-slate-200 dark:border-zinc-700/50',
-              'bg-slate-50/50 dark:bg-slate-800/20',
-              'text-slate-900 dark:text-slate-100',
-              'placeholder:text-slate-400 dark:placeholder:text-slate-500',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400',
-              'transition-all duration-300',
-              'text-sm shadow-sm',
+      <SearchFilter
+        data-fade='2'
+        className='mt-10'
+        search={search}
+        onSearchChange={_setSearch}
+        searchPlaceholder='Search articles...'
+        activeFilter={selectedTag}
+        onFilterChange={setSelectedTag}
+        filters={allTags}
+      />
+
+      {/* Articles count status description */}
+      <div className='h-7 mt-3 flex items-center pl-1'>
+        {(search || selectedTag !== 'All') && (
+          <p className='text-xs text-slate-400 dark:text-slate-500'>
+            Found {filteredPosts.length} article
+            {filteredPosts.length !== 1 ? 's' : ''}{' '}
+            {selectedTag !== 'All' && (
+              <span>
+                under tag &ldquo;
+                <span className='font-semibold text-primary-500 dark:text-primary-400'>
+                  {selectedTag}
+                </span>
+                &rdquo;
+              </span>
             )}
-            value={search}
-            onChange={(e) => _setSearch(e.target.value)}
-            type='text'
-            placeholder='Search articles...'
-            aria-label='Search blog posts'
-          />
-          <svg
-            className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-            aria-hidden='true'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={1.8}
-              d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-            />
-          </svg>
-          {!search && (
-            <kbd className='absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-[10px] font-mono text-slate-400 dark:text-slate-500 pointer-events-none select-none'>
-              /
-            </kbd>
-          )}
-          {search && (
-            <button
-              onClick={() => _setSearch('')}
-              className={cn(
-                'absolute right-3.5 top-1/2 -translate-y-1/2',
-                'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
-                'focus:outline-none rounded',
-                'transition-colors',
-              )}
-              aria-label='Clear search'
-            >
-              <svg
-                className='w-4 h-4'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={1.8}
-                  d='M6 18L18 6M6 6l12 12'
-                />
-              </svg>
-            </button>
-          )}
-        </div>
-
-        {/* Dynamic Tag Filters */}
-        <div className='mt-5 flex flex-wrap gap-2 items-center'>
-          <span className='text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1.5 hidden sm:inline'>
-            Filter by:
-          </span>
-          <div className='flex flex-wrap gap-1.5'>
-            {allTags.map((tag) => {
-              const isActive = selectedTag === tag;
-              return (
-                <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag)}
-                  className={cn(
-                    'px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 border',
-                    isActive
-                      ? 'bg-primary-500 border-primary-500 text-white shadow-sm shadow-primary-500/10'
-                      : 'border-slate-200 dark:border-zinc-700/60 text-slate-600 dark:text-slate-400 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-slate-300 dark:hover:border-zinc-600',
-                  )}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Articles count status description */}
-        <div className='h-7 mt-3 flex items-center'>
-          {(search || selectedTag !== 'All') && (
-            <p className='text-xs text-slate-400 dark:text-slate-500'>
-              Found {filteredPosts.length} article
-              {filteredPosts.length !== 1 ? 's' : ''}{' '}
-              {selectedTag !== 'All' && (
-                <span>
-                  under tag &ldquo;
-                  <span className='font-semibold text-primary-500 dark:text-primary-400'>
-                    {selectedTag}
-                  </span>
-                  &rdquo;
-                </span>
-              )}
-              {search && (
-                <span>
-                  {' '}
-                  for &ldquo;<span className='font-semibold'>{search}</span>
-                  &rdquo;
-                </span>
-              )}
-            </p>
-          )}
-        </div>
+            {search && (
+              <span>
+                {' '}
+                for &ldquo;<span className='font-semibold'>{search}</span>
+                &rdquo;
+              </span>
+            )}
+          </p>
+        )}
       </div>
 
       <div className='min-h-[320px]' data-fade='3'>
@@ -275,7 +176,7 @@ const BlogContainer = (props: IBlogContainer) => {
                     <div
                       key={post.slug}
                       className={cn(
-                        'lg:border-b lg:border-gray-100 lg:dark:border-gray-800',
+                        'lg:border-b lg:border-gray-100 lg:dark:border-gray-800 h-full',
                       )}
                     >
                       <EditorialPostCard {...post} />

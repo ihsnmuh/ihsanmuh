@@ -20,10 +20,10 @@ const EditorialPostCard = (props: IPost) => {
   const date = format(new Date(publishedAt ?? ''), 'MMM dd, yyyy');
 
   return (
-    <Link href={`/blog/${slug}`} className='group block'>
+    <Link href={`/blog/${slug}`} className='group block h-full'>
       <article
         className={cn(
-          'grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] gap-4 sm:gap-5',
+          'grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] gap-4 sm:gap-5 h-full',
           'py-5 px-2.5',
           'transition-all duration-300 ease-in-out',
           'rounded-xl',
