@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { Inter, Poppins } from 'next/font/google';
+import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -24,8 +25,21 @@ const inter = Inter({
 });
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className={`${inter.className} ${inter.variable} ${poppins.variable}`}>
+    <div
+      className={cn(
+        inter.className,
+        inter.variable,
+        poppins.variable,
+        mounted && 'transition-colors duration-500',
+      )}
+    >
       <a
         href='#main-content'
         className={cn(

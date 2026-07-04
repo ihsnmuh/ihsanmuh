@@ -56,17 +56,15 @@ const Hero = () => {
         {/* Name */}
         <h1
           className={cn(
-            'font-bold font-secondary leading-none',
-            'text-4xl sm:text-6xl md:text-8xl',
+            'font-bold font-secondary leading-tight',
+            'text-[clamp(2.5rem,8vw,6.5rem)] py-0 sm:py-6',
             'bg-clip-text text-transparent',
             'animate-gradient bg-[length:200%_200%]',
             'bg-gradient-to-r from-primary-500 via-cyan-500 dark:via-orange-400 to-primary-700 dark:to-yellow-500',
           )}
           data-fade='3'
         >
-          Muhammad
-          <br />
-          Ihsan
+          M Ihsan
         </h1>
 
         {/* Tagline */}
