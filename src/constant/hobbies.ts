@@ -55,66 +55,6 @@ export const BOOKS_DATA: IBookItem[] = [
       'Care about your craft. Why spend your life developing software unless you care about doing it well?',
     yearRead: '2024',
   },
-  {
-    id: 'designing-data-intensive-applications',
-    title: 'Designing Data-Intensive Applications',
-    author: 'Martin Kleppmann',
-    coverImage:
-      'https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=600&q=80',
-    status: 'reading',
-    rating: 5,
-    genre: ['Distributed Systems', 'Databases', 'Architecture'],
-    review:
-      'The definitive guide to modern distributed data systems. Demystifies replication, partitioning, transactions, and consensus with unparalleled depth.',
-    quote:
-      'Reliability is continuing to work correctly even when things go wrong.',
-    yearRead: '2025',
-  },
-  {
-    id: 'atomic-habits',
-    title: 'Atomic Habits: An Easy & Proven Way to Build Good Habits',
-    author: 'James Clear',
-    coverImage:
-      'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80',
-    status: 'completed',
-    rating: 5,
-    genre: ['Self Improvement', 'Psychology', 'Productivity'],
-    review:
-      'Clear, actionable framework for behavioral change. Small 1% improvements compounded over time make a dramatic difference.',
-    quote:
-      'You do not rise to the level of your goals. You fall to the level of your systems.',
-    yearRead: '2023',
-  },
-  {
-    id: 'deep-work',
-    title: 'Deep Work: Rules for Focused Success in a Distracted World',
-    author: 'Cal Newport',
-    coverImage:
-      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80',
-    status: 'completed',
-    rating: 4,
-    genre: ['Productivity', 'Focus', 'Non-Fiction'],
-    review:
-      'A persuasive argument for cultivating uninterrupted focus and eliminating shallow distractions to produce high-value intellectual output.',
-    quote:
-      'If you do not produce, you will not thrive—no matter how skilled or talented you are.',
-    yearRead: '2023',
-  },
-  {
-    id: 'steve-jobs',
-    title: 'Steve Jobs',
-    author: 'Walter Isaacson',
-    coverImage:
-      'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&w=600&q=80',
-    status: 'completed',
-    rating: 5,
-    genre: ['Biography', 'Tech History', 'Leadership'],
-    review:
-      'An unflinching look at the intersection of technology and liberal arts, driven by obsessive passion for perfection and product design.',
-    quote:
-      'The people who are crazy enough to think they can change the world are the ones who do.',
-    yearRead: '2022',
-  },
 ];
 
 export const PHOTOS_DATA: IPhotoItem[] = [

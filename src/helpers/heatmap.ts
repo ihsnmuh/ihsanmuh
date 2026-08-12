@@ -28,12 +28,19 @@ export interface IHeatmapResult {
 }
 
 /**
+ * Checks if a date object is valid (not Invalid Date)
+ */
+export const isValidDate = (d: Date): boolean => {
+  return d instanceof Date && !isNaN(d.getTime());
+};
+
+/**
  * Calculates aggregate stats (distance, runs, elevation gain, avg pace) from a list of Strava activities
  */
 export const calculateStatsFromActivities = (
   activities: IStravaActivity[] = [],
 ): IStravaStats => {
-  if (!activities || activities.length === 0) {
+  if (!Array.isArray(activities) || activities.length === 0) {
     return {
       totalRuns: 0,
       totalDistanceKm: 0,
@@ -46,21 +53,31 @@ export const calculateStatsFromActivities = (
 
   // Filter for Run type activities for stats calculation
   const runs = activities.filter((a) => {
+    if (!a) return false;
     const type = (a.type || a.sportType || '').toLowerCase();
     return type.includes('run');
   });
 
   const totalRuns = runs.length;
-  const totalDistanceKm = Number(
-    runs.reduce((sum, a) => sum + (a.distance || 0), 0).toFixed(2),
+  const rawDistanceSum = runs.reduce((sum, a) => sum + (a.distance || 0), 0);
+  const totalDistanceKm = Number.isFinite(rawDistanceSum)
+    ? Number(rawDistanceSum.toFixed(2))
+    : 0;
+
+  const rawElevationSum = runs.reduce(
+    (sum, a) => sum + (a.totalElevationGain || 0),
+    0,
   );
-  const totalElevationGain = Math.round(
-    runs.reduce((sum, a) => sum + (a.totalElevationGain || 0), 0),
-  );
+  const totalElevationGain = Number.isFinite(rawElevationSum)
+    ? Math.round(rawElevationSum)
+    : 0;
+
   const totalMovingTime = runs.reduce((sum, a) => sum + (a.movingTime || 0), 0);
 
   const avgSpeedMetersPerSecond =
-    totalMovingTime > 0 ? (totalDistanceKm * 1000) / totalMovingTime : 0;
+    Number.isFinite(totalMovingTime) && totalMovingTime > 0
+      ? (totalDistanceKm * 1000) / totalMovingTime
+      : 0;
 
   return {
     totalRuns,

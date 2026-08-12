@@ -1,13 +1,10 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
-import React from 'react';
-
-import { getStravaData } from '@/lib/strava';
 
 import Seo from '@/components/Molecules/seo';
 import HobbiesContainer from '@/containers/hobbies';
 
-import { STRAVA_ACTIVITIES } from '@/constant/queryKeys/strava';
+import { queryStravaActivities } from '@/queries/strava';
 
 const HobbiesPage = () => {
   return (
@@ -26,11 +23,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   try {
-    // Prefetch Strava activities directly on the server without HTTP loopback
-    await queryClient.prefetchQuery({
-      queryKey: STRAVA_ACTIVITIES,
-      queryFn: async () => getStravaData(),
-    });
+    // Prefetch Strava activities on the server reusing query configuration
+    await queryClient.prefetchQuery(queryStravaActivities());
   } catch (error) {
     console.error('Error prefetching Strava query:', error);
   }

@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import {
   Activity,
   Bike,
@@ -9,7 +8,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
@@ -23,135 +22,43 @@ import RunningStatsCard from '@/components/Molecules/card/RunningStatsCard';
 import HobbyTabNav from '@/components/Molecules/hobbies/HobbyTabNav';
 
 import { BOOKS_DATA, HOBBY_CATEGORIES, PHOTOS_DATA } from '@/constant/hobbies';
-import { calculateStatsFromActivities } from '@/helpers/heatmap';
-import { queryStravaActivities } from '@/queries/strava';
+import {
+  TSportFilter,
+  TTimeFilter,
+  useStravaActivities,
+} from '@/helpers/useStravaActivities';
 
 import { THobbyCategory } from '@/types/interfaces/hobbies';
-
-type TSportFilter = 'all' | 'run' | 'ride' | 'walk';
-type TTimeFilter = 'all' | 'this_year' | '30_days' | string;
 
 const HobbiesContainer = () => {
   const show = LoaderView();
   const [activeTab, setActiveTab] = useState<THobbyCategory>('running');
-  const [sportFilter, setSportFilter] = useState<TSportFilter>('all');
-  const [timeFilter, setTimeFilter] = useState<TTimeFilter>('all');
-  const [visibleCount, setVisibleCount] = useState<number>(6);
 
-  // TanStack Query for Strava Running data
   const {
-    data: stravaData,
-    isLoading: isStravaLoading,
-    isError: isStravaError,
-  } = useQuery({
-    ...queryStravaActivities(),
-  });
+    stravaData,
+    isStravaLoading,
+    isStravaError,
+    sportFilter,
+    setSportFilter,
+    timeFilter,
+    setTimeFilter,
+    availableYears,
+    timePeriodLabel,
+    filteredActivities,
+    displayedActivities,
+    hasMoreActivities,
+    currentStats,
+    loadMore,
+  } = useStravaActivities();
 
-  const activeCategoryConfig = HOBBY_CATEGORIES.find((c) => c.id === activeTab);
+  const activeCategoryConfig =
+    HOBBY_CATEGORIES.find((c) => c.id === activeTab) || HOBBY_CATEGORIES[0];
 
   const tabCounts: Partial<Record<THobbyCategory, number>> = {
-    running: stravaData?.activities?.length || 6,
+    running: stravaData?.activities?.length || 0,
     reading: BOOKS_DATA.length,
     photography: PHOTOS_DATA.length,
   };
-
-  // Available activity years for year dropdown selector
-  const availableYears = useMemo(() => {
-    if (!stravaData?.activities) return [];
-    const yearSet = new Set(
-      stravaData.activities
-        .map((act) => new Date(act.startDate).getFullYear())
-        .filter((y) => !isNaN(y)),
-    );
-    return Array.from(yearSet).sort((a, b) => b - a);
-  }, [stravaData?.activities]);
-
-  const timePeriodLabel = useMemo(() => {
-    if (timeFilter === 'all') return 'All-Time';
-    if (timeFilter === 'this_year') return `${new Date().getFullYear()}`;
-    if (timeFilter === '30_days') return '30 Days';
-    return timeFilter;
-  }, [timeFilter]);
-
-  // Filter activities by selected sport and time range / year
-  const filteredActivities = useMemo(() => {
-    if (!stravaData?.activities) return [];
-
-    const now = Date.now();
-    const currentYear = new Date().getFullYear();
-    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-
-    return stravaData.activities
-      .filter((act) => {
-        const actDate = new Date(act.startDate);
-
-        // 1. Time range / year filter
-        if (timeFilter === 'this_year') {
-          if (actDate.getFullYear() !== currentYear) return false;
-        } else if (timeFilter === '30_days') {
-          if (now - actDate.getTime() > thirtyDaysMs) return false;
-        } else if (timeFilter !== 'all') {
-          if (actDate.getFullYear() !== Number(timeFilter)) return false;
-        }
-
-        // 2. Sport type filter
-        if (sportFilter === 'all') return true;
-        const type = (act.type || act.sportType || '').toLowerCase();
-        if (sportFilter === 'run') return type.includes('run');
-        if (sportFilter === 'ride')
-          return (
-            type.includes('ride') ||
-            type.includes('cycle') ||
-            type.includes('bike')
-          );
-        if (sportFilter === 'walk')
-          return type.includes('walk') || type.includes('hike');
-        return true;
-      })
-      .sort(
-        (a, b) =>
-          new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-      );
-  }, [stravaData?.activities, sportFilter, timeFilter]);
-
-  // Calculate dynamic stats based on selected time filter
-  const currentStats = useMemo(() => {
-    if (timeFilter === 'all' && stravaData?.stats) {
-      // Use official Strava all_run_totals stats when All Time is selected
-      return {
-        totalRuns: stravaData.stats.allTimeRuns ?? stravaData.stats.totalRuns,
-        totalDistanceKm:
-          stravaData.stats.allTimeDistanceKm ??
-          stravaData.stats.totalDistanceKm,
-        ytdDistanceKm: stravaData.stats.ytdDistanceKm,
-        totalElevationGain:
-          stravaData.stats.allTimeElevationGain ??
-          stravaData.stats.totalElevationGain,
-        avgPace: stravaData.stats.allTimeAvgPace || stravaData.stats.avgPace,
-        recentRunCount: stravaData.activities?.length || 0,
-      };
-    }
-
-    if (!stravaData?.activities || stravaData.activities.length === 0) {
-      return stravaData?.stats;
-    }
-
-    const targetActivities = stravaData.activities.filter((act) => {
-      const actDate = new Date(act.startDate);
-      if (timeFilter === 'this_year') {
-        return actDate.getFullYear() === new Date().getFullYear();
-      }
-      if (timeFilter === '30_days') {
-        return Date.now() - actDate.getTime() <= 30 * 24 * 60 * 60 * 1000;
-      }
-      return actDate.getFullYear() === Number(timeFilter);
-    });
-
-    return calculateStatsFromActivities(targetActivities);
-  }, [stravaData, timeFilter]);
-
-  const displayedActivities = filteredActivities.slice(0, visibleCount);
-  const hasMoreActivities = filteredActivities.length > visibleCount;
 
   return (
     <section className={cn('layout py-20', show && 'fade-in-start')}>
@@ -262,10 +169,9 @@ const HobbiesContainer = () => {
                         return (
                           <button
                             key={item.id}
-                            onClick={() => {
-                              setTimeFilter(item.id as TTimeFilter);
-                              setVisibleCount(6);
-                            }}
+                            onClick={() =>
+                              setTimeFilter(item.id as TTimeFilter)
+                            }
                             className={cn(
                               'px-2.5 py-1 rounded-lg text-xs font-medium transition-colors',
                               isActive
@@ -291,7 +197,6 @@ const HobbiesContainer = () => {
                           onChange={(e) => {
                             if (e.target.value) {
                               setTimeFilter(e.target.value);
-                              setVisibleCount(6);
                             }
                           }}
                           className={cn(
@@ -334,10 +239,9 @@ const HobbiesContainer = () => {
                         return (
                           <button
                             key={item.id}
-                            onClick={() => {
-                              setSportFilter(item.id as TSportFilter);
-                              setVisibleCount(6);
-                            }}
+                            onClick={() =>
+                              setSportFilter(item.id as TSportFilter)
+                            }
                             className={cn(
                               'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors',
                               isActive
@@ -382,7 +286,7 @@ const HobbiesContainer = () => {
                     {hasMoreActivities && (
                       <div className='mt-8 flex justify-center'>
                         <button
-                          onClick={() => setVisibleCount((prev) => prev + 6)}
+                          onClick={loadMore}
                           className={cn(
                             'inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold',
                             'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',

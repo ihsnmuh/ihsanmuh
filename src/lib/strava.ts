@@ -23,14 +23,23 @@ interface ICachedData {
 // In-memory cache across server requests
 let cachedToken: ICachedToken | null = null;
 let cachedStravaResponse: ICachedData | null = null;
+let pendingStravaFetchPromise: Promise<IStravaResponse> | null = null;
 
 /**
  * Converts speed in meters per second to running pace in minutes:seconds per km
  * e.g. 3.33 m/s -> "5:00 /km"
  */
 export const formatPace = (speedMetersPerSecond?: number | null): string => {
-  if (!speedMetersPerSecond || speedMetersPerSecond <= 0) return '0:00 /km';
+  if (
+    !speedMetersPerSecond ||
+    !Number.isFinite(speedMetersPerSecond) ||
+    speedMetersPerSecond <= 0
+  ) {
+    return '0:00 /km';
+  }
   const paceMinutesDecimal = 1000 / speedMetersPerSecond / 60;
+  if (!Number.isFinite(paceMinutesDecimal)) return '0:00 /km';
+
   const minutes = Math.floor(paceMinutesDecimal);
   const seconds = Math.round((paceMinutesDecimal - minutes) * 60);
 
@@ -46,7 +55,13 @@ export const formatPace = (speedMetersPerSecond?: number | null): string => {
 export const formatSpeedKmh = (
   speedMetersPerSecond?: number | null,
 ): string => {
-  if (!speedMetersPerSecond || speedMetersPerSecond <= 0) return '0 km/h';
+  if (
+    !speedMetersPerSecond ||
+    !Number.isFinite(speedMetersPerSecond) ||
+    speedMetersPerSecond <= 0
+  ) {
+    return '0 km/h';
+  }
   const kmh = speedMetersPerSecond * 3.6;
   return `${kmh.toFixed(1)} km/h`;
 };
@@ -55,7 +70,7 @@ export const formatSpeedKmh = (
  * Formats distance in meters to kilometers with 2 decimal places
  */
 export const formatDistance = (meters?: number | null): number => {
-  if (!meters || meters <= 0) return 0;
+  if (!meters || !Number.isFinite(meters) || meters <= 0) return 0;
   return Number((meters / 1000).toFixed(2));
 };
 
@@ -63,7 +78,7 @@ export const formatDistance = (meters?: number | null): number => {
  * Formats duration in seconds to human readable string (e.g., "42m 15s" or "1h 15m")
  */
 export const formatDuration = (seconds?: number | null): string => {
-  if (!seconds || seconds <= 0) return '0s';
+  if (!seconds || !Number.isFinite(seconds) || seconds <= 0) return '0s';
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
@@ -169,30 +184,35 @@ export const fetchRecentStravaActivities = async (
 
   // Max 2 pages (up to 400 activities in 365 days)
   while (hasMore && page <= 2) {
-    const res = await fetch(
-      `${STRAVA_API_URL}/athlete/activities?after=${oneYearAgoSeconds}&page=${page}&per_page=${perPage}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
-
-    if (!res.ok) {
-      console.warn(
-        `Failed to fetch Strava activities page ${page} (status: ${res.status})`,
+    try {
+      const res = await fetch(
+        `${STRAVA_API_URL}/athlete/activities?after=${oneYearAgoSeconds}&page=${page}&per_page=${perPage}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       );
-      break;
-    }
 
-    const data: any[] = await res.json();
-    if (!Array.isArray(data) || data.length === 0) {
-      hasMore = false;
-    } else {
-      allActivities = allActivities.concat(data);
-      if (data.length < perPage) {
+      if (!res.ok) {
+        console.warn(
+          `Failed to fetch Strava activities page ${page} (status: ${res.status})`,
+        );
+        break;
+      }
+
+      const data: any[] = await res.json();
+      if (!Array.isArray(data) || data.length === 0) {
         hasMore = false;
       } else {
-        page++;
+        allActivities = allActivities.concat(data);
+        if (data.length < perPage) {
+          hasMore = false;
+        } else {
+          page++;
+        }
       }
+    } catch (err) {
+      console.warn(`Error parsing Strava activities page ${page}:`, err);
+      break;
     }
   }
 
@@ -200,19 +220,9 @@ export const fetchRecentStravaActivities = async (
 };
 
 /**
- * Fetch Strava activities and athlete statistics with in-memory server cache
+ * Internal logic for fetching Strava activities and athlete statistics
  */
-export const getStravaData = async (): Promise<IStravaResponse> => {
-  const now = Date.now();
-
-  // 1. Check in-memory cache
-  if (
-    cachedStravaResponse &&
-    now - cachedStravaResponse.timestamp < STRAVA_CACHE_TTL_MS
-  ) {
-    return cachedStravaResponse.data;
-  }
-
+const fetchStravaDataInternal = async (): Promise<IStravaResponse> => {
   const token = await getStravaAccessToken();
 
   if (!token) {
@@ -244,12 +254,14 @@ export const getStravaData = async (): Promise<IStravaResponse> => {
     const [rawStats, rawActivities] = await Promise.all([
       fetch(`${STRAVA_API_URL}/athletes/${athleteId}/stats`, {
         headers: { Authorization: `Bearer ${token}` },
-      }).then((res) => (res.ok ? res.json() : null)),
+      })
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null),
       fetchRecentStravaActivities(token),
     ]);
 
     // Format all activities (Runs, Rides, Walks, Hikes, etc.) and sort newest first
-    const activities: IStravaActivity[] = rawActivities
+    const activities: IStravaActivity[] = (rawActivities || [])
       .map((act) => {
         const isRide = act.type === 'Ride' || act.sport_type === 'Ride';
         const paceOrSpeed = isRide
@@ -258,16 +270,16 @@ export const getStravaData = async (): Promise<IStravaResponse> => {
 
         return {
           id: act.id,
-          name: act.name,
+          name: act.name || 'Untitled Activity',
           distance: formatDistance(act.distance),
-          movingTime: act.moving_time,
+          movingTime: act.moving_time || 0,
           formattedTime: formatDuration(act.moving_time),
-          elapsedTime: act.elapsed_time,
+          elapsedTime: act.elapsed_time || 0,
           totalElevationGain: Math.round(act.total_elevation_gain || 0),
-          type: act.type,
-          sportType: act.sport_type || act.type,
-          startDate: act.start_date,
-          startDateLocal: act.start_date_local,
+          type: act.type || 'Run',
+          sportType: act.sport_type || act.type || 'Run',
+          startDate: act.start_date || new Date().toISOString(),
+          startDateLocal: act.start_date_local || new Date().toISOString(),
           averageSpeed: act.average_speed || 0,
           maxSpeed: act.max_speed || 0,
           averageHeartrate: act.average_heartrate
@@ -338,4 +350,34 @@ export const getStravaData = async (): Promise<IStravaResponse> => {
     }
     return EMPTY_STRAVA_RESPONSE;
   }
+};
+
+/**
+ * Fetch Strava activities and athlete statistics with in-memory server cache & single-flight locking
+ */
+export const getStravaData = async (): Promise<IStravaResponse> => {
+  const now = Date.now();
+
+  // 1. Check in-memory cache
+  if (
+    cachedStravaResponse &&
+    now - cachedStravaResponse.timestamp < STRAVA_CACHE_TTL_MS
+  ) {
+    return cachedStravaResponse.data;
+  }
+
+  // Deduplicate concurrent requests (single-flight locking)
+  if (pendingStravaFetchPromise) {
+    return pendingStravaFetchPromise;
+  }
+
+  pendingStravaFetchPromise = (async () => {
+    try {
+      return await fetchStravaDataInternal();
+    } finally {
+      pendingStravaFetchPromise = null;
+    }
+  })();
+
+  return pendingStravaFetchPromise;
 };

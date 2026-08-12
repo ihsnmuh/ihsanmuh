@@ -4,6 +4,7 @@ import {
   calculateStatsFromActivities,
   generateYearlyHeatmapData,
   getHeatmapLevel,
+  isValidDate,
 } from '@/helpers/heatmap';
 
 import { IStravaActivity } from '@/types/interfaces/hobbies';
@@ -159,5 +160,46 @@ describe('calculateStatsFromActivities', () => {
     expect(stats.totalDistanceKm).toBe(0);
     expect(stats.totalElevationGain).toBe(0);
     expect(stats.avgPace).toBe('0:00 /km');
+  });
+
+  it('handles activities with NaN or null numerical fields gracefully', () => {
+    const malformedActivities: IStravaActivity[] = [
+      {
+        id: 99,
+        name: 'Corrupted Run',
+        distance: NaN,
+        movingTime: 0,
+        formattedTime: '0s',
+        elapsedTime: 0,
+        totalElevationGain: NaN,
+        type: 'Run',
+        sportType: 'Run',
+        startDate: 'invalid-date',
+        startDateLocal: 'invalid-date',
+        averageSpeed: 0,
+        maxSpeed: 0,
+        pace: '0:00 /km',
+        stravaUrl: 'https://strava.com/activities/99',
+      },
+    ];
+
+    const stats = calculateStatsFromActivities(malformedActivities);
+    expect(stats.totalRuns).toBe(1);
+    expect(stats.totalDistanceKm).toBe(0);
+    expect(stats.totalElevationGain).toBe(0);
+    expect(stats.avgPace).toBe('0:00 /km');
+  });
+});
+
+describe('isValidDate', () => {
+  it('returns true for valid Date instances', () => {
+    expect(isValidDate(new Date('2026-08-12'))).toBe(true);
+    expect(isValidDate(new Date())).toBe(true);
+  });
+
+  it('returns false for invalid Date instances or non-dates', () => {
+    expect(isValidDate(new Date('invalid-string'))).toBe(false);
+    expect(isValidDate(new Date(NaN))).toBe(false);
+    expect(isValidDate('2026-08-12' as any)).toBe(false);
   });
 });
