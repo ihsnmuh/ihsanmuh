@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   calculateStatsFromActivities,
+  decodePolyline,
   generateYearlyHeatmapData,
   getHeatmapLevel,
   isValidDate,
@@ -201,5 +202,21 @@ describe('isValidDate', () => {
     expect(isValidDate(new Date('invalid-string'))).toBe(false);
     expect(isValidDate(new Date(NaN))).toBe(false);
     expect(isValidDate('2026-08-12' as any)).toBe(false);
+  });
+});
+
+describe('decodePolyline', () => {
+  it('decodes valid encoded polyline strings into lat/lng tuples', () => {
+    const encoded = '_p~iF~ps|U_ulLnnqC_mqNvxq`@';
+    const points = decodePolyline(encoded);
+    expect(points.length).toBe(3);
+    expect(points[0]![0]).toBeCloseTo(38.5, 1);
+    expect(points[0]![1]).toBeCloseTo(-120.2, 1);
+  });
+
+  it('returns empty array for null, undefined, or empty polyline strings', () => {
+    expect(decodePolyline(null)).toEqual([]);
+    expect(decodePolyline(undefined)).toEqual([]);
+    expect(decodePolyline('')).toEqual([]);
   });
 });

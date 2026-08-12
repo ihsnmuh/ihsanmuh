@@ -62,9 +62,9 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
             key={idx}
             className={cn(
               'group relative p-4 sm:p-5 rounded-2xl transition-all duration-300',
-              'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md',
+              'bg-white/80 dark:bg-slate-900/60 backdrop-blur-md',
               'border border-slate-200/80 dark:border-slate-800/80',
-              'hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md dark:hover:shadow-slate-900/40',
+              'hover:border-slate-300 dark:hover:border-slate-700/80 hover:shadow-lg hover:shadow-slate-500/5 dark:hover:shadow-slate-950/40',
             )}
           >
             <div className='flex items-center justify-between mb-2.5 sm:mb-3'>

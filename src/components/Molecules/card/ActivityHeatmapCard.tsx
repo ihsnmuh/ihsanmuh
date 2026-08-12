@@ -17,9 +17,9 @@ interface ActivityHeatmapCardProps {
 }
 
 const LEVEL_BG_CLASSES: Record<number, string> = {
-  0: 'bg-slate-100 dark:bg-slate-800/60 border-slate-200/50 dark:border-slate-700/40',
-  1: 'bg-emerald-200 dark:bg-emerald-950/90 border-emerald-300/60 dark:border-emerald-800/60',
-  2: 'bg-emerald-400 dark:bg-emerald-700 border-emerald-500/60 dark:border-emerald-600/60',
+  0: 'bg-slate-100 dark:bg-slate-800/50 border-slate-200/50 dark:border-slate-800/40',
+  1: 'bg-emerald-200/90 dark:bg-emerald-900/60 border-emerald-300/60 dark:border-emerald-700/60',
+  2: 'bg-emerald-400 dark:bg-emerald-600 border-emerald-500/60 dark:border-emerald-500/60',
   3: 'bg-emerald-500 dark:bg-emerald-500 border-emerald-600/60 dark:border-emerald-400/60',
   4: 'bg-emerald-600 dark:bg-emerald-400 border-emerald-700/60 dark:border-emerald-300/60',
 };
@@ -49,9 +49,9 @@ const ActivityHeatmapCard: React.FC<ActivityHeatmapCardProps> = ({
     <div
       className={cn(
         'p-5 sm:p-6 rounded-2xl transition-all duration-300',
-        'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md',
+        'bg-white/80 dark:bg-slate-900/60 backdrop-blur-md',
         'border border-slate-200/80 dark:border-slate-800/80',
-        'shadow-sm hover:shadow-md transition-shadow',
+        'shadow-sm hover:shadow-lg hover:shadow-slate-500/5 dark:hover:shadow-slate-950/40 transition-all',
       )}
     >
       {/* Header */}
