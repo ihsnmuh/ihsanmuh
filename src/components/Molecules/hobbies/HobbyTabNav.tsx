@@ -26,11 +26,11 @@ const HobbyTabNav: React.FC<HobbyTabNavProps> = ({
   counts,
 }) => {
   return (
-    <div className='flex items-center justify-center'>
+    <div className='flex items-center justify-center max-w-full'>
       <nav
         aria-label='Hobbies Tabs'
         className={cn(
-          'inline-flex p-1.5 rounded-2xl gap-1.5',
+          'inline-flex p-1 sm:p-1.5 rounded-2xl gap-1 sm:gap-1.5 max-w-full overflow-x-auto scroller-style',
           'bg-slate-100/90 dark:bg-slate-800/80 backdrop-blur-md',
           'border border-slate-200/80 dark:border-slate-700/60',
           'shadow-inner',
@@ -46,7 +46,7 @@ const HobbyTabNav: React.FC<HobbyTabNavProps> = ({
               key={category.id}
               onClick={() => onTabChange(category.id)}
               className={cn(
-                'relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200',
+                'relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors duration-200 flex-shrink-0',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
                 isActive
                   ? 'text-slate-900 dark:text-white font-semibold'
