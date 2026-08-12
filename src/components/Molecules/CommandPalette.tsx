@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import {
+  Activity,
   Compass,
   Copy,
   CornerDownLeft,
@@ -58,6 +59,7 @@ const CommandPalette = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -166,6 +168,15 @@ const CommandPalette = () => {
           'Browse the collection of applications and projects I have built.',
         url: '/project',
         icon: <FolderKanban className='h-4 w-4' />,
+      },
+      {
+        id: 'nav-hobbies',
+        category: 'Navigation',
+        title: 'Hobbies',
+        description:
+          'Explore personal pursuits: Strava running stats, books, and photography.',
+        url: '/hobbies',
+        icon: <Activity className='h-4 w-4' />,
       },
       {
         id: 'nav-about',
