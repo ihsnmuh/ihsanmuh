@@ -23,10 +23,10 @@ const HobbiesContainer = () => {
   const [activeTab, setActiveTab] = useState<THobbyCategory>('running');
 
   const {
-    stravaData,
     isStravaLoading,
     isStravaError,
     timePeriodLabel,
+    currentYearActivities,
     displayedActivities,
     currentStats,
   } = useStravaActivities();
@@ -35,7 +35,7 @@ const HobbiesContainer = () => {
     HOBBY_CATEGORIES.find((c) => c.id === activeTab) || HOBBY_CATEGORIES[0];
 
   const tabCounts: Partial<Record<THobbyCategory, number>> = {
-    running: stravaData?.activities?.length || 0,
+    running: currentYearActivities.length,
     reading: BOOKS_DATA.length,
     photography: PHOTOS_DATA.length,
   };
@@ -116,7 +116,7 @@ const HobbiesContainer = () => {
 
               {/* 365-Day Activity Heatmap Grid */}
               <ActivityHeatmapCard
-                activities={stravaData?.activities}
+                activities={currentYearActivities}
                 isLoading={isStravaLoading}
               />
 
