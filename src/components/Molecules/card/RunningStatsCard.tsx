@@ -3,6 +3,8 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import AnimatedNumber from '@/components/Atoms/AnimatedNumber';
+
 import { IStravaStats } from '@/types/interfaces/hobbies';
 
 interface RunningStatsCardProps {
@@ -21,7 +23,11 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
   const statItems = [
     {
       label: 'Distance',
-      value: stats ? `${stats.totalDistanceKm} km` : '-',
+      isNumeric: true,
+      numericValue: stats?.totalDistanceKm || 0,
+      decimals: 2,
+      suffix: ' km',
+      fallback: stats ? `${stats.totalDistanceKm} km` : '-',
       subValue: `${period} Total Distance`,
       icon: Activity,
       color: 'text-orange-500 dark:text-orange-400',
@@ -29,7 +35,11 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
     },
     {
       label: 'Runs',
-      value: stats ? stats.totalRuns.toLocaleString() : '-',
+      isNumeric: true,
+      numericValue: stats?.totalRuns || 0,
+      decimals: 0,
+      suffix: '',
+      fallback: stats ? stats.totalRuns.toLocaleString() : '-',
       subValue: `${period} Logged Runs`,
       icon: Flame,
       color: 'text-amber-500 dark:text-amber-400',
@@ -37,6 +47,7 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
     },
     {
       label: 'Avg Pace',
+      isNumeric: false,
       value: stats?.avgPace || '-',
       subValue: `${period} Average Pace`,
       icon: Timer,
@@ -45,7 +56,11 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
     },
     {
       label: 'Elevation',
-      value: stats ? `${stats.totalElevationGain.toLocaleString()} m` : '-',
+      isNumeric: true,
+      numericValue: stats?.totalElevationGain || 0,
+      decimals: 0,
+      suffix: ' m',
+      fallback: stats ? `${stats.totalElevationGain.toLocaleString()} m` : '-',
       subValue: `${period} Vertical Climb`,
       icon: Mountain,
       color: 'text-sky-500 dark:text-sky-400',
@@ -90,7 +105,15 @@ const RunningStatsCard: React.FC<RunningStatsCardProps> = ({
             ) : (
               <div>
                 <p className='text-xl sm:text-2xl font-bold font-secondary text-slate-900 dark:text-white tracking-tight truncate'>
-                  {item.value}
+                  {item.isNumeric && stats ? (
+                    <AnimatedNumber
+                      value={item.numericValue ?? 0}
+                      decimals={item.decimals}
+                      suffix={item.suffix}
+                    />
+                  ) : (
+                    item.value
+                  )}
                 </p>
                 {item.subValue && (
                   <p className='text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate'>
