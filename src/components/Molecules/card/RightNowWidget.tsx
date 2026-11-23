@@ -1,4 +1,4 @@
-import { Clock, MapPin, Sparkles } from 'lucide-react';
+import { Clock, MapPin, Radio } from 'lucide-react';
 import { motion } from 'motion/react';
 import React, { useEffect, useState } from 'react';
 
@@ -9,7 +9,7 @@ const RightNowWidget = () => {
   const [status, setStatus] = useState({
     emoji: '💻',
     text: 'Building client websites',
-    color: 'bg-green-500',
+    color: 'bg-moss-green',
   });
   const [mounted, setMounted] = useState(false);
 
@@ -17,8 +17,7 @@ const RightNowWidget = () => {
     setMounted(true);
 
     const updateTimeAndStatus = () => {
-      // Calculate Jakarta Time (WIB)
-      // Jakarta is UTC+7
+      // Calculate Jakarta Time (WIB) - UTC+7
       const options: Intl.DateTimeFormatOptions = {
         timeZone: 'Asia/Jakarta',
         hour: '2-digit',
@@ -44,25 +43,25 @@ const RightNowWidget = () => {
         setStatus({
           emoji: '💻',
           text: 'Designing & Writing Code',
-          color: 'bg-emerald-500',
+          color: 'bg-moss-green',
         });
       } else if (jakartaHour >= 18 && jakartaHour < 23) {
         setStatus({
           emoji: '📚',
           text: 'Learning new tech / reading books',
-          color: 'bg-sky-500',
+          color: 'bg-signal-blue',
         });
       } else if (jakartaHour >= 23 || jakartaHour < 6) {
         setStatus({
           emoji: '😴',
           text: 'Sleeping / Recharging battery',
-          color: 'bg-zinc-500 animate-pulse',
+          color: 'bg-sage-gray',
         });
       } else {
         setStatus({
           emoji: '☕',
           text: 'Morning coffee & planning the day',
-          color: 'bg-amber-500',
+          color: 'bg-amber-glow',
         });
       }
     };
@@ -77,8 +76,8 @@ const RightNowWidget = () => {
     return (
       <div
         className={cn(
-          'w-full rounded-2xl border p-5',
-          'background-card border-slate-200 dark:border-zinc-700/40 animate-pulse h-32',
+          'w-full rounded-sm border border-hairline p-4',
+          'bg-paper-white animate-pulse h-32',
         )}
       />
     );
@@ -86,36 +85,30 @@ const RightNowWidget = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
+      transition={{ duration: 0.3, delay: 0.1 }}
       className={cn(
-        'w-full rounded-2xl border p-5',
-        'background-card border-slate-200 dark:border-zinc-700/40 shadow-sm relative overflow-hidden group',
+        'w-full rounded-sm border border-hairline p-4 sm:p-5',
+        'bg-paper-white shadow-none relative overflow-hidden',
       )}
     >
-      {/* Decorative gradient overlay */}
-      <div className='absolute inset-0 bg-gradient-to-tr from-primary-500/5 via-transparent to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none' />
-
-      <h3 className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-zinc-500 mb-4 flex items-center gap-1.5'>
-        <Sparkles
-          size={12}
-          className='text-primary-500 dark:text-primary-400 animate-pulse'
-        />
+      <h3 className='font-mono text-xs uppercase tracking-widest text-sage-gray mb-3 flex items-center gap-1.5 font-bold'>
+        <Radio size={12} className='text-amber-glow animate-pulse' />
         Right Now
       </h3>
 
-      <div className='flex flex-col gap-3.5'>
+      <div className='flex flex-col gap-3'>
         {/* Time Zone */}
         <div className='flex items-center gap-3'>
-          <div className='w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-600 dark:text-zinc-400'>
-            <Clock size={16} />
+          <div className='w-7 h-7 rounded-sm bg-soft-linen border border-hairline flex items-center justify-center text-deep-moss'>
+            <Clock size={14} />
           </div>
           <div>
-            <p className='font-secondary text-xs text-slate-400 dark:text-zinc-500 uppercase tracking-wider font-semibold'>
+            <p className='font-mono text-[10px] text-sage-gray uppercase tracking-wider font-semibold'>
               Jakarta Time (WIB)
             </p>
-            <p className='font-mono text-sm font-bold text-slate-800 dark:text-zinc-200 tracking-wide'>
+            <p className='font-mono text-xs sm:text-sm font-bold text-deep-moss tracking-wide'>
               {time}
             </p>
           </div>
@@ -123,11 +116,11 @@ const RightNowWidget = () => {
 
         {/* Status Activity */}
         <div className='flex items-center gap-3'>
-          <div className='w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-xl'>
+          <div className='w-7 h-7 rounded-sm bg-soft-linen border border-hairline flex items-center justify-center text-base'>
             {status.emoji}
           </div>
           <div>
-            <p className='font-secondary text-xs text-slate-400 dark:text-zinc-500 uppercase tracking-wider font-semibold flex items-center gap-1.5'>
+            <p className='font-mono text-[10px] text-sage-gray uppercase tracking-wider font-semibold flex items-center gap-1.5'>
               <span className={cn('w-2 h-2 rounded-full relative flex')}>
                 <span
                   className={cn(
@@ -144,22 +137,22 @@ const RightNowWidget = () => {
               </span>
               Current Status
             </p>
-            <p className='font-primary text-sm font-semibold text-slate-700 dark:text-zinc-300'>
+            <p className='font-ui text-xs sm:text-sm font-medium text-deep-moss'>
               {status.text}
             </p>
           </div>
         </div>
 
         {/* Location Info */}
-        <div className='flex items-center gap-3 border-t border-slate-100 dark:border-zinc-800/80 pt-3 mt-1'>
-          <div className='w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-600 dark:text-zinc-400'>
-            <MapPin size={16} />
+        <div className='flex items-center gap-3 border-t border-hairline/70 pt-2.5 mt-0.5'>
+          <div className='w-7 h-7 rounded-sm bg-soft-linen border border-hairline flex items-center justify-center text-deep-moss'>
+            <MapPin size={14} />
           </div>
           <div>
-            <p className='font-primary text-xs font-semibold text-slate-600 dark:text-zinc-400'>
+            <p className='font-ui text-xs font-semibold text-deep-moss'>
               Jakarta, Indonesia
             </p>
-            <p className='font-primary text-[10px] text-slate-400 dark:text-zinc-500'>
+            <p className='font-mono text-[10px] text-sage-gray'>
               6.2088° S, 106.8456° E
             </p>
           </div>

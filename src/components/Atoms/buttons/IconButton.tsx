@@ -17,7 +17,6 @@ type IconButtonProps = {
   className?: string;
   disabled?: boolean;
   isLoading?: boolean;
-  isDarkBg?: boolean;
   variant?: (typeof IconButtonVariant)[number];
   icon?: IconType | LucideIcon;
   classNames?: {
@@ -32,7 +31,6 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       disabled: buttonDisabled,
       isLoading,
       variant = 'primary',
-      isDarkBg = false,
       icon: Icon,
       classNames,
       ...rest
@@ -47,44 +45,47 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         type='button'
         disabled={disabled}
         className={cn(
-          'inline-flex items-center justify-center rounded font-medium',
-          'focus-visible:ring-primary-500 focus:outline-none focus-visible:ring',
-          'shadow-sm',
-          'transition-colors duration-75',
-          'min-h-[28px] min-w-[28px] p-1 md:min-h-[34px] md:min-w-[34px] md:p-2',
+          'inline-flex items-center justify-center rounded-[8px] font-medium select-none',
+          'focus-visible:ring-amber-glow focus:outline-none focus-visible:ring-2',
+          'transition-all duration-100',
+          'min-h-[30px] min-w-[30px] p-1.5 md:min-h-[34px] md:min-w-[34px] md:p-2',
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [
-              'bg-primary-500 text-white',
-              'border-primary-600 border',
-              'hover:bg-primary-600 hover:text-white',
-              'active:bg-primary-700',
-              'disabled:bg-primary-700',
+              'bg-amber-glow text-[#111111]',
+              'border-[1.5px] border-[#a06305]',
+              'shadow-[0_2.5px_0_0_#8e5502]',
+              'hover:bg-[#e2931d]',
+              'active:translate-y-[1.5px] active:shadow-[0_1px_0_0_#8e5502]',
+              'disabled:bg-pale-stone disabled:text-ash-green disabled:border-hairline disabled:shadow-none disabled:translate-y-0',
             ],
             variant === 'outline' && [
-              'text-primary-500',
-              'border-primary-500 border',
-              'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
-              isDarkBg &&
-                'hover:bg-gray-900 active:bg-gray-800 disabled:bg-gray-800',
+              'bg-paper-white text-[#111111]',
+              'border-[1.5px] border-[#a06305]',
+              'shadow-[0_2.5px_0_0_#eb9d2a,0_2.5px_0_1.5px_#a06305]',
+              'hover:bg-[#fafaf7]',
+              'active:translate-y-[1.5px] active:shadow-[0_1px_0_0_#eb9d2a,0_1px_0_1.5px_#a06305]',
+              'disabled:bg-transparent disabled:text-ash-green disabled:border-ash-green disabled:shadow-none disabled:translate-y-0',
             ],
             variant === 'ghost' && [
-              'text-primary-500',
-              'shadow-none',
-              'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
-              isDarkBg &&
-                'hover:bg-gray-900 active:bg-gray-800 disabled:bg-gray-800',
+              'text-deep-moss bg-transparent shadow-none',
+              'hover:bg-pale-stone active:bg-soft-linen disabled:text-ash-green',
             ],
             variant === 'light' && [
-              'bg-white text-gray-700',
-              'border border-gray-300',
-              'hover:text-dark hover:bg-gray-100',
-              'active:bg-white/80 disabled:bg-gray-200',
+              'bg-paper-white text-deep-moss',
+              'border-[1.5px] border-hairline',
+              'shadow-[0_2px_0_0_#bfc1b7]',
+              'hover:bg-soft-linen',
+              'active:translate-y-[1px] active:shadow-[0_1px_0_0_#bfc1b7]',
+              'disabled:bg-pale-stone disabled:shadow-none disabled:translate-y-0',
             ],
             variant === 'dark' && [
-              'bg-gray-900 text-white',
-              'border border-gray-600',
-              'hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700',
+              'bg-deep-moss text-paper-white',
+              'border-[1.5px] border-[#141510]',
+              'shadow-[0_2.5px_0_0_#141510]',
+              'hover:opacity-95',
+              'active:translate-y-[1.5px] active:shadow-[0_1px_0_0_#141510]',
+              'disabled:bg-pale-stone disabled:text-ash-green disabled:shadow-none disabled:translate-y-0',
             ],
           ],
           //#endregion  //*======== Variants ===========
@@ -100,9 +101,13 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
             className={cn(
               'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
               {
-                'text-white': ['primary', 'dark'].includes(variant),
-                'text-black': ['light'].includes(variant),
-                'text-primary-500': ['outline', 'ghost'].includes(variant),
+                'text-paper-white': ['dark'].includes(variant),
+                'text-deep-moss': [
+                  'primary',
+                  'light',
+                  'outline',
+                  'ghost',
+                ].includes(variant),
               },
             )}
           >

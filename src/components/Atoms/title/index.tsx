@@ -2,20 +2,19 @@ import { cn } from '@/lib/utils';
 
 interface TitleProps {
   title: string;
+  className?: string;
 }
 
-const Title = (props: TitleProps) => {
+const Title = ({ title, className }: TitleProps) => {
   return (
-    <div className='flex gap-4 items-center'>
-      {/* <DotColor /> */}
+    <div className='flex gap-3 items-center'>
       <h1
         className={cn(
-          'h0 leading-normal font-primary font-extrabold',
-          'bg-clip-text text-transparent',
-          'bg-gradient-to-r from-primary-400 to-violet-500 dark:to-orange-400',
+          'text-3xl sm:text-4xl font-primary font-extrabold text-deep-moss tracking-tight',
+          className,
         )}
       >
-        {props.title}
+        {title}
       </h1>
     </div>
   );

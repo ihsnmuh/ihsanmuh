@@ -1,15 +1,14 @@
 import { format } from 'date-fns';
-import { Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
-import { useRef } from 'react';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
+import TagPill from '@/components/Atoms/pills/TagPills';
 import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
 import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
-import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 import { usePostStats } from '@/helpers/usePostStats';
 
 import { IPost } from '@/types/interfaces/posts';
@@ -19,31 +18,27 @@ const FeaturedPostCard = (props: IPost) => {
     props;
 
   const { views, likes, isLoading } = usePostStats(slug);
-  const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
-  const cardRef = useRef<HTMLDivElement>(null);
-  useMouseMoveSpotlight(cardRef);
+  const date = publishedAt
+    ? format(new Date(publishedAt), 'MMMM dd, yyyy')
+    : '';
 
   return (
     <Link href={`/blog/${slug}`} className='group block'>
       <article
-        ref={cardRef}
         className={cn(
-          'grid grid-cols-1 lg:grid-cols-2 gap-0 relative',
-          'rounded-xl overflow-hidden',
-          'border border-gray-200 dark:border-gray-700/50',
-          'bg-white dark:bg-slate-800/40',
-          'transition-all duration-300',
-          'hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600',
+          'grid grid-cols-1 md:grid-cols-2 gap-0 relative',
+          'rounded-lg overflow-hidden',
+          'border border-hairline hover:border-hairline-strong hover:-translate-y-0.5',
+          'bg-surface text-ink',
+          'transition-all duration-200',
         )}
       >
-        {/* Spotlight overlay effect */}
-        <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
-
-        <div className='relative aspect-[16/10] lg:aspect-auto overflow-hidden'>
+        <div className='relative aspect-[16/10] md:aspect-auto min-h-[220px] overflow-hidden border-b md:border-b-0 md:border-r border-hairline bg-subtle'>
           <NextImage
             className='w-full h-full'
             classNames={{
-              image: 'transition-transform duration-500 group-hover:scale-105',
+              image:
+                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
             }}
             src={`/images/blog/${banner}`}
             alt={title}
@@ -52,106 +47,42 @@ const FeaturedPostCard = (props: IPost) => {
             style={{ objectFit: 'cover' }}
             useSkeleton
           />
-          <div
-            className={cn(
-              'absolute inset-0',
-              'bg-gradient-to-t from-black/30 via-transparent to-transparent',
-              'lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/10',
-              'opacity-0 transition-opacity duration-500 group-hover:opacity-100',
-            )}
-          />
         </div>
 
-        <div className='flex flex-col justify-center p-6 sm:p-8 lg:p-10'>
-          <div className='flex items-center gap-3 mb-4'>
-            <span
-              className={cn(
-                'inline-block px-2.5 py-0.5',
-                'text-[10px] font-semibold uppercase tracking-[0.15em]',
-                'text-primary-600 dark:text-primary-400',
-                'bg-primary-50 dark:bg-primary-500/10',
-                'rounded-full',
-              )}
-            >
+        <div className='flex flex-col justify-center p-6 sm:p-7'>
+          <div className='flex items-center gap-2 mb-3 flex-wrap'>
+            <span className='inline-block px-2 py-0.5 text-[10px] font-mono font-medium uppercase tracking-wider text-accent bg-accent-soft rounded-full'>
               Featured
             </span>
-            {tags?.length > 0 && (
-              <div className='flex items-center gap-1.5'>
-                {tags.slice(0, 2).map((tag) => (
-                  <span
-                    key={tag}
-                    className={cn(
-                      'text-[10px] font-medium uppercase tracking-[0.12em]',
-                      'text-gray-500 dark:text-gray-400',
-                    )}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
+            {tags?.slice(0, 2).map((tag) => <TagPill key={tag} name={tag} />)}
           </div>
 
-          <h2
-            className={cn(
-              'font-secondary text-2xl sm:text-3xl font-bold',
-              'leading-tight tracking-tight',
-              'text-gray-900 dark:text-gray-50',
-              'transition-colors duration-300',
-              'group-hover:text-primary-600 dark:group-hover:text-primary-400',
-            )}
-          >
+          <h2 className='font-primary text-xl sm:text-2xl font-semibold leading-snug tracking-tight text-ink group-hover:text-accent transition-colors duration-150'>
             {title}
           </h2>
 
-          <p
-            className={cn(
-              'mt-3 text-sm sm:text-base leading-relaxed',
-              'text-gray-600 dark:text-gray-400',
-              'line-clamp-3',
-            )}
-          >
+          <p className='mt-2.5 text-sm leading-relaxed text-body line-clamp-3'>
             {description}
           </p>
 
-          <div
-            className={cn(
-              'mt-6 pt-4',
-              'border-t border-gray-100 dark:border-gray-700/50',
-              'flex items-center justify-between flex-wrap gap-3',
-            )}
-          >
-            <div className='flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400'>
-              <span className='flex items-center gap-1.5 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300'>
-                <Calendar className='h-3.5 w-3.5 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
-                <time dateTime={publishedAt}>{date}</time>
-              </span>
+          <div className='mt-6 pt-4 border-t border-hairline/70 flex items-center justify-between flex-wrap gap-2 text-xs font-mono text-muted tabular-nums'>
+            <div className='flex items-center gap-2'>
+              {date && <time dateTime={publishedAt}>{date}</time>}
               {timeReading && (
-                <span className='flex items-center gap-1.5 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300'>
-                  <Clock className='h-3.5 w-3.5 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
+                <>
+                  <span aria-hidden='true'>·</span>
                   <span>{timeReading}</span>
-                </span>
+                </>
               )}
             </div>
 
             <div className='flex items-center gap-3'>
               {isLoading ? (
-                <div className='flex items-center gap-3'>
-                  <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
-                  <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
-                </div>
+                <span className='h-3 w-12 animate-pulse rounded bg-subtle' />
               ) : (
                 <>
-                  <ViewCounterStats
-                    views={views}
-                    showIcon
-                    className='text-xs group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'
-                  />
-                  <LikeButtonStats
-                    likes={likes}
-                    showIcon
-                    className='text-xs group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors duration-300'
-                  />
+                  <ViewCounterStats views={views} showIcon />
+                  <LikeButtonStats likes={likes} showIcon />
                 </>
               )}
             </div>

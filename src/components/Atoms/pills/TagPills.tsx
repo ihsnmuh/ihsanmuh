@@ -4,20 +4,26 @@ import { cn } from '@/lib/utils';
 
 interface TagPillProps {
   name: string;
+  variant?: 'default' | 'orange' | 'green' | 'blue' | 'amber';
+  className?: string;
 }
 
-const TagPill = (props: TagPillProps) => {
-  const { name } = props;
-
+const TagPill = ({ name, variant = 'default', className }: TagPillProps) => {
   return (
-    <div
+    <span
       className={cn(
-        'flex items-center gap-1 py-1 px-2 rounded-md',
-        'dark:bg-slate-600/50 bg-slate-50/50',
+        'inline-flex items-center gap-1 py-0.5 px-2.5 rounded-full border text-[11px] font-mono select-none transition-colors',
+        variant === 'default' && 'bg-subtle text-body border-hairline',
+        variant === 'orange' && 'bg-danger-soft text-danger border-danger/20',
+        variant === 'green' &&
+          'bg-positive-soft text-positive border-positive/20',
+        variant === 'blue' && 'bg-accent-soft text-accent border-accent/20',
+        variant === 'amber' && 'bg-warning-soft text-warning border-warning/20',
+        className,
       )}
     >
-      <p className='font-primary text-xs'>{name}</p>
-    </div>
+      <span>{name}</span>
+    </span>
   );
 };
 

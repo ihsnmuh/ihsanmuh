@@ -57,12 +57,7 @@ const Stacks: stacksProps = {
   PHP: <SiPhp size={iconSize} className='text-blue-500' />,
   JavaScript: <SiJavascript size={iconSize} className='text-yellow-400' />,
   TypeScript: <SiTypescript size={iconSize} className='text-blue-400' />,
-  'Next.js': (
-    <SiNextdotjs
-      size={iconSize}
-      className='text-slate-800 dark:text-slate-200'
-    />
-  ),
+  'Next.js': <SiNextdotjs size={iconSize} className='text-slate-800' />,
   'React.js': <SiReact size={iconSize} className='text-sky-500' />,
   ReactNative: <SiReact size={iconSize} className='text-sky-500' />,
   TailwindCSS: <SiTailwindcss size={iconSize} className='text-cyan-300' />,
@@ -70,12 +65,7 @@ const Stacks: stacksProps = {
     <BsFillBootstrapFill size={iconSize} className='text-purple-500' />
   ),
   GraphQL: <SiGraphql size={iconSize} className='text-pink-600' />,
-  Apollo: (
-    <SiApollographql
-      size={iconSize}
-      className='text-[#311C87] dark:text-[#7B61FF]'
-    />
-  ),
+  Apollo: <SiApollographql size={iconSize} className='text-[#311C87]' />,
   WordPress: <SiWordpress size={iconSize} className='text-[#21759B]' />,
   Laravel: <SiLaravel size={iconSize} className='text-red-500' />,
   MaterialUI: <SiMui size={iconSize} className='text-sky-400' />,
@@ -101,25 +91,15 @@ const Stacks: stacksProps = {
   Jest: <SiJest size={iconSize} className='text-red-600' />,
   Storybook: <SiStorybook size={iconSize} className='text-amber-500' />,
   CSS: <SiCss3 size={iconSize} className='text-blue-300' />,
-  Socket: (
-    <SiSocketdotio
-      size={iconSize}
-      className='text-slate-800 dark:text-slate-200'
-    />
-  ),
-  Remix: (
-    <SiRemix size={iconSize} className='text-slate-800 dark:text-slate-200' />
-  ),
+  Socket: <SiSocketdotio size={iconSize} className='text-slate-800' />,
+  Remix: <SiRemix size={iconSize} className='text-slate-800' />,
   ReactQuery: <SiReactquery size={iconSize} className='text-[#F73E51]' />,
-  Express: (
-    <SiExpress size={iconSize} className='text-slate-800 dark:text-slate-200' />
-  ),
+  Express: <SiExpress size={iconSize} className='text-slate-800' />,
   Jquery: <SiJquery size={iconSize} className='text-[#0769AD]' />,
   Figma: <SiFigma size={iconSize} className='text-[#F24E1E]' />,
   Medium: <SiMedium size={iconSize} />,
   Expo: <SiExpo size={iconSize} />,
   PostgreSQL: <SiPostgresql size={iconSize} className='text-[#336791]' />,
-  /** legacy typo alias — keep for backward compat */
   PostgresQL: <SiPostgresql size={iconSize} className='text-[#336791]' />,
   Sequelize: <SiSequelize size={iconSize} />,
   Heroku: <SiHeroku size={iconSize} className='text-[#430098]' />,
@@ -129,13 +109,9 @@ const Stacks: stacksProps = {
   Redis: <SiRedis size={iconSize} className='text-[#D82C20]' />,
   AWS: <SiAmazonaws size={iconSize} className='text-[#FF9900]' />,
   Ajax: <TbApi size={iconSize} className='text-orange-500' />,
-  GRPC: (
-    <LuNetwork size={iconSize} className='text-slate-500 dark:text-slate-400' />
-  ),
+  GRPC: <LuNetwork size={iconSize} className='text-slate-500' />,
   JWT: <LuKey size={iconSize} className='text-amber-500' />,
-  Microservices: (
-    <LuLayers size={iconSize} className='text-slate-500 dark:text-slate-400' />
-  ),
+  Microservices: <LuLayers size={iconSize} className='text-slate-500' />,
   'UI/UX': <LuPalette size={iconSize} className='text-pink-500' />,
   Docker: <SiDocker size={iconSize} className='text-blue-500' />,
 };
@@ -153,7 +129,7 @@ const StackIcon = ({ type, size }: StackIconProps) => {
   return (
     <span
       style={{ fontSize: size, width: size, height: size }}
-      className='flex items-center justify-center font-bold text-slate-400 dark:text-slate-500 leading-none select-none'
+      className='flex items-center justify-center font-bold text-slate-400 leading-none select-none'
     >
       {type.charAt(0).toUpperCase()}
     </span>

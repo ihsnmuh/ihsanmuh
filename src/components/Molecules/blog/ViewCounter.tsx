@@ -24,10 +24,7 @@ export function ViewCounterStats({
 }) {
   return (
     <span
-      className={cn(
-        'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-        className,
-      )}
+      className={cn('flex items-center gap-1 text-sm text-gray-600', className)}
     >
       {showIcon && <Eye className='h-4 w-4' />}
       <span>
@@ -50,7 +47,7 @@ export function ViewCounter({
     return (
       <span
         className={cn(
-          'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
+          'flex items-center gap-1 text-sm text-gray-600',
           className,
         )}
       >
@@ -81,7 +78,7 @@ export function ViewIncrement({
     return (
       <span
         className={cn(
-          'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
+          'flex items-center gap-1 text-sm text-gray-600',
           className,
         )}
       >

@@ -1,81 +1,58 @@
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
-
-import { cn } from '@/lib/utils';
 
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/project', label: 'Project' },
+  { href: '/blog', label: 'Writing' },
+  { href: '/project', label: 'Projects' },
   { href: '/about', label: 'About' },
 ];
 
 const socialLinks = [
-  {
-    href: 'mailto:me@ihsanmuh.com',
-    label: 'Email',
-    icon: Mail,
-    hoverClass: 'hover:text-primary-500',
-  },
-  {
-    href: 'https://github.com/ihsnmuh',
-    label: 'GitHub',
-    icon: Github,
-    hoverClass: 'hover:text-black dark:hover:text-white',
-  },
-  {
-    href: 'https://www.linkedin.com/in/ihsanmuhammad19/',
-    label: 'LinkedIn',
-    icon: Linkedin,
-    hoverClass: 'hover:text-[#0077b5]',
-  },
-  {
-    href: 'https://instagram.com/chernodev',
-    label: 'Instagram',
-    icon: Instagram,
-    hoverClass: 'hover:text-pink-500',
-  },
+  { href: 'mailto:me@ihsanmuh.com', label: 'Email' },
+  { href: 'https://github.com/ihsnmuh', label: 'GitHub' },
+  { href: 'https://www.linkedin.com/in/ihsanmuhammad19/', label: 'LinkedIn' },
+  { href: 'https://instagram.com/chernodev', label: 'Instagram' },
 ];
 
 const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className='border-t border-slate-200 dark:border-slate-800'>
-      <div className={cn('layout', 'py-8 sm:py-12')}>
-        {/* Main footer grid */}
-        <div className='grid grid-cols-2 gap-8 sm:grid-cols-3'>
-          {/* Brand column */}
-          <div className='col-span-2 sm:col-span-1 flex flex-col gap-3'>
-            <Link href='/' aria-label='Home'>
-              <KufiLogo
-                fill='currentColor'
-                className='w-9 h-9 fill-current text-primary-500'
-              />
+    <footer className='border-t border-hairline mt-20 py-14 text-body transition-colors duration-200'>
+      <div className='max-w-4xl mx-auto px-5 sm:px-6'>
+        <div className='grid grid-cols-1 gap-10 sm:grid-cols-12'>
+          <div className='sm:col-span-6 flex flex-col gap-3'>
+            <Link
+              href='/'
+              aria-label='Home'
+              className='inline-flex items-center gap-2.5 w-fit group'
+            >
+              <div className='w-7 h-7 rounded-md bg-surface border border-hairline flex items-center justify-center p-1 group-hover:border-accent/40 transition-colors'>
+                <KufiLogo className='w-full h-full text-accent fill-current' />
+              </div>
+              <span className='font-primary text-base font-bold tracking-tight text-ink group-hover:text-accent transition-colors'>
+                ihsanmuh
+              </span>
             </Link>
-            <p className='text-sm text-slate-600 dark:text-slate-400 max-w-xs'>
-              Software engineer building web applications that deliver value and
-              meaningful user experiences.
+            <p className='text-sm text-muted max-w-xs leading-relaxed'>
+              Software engineer in Jakarta building web applications with React,
+              Next.js, and TypeScript.
             </p>
           </div>
 
-          {/* Pages column */}
-          <div className='flex flex-col gap-3'>
-            <p className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'>
-              Pages
+          <div className='sm:col-span-3 flex flex-col gap-3'>
+            <p className='font-mono text-[11px] uppercase tracking-wider text-muted'>
+              Navigation
             </p>
             <ul className='flex flex-col gap-2'>
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={cn(
-                      'text-sm text-slate-600 dark:text-slate-400',
-                      'hover:text-primary-500 dark:hover:text-primary-400',
-                      'transition-colors duration-200',
-                    )}
+                    className='text-sm text-body hover:text-accent transition-colors duration-150'
                   >
                     {link.label}
                   </Link>
@@ -84,26 +61,25 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Connect column */}
-          <div className='flex flex-col gap-3'>
-            <p className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500'>
+          <div className='sm:col-span-3 flex flex-col gap-3'>
+            <p className='font-mono text-[11px] uppercase tracking-wider text-muted'>
               Connect
             </p>
             <ul className='flex flex-col gap-2'>
-              {socialLinks.map(({ href, label, icon: Icon, hoverClass }) => (
+              {socialLinks.map(({ href, label }) => (
                 <li key={label}>
                   <Link
                     href={href}
                     aria-label={label}
-                    className={cn(
-                      'flex items-center gap-2 text-sm',
-                      'text-slate-600 dark:text-slate-400',
-                      hoverClass,
-                      'transition-colors duration-200',
-                    )}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='inline-flex items-center gap-1 text-sm text-body hover:text-accent transition-colors duration-150 group'
                   >
-                    <Icon size={15} />
-                    {label}
+                    <span>{label}</span>
+                    <ArrowUpRight
+                      size={13}
+                      className='text-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform'
+                    />
                   </Link>
                 </li>
               ))}
@@ -111,18 +87,9 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div
-          className={cn(
-            'flex flex-col sm:flex-row sm:items-center sm:justify-between',
-            'gap-2 mt-8 pt-6',
-            'border-t border-slate-200 dark:border-slate-800',
-          )}
-        >
-          <p className='text-xs text-slate-400 dark:text-slate-500'>
-            © {year} Muhammad Ihsan. All rights reserved.
-          </p>
-          <p className='font-mono text-xs text-slate-400 dark:text-slate-500'>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-12 pt-6 border-t border-hairline/70 text-xs text-muted'>
+          <p>© {year} Muhammad Ihsan. All rights reserved.</p>
+          <p className='font-mono text-[11px]'>
             Built with Next.js &amp; TypeScript
           </p>
         </div>

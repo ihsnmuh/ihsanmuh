@@ -171,3 +171,17 @@ CI pipeline (`.github/workflows/prod-ci.yml`): format:check, lint, typecheck, th
 - Run `yarn format && yarn lint` before considering work done.
 - If you touch DB/schema: run `yarn generate` and create migrations with `npx prisma migrate dev`.
 - Add comments only for function/component documentation, not inline explanations.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues. See [`docs/agents/issue-tracker.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/issue-tracker.md).
+
+### Triage labels
+
+The triage skill maps canonical roles to label strings. See [`docs/agents/triage-labels.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/triage-labels.md).
+
+### Domain docs
+
+Single-context repo layout with `CONTEXT.md` and ADRs. See [`docs/agents/domain.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/domain.md).

@@ -1,10 +1,9 @@
 import { format } from 'date-fns';
-import { Calendar, Clock } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-import NextImage from '@/components/Atoms/NextImage';
 import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
 import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
@@ -13,126 +12,78 @@ import { usePostStats } from '@/helpers/usePostStats';
 import { IPost } from '@/types/interfaces/posts';
 
 const EditorialPostCard = (props: IPost) => {
-  const { slug, title, banner, tags, timeReading, publishedAt, description } =
-    props;
+  const { slug, title, tags, timeReading, publishedAt, description } = props;
 
   const { views, likes, isLoading } = usePostStats(slug);
-  const date = format(new Date(publishedAt ?? ''), 'MMM dd, yyyy');
+  const date = publishedAt ? format(new Date(publishedAt), 'MMM dd, yyyy') : '';
 
   return (
-    <Link href={`/blog/${slug}`} className='group block h-full'>
+    <Link href={`/blog/${slug}`} className='group block'>
       <article
         className={cn(
-          'grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] gap-4 sm:gap-5 h-full',
-          'py-5 px-2.5',
-          'transition-all duration-300 ease-in-out',
-          'rounded-xl',
-          'hover:bg-gray-50/80 dark:hover:bg-slate-800/40',
-          'group-hover:translate-x-1.5',
+          'py-5 sm:py-6 -mx-3 px-3 rounded-lg',
+          'transition-colors duration-150 hover:bg-subtle/60',
         )}
       >
-        <div
-          className={cn(
-            'relative aspect-[4/3] overflow-hidden rounded-lg',
-            'bg-gray-100 dark:bg-gray-800',
-          )}
-        >
-          <NextImage
-            className='w-full h-full'
-            classNames={{
-              image: 'transition-transform duration-500 group-hover:scale-105',
-            }}
-            src={`/images/blog/${banner}`}
-            alt={title}
-            sizes='160px'
-            fill
-            style={{ objectFit: 'cover' }}
-            useSkeleton
-          />
-          <div
-            className={cn(
-              'absolute inset-0 rounded-lg',
-              'ring-1 ring-inset ring-black/5 dark:ring-white/5',
-            )}
-          />
-        </div>
-
-        <div className='flex flex-col justify-center min-w-0'>
-          {tags?.length > 0 && (
-            <div className='flex items-center gap-2 mb-1.5'>
-              {tags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className={cn(
-                    'text-[10px] font-medium uppercase tracking-[0.1em]',
-                    'text-gray-400 dark:text-gray-500',
-                  )}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          <h3
-            className={cn(
-              'font-secondary font-semibold text-base sm:text-lg',
-              'leading-snug tracking-tight',
-              'text-gray-900 dark:text-gray-100',
-              'line-clamp-2',
-              'transition-colors duration-200',
-              'group-hover:text-primary-600 dark:group-hover:text-primary-400',
-            )}
-          >
+        <div className='flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5 sm:gap-6'>
+          <h3 className='font-primary text-base sm:text-lg font-semibold tracking-tight text-ink group-hover:text-accent transition-colors duration-150 leading-snug'>
             {title}
           </h3>
+          <div className='flex items-center gap-2 shrink-0 font-mono text-xs text-muted tabular-nums'>
+            {date && <time dateTime={publishedAt}>{date}</time>}
+            <ArrowUpRight
+              size={14}
+              className='hidden sm:inline-block opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent'
+            />
+          </div>
+        </div>
 
-          <p
-            className={cn(
-              'mt-1 text-sm leading-relaxed',
-              'text-gray-500 dark:text-gray-400',
-              'line-clamp-2',
-              'hidden sm:block',
-            )}
-          >
+        {description && (
+          <p className='mt-1.5 text-sm text-body line-clamp-2 leading-relaxed max-w-2xl'>
             {description}
           </p>
+        )}
 
-          <div className='flex items-center gap-3 mt-2 flex-wrap'>
-            <div className='flex items-center gap-3 text-[11px] text-gray-400 dark:text-gray-500'>
-              <span className='flex items-center gap-1 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300'>
-                <Calendar className='h-3 w-3 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
-                <time dateTime={publishedAt}>{date}</time>
-              </span>
-              {timeReading && (
-                <span className='flex items-center gap-1 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300'>
-                  <Clock className='h-3 w-3 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300' />
-                  <span>{timeReading}</span>
-                </span>
-              )}
-            </div>
-
-            <div className='flex items-center gap-2.5'>
-              {isLoading ? (
-                <div className='flex items-center gap-2'>
-                  <span className='h-3 w-10 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
-                  <span className='h-3 w-10 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
+        <div className='mt-3 flex items-center justify-between gap-3 flex-wrap text-xs font-mono text-muted'>
+          <div className='flex items-center gap-2 flex-wrap'>
+            {timeReading && <span>{timeReading}</span>}
+            {tags?.length > 0 && (
+              <>
+                {timeReading && <span aria-hidden='true'>·</span>}
+                <div className='flex items-center gap-1.5'>
+                  {tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className='px-2 py-0.5 rounded-full bg-subtle border border-hairline text-[11px] text-body'
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-              ) : (
-                <>
-                  <ViewCounterStats
-                    views={views}
-                    showIcon
-                    className='text-[11px] text-gray-400 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'
-                  />
-                  <LikeButtonStats
-                    likes={likes}
-                    showIcon
-                    className='text-[11px] text-gray-400 dark:text-gray-500 group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors duration-300'
-                  />
-                </>
-              )}
-            </div>
+              </>
+            )}
+          </div>
+
+          <div className='flex items-center gap-3 tabular-nums'>
+            {isLoading ? (
+              <div className='flex items-center gap-2'>
+                <span className='h-3 w-8 animate-pulse rounded bg-subtle' />
+                <span className='h-3 w-8 animate-pulse rounded bg-subtle' />
+              </div>
+            ) : (
+              <>
+                <ViewCounterStats
+                  views={views}
+                  showIcon
+                  className='text-[11px]'
+                />
+                <LikeButtonStats
+                  likes={likes}
+                  showIcon
+                  className='text-[11px]'
+                />
+              </>
+            )}
           </div>
         </div>
       </article>

@@ -5,14 +5,11 @@ import {
   CornerDownLeft,
   FileText,
   FolderKanban,
-  Moon,
   Search,
-  Sun,
   X,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import React, {
   useCallback,
   useEffect,
@@ -53,7 +50,6 @@ interface ICommandPaletteProject {
 
 const CommandPalette = () => {
   const router = useRouter();
-  const { resolvedTheme, setTheme, theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -62,14 +58,6 @@ const CommandPalette = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-
-  const currentTheme = resolvedTheme ?? theme;
-
-  // Toggle Theme action
-  const toggleTheme = useCallback(() => {
-    setTheme(currentTheme === 'light' ? 'dark' : 'light');
-    setIsOpen(false);
-  }, [currentTheme, setTheme]);
 
   // Copy Link action
   const copyCurrentLink = useCallback(() => {
@@ -146,7 +134,7 @@ const CommandPalette = () => {
         id: 'nav-home',
         category: 'Navigation',
         title: 'Home',
-        description: 'Return to the homepage.',
+        description: 'Return to the homepage workspace.',
         url: '/',
         icon: <Compass className='h-4 w-4' />,
       },
@@ -154,7 +142,7 @@ const CommandPalette = () => {
         id: 'nav-blog',
         category: 'Navigation',
         title: 'Blog',
-        description: 'Read articles about web development and technology.',
+        description: 'Read engineering notes and design thoughts.',
         url: '/blog',
         icon: <FileText className='h-4 w-4' />,
       },
@@ -163,7 +151,7 @@ const CommandPalette = () => {
         category: 'Navigation',
         title: 'Projects',
         description:
-          'Browse the collection of applications and projects I have built.',
+          'Browse applications and developer tools built by Muhammad Ihsan.',
         url: '/project',
         icon: <FolderKanban className='h-4 w-4' />,
       },
@@ -171,7 +159,7 @@ const CommandPalette = () => {
         id: 'nav-about',
         category: 'Navigation',
         title: 'About',
-        description: 'Profile, education, and professional experience.',
+        description: 'Profile, background, timeline, and career journey.',
         url: '/about',
         icon: <Compass className='h-4 w-4' />,
       },
@@ -182,31 +170,15 @@ const CommandPalette = () => {
   const actionItems = useMemo<SearchItem[]>(
     () => [
       {
-        id: 'action-theme',
-        category: 'Actions',
-        title:
-          currentTheme === 'light'
-            ? 'Switch to Dark Mode'
-            : 'Switch to Light Mode',
-        description: 'Toggle the website theme.',
-        action: toggleTheme,
-        icon:
-          currentTheme === 'light' ? (
-            <Moon className='h-4 w-4' />
-          ) : (
-            <Sun className='h-4 w-4' />
-          ),
-      },
-      {
         id: 'action-copy',
         category: 'Actions',
-        title: copied ? 'Link Copied!' : 'Copy Page Link',
+        title: copied ? 'Link Copied to Clipboard!' : 'Copy Page Link',
         description: 'Copy current page URL to clipboard.',
         action: copyCurrentLink,
         icon: <Copy className='h-4 w-4' />,
       },
     ],
-    [currentTheme, copied, toggleTheme, copyCurrentLink],
+    [copied, copyCurrentLink],
   );
 
   // Dynamic lists from posts and projects
@@ -216,7 +188,7 @@ const CommandPalette = () => {
         id: `blog-${post.slug}`,
         category: 'Blog',
         title: post.title,
-        description: post.description || 'Blog article.',
+        description: post.description || 'Article file.',
         url: `/blog/${post.slug}`,
         icon: <FileText className='h-4 w-4' />,
       })),
@@ -229,7 +201,7 @@ const CommandPalette = () => {
         id: `project-${project.slug}`,
         category: 'Projects',
         title: project.title,
-        description: project.description || 'Portfolio project details.',
+        description: project.description || 'Portfolio project file.',
         url: project.website || project.github || '/project',
         icon: <FolderKanban className='h-4 w-4' />,
       })),
@@ -331,71 +303,65 @@ const CommandPalette = () => {
     <AnimatePresence>
       {isOpen && (
         <div className='fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4'>
-          {/* Backdrop blur overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className='fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-md'
+            className='fixed inset-0 bg-deep-moss/40 backdrop-blur-sm'
           />
 
-          {/* Search container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            initial={{ opacity: 0, scale: 0.98, y: -6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -10 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            exit={{ opacity: 0, scale: 0.98, y: -6 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
             onAnimationComplete={() => inputRef.current?.focus()}
             ref={containerRef}
             className={cn(
-              'relative w-full max-w-2xl rounded-2xl border overflow-hidden shadow-2xl flex flex-col max-h-[60vh]',
-              'bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl',
-              'border-slate-200 dark:border-slate-800',
+              'relative w-full max-w-xl rounded-xl border border-hairline overflow-hidden shadow-xl flex flex-col max-h-[65vh]',
+              'bg-surface text-body',
             )}
           >
-            {/* Input Bar */}
-            <div className='flex items-center gap-3 px-4 py-3 border-b border-slate-200/80 dark:border-slate-800/80'>
-              <Search className='h-5 w-5 text-slate-400 dark:text-slate-500 shrink-0' />
+            <div className='flex items-center gap-3 px-4 py-3.5 bg-surface border-b border-hairline'>
+              <Search className='h-4 w-4 text-muted shrink-0' />
               <input
                 ref={inputRef}
                 type='text'
-                placeholder='Type a command or search...'
+                placeholder='Search pages, articles, projects...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={cn(
-                  'w-full bg-transparent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500',
-                  'text-sm font-medium focus:outline-none focus:ring-0',
+                  'w-full bg-transparent text-ink placeholder-muted font-primary',
+                  'text-sm focus-visible:outline-none',
                 )}
               />
               <div className='flex items-center gap-1.5 shrink-0'>
-                <span className='font-sans text-[10px] font-semibold text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 bg-slate-100/50 dark:bg-slate-800/50'>
+                <span className='font-mono text-[10px] text-muted border border-hairline rounded px-1.5 py-0.5 bg-subtle'>
                   ESC
                 </span>
                 <button
                   type='button'
                   onClick={() => setIsOpen(false)}
-                  className='text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 p-0.5 rounded'
+                  aria-label='Close search'
+                  className='text-muted hover:text-ink p-1 rounded transition-colors'
                 >
                   <X className='h-4 w-4' />
                 </button>
               </div>
             </div>
 
-            {/* List Results */}
             <div
               ref={listRef}
-              className='flex-1 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800'
+              className='flex-1 overflow-y-auto p-2 scrollbar-thin'
             >
               {filteredItems.length > 0 ? (
                 Object.entries(groupedItems).map(([category, group]) => (
-                  <div key={category} className='mb-4 last:mb-2'>
-                    {/* Category Label */}
-                    <div className='px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400/80 dark:text-slate-500/85'>
+                  <div key={category} className='mb-3 last:mb-1'>
+                    <div className='px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-wider text-sage-gray'>
                       {category}
                     </div>
 
-                    {/* Category Items */}
                     <div className='space-y-0.5 mt-1'>
                       {group.items.map((item, idx) => {
                         const itemFlatIndex = group.startIdx + idx;
@@ -423,57 +389,41 @@ const CommandPalette = () => {
                               }
                             }}
                             className={cn(
-                              'group flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200',
+                              'group flex items-center justify-between px-3 py-2.5 rounded-md cursor-pointer transition-colors duration-100',
                               isSelected
-                                ? 'bg-primary-500 dark:bg-primary-500 text-white'
-                                : 'hover:bg-slate-100 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300',
+                                ? 'bg-subtle text-ink'
+                                : 'hover:bg-subtle/60 text-body',
                             )}
                           >
                             <div className='flex items-center gap-3 min-w-0'>
-                              {/* Left icon wrapper */}
                               <div
                                 className={cn(
-                                  'flex items-center justify-center h-8 w-8 rounded-lg border shrink-0',
+                                  'flex items-center justify-center h-7 w-7 rounded-md border shrink-0',
                                   isSelected
-                                    ? 'bg-white/20 border-white/10 text-white'
-                                    : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 group-hover:border-slate-300 dark:group-hover:border-slate-700',
+                                    ? 'bg-surface border-hairline-strong text-ink'
+                                    : 'bg-subtle/60 border-hairline text-muted',
                                 )}
                               >
                                 {item.icon}
                               </div>
 
                               <div className='min-w-0'>
-                                <p
-                                  className={cn(
-                                    'text-xs font-semibold truncate',
-                                    isSelected
-                                      ? 'text-white'
-                                      : 'text-slate-800 dark:text-slate-100',
-                                  )}
-                                >
+                                <p className='text-sm font-medium text-ink truncate'>
                                   {item.title}
                                 </p>
                                 {item.description && (
-                                  <p
-                                    className={cn(
-                                      'text-[10px] truncate mt-0.5 max-w-sm sm:max-w-md',
-                                      isSelected
-                                        ? 'text-white/80'
-                                        : 'text-slate-400 dark:text-slate-500',
-                                    )}
-                                  >
+                                  <p className='text-xs text-muted truncate mt-0.5 max-w-sm sm:max-w-md'>
                                     {item.description}
                                   </p>
                                 )}
                               </div>
                             </div>
 
-                            {/* Enter indicator */}
                             {isSelected && (
                               <motion.div
-                                initial={{ opacity: 0, x: -5 }}
+                                initial={{ opacity: 0, x: -4 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className='flex items-center gap-1 text-[10px] font-semibold text-white/90 shrink-0 pr-1'
+                                className='flex items-center gap-1 text-[11px] font-mono text-muted shrink-0 pr-1'
                               >
                                 <span>Open</span>
                                 <CornerDownLeft className='h-3 w-3' />
@@ -486,41 +436,40 @@ const CommandPalette = () => {
                   </div>
                 ))
               ) : (
-                <div className='flex flex-col items-center justify-center py-12 text-center'>
-                  <p className='font-secondary text-sm font-semibold text-slate-400 dark:text-slate-500'>
+                <div className='flex flex-col items-center justify-center py-10 text-center'>
+                  <p className='font-ui text-sm font-semibold text-deep-moss'>
                     No results found
                   </p>
-                  <p className='text-xs text-slate-400 dark:text-slate-500 mt-1.5'>
-                    Try searching for something else.
+                  <p className='text-xs text-sage-gray mt-1'>
+                    Try searching for another topic or filename.
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Sticky footer with shortcuts info */}
-            <div className='hidden sm:flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800 text-[10px] text-slate-400 dark:text-slate-500'>
+            <div className='hidden sm:flex items-center justify-between px-4 py-2 bg-cream-paper border-t border-hairline text-[11px] font-mono text-sage-gray'>
               <div className='flex items-center gap-3'>
                 <span className='flex items-center gap-1'>
-                  <span className='font-sans border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 bg-white dark:bg-slate-900 font-semibold'>
+                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
                     ↑↓
-                  </span>{' '}
+                  </kbd>{' '}
                   Navigate
                 </span>
                 <span className='flex items-center gap-1'>
-                  <span className='font-sans border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 bg-white dark:bg-slate-900 font-semibold'>
+                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
                     ↵
-                  </span>{' '}
+                  </kbd>{' '}
                   Select
                 </span>
                 <span className='flex items-center gap-1'>
-                  <span className='font-sans border border-slate-200 dark:border-slate-800 rounded px-1.5 py-0.5 bg-white dark:bg-slate-900 font-semibold'>
+                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
                     ESC
-                  </span>{' '}
+                  </kbd>{' '}
                   Close
                 </span>
               </div>
               <div>
-                Use <kbd className='font-semibold'>⌘K</kbd> to toggle
+                Press <kbd className='font-bold'>⌘K</kbd> anywhere
               </div>
             </div>
           </motion.div>

@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
+import React, { useEffect, useId, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
+
+import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
 
 export type FilterItem = string | { name: string; count?: number };
 
@@ -21,11 +24,12 @@ const SearchFilter = ({
   activeFilter,
   onFilterChange,
   filters,
-  filterLabel = 'Filter by:',
+  filterLabel = 'Filter:',
   className,
   ...rest
 }: SearchFilterProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const pillGroupId = useId();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -47,22 +51,19 @@ const SearchFilter = ({
   }, []);
 
   return (
-    <div className={cn('space-y-6', className)} {...rest}>
-      {/* Search Input */}
+    <div className={cn('space-y-4', className)} {...rest}>
       <div className='relative max-w-md'>
         <input
           id='search-filter-input'
           ref={inputRef}
           className={cn(
-            'w-full py-2.5 pl-10 pr-16',
-            'rounded-xl border',
-            'border-slate-200 dark:border-zinc-700/50',
-            'bg-slate-50/50 dark:bg-slate-800/20',
-            'text-slate-900 dark:text-slate-100',
-            'placeholder:text-slate-400 dark:placeholder:text-slate-500',
-            'focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-400',
-            'transition-all duration-300',
-            'text-sm shadow-sm',
+            'w-full py-2.5 pl-9 pr-12',
+            'rounded-md border border-hairline',
+            'bg-surface text-ink',
+            'placeholder:text-muted font-primary',
+            'focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-hairline-strong',
+            'transition-colors duration-150',
+            'text-sm',
           )}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
@@ -71,7 +72,7 @@ const SearchFilter = ({
           aria-label='Search input'
         />
         <svg
-          className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400'
+          className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted'
           fill='none'
           stroke='currentColor'
           viewBox='0 0 24 24'
@@ -80,28 +81,24 @@ const SearchFilter = ({
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
-            strokeWidth={1.8}
+            strokeWidth={1.75}
             d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
           />
         </svg>
         {!search && (
-          <kbd className='absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-[10px] font-mono text-slate-400 dark:text-slate-500 pointer-events-none select-none'>
+          <kbd className='absolute right-2.5 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 rounded border border-hairline bg-subtle text-[10px] font-mono text-muted pointer-events-none select-none'>
             /
           </kbd>
         )}
         {search && (
           <button
+            type='button'
             onClick={() => onSearchChange('')}
-            className={cn(
-              'absolute right-3.5 top-1/2 -translate-y-1/2',
-              'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300',
-              'focus:outline-none rounded',
-              'transition-colors',
-            )}
+            className='absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-ink focus:outline-none rounded p-0.5 transition-colors'
             aria-label='Clear search'
           >
             <svg
-              className='w-4 h-4'
+              className='w-3.5 h-3.5'
               fill='none'
               stroke='currentColor'
               viewBox='0 0 24 24'
@@ -109,7 +106,7 @@ const SearchFilter = ({
               <path
                 strokeLinecap='round'
                 strokeLinejoin='round'
-                strokeWidth={1.8}
+                strokeWidth={2}
                 d='M6 18L18 6M6 6l12 12'
               />
             </svg>
@@ -117,11 +114,10 @@ const SearchFilter = ({
         )}
       </div>
 
-      {/* Category/Tag Pills */}
       {filters.length > 1 && (
         <div className='flex flex-wrap gap-2 items-center'>
           {filterLabel && (
-            <span className='text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1.5 hidden sm:inline'>
+            <span className='text-[11px] font-mono uppercase tracking-wider text-muted mr-1 hidden sm:inline'>
               {filterLabel}
             </span>
           )}
@@ -134,35 +130,37 @@ const SearchFilter = ({
 
               return (
                 <button
+                  type='button'
                   key={name}
                   onClick={() => onFilterChange(name)}
                   className={cn(
-                    'px-3.5 py-1.5 rounded-full text-xs font-medium',
-                    'border transition-all duration-200',
+                    'relative px-3 py-1 rounded-full text-xs font-mono select-none',
+                    'border transition-colors duration-150',
                     isActive
-                      ? 'bg-primary-500 text-white border-primary-500 shadow-sm shadow-primary-500/10'
-                      : cn(
-                          'bg-transparent',
-                          'text-gray-500 dark:text-gray-400',
-                          'border-gray-200 dark:border-gray-700',
-                          'hover:border-gray-400 dark:hover:border-gray-500',
-                          'hover:text-gray-700 dark:hover:text-gray-300',
-                        ),
+                      ? 'text-cta-fg border-transparent font-medium'
+                      : 'bg-surface text-body border-hairline hover:bg-subtle hover:text-ink',
                   )}
                 >
-                  {name}
-                  {count !== undefined && (
-                    <span
-                      className={cn(
-                        'ml-1 text-[10px] opacity-70 font-mono',
-                        isActive
-                          ? 'text-white'
-                          : 'text-gray-400 dark:text-gray-500',
-                      )}
-                    >
-                      {count}
-                    </span>
+                  {isActive && (
+                    <motion.span
+                      layoutId={`active-filter-${pillGroupId}`}
+                      transition={SPRING_SNAPPY}
+                      className='absolute inset-0 rounded-full bg-cta'
+                    />
                   )}
+                  <span className='relative z-10'>
+                    {name}
+                    {count !== undefined && (
+                      <span
+                        className={cn(
+                          'ml-1 text-[10px] opacity-80 font-mono',
+                          isActive ? 'text-cta-fg' : 'text-muted',
+                        )}
+                      >
+                        ({count})
+                      </span>
+                    )}
+                  </span>
                 </button>
               );
             })}

@@ -15,11 +15,11 @@ const StackPills = ({ name }: StackPillsProps) => {
       <div
         className={cn(
           'flex items-center justify-center w-7 h-7 rounded-full',
-          'border border-slate-300 dark:border-zinc-700/40',
-          'bg-white dark:bg-slate-700/50',
+          'border border-slate-300',
+          'bg-white',
           'shadow-sm cursor-default',
-          'hover:border-primary-400 dark:hover:border-primary-500',
-          'hover:bg-primary-50 dark:hover:bg-primary-900/20',
+          'hover:border-primary-400',
+          'hover:bg-primary-50',
           'transition-colors duration-200',
         )}
       >

@@ -25,12 +25,9 @@ export function LikeButtonStats({
 }) {
   return (
     <span
-      className={cn(
-        'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-        className,
-      )}
+      className={cn('flex items-center gap-1 text-sm text-muted', className)}
     >
-      {showIcon && <Heart className='h-4 w-4' />}
+      {showIcon && <Heart className='h-3.5 w-3.5' />}
       <span>
         {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
       </span>
@@ -53,12 +50,9 @@ export function LikeButton({
   if (isLoading) {
     return (
       <span
-        className={cn(
-          'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-          className,
-        )}
+        className={cn('flex items-center gap-1 text-sm text-muted', className)}
       >
-        {showIcon && <Heart className='h-4 w-4' />}
+        {showIcon && <Heart className='h-3.5 w-3.5' />}
         <span>--- likes</span>
       </span>
     );
@@ -76,13 +70,12 @@ export function LikeButton({
 
   return (
     <button
+      type='button'
       onClick={handleLike}
       disabled={isLiked || isLoading}
       className={cn(
-        'flex items-center gap-1 text-sm transition-colors',
-        isLiked
-          ? 'text-red-500 dark:text-red-400'
-          : 'text-gray-600 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400',
+        'flex items-center gap-1.5 text-sm transition-colors',
+        isLiked ? 'text-danger' : 'text-muted hover:text-danger',
         (isLiked || isLoading) && 'cursor-not-allowed',
         className,
       )}

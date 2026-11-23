@@ -1,141 +1,86 @@
-import { Briefcase, Footprints, Layers, Rocket } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
+import { Code, Compass, Zap } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
-import Title from '@/components/Atoms/title';
+import {
+  Reveal,
+  staggerContainerVariants,
+  staggerItemVariants,
+} from '@/components/Atoms/Motion';
 
-const stats = [
-  {
-    icon: Briefcase,
-    value: '4+',
-    label: 'Years Experience',
-  },
-  {
-    icon: Layers,
-    value: '2',
-    label: 'Companies',
-  },
-  {
-    icon: Rocket,
-    value: '10+',
-    label: 'Projects Shipped',
-  },
-  {
-    icon: Footprints,
-    value: '1000+',
-    label: 'km Running',
-  },
-];
+import { Principles } from '@/constant/principles';
+
+const principleIcons = {
+  conciseness: Zap,
+  learning: Compass,
+  ship: Code,
+};
 
 const Summary = () => {
   return (
-    <section id='summary' className={cn('background', 'mt-16 mb-16')}>
-      <div className='layout'>
-        <Title title='Short Story' />
+    <section id='summary' className='text-body'>
+      <Reveal className='mb-8'>
+        <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
+          About &amp; Principles
+        </p>
+        <h2 className='font-primary font-semibold text-2xl sm:text-3xl text-ink tracking-tight'>
+          Background and working principles
+        </h2>
+      </Reveal>
 
-        <div className='mt-8 grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start'>
-          {/* Bio — left col */}
-          <div className='lg:col-span-3 space-y-4'>
-            <p className='font-primary text-base md:text-lg leading-relaxed text-slate-600 dark:text-slate-300'>
-              Hi, I&apos;m{' '}
-              <span className='font-bold text-slate-900 dark:text-slate-100'>
-                Muhammad Ihsan
-              </span>
-              , a Software Engineer with a strong frontend foundation, slowly
-              making my way into the full stack. I spent 4 years at{' '}
-              <UnderlineLink href='https://femaledaily.com/'>
-                Female Daily Network
-              </UnderlineLink>
-              , Indonesia&apos;s largest beauty platform, working across
-              multiple product teams.
-            </p>
+      <Reveal
+        delay={0.05}
+        className='space-y-4 max-w-2xl text-base leading-relaxed text-body'
+      >
+        <p>
+          I spent 4 years at{' '}
+          <UnderlineLink
+            href='https://femaledaily.com/'
+            className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4 transition-colors'
+          >
+            Female Daily Network
+          </UnderlineLink>
+          , Indonesia&apos;s largest beauty platform, building event ticketing
+          flows, video streaming widgets, and internal CMS dashboards.
+        </p>
+        <p>
+          My main stack is{' '}
+          <span className='font-medium text-ink'>
+            React, Next.js, TypeScript, and Node.js
+          </span>
+          . I care about fast load times, readable code, and interfaces that
+          stay out of the user&apos;s way.
+        </p>
+      </Reveal>
 
-            <p className='font-primary text-base md:text-lg leading-relaxed text-slate-600 dark:text-slate-300'>
-              I mostly work with{' '}
-              <span className='font-semibold text-slate-900 dark:text-slate-100'>
-                React, Next.js, TypeScript, and Node.js
-              </span>
-              . I care a lot about performance and writing code that&apos;s easy
-              to maintain. Outside of work, I&apos;m usually out running or
-              breaking things on side projects.
-            </p>
-
-            {/* Open to work badge */}
-            <div className='pt-2'>
-              <span
-                className={cn(
-                  'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium',
-                  'border border-emerald-200 dark:border-emerald-800/60',
-                  'bg-emerald-50 dark:bg-emerald-900/20',
-                  'text-emerald-700 dark:text-emerald-400',
-                )}
-              >
-                <span className='relative flex h-2 w-2'>
-                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75' />
-                  <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500' />
-                </span>
-                Open to new opportunities
-              </span>
-            </div>
-          </div>
-
-          {/* Stats — right col */}
-          <div className='lg:col-span-2 grid grid-cols-2 gap-4'>
-            {stats.map(({ icon: Icon, value, label }) => {
-              const isRunning = label === 'km Running';
-              return (
-                <div
-                  key={label}
-                  className={cn(
-                    'group relative flex flex-col gap-2 p-4 rounded-xl overflow-hidden',
-                    'border shadow-sm cursor-default',
-                    'transition-all duration-300 ease-in-out',
-                    'hover:-translate-y-1 hover:shadow-md',
-                    isRunning
-                      ? 'border-orange-200 dark:border-orange-900/40 hover:border-orange-400 dark:hover:border-orange-500/50 bg-orange-50/5 dark:bg-orange-950/5'
-                      : 'border-slate-200 dark:border-zinc-700/40 hover:border-primary-300 dark:hover:border-primary-700 bg-white dark:bg-slate-800/50',
-                  )}
-                >
-                  {/* Background glow on hover */}
-                  <div
-                    className={cn(
-                      'absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-                      isRunning
-                        ? 'bg-gradient-to-br from-orange-500/10 to-transparent dark:from-orange-500/5 dark:to-transparent'
-                        : 'bg-gradient-to-br from-primary-50 to-transparent dark:from-primary-900/20 dark:to-transparent',
-                    )}
-                  />
-
-                  {/* Pulsing activity dot for Running */}
-                  {isRunning && (
-                    <span className='absolute top-3 right-3 flex h-2 w-2'>
-                      <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75' />
-                      <span className='relative inline-flex rounded-full h-2 w-2 bg-orange-500' />
-                    </span>
-                  )}
-
-                  <Icon
-                    size={18}
-                    className={cn(
-                      'relative text-slate-400 dark:text-slate-500 transition-colors duration-300',
-                      isRunning
-                        ? 'group-hover:text-orange-500 dark:group-hover:text-orange-400'
-                        : 'group-hover:text-primary-500 dark:group-hover:text-primary-400',
-                    )}
-                  />
-                  <p className='relative font-secondary font-bold text-2xl text-slate-900 dark:text-slate-100 leading-none'>
-                    {value}
-                  </p>
-                  <p className='relative font-primary text-xs text-slate-500 dark:text-slate-400'>
-                    {label}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <motion.div
+        variants={staggerContainerVariants}
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true, amount: 0.15 }}
+        className='mt-10 grid grid-cols-1 md:grid-cols-3 gap-4'
+      >
+        {Principles.map((principle) => {
+          const IconComponent = principleIcons[principle.icon] || Code;
+          return (
+            <motion.div
+              key={principle.id}
+              variants={staggerItemVariants}
+              className='p-5 rounded-lg border border-hairline bg-surface hover:border-hairline-strong hover:-translate-y-0.5 transition-all duration-200'
+            >
+              <div className='w-8 h-8 rounded-md bg-accent-soft border border-accent/20 flex items-center justify-center text-accent mb-4'>
+                <IconComponent size={15} />
+              </div>
+              <h3 className='font-primary font-semibold text-base text-ink mb-1.5'>
+                {principle.title}
+              </h3>
+              <p className='text-sm leading-relaxed text-muted'>
+                {principle.description}
+              </p>
+            </motion.div>
+          );
+        })}
+      </motion.div>
     </section>
   );
 };

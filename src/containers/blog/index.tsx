@@ -1,14 +1,19 @@
+import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/Atoms/title';
+import {
+  Reveal,
+  staggerContainerVariants,
+  staggerItemVariants,
+} from '@/components/Atoms/Motion';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
-import SearchFilter from '@/components/Molecules/SearchFilter';
+import SearchFilter, { FilterItem } from '@/components/Molecules/SearchFilter';
 
-import { TPosts } from '@/types/interfaces/posts';
+import { IPost, TPosts } from '@/types/interfaces/posts';
 
 interface IBlogContainer {
   posts: TPosts;
@@ -28,9 +33,29 @@ const filterPosts = (posts: TPosts, search: string): TPosts => {
   });
 };
 
+const groupPostsByYear = (posts: IPost[]): [string, IPost[]][] => {
+  const groups = new Map<string, IPost[]>();
+
+  posts.forEach((post) => {
+    const parsedYear = post.publishedAt
+      ? new Date(post.publishedAt).getFullYear()
+      : NaN;
+    const yearKey = Number.isNaN(parsedYear) ? 'Other' : String(parsedYear);
+    const bucket = groups.get(yearKey) ?? [];
+    bucket.push(post);
+    groups.set(yearKey, bucket);
+  });
+
+  return Array.from(groups.entries()).sort(([a], [b]) => {
+    if (a === 'Other') return 1;
+    if (b === 'Other') return -1;
+    return Number(b) - Number(a);
+  });
+};
+
 const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
-  const [search, _setSearch] = useState('');
+  const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('All');
 
@@ -39,18 +64,27 @@ const BlogContainer = (props: IBlogContainer) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 300);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Extract unique tags dynamically
-  const allTags = useMemo(() => {
-    const tagsSet = new Set<string>();
+  const tagsWithCounts = useMemo<FilterItem[]>(() => {
+    const counts: Record<string, number> = {};
     posts.forEach((post) => {
-      post.tags?.forEach((tag) => tagsSet.add(tag));
+      post.tags?.forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
     });
-    return ['All', ...Array.from(tagsSet).sort()];
+
+    const sortedTags = Object.keys(counts).sort();
+    return [
+      { name: 'All', count: posts.length },
+      ...sortedTags.map((tag) => ({
+        name: tag,
+        count: counts[tag] || 0,
+      })),
+    ];
   }, [posts]);
 
   const filteredPosts = useMemo(() => {
@@ -76,131 +110,150 @@ const BlogContainer = (props: IBlogContainer) => {
     ? filteredPosts.slice(1)
     : filteredPosts;
 
+  const groupedByYear = useMemo(
+    () => groupPostsByYear(remainingPosts),
+    [remainingPosts],
+  );
+
+  const resetFilters = () => {
+    setSearch('');
+    setDebouncedSearch('');
+    setSelectedTag('All');
+  };
+
   return (
-    <section className={cn('layout py-20', show && 'fade-in-start')}>
-      <div className='mt-10 max-w-3xl' data-fade='1'>
-        <p
-          className={cn(
-            'text-[11px] font-semibold uppercase tracking-[0.2em]',
-            'text-primary-500 dark:text-primary-400',
-            'mb-3',
-          )}
-        >
-          Journal
+    <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
+      <header className='mb-10'>
+        <div className='flex items-center gap-3 mb-2'>
+          <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+            Writing
+          </p>
+          <span aria-hidden='true' className='text-hairline-strong'>
+            /
+          </span>
+          <span className='font-mono text-[11px] text-muted tabular-nums'>
+            {posts.length} article{posts.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
+        <h1 className='font-primary text-3xl sm:text-4xl font-bold tracking-tight text-ink'>
+          Articles &amp; Notes
+        </h1>
+        <p className='mt-3 text-base leading-relaxed text-body max-w-2xl'>
+          Writing helps me think clearly. Here I share notes on frontend
+          architecture, web performance, and lessons from day-to-day engineering
+          work.
         </p>
-        <Title title='Personal Blog' />
-        <p
-          className={cn(
-            'mt-4 text-base md:text-lg leading-relaxed',
-            'text-gray-500 dark:text-gray-400',
-            'max-w-2xl',
-          )}
-        >
-          Writing helps me think clearly. Here I break down what I learn, from
-          frontend patterns and performance tricks to lessons picked up along
-          the way.
-        </p>
-      </div>
+      </header>
 
       <SearchFilter
-        data-fade='2'
-        className='mt-10'
         search={search}
-        onSearchChange={_setSearch}
-        searchPlaceholder='Search articles...'
+        onSearchChange={setSearch}
+        searchPlaceholder='Search articles by title, topic, or tag...'
         activeFilter={selectedTag}
         onFilterChange={setSelectedTag}
-        filters={allTags}
+        filters={tagsWithCounts}
+        filterLabel='Topics:'
       />
 
-      {/* Articles count status description */}
-      <div className='h-7 mt-3 flex items-center pl-1'>
-        {(search || selectedTag !== 'All') && (
-          <p className='text-xs text-slate-400 dark:text-slate-500'>
-            Found {filteredPosts.length} article
+      {isSearchingOrFiltering && (
+        <div className='mt-4 flex items-center justify-between gap-3 py-2 border-b border-hairline/70'>
+          <p className='text-xs font-mono text-muted tabular-nums'>
+            Showing {filteredPosts.length} article
             {filteredPosts.length !== 1 ? 's' : ''}{' '}
             {selectedTag !== 'All' && (
               <span>
-                under tag &ldquo;
-                <span className='font-semibold text-primary-500 dark:text-primary-400'>
-                  {selectedTag}
-                </span>
-                &rdquo;
+                in <span className='font-medium text-ink'>{selectedTag}</span>
               </span>
             )}
             {search && (
               <span>
                 {' '}
-                for &ldquo;<span className='font-semibold'>{search}</span>
-                &rdquo;
+                matching &ldquo;
+                <span className='font-medium text-ink'>{search}</span>&rdquo;
               </span>
             )}
           </p>
-        )}
-      </div>
+          <button
+            type='button'
+            onClick={resetFilters}
+            className='text-xs font-mono text-accent hover:text-accent-hover transition-colors shrink-0'
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
 
-      <div className='min-h-[320px]' data-fade='3'>
-        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-          <>
+      <div className='min-h-[320px] mt-8'>
+        {filteredPosts.length > 0 ? (
+          <div className='space-y-14'>
             {featuredPost && (
-              <div className='mt-4'>
+              <Reveal>
+                <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
+                  Latest Post
+                </p>
                 <FeaturedPostCard {...featuredPost} />
+              </Reveal>
+            )}
+
+            {groupedByYear.length > 0 && (
+              <div className='space-y-12'>
+                {groupedByYear.map(([year, yearPosts]) => (
+                  <section
+                    key={year}
+                    aria-label={`Articles from ${year}`}
+                    className='grid grid-cols-1 md:grid-cols-[96px_minmax(0,1fr)] gap-3 md:gap-8 items-start'
+                  >
+                    <div className='flex items-baseline md:flex-col gap-2 md:gap-0.5 md:sticky md:top-24 md:pt-5'>
+                      <h2 className='font-mono text-sm font-semibold text-accent tabular-nums'>
+                        {year}
+                      </h2>
+                      <span className='font-mono text-[11px] text-muted tabular-nums'>
+                        {yearPosts.length} post
+                        {yearPosts.length !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+
+                    <motion.div
+                      key={`${year}-${selectedTag}-${debouncedSearch}`}
+                      variants={staggerContainerVariants}
+                      initial='hidden'
+                      animate='visible'
+                      className='divide-y divide-hairline border-t border-b border-hairline'
+                    >
+                      {yearPosts.map((post) => (
+                        <motion.div
+                          key={post.slug}
+                          variants={staggerItemVariants}
+                        >
+                          <EditorialPostCard {...post} />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </section>
+                ))}
               </div>
             )}
-
-            {remainingPosts.length > 0 && (
-              <>
-                {featuredPost && (
-                  <div className='my-10 flex items-center gap-4'>
-                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
-                    <span
-                      className={cn(
-                        'text-[10px] font-semibold uppercase tracking-[0.2em]',
-                        'text-gray-400 dark:text-gray-500',
-                        'shrink-0',
-                      )}
-                    >
-                      All Articles
-                    </span>
-                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
-                  </div>
-                )}
-
-                <div
-                  className={cn(
-                    'grid grid-cols-1 lg:grid-cols-2 gap-x-8',
-                    'divide-y lg:divide-y-0 divide-gray-100 dark:divide-gray-800',
-                  )}
-                >
-                  {remainingPosts.map((post) => (
-                    <div
-                      key={post.slug}
-                      className={cn(
-                        'lg:border-b lg:border-gray-100 lg:dark:border-gray-800 h-full',
-                      )}
-                    >
-                      <EditorialPostCard {...post} />
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </>
+          </div>
         ) : (
-          <div className='flex flex-col items-center justify-center text-center py-20'>
-            <div
-              className={cn('w-16 h-px mb-6', 'bg-gray-200 dark:bg-gray-700')}
-            />
-            <p className='font-secondary text-lg font-semibold text-gray-400 dark:text-gray-500'>
+          <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
+            <p className='font-primary text-base font-semibold text-ink'>
               No articles found
             </p>
-            <p className='text-sm text-gray-400 dark:text-gray-500 mt-1.5'>
-              No results for &ldquo;{search}&rdquo;. Try a different keyword.
+            <p className='text-sm text-muted mt-1 max-w-sm'>
+              No articles match your current search or topic filter.
             </p>
+            <button
+              type='button'
+              onClick={resetFilters}
+              className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all'
+            >
+              Reset filters
+            </button>
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

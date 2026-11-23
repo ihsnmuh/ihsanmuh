@@ -25,14 +25,16 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
   }
 
   return (
-    <section
-      className='mt-16 border-t border-slate-300 dark:border-slate-700 pt-8'
-      data-toc-exclude
-    >
-      {/* Use div with styling instead of h2 to avoid appearing in TOC */}
-      <div className='text-2xl font-bold mb-6'>Related Posts</div>
-      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {activePosts.slice(0, 3).map((post) => (
+    <section className='mt-16 border-t border-hairline pt-10' data-toc-exclude>
+      <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
+        Keep Reading
+      </p>
+      {/* Use div instead of h2 so it is excluded from TOC heading queries */}
+      <div className='font-primary text-2xl font-semibold tracking-tight text-ink mb-6'>
+        Related Articles
+      </div>
+      <div className='grid gap-6 md:grid-cols-2'>
+        {activePosts.slice(0, 2).map((post) => (
           <PostCard key={post.slug} {...post} excludeFromToC />
         ))}
       </div>

@@ -1,9 +1,7 @@
 import { BookOpen, Rocket, Scissors } from 'lucide-react';
-import { useRef } from 'react';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-
-import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 
 interface PrincipleCardProps {
   id: number;
@@ -19,9 +17,9 @@ interface PrincipleCardProps {
 }
 
 const icons = {
-  conciseness: <Scissors size={18} />,
-  learning: <BookOpen size={18} />,
-  ship: <Rocket size={18} />,
+  conciseness: <Scissors size={16} />,
+  learning: <BookOpen size={16} />,
+  ship: <Rocket size={16} />,
 };
 
 const PrincipleCard = ({
@@ -30,67 +28,31 @@ const PrincipleCard = ({
   decription,
   className,
   icon = 'conciseness',
-  iconClass = 'text-primary-500 dark:text-primary-400',
-  iconBg = 'bg-primary-50 dark:bg-primary-900/20',
-  gradientBar = 'from-primary-500 to-primary-400',
-  hoverBorder = 'hover:border-primary-300 dark:hover:border-primary-700/50',
-  hoverTitle = 'group-hover:text-primary-500 dark:group-hover:text-primary-400',
 }: PrincipleCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  useMouseMoveSpotlight(cardRef);
-
   return (
     <div
-      ref={cardRef}
       className={cn(
-        'group relative flex flex-col p-5 rounded-xl overflow-hidden',
-        'border border-slate-200 dark:border-zinc-700/40',
-        'bg-white dark:bg-slate-800/50 shadow-sm',
-        'transition-all duration-300 ease-in-out',
-        'hover:-translate-y-1 hover:shadow-md',
-        hoverBorder,
+        'group relative flex flex-col p-4 sm:p-5 rounded-sm',
+        'border border-hairline',
+        'bg-paper-white shadow-none transition-colors duration-150 hover:bg-cream-paper',
         className,
       )}
     >
-      {/* Spotlight overlay effect */}
-      <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
-      {/* Gradient top bar — always visible, intensifies on hover */}
-      <div
-        className={cn(
-          'absolute top-0 left-0 right-0 h-[3px]',
-          'bg-gradient-to-r opacity-30 group-hover:opacity-100 transition-opacity duration-300',
-          gradientBar,
-        )}
-      />
-
       {/* Number + Icon row */}
-      <div className='flex items-start justify-between mb-4'>
-        <div
-          className={cn(
-            'w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0',
-            iconBg,
-            iconClass,
-          )}
-        >
+      <div className='flex items-start justify-between mb-3'>
+        <div className='w-8 h-8 rounded-sm flex items-center justify-center flex-shrink-0 bg-soft-linen text-deep-moss border border-hairline'>
           {icons[icon]}
         </div>
-        <span className='font-secondary font-bold text-3xl leading-none text-slate-100 dark:text-slate-700 select-none'>
+        <span className='font-mono font-bold text-2xl leading-none text-hairline select-none'>
           0{id}
         </span>
       </div>
 
       {/* Content */}
-      <h3
-        className={cn(
-          'font-secondary font-semibold text-base mb-2',
-          'text-slate-900 dark:text-slate-100',
-          'transition-colors duration-300',
-          hoverTitle,
-        )}
-      >
+      <h3 className='font-primary font-bold text-base mb-1.5 text-deep-moss group-hover:text-amber-glow transition-colors duration-150'>
         {title}
       </h3>
-      <p className='font-primary text-sm leading-relaxed text-slate-500 dark:text-slate-400'>
+      <p className='font-ui text-xs sm:text-sm leading-relaxed text-olive-char'>
         {decription}
       </p>
     </div>
