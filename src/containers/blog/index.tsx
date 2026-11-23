@@ -1,13 +1,19 @@
+import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
+import {
+  Reveal,
+  staggerContainerVariants,
+  staggerItemVariants,
+} from '@/components/Atoms/Motion';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
-import SearchFilter from '@/components/Molecules/SearchFilter';
+import SearchFilter, { FilterItem } from '@/components/Molecules/SearchFilter';
 
-import { TPosts } from '@/types/interfaces/posts';
+import { IPost, TPosts } from '@/types/interfaces/posts';
 
 interface IBlogContainer {
   posts: TPosts;
@@ -27,9 +33,29 @@ const filterPosts = (posts: TPosts, search: string): TPosts => {
   });
 };
 
+const groupPostsByYear = (posts: IPost[]): [string, IPost[]][] => {
+  const groups = new Map<string, IPost[]>();
+
+  posts.forEach((post) => {
+    const parsedYear = post.publishedAt
+      ? new Date(post.publishedAt).getFullYear()
+      : NaN;
+    const yearKey = Number.isNaN(parsedYear) ? 'Other' : String(parsedYear);
+    const bucket = groups.get(yearKey) ?? [];
+    bucket.push(post);
+    groups.set(yearKey, bucket);
+  });
+
+  return Array.from(groups.entries()).sort(([a], [b]) => {
+    if (a === 'Other') return 1;
+    if (b === 'Other') return -1;
+    return Number(b) - Number(a);
+  });
+};
+
 const BlogContainer = (props: IBlogContainer) => {
   const { posts } = props;
-  const [search, _setSearch] = useState('');
+  const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('All');
 
@@ -38,17 +64,27 @@ const BlogContainer = (props: IBlogContainer) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 300);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [search]);
 
-  const allTags = useMemo(() => {
-    const tagsSet = new Set<string>();
+  const tagsWithCounts = useMemo<FilterItem[]>(() => {
+    const counts: Record<string, number> = {};
     posts.forEach((post) => {
-      post.tags?.forEach((tag) => tagsSet.add(tag));
+      post.tags?.forEach((tag) => {
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
     });
-    return ['All', ...Array.from(tagsSet).sort()];
+
+    const sortedTags = Object.keys(counts).sort();
+    return [
+      { name: 'All', count: posts.length },
+      ...sortedTags.map((tag) => ({
+        name: tag,
+        count: counts[tag] || 0,
+      })),
+    ];
   }, [posts]);
 
   const filteredPosts = useMemo(() => {
@@ -74,12 +110,32 @@ const BlogContainer = (props: IBlogContainer) => {
     ? filteredPosts.slice(1)
     : filteredPosts;
 
+  const groupedByYear = useMemo(
+    () => groupPostsByYear(remainingPosts),
+    [remainingPosts],
+  );
+
+  const resetFilters = () => {
+    setSearch('');
+    setDebouncedSearch('');
+    setSelectedTag('All');
+  };
+
   return (
     <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
-      <header data-fade='1' className='mb-10'>
-        <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
-          Writing
-        </p>
+      <header className='mb-10'>
+        <div className='flex items-center gap-3 mb-2'>
+          <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+            Writing
+          </p>
+          <span aria-hidden='true' className='text-hairline-strong'>
+            /
+          </span>
+          <span className='font-mono text-[11px] text-muted tabular-nums'>
+            {posts.length} article{posts.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+
         <h1 className='font-primary text-3xl sm:text-4xl font-bold tracking-tight text-ink'>
           Articles &amp; Notes
         </h1>
@@ -91,24 +147,23 @@ const BlogContainer = (props: IBlogContainer) => {
       </header>
 
       <SearchFilter
-        data-fade='2'
         search={search}
-        onSearchChange={_setSearch}
-        searchPlaceholder='Search articles...'
+        onSearchChange={setSearch}
+        searchPlaceholder='Search articles by title, topic, or tag...'
         activeFilter={selectedTag}
         onFilterChange={setSelectedTag}
-        filters={allTags}
+        filters={tagsWithCounts}
+        filterLabel='Topics:'
       />
 
-      <div className='h-6 mt-3 flex items-center'>
-        {(search || selectedTag !== 'All') && (
-          <p className='text-xs font-mono text-muted'>
-            Found {filteredPosts.length} article
+      {isSearchingOrFiltering && (
+        <div className='mt-4 flex items-center justify-between gap-3 py-2 border-b border-hairline/70'>
+          <p className='text-xs font-mono text-muted tabular-nums'>
+            Showing {filteredPosts.length} article
             {filteredPosts.length !== 1 ? 's' : ''}{' '}
             {selectedTag !== 'All' && (
               <span>
-                under{' '}
-                <span className='font-medium text-ink'>{selectedTag}</span>
+                in <span className='font-medium text-ink'>{selectedTag}</span>
               </span>
             )}
             {search && (
@@ -119,43 +174,82 @@ const BlogContainer = (props: IBlogContainer) => {
               </span>
             )}
           </p>
-        )}
-      </div>
+          <button
+            type='button'
+            onClick={resetFilters}
+            className='text-xs font-mono text-accent hover:text-accent-hover transition-colors shrink-0'
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
 
-      <div className='min-h-[320px] mt-4' data-fade='3'>
-        {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
-          <>
+      <div className='min-h-[320px] mt-8'>
+        {filteredPosts.length > 0 ? (
+          <div className='space-y-14'>
             {featuredPost && (
-              <div className='mb-12'>
+              <Reveal>
+                <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
+                  Latest Post
+                </p>
                 <FeaturedPostCard {...featuredPost} />
+              </Reveal>
+            )}
+
+            {groupedByYear.length > 0 && (
+              <div className='space-y-12'>
+                {groupedByYear.map(([year, yearPosts]) => (
+                  <section
+                    key={year}
+                    aria-label={`Articles from ${year}`}
+                    className='grid grid-cols-1 md:grid-cols-[96px_minmax(0,1fr)] gap-3 md:gap-8 items-start'
+                  >
+                    <div className='flex items-baseline md:flex-col gap-2 md:gap-0.5 md:sticky md:top-24 md:pt-5'>
+                      <h2 className='font-mono text-sm font-semibold text-accent tabular-nums'>
+                        {year}
+                      </h2>
+                      <span className='font-mono text-[11px] text-muted tabular-nums'>
+                        {yearPosts.length} post
+                        {yearPosts.length !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+
+                    <motion.div
+                      variants={staggerContainerVariants}
+                      initial='hidden'
+                      whileInView='visible'
+                      viewport={{ once: true, amount: 0.08 }}
+                      className='divide-y divide-hairline border-t border-b border-hairline'
+                    >
+                      {yearPosts.map((post) => (
+                        <motion.div
+                          key={post.slug}
+                          variants={staggerItemVariants}
+                        >
+                          <EditorialPostCard {...post} />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </section>
+                ))}
               </div>
             )}
-
-            {remainingPosts.length > 0 && (
-              <>
-                {featuredPost && (
-                  <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
-                    All Articles
-                  </p>
-                )}
-
-                <div className='divide-y divide-hairline border-t border-b border-hairline'>
-                  {remainingPosts.map((post) => (
-                    <EditorialPostCard key={post.slug} {...post} />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
+          </div>
         ) : (
           <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
             <p className='font-primary text-base font-semibold text-ink'>
               No articles found
             </p>
-            <p className='text-sm text-muted mt-1'>
-              No results for &ldquo;{search}&rdquo;. Try a different keyword or
-              tag.
+            <p className='text-sm text-muted mt-1 max-w-sm'>
+              No articles match your current search or topic filter.
             </p>
+            <button
+              type='button'
+              onClick={resetFilters}
+              className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all'
+            >
+              Reset filters
+            </button>
           </div>
         )}
       </div>
