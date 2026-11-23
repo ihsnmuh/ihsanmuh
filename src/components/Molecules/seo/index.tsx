@@ -1,16 +1,25 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
+const siteUrl = process.env.NEXT_PUBLIC_URL
+  ? `https://${process.env.NEXT_PUBLIC_URL}`
+  : 'https://ihsanmuh.com';
+
 const defaultMeta = {
-  title: 'Personal Website',
+  title: 'Muhammad Ihsan | Frontend & Software Engineer',
   siteName: 'Muhammad Ihsan',
   description:
-    'Software Engineer passionate about creating excellent user experiences',
-  url: `https://${process.env.NEXT_PUBLIC_URL}`,
-  image: `https://${process.env.NEXT_PUBLIC_URL}/favicon/android-chrome-512x512.png`,
+    'Software engineer in Jakarta with 4+ years of experience building React, Next.js, and TypeScript web applications.',
+  url: siteUrl,
+  image: `${siteUrl}/favicon/android-chrome-512x512.png`,
   type: 'website',
   robots: 'follow, index',
 };
+
+export interface IBreadcrumbItem {
+  name: string;
+  path: string;
+}
 
 type SeoProps = {
   date?: string;
@@ -20,7 +29,16 @@ type SeoProps = {
   canonical?: string;
   tags?: string | string[];
   modifiedDate?: string;
+  breadcrumbs?: IBreadcrumbItem[];
 } & Partial<typeof defaultMeta>;
+
+const normalizePath = (asPath: string): string => {
+  const withoutQueryAndHash = asPath.split(/[?#]/)[0] || '/';
+  if (withoutQueryAndHash.length > 1 && withoutQueryAndHash.endsWith('/')) {
+    return withoutQueryAndHash.slice(0, -1);
+  }
+  return withoutQueryAndHash;
+};
 
 const Seo = (props: SeoProps) => {
   const router = useRouter();
@@ -35,9 +53,15 @@ const Seo = (props: SeoProps) => {
 
   meta['type'] = props.isBlog ? 'article' : (props.type ?? defaultMeta.type);
 
+  const cleanPath = normalizePath(router.asPath);
+  const canonicalUrl = meta.canonical
+    ? meta.canonical
+    : `${meta.url}${cleanPath === '/' ? '' : cleanPath}`;
+
   const tagList: string[] = [];
   if (typeof meta.tags === 'string' && meta.tags) tagList.push(meta.tags);
   else if (Array.isArray(meta.tags)) tagList.push(...meta.tags.filter(Boolean));
+
   const ogParams = new URLSearchParams({
     title: meta.title,
     description: meta.description,
@@ -47,16 +71,28 @@ const Seo = (props: SeoProps) => {
   if (props.image) ogParams.set('image', props.image);
   meta['image'] = `${meta.url}/api/og?${ogParams.toString()}`;
 
+  const breadcrumbSchema =
+    props.breadcrumbs && props.breadcrumbs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: props.breadcrumbs.map((crumb, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: crumb.name,
+            item: `${meta.url}${crumb.path === '/' ? '' : crumb.path}`,
+          })),
+        }
+      : null;
+
   return (
     <Head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />
       <meta content={meta.description} name='description' />
-      <meta property='og:url' content={`${meta.url}${router.asPath}`} />
-      <link
-        rel='canonical'
-        href={meta.canonical ? meta.canonical : `${meta.url}${router.asPath}`}
-      />
+      <meta property='og:url' content={canonicalUrl} />
+      <link rel='canonical' href={canonicalUrl} />
+
       {/* Open Graph */}
       <meta property='og:type' content={meta.type} />
       <meta property='og:site_name' content={meta.siteName} />
@@ -67,6 +103,7 @@ const Seo = (props: SeoProps) => {
       <meta property='og:image:height' content='630' />
       <meta property='og:image:alt' content={meta.title} />
       <meta property='og:locale' content='en_US' />
+
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@ihsnmuh' />
@@ -74,6 +111,7 @@ const Seo = (props: SeoProps) => {
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
+
       {meta.date && (
         <>
           <meta property='article:published_time' content={meta.date} />
@@ -95,27 +133,47 @@ const Seo = (props: SeoProps) => {
           )}
         </>
       )}
+
       {meta.isBlog && meta.date && (
         <script
-          key='structured-data'
+          key='blog-posting-schema'
           type='application/ld+json'
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'BlogPosting',
+              mainEntityOfPage: {
+                '@type': 'WebPage',
+                '@id': canonicalUrl,
+              },
+              url: canonicalUrl,
               headline: meta.title,
               description: meta.description,
+              image: meta.image,
+              datePublished: meta.date,
+              dateModified: meta.modifiedDate || meta.date,
+              keywords: tagList.length > 0 ? tagList : undefined,
               author: {
                 '@type': 'Person',
                 name: 'Muhammad Ihsan',
+                url: meta.url,
               },
-              image: meta.image,
-              datePublished: meta.date,
               publisher: {
                 '@type': 'Person',
                 name: 'Muhammad Ihsan',
+                url: meta.url,
               },
             }),
+          }}
+        />
+      )}
+
+      {breadcrumbSchema && (
+        <script
+          key='breadcrumb-schema'
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema),
           }}
         />
       )}
@@ -132,12 +190,21 @@ const Seo = (props: SeoProps) => {
       {favicons.map((linkProps) => (
         <link key={linkProps.href} {...linkProps} />
       ))}
-      <meta name='msapplication-TileColor' content='#ffffff' />
+      <meta name='msapplication-TileColor' content='#FAF9F6' />
       <meta
         name='msapplication-TileImage'
         content='/favicon/android-chrome-192x192.png'
       />
-      <meta name='theme-color' content='#ffffff' />
+      <meta
+        name='theme-color'
+        content='#FAF9F6'
+        media='(prefers-color-scheme: light)'
+      />
+      <meta
+        name='theme-color'
+        content='#0E0E10'
+        media='(prefers-color-scheme: dark)'
+      />
     </Head>
   );
 };

@@ -8,6 +8,7 @@ export default function Custom500() {
       <Seo
         templateTitle='500 - Server Error'
         description='Something went wrong on our end. We are working to fix it.'
+        robots='noindex, nofollow'
       />
       <div className='py-20 sm:py-28 text-center'>
         <p className='font-mono text-xs uppercase tracking-widest text-danger mb-3'>

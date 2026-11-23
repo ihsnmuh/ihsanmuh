@@ -63,15 +63,15 @@ export const getPersonSchema = (): PersonSchema => ({
   '@type': 'Person',
   name: 'Muhammad Ihsan',
   url: 'https://ihsanmuh.com',
-  image: 'https://ihsanmuh.com/favicon/android-chrome-512x512.png',
+  image: 'https://ihsanmuh.com/images/avatar.png',
   sameAs: [
-    'https://github.com/ihsanmuh',
-    'https://linkedin.com/in/ihsanmuh',
-    'https://twitter.com/ihsnmuh',
+    'https://github.com/ihsnmuh',
+    'https://www.linkedin.com/in/ihsanmuhammad19/',
+    'https://instagram.com/chernodev',
   ],
   jobTitle: 'Software Engineer',
   description:
-    'Software Engineer passionate about creating excellent user experiences and collaborating effectively with team members.',
+    'Software engineer in Jakarta with 4+ years of experience building React, Next.js, and TypeScript web applications.',
 });
 
 export const getWebsiteSchema = (): WebsiteSchema => ({
@@ -80,7 +80,7 @@ export const getWebsiteSchema = (): WebsiteSchema => ({
   name: 'Muhammad Ihsan',
   url: 'https://ihsanmuh.com',
   description:
-    'Personal website and blog of Muhammad Ihsan, a Software Engineer sharing thoughts about technology and software development.',
+    'Personal portfolio and engineering blog of Muhammad Ihsan, a software engineer in Jakarta.',
   author: {
     '@type': 'Person',
     name: 'Muhammad Ihsan',
