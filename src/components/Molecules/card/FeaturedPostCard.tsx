@@ -28,7 +28,7 @@ const FeaturedPostCard = (props: IPost) => {
         className={cn(
           'grid grid-cols-1 md:grid-cols-2 gap-0 relative',
           'rounded-lg overflow-hidden',
-          'border border-hairline hover:border-hairline-strong',
+          'border border-hairline hover:border-hairline-strong hover:-translate-y-0.5',
           'bg-surface text-ink',
           'transition-all duration-200',
         )}
