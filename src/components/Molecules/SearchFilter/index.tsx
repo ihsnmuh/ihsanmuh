@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
+import React, { useEffect, useId, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
+
+import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
 
 export type FilterItem = string | { name: string; count?: number };
 
@@ -26,6 +29,7 @@ const SearchFilter = ({
   ...rest
 }: SearchFilterProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const pillGroupId = useId();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -130,24 +134,33 @@ const SearchFilter = ({
                   key={name}
                   onClick={() => onFilterChange(name)}
                   className={cn(
-                    'px-3 py-1 rounded-full text-xs font-mono select-none',
+                    'relative px-3 py-1 rounded-full text-xs font-mono select-none',
                     'border transition-colors duration-150',
                     isActive
-                      ? 'bg-cta text-cta-fg border-transparent font-medium'
+                      ? 'text-cta-fg border-transparent font-medium'
                       : 'bg-surface text-body border-hairline hover:bg-subtle hover:text-ink',
                   )}
                 >
-                  {name}
-                  {count !== undefined && (
-                    <span
-                      className={cn(
-                        'ml-1 text-[10px] opacity-75 font-mono',
-                        isActive ? 'text-cta-fg' : 'text-muted',
-                      )}
-                    >
-                      ({count})
-                    </span>
+                  {isActive && (
+                    <motion.span
+                      layoutId={`active-filter-${pillGroupId}`}
+                      transition={SPRING_SNAPPY}
+                      className='absolute inset-0 rounded-full bg-cta'
+                    />
                   )}
+                  <span className='relative z-10'>
+                    {name}
+                    {count !== undefined && (
+                      <span
+                        className={cn(
+                          'ml-1 text-[10px] opacity-80 font-mono',
+                          isActive ? 'text-cta-fg' : 'text-muted',
+                        )}
+                      >
+                        ({count})
+                      </span>
+                    )}
+                  </span>
                 </button>
               );
             })}

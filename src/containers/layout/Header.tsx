@@ -1,4 +1,5 @@
 import { Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
@@ -7,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
+import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
 
 const links = [
@@ -78,11 +80,18 @@ const Header = () => {
                   className={cn(
                     'relative px-3 py-1.5 text-sm font-medium transition-colors duration-150 rounded-md select-none',
                     active
-                      ? 'text-accent bg-accent-soft/70'
+                      ? 'text-accent'
                       : 'text-muted hover:text-ink hover:bg-subtle/60',
                   )}
                 >
-                  {link.label}
+                  {active && (
+                    <motion.span
+                      layoutId='active-nav-pill'
+                      transition={SPRING_SNAPPY}
+                      className='absolute inset-0 rounded-md bg-accent-soft/80 -z-10'
+                    />
+                  )}
+                  <span className='relative z-10'>{link.label}</span>
                 </UnstyledLink>
               );
             })}
@@ -93,7 +102,7 @@ const Header = () => {
               onClick={() => window.dispatchEvent(new Event('open-search'))}
               type='button'
               aria-label='Open search'
-              className='flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-hairline bg-surface/70 text-muted text-xs font-medium hover:text-ink hover:border-hairline-strong transition-colors duration-150'
+              className='flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-hairline bg-surface/70 text-muted text-xs font-medium hover:text-ink hover:border-hairline-strong transition-colors duration-150 active:scale-[0.98]'
             >
               <Search size={13} />
               <span>Search</span>
@@ -106,14 +115,25 @@ const Header = () => {
               type='button'
               onClick={toggleTheme}
               aria-label='Toggle color theme'
-              className='w-8 h-8 flex items-center justify-center rounded-md border border-hairline bg-surface/70 text-muted hover:text-ink hover:border-hairline-strong transition-colors duration-150'
+              className='w-8 h-8 flex items-center justify-center rounded-md border border-hairline bg-surface/70 text-muted hover:text-accent hover:border-accent/40 transition-colors duration-150 active:scale-[0.95] overflow-hidden'
             >
               {mounted ? (
-                resolvedTheme === 'dark' ? (
-                  <Sun size={15} />
-                ) : (
-                  <Moon size={15} />
-                )
+                <AnimatePresence mode='wait' initial={false}>
+                  <motion.span
+                    key={resolvedTheme}
+                    initial={{ opacity: 0, rotate: -30, scale: 0.75 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 30, scale: 0.75 }}
+                    transition={{ duration: 0.16 }}
+                    className='flex items-center justify-center'
+                  >
+                    {resolvedTheme === 'dark' ? (
+                      <Sun size={15} />
+                    ) : (
+                      <Moon size={15} />
+                    )}
+                  </motion.span>
+                </AnimatePresence>
               ) : (
                 <span className='w-3.5 h-3.5' />
               )}
@@ -133,7 +153,7 @@ const Header = () => {
               type='button'
               onClick={toggleTheme}
               aria-label='Toggle color theme'
-              className='p-2 rounded-md border border-hairline bg-surface text-muted hover:text-ink transition-colors'
+              className='p-2 rounded-md border border-hairline bg-surface text-muted hover:text-accent transition-colors'
             >
               {mounted ? (
                 resolvedTheme === 'dark' ? (
@@ -158,52 +178,67 @@ const Header = () => {
         </div>
       </header>
 
-      <div
-        className={cn(
-          'fixed inset-0 z-[45] md:hidden',
-          'bg-canvas/98 backdrop-blur-md text-ink',
-          'flex flex-col justify-center px-6 pt-16',
-          'transition-all duration-200 ease-out',
-          isMenuOpen
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none',
-        )}
-      >
-        <nav
-          aria-label='Mobile navigation'
-          className='w-full max-w-sm mx-auto flex flex-col divide-y divide-hairline'
-        >
-          {links.map((link, i) => {
-            const active = isActive(link);
-            return (
-              <UnstyledLink
-                key={`fullscreen-${link.href}${i}`}
-                href={link.href}
-                className={cn(
-                  'flex items-center justify-between py-4 transition-colors duration-150',
-                  active ? 'text-ink' : 'text-muted hover:text-ink',
-                )}
-              >
-                <span className='font-primary text-xl font-semibold tracking-tight'>
-                  {link.label}
-                </span>
-                {active && (
-                  <span className='w-1.5 h-1.5 rounded-full bg-accent' />
-                )}
-              </UnstyledLink>
-            );
-          })}
-
-          <div className='pt-6'>
-            <Link
-              href='mailto:me@ihsanmuh.com'
-              className='w-full flex justify-center items-center py-3 rounded-md bg-cta text-cta-fg text-sm font-medium hover:bg-cta-hover active:scale-[0.99] transition-all'
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className={cn(
+              'fixed inset-0 z-[45] md:hidden',
+              'bg-canvas/98 backdrop-blur-md text-ink',
+              'flex flex-col justify-center px-6 pt-16',
+            )}
+          >
+            <nav
+              aria-label='Mobile navigation'
+              className='w-full max-w-sm mx-auto flex flex-col divide-y divide-hairline'
             >
-              Email me
-            </Link>
-          </div>
-        </nav>
-      </div>
+              {links.map((link, i) => {
+                const active = isActive(link);
+                return (
+                  <motion.div
+                    key={`fullscreen-${link.href}${i}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.22, delay: i * 0.04 }}
+                  >
+                    <UnstyledLink
+                      href={link.href}
+                      className={cn(
+                        'flex items-center justify-between py-4 transition-colors duration-150',
+                        active ? 'text-accent' : 'text-muted hover:text-ink',
+                      )}
+                    >
+                      <span className='font-primary text-xl font-semibold tracking-tight'>
+                        {link.label}
+                      </span>
+                      {active && (
+                        <span className='w-1.5 h-1.5 rounded-full bg-accent' />
+                      )}
+                    </UnstyledLink>
+                  </motion.div>
+                );
+              })}
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.22, delay: links.length * 0.04 }}
+                className='pt-6'
+              >
+                <Link
+                  href='mailto:me@ihsanmuh.com'
+                  className='w-full flex justify-center items-center py-3 rounded-md bg-cta text-cta-fg text-sm font-medium hover:bg-cta-hover active:scale-[0.99] transition-all'
+                >
+                  Email me
+                </Link>
+              </motion.div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

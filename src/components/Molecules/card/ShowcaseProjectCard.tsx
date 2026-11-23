@@ -24,7 +24,7 @@ const ShowcaseProjectCard = (props: IProject) => {
       className={cn(
         'group relative flex flex-col h-full',
         'rounded-lg overflow-hidden',
-        'border border-hairline hover:border-hairline-strong',
+        'border border-hairline hover:border-hairline-strong hover:-translate-y-0.5',
         'bg-surface text-ink',
         'transition-all duration-200',
       )}
