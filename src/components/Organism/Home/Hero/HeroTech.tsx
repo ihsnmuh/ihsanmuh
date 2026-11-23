@@ -1,66 +1,38 @@
-import { cn } from '@/lib/utils';
-
 import {
-  FigmaIcon,
   NextJsIcon,
   ReactIcon,
   TailwindCssIcon,
+  TanStackQueryIcon,
   TypeScriptIcon,
-  VSCodeIcon,
 } from '@/components/Atoms/Icon';
+
+const coreStack = [
+  { name: 'TypeScript', Icon: TypeScriptIcon },
+  { name: 'React', Icon: ReactIcon },
+  { name: 'Next.js', Icon: NextJsIcon },
+  { name: 'Tailwind', Icon: TailwindCssIcon },
+  { name: 'TanStack', Icon: TanStackQueryIcon },
+];
 
 const HeroTech = () => {
   return (
-    <>
-      <p className='font-primary text-sm font-bold'>
-        🔥 Current Favorite Tech Stacks:
+    <div className='flex flex-col gap-2.5'>
+      <p className='font-mono text-[11px] uppercase tracking-wider text-muted'>
+        Core Stack
       </p>
-      <div className='flex gap-4 mt-2'>
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#3178C6]',
-          )}
-        >
-          <TypeScriptIcon className={cn('h-6 w-6')} />
-        </div>
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#61DAFB]',
-          )}
-        >
-          <ReactIcon className={cn('h-6 w-6')} />
-        </div>
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#06B6D4]',
-          )}
-        >
-          <TailwindCssIcon className={cn('h-6 w-6')} />
-        </div>
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500 duration-200 hover:text-[#000000] dark:hover:text-[#FFFFFF]',
-          )}
-        >
-          <NextJsIcon className={cn('h-6 w-6')} />
-        </div>
-        <div className='border-r-2 border-slate-600' />
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#007ACC]',
-          )}
-        >
-          <VSCodeIcon className={cn('h-6 w-6')} />
-        </div>
-        <div
-          className={cn(
-            'transition cursor-pointer text-slate-500  duration-200 hover:text-[#F24E1E]',
-          )}
-        >
-          <FigmaIcon className={cn('h-6 w-6')} />
-        </div>
+      <div className='flex items-center gap-2 flex-wrap'>
+        {coreStack.map(({ name, Icon }) => (
+          <div
+            key={name}
+            className='inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface border border-hairline text-ink text-xs font-mono select-none'
+            title={name}
+          >
+            <Icon className='h-3.5 w-3.5' />
+            <span>{name}</span>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

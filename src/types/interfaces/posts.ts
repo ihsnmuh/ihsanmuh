@@ -5,8 +5,11 @@ export interface IPost {
   publishedAt: string;
   description: string;
   banner: string;
-  content: string;
+  content?: string;
+  timeReading?: string;
   tags: string[];
   slug: string;
-  isShow?: boolean;
+  isShow?: boolean | string;
+  views?: number;
+  likes?: number;
 }

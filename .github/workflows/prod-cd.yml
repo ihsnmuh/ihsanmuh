@@ -1,63 +1,87 @@
-name: Deploy App 🚀
+name: Deploy App
 
 on:
-  push:
+  workflow_run:
+    workflows: ['Build App']
+    types:
+      - completed
     branches: ['master']
 
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@v0.1.9
+      - name: Deploy using SSH
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
+          envs: DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
           script: |
-            echo "Starting deployment process..."
+            set -e
 
-            # Debug who is running and the current directory
-            whoami
-            pwd
+            echo "Starting deployment..."
 
             # Navigate to the application directory
-            cd /var/www/fe-app/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd ~/apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
 
-            # Fetch and update the latest code from GitHub
-            echo "Fetching latest code from master branch..."
-            git fetch --all
-            git reset --hard origin/master
-            git checkout master || (echo "Failed to checkout master!" && exit 1)
-            git pull origin master || (echo "Git pull failed!" && exit 1)
+            # Login to Docker Hub (required for private images)
+            echo "Logging in to Docker Hub..."
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
-            # Load Node.js environment
-            echo "Setting up Node.js environment..."
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            nvm use 18 || (echo "nvm command failed. Ensure nvm is installed." && exit 1)
-            node -v || (echo "Node.js is not available. Ensure it is installed." && exit 1)
+            # Pull the latest image from Docker Hub
+            echo "Pulling latest Docker image..."
+            docker compose pull || (echo "Failed to pull image!" && exit 1)
 
-            # Install dependencies
-            echo "Installing dependencies..."
-            yarn || (echo "Failed to install dependencies using yarn!" && exit 1)
+            # Run database migrations (if any pending)
+            echo "Running database migrations..."
+            docker compose run --rm app node node_modules/prisma/build/index.js migrate deploy || (echo "Migration failed!" && exit 1)
 
-            # Build the application
-            echo "Building application..."
-            yarn build || (echo "Application build failed!" && exit 1)
+            # Sync project data from project.json
+            echo "Running database seed..."
+            docker compose run --rm app node node_modules/prisma/build/index.js db seed || (echo "Seed failed!" && exit 1)
 
-            # Restart the application
-            echo "Restarting application using PM2..."
-            pm2 restart ihsanmuh-web || (echo "Failed to restart application using PM2!" && exit 1)
+            # Restart the application with the new image
+            echo "Starting application..."
+            docker compose up -d --remove-orphans || (echo "Failed to start container!" && exit 1)
+
+            # Wait for health check
+            echo "Waiting for health check..."
+            sleep 10
+
+            # Verify container is running and healthy
+            if docker compose ps | grep -q "healthy"; then
+              echo "Container is healthy!"
+            else
+              echo "Warning: Container may not be healthy yet, check logs"
+              docker compose logs --tail=20 app
+            fi
+
+            # Cleanup old images to save disk space
+            echo "Cleaning up old images..."
+            docker image prune -f
 
             echo "Deployment completed successfully."
+
+      - name: Deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "Deployment successful!"
+          else
+            echo "Deployment failed!"
+          fi

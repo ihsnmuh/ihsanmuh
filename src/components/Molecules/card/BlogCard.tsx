@@ -6,8 +6,10 @@ import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
+import { LikeButtonStats } from '@/components/Molecules/blog/LikeButton';
+import { ViewCounterStats } from '@/components/Molecules/blog/ViewCounter';
 
-import { timeReading } from '@/helpers/readingTime';
+import { usePostStats } from '@/helpers/usePostStats';
 
 import WrapperCard from './WrapperCard';
 
@@ -15,6 +17,7 @@ import { IPost } from '@/types/interfaces/posts';
 
 interface IPostCard extends IPost {
   className?: string;
+  excludeFromToC?: boolean;
 }
 
 const PostCard = (props: IPostCard) => {
@@ -24,19 +27,33 @@ const PostCard = (props: IPostCard) => {
     title,
     banner,
     tags,
-    content,
+    timeReading: timeReadingText,
     publishedAt,
     description,
+    excludeFromToC = false,
   } = props;
 
-  const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
+  const { views, likes, isLoading } = usePostStats(slug);
+
+  const date = publishedAt ? format(new Date(publishedAt), 'MMM dd, yyyy') : '';
+  const reading = timeReadingText ?? '';
 
   return (
-    <Link href={`blog/${slug}`}>
-      <WrapperCard className={cn('group h-full', className)}>
-        <div className='relative'>
+    <Link href={`/blog/${slug}`} className='block h-full'>
+      <WrapperCard
+        className={cn(
+          'group h-full flex flex-col overflow-hidden bg-surface text-ink',
+          'border border-hairline rounded-lg hover:border-hairline-strong transition-all duration-200',
+          className,
+        )}
+      >
+        <div className='relative overflow-hidden border-b border-hairline bg-subtle'>
           <NextImage
             className='w-full aspect-video'
+            classNames={{
+              image:
+                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+            }}
             src={`/images/blog/${banner}`}
             alt={title}
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
@@ -46,17 +63,50 @@ const PostCard = (props: IPostCard) => {
             }}
             useSkeleton
           />
-          <div className='absolute flex gap-2 right-2 bottom-2'>
-            {tags?.map((tag) => <TagPill key={tag} name={tag} />)}
-          </div>
         </div>
-        <div className='p-4 flex flex-col gap-2'>
-          <p className='font-bold text-lg'>{title}</p>
-          <div className='flex gap-1 text-sm items-center'>
-            <p className='font-semibold'>{date}</p>•
-            <p className='font-medium'>{timeReading(content)}</p>
+
+        <div className='flex flex-col flex-1 gap-2.5 p-5'>
+          {tags?.length > 0 && (
+            <div className='flex flex-wrap gap-1.5'>
+              {tags.slice(0, 2).map((tag) => (
+                <TagPill key={tag} name={tag} />
+              ))}
+            </div>
+          )}
+
+          <h3
+            {...(excludeFromToC && { 'data-toc-exclude': 'true' })}
+            className='font-primary font-semibold text-base sm:text-lg tracking-tight leading-snug line-clamp-2 text-ink group-hover:text-accent transition-colors duration-150'
+          >
+            {title}
+          </h3>
+
+          <p className='text-sm text-body line-clamp-2 leading-relaxed'>
+            {description}
+          </p>
+
+          <div className='flex items-center justify-between gap-2 mt-auto pt-4 border-t border-hairline/70 text-xs font-mono text-muted tabular-nums'>
+            <div className='flex items-center gap-2'>
+              {date && <time dateTime={publishedAt}>{date}</time>}
+              {reading && (
+                <>
+                  <span aria-hidden='true'>·</span>
+                  <span>{reading}</span>
+                </>
+              )}
+            </div>
+
+            <div className='flex items-center gap-2.5'>
+              {isLoading ? (
+                <span className='h-3 w-12 animate-pulse rounded bg-subtle' />
+              ) : (
+                <>
+                  <ViewCounterStats views={views} showIcon />
+                  <LikeButtonStats likes={likes} showIcon />
+                </>
+              )}
+            </div>
           </div>
-          <p className='text-sm'>{description}</p>
         </div>
       </WrapperCard>
     </Link>

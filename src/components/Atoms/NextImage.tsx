@@ -53,7 +53,7 @@ export default function NextImage({
         width={width}
         height={height}
         alt={alt}
-        loading='lazy'
+        loading={rest.priority ? undefined : 'lazy'}
         onLoad={() => setStatus('complete')}
         {...rest}
       />

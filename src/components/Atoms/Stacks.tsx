@@ -1,9 +1,11 @@
 import { BsFillBootstrapFill, BsRobot } from 'react-icons/bs';
+import { LuKey, LuLayers, LuNetwork, LuPalette } from 'react-icons/lu';
 import {
   SiAmazonaws,
   SiAngular,
   SiApollographql,
   SiCss3,
+  SiDocker,
   SiExpo,
   SiExpress,
   SiFigma,
@@ -43,6 +45,7 @@ import {
   SiWebpack,
   SiWordpress,
 } from 'react-icons/si';
+import { TbApi } from 'react-icons/tb';
 
 export type stacksProps = {
   [key: string]: JSX.Element;
@@ -54,7 +57,7 @@ const Stacks: stacksProps = {
   PHP: <SiPhp size={iconSize} className='text-blue-500' />,
   JavaScript: <SiJavascript size={iconSize} className='text-yellow-400' />,
   TypeScript: <SiTypescript size={iconSize} className='text-blue-400' />,
-  'Next.js': <SiNextdotjs size={iconSize} />,
+  'Next.js': <SiNextdotjs size={iconSize} className='text-slate-800' />,
   'React.js': <SiReact size={iconSize} className='text-sky-500' />,
   ReactNative: <SiReact size={iconSize} className='text-sky-500' />,
   TailwindCSS: <SiTailwindcss size={iconSize} className='text-cyan-300' />,
@@ -62,8 +65,8 @@ const Stacks: stacksProps = {
     <BsFillBootstrapFill size={iconSize} className='text-purple-500' />
   ),
   GraphQL: <SiGraphql size={iconSize} className='text-pink-600' />,
-  Apollo: <SiApollographql size={iconSize} />,
-  WordPress: <SiWordpress size={iconSize} />,
+  Apollo: <SiApollographql size={iconSize} className='text-[#311C87]' />,
+  WordPress: <SiWordpress size={iconSize} className='text-[#21759B]' />,
   Laravel: <SiLaravel size={iconSize} className='text-red-500' />,
   MaterialUI: <SiMui size={iconSize} className='text-sky-400' />,
   Vite: <SiVite size={iconSize} className='text-purple-500' />,
@@ -78,6 +81,7 @@ const Stacks: stacksProps = {
   'Node.js': <SiNodedotjs size={iconSize} className='text-green-600' />,
   Gatsby: <SiGatsby size={iconSize} className='text-purple-600' />,
   Redux: <SiRedux size={iconSize} className='text-purple-500' />,
+  RTKQuery: <SiRedux size={iconSize} className='text-purple-500' />,
   Webpack: <SiWebpack size={iconSize} className='text-blue-500' />,
   'Styled Components': (
     <SiStyledcomponents size={iconSize} className='text-pink-500' />
@@ -87,15 +91,16 @@ const Stacks: stacksProps = {
   Jest: <SiJest size={iconSize} className='text-red-600' />,
   Storybook: <SiStorybook size={iconSize} className='text-amber-500' />,
   CSS: <SiCss3 size={iconSize} className='text-blue-300' />,
-  Socket: <SiSocketdotio size={iconSize} />,
-  Remix: <SiRemix size={iconSize} />,
+  Socket: <SiSocketdotio size={iconSize} className='text-slate-800' />,
+  Remix: <SiRemix size={iconSize} className='text-slate-800' />,
   ReactQuery: <SiReactquery size={iconSize} className='text-[#F73E51]' />,
-  Express: <SiExpress size={iconSize} />,
-  Jquery: <SiJquery size={iconSize} />,
+  Express: <SiExpress size={iconSize} className='text-slate-800' />,
+  Jquery: <SiJquery size={iconSize} className='text-[#0769AD]' />,
   Figma: <SiFigma size={iconSize} className='text-[#F24E1E]' />,
   Medium: <SiMedium size={iconSize} />,
   Expo: <SiExpo size={iconSize} />,
   PostgreSQL: <SiPostgresql size={iconSize} className='text-[#336791]' />,
+  PostgresQL: <SiPostgresql size={iconSize} className='text-[#336791]' />,
   Sequelize: <SiSequelize size={iconSize} />,
   Heroku: <SiHeroku size={iconSize} className='text-[#430098]' />,
   GoogleAuth: <SiGoogle size={iconSize} />,
@@ -103,6 +108,12 @@ const Stacks: stacksProps = {
   MongoDB: <SiMongodb size={iconSize} className='text-[#3FA037]' />,
   Redis: <SiRedis size={iconSize} className='text-[#D82C20]' />,
   AWS: <SiAmazonaws size={iconSize} className='text-[#FF9900]' />,
+  Ajax: <TbApi size={iconSize} className='text-orange-500' />,
+  GRPC: <LuNetwork size={iconSize} className='text-slate-500' />,
+  JWT: <LuKey size={iconSize} className='text-amber-500' />,
+  Microservices: <LuLayers size={iconSize} className='text-slate-500' />,
+  'UI/UX': <LuPalette size={iconSize} className='text-pink-500' />,
+  Docker: <SiDocker size={iconSize} className='text-blue-500' />,
 };
 
 interface StackIconProps {
@@ -110,12 +121,19 @@ interface StackIconProps {
   size: number;
 }
 
-const StackIcon = (props: StackIconProps) => {
-  const { type } = props;
-
+const StackIcon = ({ type, size }: StackIconProps) => {
   const Stack = Stacks[type];
 
-  return Stack;
+  if (Stack) return Stack;
+
+  return (
+    <span
+      style={{ fontSize: size, width: size, height: size }}
+      className='flex items-center justify-center font-bold text-slate-400 leading-none select-none'
+    >
+      {type.charAt(0).toUpperCase()}
+    </span>
+  );
 };
 
 export default StackIcon;

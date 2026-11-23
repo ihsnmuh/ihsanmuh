@@ -11,7 +11,10 @@ interface IntersectionObserverEntryWithId extends IntersectionObserverEntry {
 
 type TSetActiveId = (id: string) => void;
 
-const useIntersectionObserver = (setActiveId: TSetActiveId) => {
+const useIntersectionObserver = (
+  setActiveId: TSetActiveId,
+  depsKey?: string,
+) => {
   //* Define the reference type as a dictionary of IntersectionObserverEntry objects
   const headingElementsRef = useRef<
     Record<string, IntersectionObserverEntryWithId>
@@ -29,7 +32,9 @@ const useIntersectionObserver = (setActiveId: TSetActiveId) => {
       const visibleHeadings: IntersectionObserverEntryWithId[] = [];
       Object.keys(headingElementsRef.current).forEach((key) => {
         const headingElement = headingElementsRef.current[key];
-        if (headingElement.isIntersecting) visibleHeadings.push(headingElement);
+        if (headingElement && headingElement.isIntersecting) {
+          visibleHeadings.push(headingElement);
+        }
       });
 
       //* Helper function to get the index of a heading in the document
@@ -37,12 +42,18 @@ const useIntersectionObserver = (setActiveId: TSetActiveId) => {
         headingElements.findIndex((heading) => heading.id === id);
 
       if (visibleHeadings.length === 1) {
-        setActiveId(visibleHeadings[0].target.id);
+        const firstHeading = visibleHeadings[0];
+        if (firstHeading) {
+          setActiveId(firstHeading.target.id);
+        }
       } else if (visibleHeadings.length > 1) {
         const sortedVisibleHeadings = visibleHeadings.sort((a, b) =>
           getIndexFromId(a.target.id) > getIndexFromId(b.target.id) ? 1 : -1,
         );
-        setActiveId(sortedVisibleHeadings[0].target.id);
+        const firstSorted = sortedVisibleHeadings[0];
+        if (firstSorted) {
+          setActiveId(firstSorted.target.id);
+        }
       }
     };
 
@@ -59,7 +70,7 @@ const useIntersectionObserver = (setActiveId: TSetActiveId) => {
 
     //* Cleanup the observer on unmount
     return () => observer.disconnect();
-  }, []);
+  }, [setActiveId, depsKey]);
 };
 
 export default useIntersectionObserver;

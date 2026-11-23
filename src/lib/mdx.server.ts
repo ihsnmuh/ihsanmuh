@@ -11,14 +11,20 @@ import { timeReading } from '@/helpers/readingTime';
 
 import { postsDirectory, themeDirectory } from './blog';
 
+let cachedThemeSource: unknown | null = null;
+
+const getThemeSource = () => {
+  if (cachedThemeSource) return cachedThemeSource;
+
+  const themeFilePath = path.join(themeDirectory, 'mosaic-color-theme.json');
+  cachedThemeSource = JSON.parse(fs.readFileSync(themeFilePath, 'utf8'));
+  return cachedThemeSource;
+};
+
 export const getFileDatabySlug = async (slug: string) => {
   // * For blog
   const postFilePath = path.join(postsDirectory, `${slug}.mdx`);
   const source = fs.readFileSync(postFilePath, 'utf8');
-
-  // * For Themes
-  const themeFilePath = path.join(themeDirectory, 'mosaic-color-theme.json');
-  const themeSource = JSON.parse(fs.readFileSync(themeFilePath, 'utf8'));
 
   const { content, data } = matter(source);
 
@@ -31,7 +37,7 @@ export const getFileDatabySlug = async (slug: string) => {
         [
           rehypePrettyCode,
           {
-            theme: themeSource,
+            theme: getThemeSource(),
             // keepBackground: false,
           },
         ],

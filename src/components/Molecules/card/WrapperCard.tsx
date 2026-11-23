@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -9,14 +9,16 @@ interface IWrapperCard {
 }
 
 const WrapperCard = ({ children, className = '', ...others }: IWrapperCard) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   return (
     <div
+      ref={cardRef}
       className={cn(
-        'transition-all ease-in-out duration-300 hover:scale-105',
-        'w-full font-primary shadow-sm cursor-pointer',
-        'rounded-lg border overflow-hidden',
-        'background-card',
-        'hover:bg-zinc-50 hover:dark:bg-slate-800 border-slate-300 dark:border-zinc-700/40',
+        'group relative transition-colors duration-150',
+        'w-full font-ui cursor-pointer shadow-none',
+        'rounded-sm border border-hairline overflow-hidden',
+        'bg-paper-white hover:bg-cream-paper',
         className,
       )}
       {...others}

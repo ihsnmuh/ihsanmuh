@@ -1,53 +1,84 @@
 :root {
-  --tw-color-primary-50: 243 246 252;
-  --tw-color-primary-100: 229 237 249;
-  --tw-color-primary-200: 198 217 241;
-  --tw-color-primary-300: 147 186 230;
-  --tw-color-primary-400: 90 151 214;
-  --tw-color-primary-500: 53 121 194;
-  --tw-color-primary-600: 40 103 178;
-  --tw-color-primary-700: 31 76 133;
-  --tw-color-primary-800: 29 65 111;
-  --tw-color-primary-900: 29 56 93;
-  --tw-color-primary-950: 20 37 61;
+  /* Warm Editorial Paper — Light Mode (RGB channels for Tailwind alpha support) */
+  --rgb-canvas: 250 249 246; /* #FAF9F6 */
+  --rgb-surface: 255 255 255; /* #FFFFFF */
+  --rgb-surface-elevated: 252 251 249; /* #FCFBF9 */
+  --rgb-subtle: 242 240 235; /* #F2F0EB */
+  --rgb-hover: 235 232 225; /* #EBE8E1 */
 
-  --color-primary-50: rgb(var(--tw-color-primary-50)); /* #f3f6fc */
-  --color-primary-100: rgb(var(--tw-color-primary-100)); /* #e5edf9 */
-  --color-primary-200: rgb(var(--tw-color-primary-200)); /* #c6d9f1 */
-  --color-primary-300: rgb(var(--tw-color-primary-300)); /* #93bae6 */
-  --color-primary-400: rgb(var(--tw-color-primary-400)); /* #5a97d6 */
-  --color-primary-500: rgb(var(--tw-color-primary-500)); /* #3579c2 */
-  --color-primary-600: rgb(var(--tw-color-primary-600)); /* #2867b2 */
-  --color-primary-700: rgb(var(--tw-color-primary-700)); /* #1f4c85 */
-  --color-primary-800: rgb(var(--tw-color-primary-800)); /* #1d416f */
-  --color-primary-900: rgb(var(--tw-color-primary-900)); /* #1d385d */
-  --color-primary-950: rgb(var(--tw-color-primary-950)); /* #14253d */
+  --rgb-ink: 24 24 27; /* #18181B */
+  --rgb-body: 87 83 78; /* #57534E */
+  --rgb-muted: 120 113 108; /* #78716C */
+  --rgb-disabled: 168 162 158; /* #A8A29E */
+
+  --rgb-hairline: 231 229 224; /* #E7E5E0 */
+  --rgb-hairline-strong: 214 211 205; /* #D6D3CD */
+
+  --rgb-accent: 47 128 250; /* #2F80FA Brand Blue */
+  --rgb-accent-hover: 29 108 232; /* #1D6CE8 */
+  --rgb-accent-soft: 235 243 255; /* #EBF3FF */
+
+  --rgb-cta: 47 128 250; /* #2F80FA Brand Blue CTA */
+  --rgb-cta-hover: 29 108 232; /* #1D6CE8 */
+  --rgb-cta-fg: 255 255 255; /* #FFFFFF */
+
+  --rgb-code-bg: 24 24 27; /* #18181B */
+
+  /* Subtle semantic accents (desaturated, editorial) */
+  --rgb-positive: 21 128 61; /* #15803D */
+  --rgb-positive-soft: 240 253 244; /* #F0FDF4 */
+  --rgb-warning: 180 83 9; /* #B45309 */
+  --rgb-warning-soft: 255 251 235; /* #FFFBEB */
+  --rgb-danger: 185 28 28; /* #B91C1C */
+  --rgb-danger-soft: 254 242 242; /* #FEF2F2 */
+
+  /* Legacy CSS variable aliases */
+  --color-canvas: rgb(var(--rgb-canvas));
+  --color-ink: rgb(var(--rgb-ink));
+  --color-body: rgb(var(--rgb-body));
+  --color-surface-soft: rgb(var(--rgb-subtle));
+  --color-surface-card: rgb(var(--rgb-surface));
+  --color-surface-doc: rgb(var(--rgb-surface-elevated));
+  --color-surface-dark: rgb(var(--rgb-code-bg));
+  --color-hairline: rgb(var(--rgb-hairline));
+  --color-primary: rgb(var(--rgb-accent));
+  --color-primary-500: rgb(var(--rgb-accent));
+  --color-primary-100: rgb(var(--rgb-accent-soft));
 }
 
-:root[class~='dark'] {
-  --tw-color-primary-50: 254 252 232;
-  --tw-color-primary-100: 254 249 195;
-  --tw-color-primary-200: 254 240 138;
-  --tw-color-primary-300: 253 224 71;
-  --tw-color-primary-400: 250 204 21;
-  --tw-color-primary-500: 234 179 8;
-  --tw-color-primary-600: 202 138 4;
-  --tw-color-primary-700: 161 98 7;
-  --tw-color-primary-800: 133 77 14;
-  --tw-color-primary-900: 113 63 18;
-  --tw-color-primary-950: 66 32 6;
+.dark {
+  /* Deep Obsidian Editorial — Dark Mode */
+  --rgb-canvas: 14 14 16; /* #0E0E10 */
+  --rgb-surface: 22 22 26; /* #16161A */
+  --rgb-surface-elevated: 28 28 33; /* #1C1C21 */
+  --rgb-subtle: 31 31 36; /* #1F1F24 */
+  --rgb-hover: 42 42 49; /* #2A2A31 */
 
-  --color-primary-50: rgb(var(--tw-color-primary-50)); /* #fefce8 */
-  --color-primary-100: rgb(var(--tw-color-primary-100)); /* #fef9c3 */
-  --color-primary-200: rgb(var(--tw-color-primary-200)); /* #fef08a */
-  --color-primary-300: rgb(var(--tw-color-primary-300)); /* #fde047 */
-  --color-primary-400: rgb(var(--tw-color-primary-400)); /* #facc15 */
-  --color-primary-500: rgb(var(--tw-color-primary-500)); /* #eab308 */
-  --color-primary-600: rgb(var(--tw-color-primary-600)); /* #ca8a04 */
-  --color-primary-700: rgb(var(--tw-color-primary-700)); /* #a16207 */
-  --color-primary-800: rgb(var(--tw-color-primary-800)); /* #854d0e */
-  --color-primary-900: rgb(var(--tw-color-primary-900)); /* #713f12 */
-  --color-primary-950: rgb(var(--tw-color-primary-950)); /* #422006 */
+  --rgb-ink: 244 244 240; /* #F4F4F0 */
+  --rgb-body: 161 161 170; /* #A1A1AA */
+  --rgb-muted: 113 113 122; /* #71717A */
+  --rgb-disabled: 82 82 91; /* #52525B */
+
+  --rgb-hairline: 38 38 44; /* #26262C */
+  --rgb-hairline-strong: 56 56 64; /* #383840 */
+
+  --rgb-accent: 245 185 66; /* #F5B942 Warm Golden Yellow */
+  --rgb-accent-hover: 251 206 107; /* #FBCE6B */
+  --rgb-accent-soft: 56 42 14; /* #382A0E */
+
+  --rgb-cta: 245 185 66; /* #F5B942 Golden Yellow CTA */
+  --rgb-cta-hover: 251 206 107; /* #FBCE6B */
+  --rgb-cta-fg: 14 14 16; /* #0E0E10 */
+
+  --rgb-code-bg: 18 18 22; /* #121216 */
+
+  /* Subtle semantic accents in dark mode */
+  --rgb-positive: 74 222 128; /* #4ADE80 */
+  --rgb-positive-soft: 20 83 45; /* #14532D */
+  --rgb-warning: 251 191 36; /* #FBBF24 */
+  --rgb-warning-soft: 69 26 3; /* #451A03 */
+  --rgb-danger: 248 113 113; /* #F87171 */
+  --rgb-danger-soft: 69 10 10; /* #450A0A */
 }
 
 *,
@@ -61,14 +92,17 @@
 }
 
 body {
-  line-height: 1.5;
+  line-height: 1.65;
+  background-color: rgb(var(--rgb-canvas));
+  color: rgb(var(--rgb-body));
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img,
 picture,
 video,
-twvas,
+canvas,
 svg {
   display: block;
   max-width: 100%;
@@ -95,4 +129,20 @@ h6 {
 #root,
 #__next {
   isolation: isolate;
+}
+
+/* Editorial text highlight */
+.highlight-marker {
+  background-color: rgb(var(--rgb-accent-soft));
+  color: rgb(var(--rgb-ink));
+  padding: 0.05em 0.3em;
+  display: inline;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Clean hairline border utility */
+.hairline-border {
+  border: 1px solid rgb(var(--rgb-hairline));
 }

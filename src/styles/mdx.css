@@ -1,60 +1,67 @@
-/* Post styles */
+/* Editorial Prose & MDX Styles */
 .prose {
-  max-width: 50rem;
+  max-width: 68ch;
+  color: rgb(var(--rgb-body));
+  line-height: 1.75;
 }
 
 pre {
   overflow-x: auto;
-  padding: 1rem 0;
+  padding: 1.125rem 0;
 }
 
 pre [data-line] {
-  padding: 0 1rem;
+  padding: 0 1.25rem;
 }
 
 .prose h1 {
-  @apply mb-6 text-2xl font-bold md:text-4xl;
+  @apply mb-6 font-primary text-3xl font-bold tracking-tight text-ink md:text-4xl;
 }
 
 .prose h2 {
-  @apply mb-4 mt-8 text-xl font-bold md:text-3xl;
+  @apply mb-4 mt-10 font-primary text-2xl font-semibold tracking-tight text-ink md:text-3xl;
 }
 
 .prose h3 {
-  @apply mt-4 mb-2 text-lg font-bold md:text-2xl;
+  @apply mt-8 mb-3 font-primary text-lg font-semibold tracking-tight text-ink md:text-xl;
 }
 
 .prose h4 {
-  @apply mb-1 text-base font-bold md:text-lg;
+  @apply mt-6 mb-2 font-primary text-base font-semibold text-ink md:text-lg;
 }
 
 .prose p {
-  @apply my-4;
+  @apply my-5 leading-[1.8];
+}
+
+.prose strong {
+  @apply font-semibold text-ink;
 }
 
 .prose a {
-  text-decoration: none;
+  @apply text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent;
 }
 
 .prose > ul {
   list-style-type: disc;
-  @apply my-4 pl-7;
+  @apply my-5 pl-6 space-y-2;
+}
+
+.prose > ol {
+  list-style-type: decimal;
+  @apply my-5 pl-6 space-y-2;
 }
 
 .prose > ol > li,
 .prose > ul > li {
-  @apply my-1 pl-2;
-}
-
-.prose > ol {
-  list-style-type: number;
-  @apply my-4 pl-7;
+  @apply pl-1 leading-[1.75];
 }
 
 .prose > ol > li > :last-child,
 .prose > ul > li > :last-child {
   margin-bottom: 0;
 }
+
 .prose > ol > li > :first-child,
 .prose > ul > li > :first-child {
   margin-top: 0;
@@ -65,26 +72,20 @@ pre [data-line] {
   content: '';
 }
 
-.prose > p > code {
-  @apply bg-primary-100 dark:bg-[#707a8c4d] rounded p-1 text-sm font-light;
-}
-
-.prose > ul > li > code {
-  @apply bg-primary-100 dark:bg-[#707a8c4d] rounded p-1 text-sm font-light;
+.prose :not(pre) > code {
+  @apply bg-subtle text-ink font-mono rounded px-1.5 py-0.5 text-[0.875em] border border-hairline/70;
 }
 
 .prose blockquote {
-  @apply bg-primary-50 dark:bg-slate-600 border-l-4 border-primary-400 rounded-r-lg;
+  @apply my-6 bg-subtle/60 border-l-2 border-ink/60 rounded-r-md py-1;
 }
 
 .prose blockquote p {
-  @apply italic py-2 px-3;
+  @apply font-primary italic py-2 px-4 text-ink/90 my-0;
 }
 
 .prose hr {
-  border-style: solid;
-  border-width: 0 0 1px 0;
-  border-image: linear-gradient(to right, #00ff9480, #00e0f380, #00c4fd80) 1;
+  @apply my-10 border-hairline border-t;
 }
 
 .mdx.prose :where(h1, h2, h3, h4) {
@@ -98,6 +99,7 @@ pre [data-line] {
 
 .mdx.prose :where(h1, h2, h3, h4) > a {
   border-bottom: none;
+  text-decoration: none;
 }
 
 /* Custom Heading Style for Projects */
@@ -111,9 +113,9 @@ pre [data-line] {
   margin-bottom: 0;
 }
 
-/* Apply shadow to Youtube Embed */
+/* Youtube Embed */
 .mdx.prose .yt-lite {
-  @apply overflow-hidden rounded shadow-sm dark:shadow-none;
+  @apply overflow-hidden rounded-lg border border-hairline;
 }
 
 /* #region  /**=========== Hash Anchor =========== */
@@ -124,66 +126,63 @@ pre [data-line] {
   transition: none;
 }
 
-.hash-anchor:hover {
-  background-image: linear-gradient(to right, #00ff94, #00e0f3, #00c4fd);
-  background-size: 100% 2px;
-}
-
 .hash-anchor:hover:after,
 .hash-anchor:focus:after {
   visibility: visible;
 }
 
 .hash-anchor:after {
-  @apply invisible absolute -right-5 top-1/2 -translate-y-1/2 text-lg text-primary-400 dark:text-primary-300;
+  @apply invisible absolute -right-5 top-1/2 -translate-y-1/2 font-mono text-base text-muted;
   content: '#';
 }
 /* #endregion  /**======== Hash Anchor =========== */
 
 /* #region  /**=========== Shiki =========== */
 .prose pre {
-  @apply rounded-none !px-0;
+  @apply rounded-lg !px-0 !bg-surface-dark border border-hairline text-sm leading-relaxed;
 }
 
-html.dark pre {
-  @apply !bg-[#2C3548];
-  /* @apply !bg-[#707a8c4d]; */
-}
+html.dark pre,
 html.light pre {
-  @apply !bg-[#2C3548];
-  /* @apply !bg-[#f0f8ffb1]; */
+  @apply !bg-surface-dark;
 }
 
 .prose pre > code {
-  @apply grid;
+  @apply grid font-mono;
   counter-reset: line;
 }
 
 [data-line] {
-  @apply border-l-2 border-l-transparent px-6;
+  @apply border-l-2 border-l-transparent px-5;
 }
+
 [data-highlighted-line] {
-  @apply border-l-primary-300 bg-primary-300/10;
+  @apply border-l-accent bg-accent/10;
 }
+
 [data-highlighted-chars] {
   box-shadow: 0 0 0 4px var(--tw-shadow-color);
-  @apply rounded bg-blue-500/[14%] shadow-blue-500/[14%] dark:bg-zinc-500/50 dark:shadow-zinc-500/50;
+  @apply rounded bg-blue-500/[14%] shadow-blue-500/[14%];
 }
+
 [data-chars-id] {
   @apply border-b-2 p-1 shadow-none;
 }
+
 [data-chars-id] span {
   @apply !text-inherit;
 }
 
 [data-chars-id='v'] {
-  @apply border-b-pink-600 bg-rose-400/50 font-bold !text-pink-700 dark:bg-rose-800/50 dark:!text-pink-300;
+  @apply border-b-pink-600 bg-rose-400/50 font-bold !text-pink-700;
 }
+
 [data-chars-id='s'] {
-  @apply border-b-yellow-600 bg-yellow-400/50 font-bold !text-yellow-700 dark:bg-yellow-800/50 dark:!text-yellow-300;
+  @apply border-b-yellow-600 bg-yellow-400/50 font-bold !text-yellow-700;
 }
+
 [data-chars-id='i'] {
-  @apply border-b-purple-600 bg-purple-400/50 font-bold !text-purple-700 dark:bg-purple-800/50 dark:!text-purple-200;
+  @apply border-b-purple-600 bg-purple-400/50 font-bold !text-purple-700;
 }
 
 code {
@@ -193,25 +192,25 @@ code {
 code[data-line-numbers] > [data-line]::before {
   counter-increment: line;
   content: counter(line);
-
   display: inline-block;
   width: 1rem;
-  padding-right: 2rem;
+  padding-right: 1.75rem;
   text-align: right;
-  color: gray;
+  color: rgb(113 113 122);
 }
 
 html.light .prose [data-theme='dark'] {
   display: none;
 }
+
 html.dark .prose [data-theme='light'] {
   display: none;
 }
 
 [data-rehype-pretty-code-figure] {
-  @apply overflow-hidden rounded-lg bg-[#374151];
-  margin-top: 1.7142857em;
-  margin-bottom: 1.7142857em;
+  @apply overflow-hidden rounded-lg border border-hairline bg-surface-dark;
+  margin-top: 1.75em;
+  margin-bottom: 1.75em;
 }
 
 [data-rehype-pretty-code-figure] code {
@@ -219,48 +218,48 @@ html.dark .prose [data-theme='light'] {
 }
 
 [data-rehype-pretty-code-figure] > pre {
-  @apply m-0;
+  @apply m-0 border-0 rounded-none;
 }
+
 [data-rehype-pretty-code-title],
 [data-rehype-pretty-code-caption] {
-  @apply bg-[#374151] rounded-t-lg px-6 py-2 text-xs text-slate-100 font-medium dark:bg-gray-700;
+  @apply bg-[#1f1f24] border-b border-white/10 px-5 py-2 text-xs font-mono text-zinc-300 font-medium;
 }
 
 /* Word Wrap */
 [data-word-wrap='true'] [data-line] {
   @apply whitespace-pre-wrap break-words;
 }
+
 [data-word-wrap='true'] [data-line]::before {
   @apply whitespace-pre;
 }
 /* #endregion  /**======== Shiki =========== */
 
 html.dark {
-  --shiki-color-text: #e1e4e8;
-  --shiki-color-background: #0e1111;
-
-  --shiki-token-constant: #79b8ff;
-  --shiki-token-string: #9ecbff;
-  --shiki-token-comment: #6a737d;
-  --shiki-token-keyword: #f97583;
-  --shiki-token-parameter: #e1e4e8;
-  --shiki-token-function: #e1e4e8;
-  --shiki-token-string-expression: #85e89d;
-  --shiki-token-punctuation: #e1e4e8;
-  --shiki-token-link: #e1e4e8;
+  --shiki-color-text: #e4e4e7;
+  --shiki-color-background: #121216;
+  --shiki-token-constant: #93c5fd;
+  --shiki-token-string: #bfdbfe;
+  --shiki-token-comment: #71717a;
+  --shiki-token-keyword: #fca5a5;
+  --shiki-token-parameter: #e4e4e7;
+  --shiki-token-function: #e4e4e7;
+  --shiki-token-string-expression: #86efac;
+  --shiki-token-punctuation: #a1a1aa;
+  --shiki-token-link: #93c5fd;
 }
 
 html.light {
-  --shiki-color-text: #24292e;
-  --shiki-color-background: #fff;
-
-  --shiki-token-constant: #005cc5;
-  --shiki-token-string: #032f62;
-  --shiki-token-comment: #6a737d;
-  --shiki-token-keyword: #d73a49;
-  --shiki-token-parameter: #24292e;
-  --shiki-token-function: #24292e;
-  --shiki-token-string-expression: #22863a;
-  --shiki-token-punctuation: #24292e;
-  --shiki-token-link: #24292e;
+  --shiki-color-text: #e4e4e7;
+  --shiki-color-background: #18181b;
+  --shiki-token-constant: #93c5fd;
+  --shiki-token-string: #bfdbfe;
+  --shiki-token-comment: #a1a1aa;
+  --shiki-token-keyword: #fca5a5;
+  --shiki-token-parameter: #e4e4e7;
+  --shiki-token-function: #e4e4e7;
+  --shiki-token-string-expression: #86efac;
+  --shiki-token-punctuation: #a1a1aa;
+  --shiki-token-link: #93c5fd;
 }

@@ -1,7 +1,6 @@
-import { ChevronUp } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { LoaderView } from '@/lib/loader';
-import { cn } from '@/lib/utils';
 
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
@@ -11,69 +10,74 @@ const Hero = () => {
 
   return (
     <section
-      className={cn(
-        'h-[100dvh] background-img-light dark:background-img-dark flex items-center bg-cover',
-        'border-b border-slate-200 dark:border-slate-800 relative',
-        show && 'fade-in-start',
-      )}
+      className='relative text-body pt-6 sm:pt-12'
+      data-fade-in={show ? 'true' : 'false'}
     >
-      <div className='layout flex flex-col w-full gap-1 relative'>
-        <p
-          className='font-primary text-base font-semibold md:text-xl'
-          data-fade='1'
-        >
-          Hi Everyone!
-          <span
-            className='animate-wave px-1'
-            style={{ transformOrigin: '70% 70%', display: 'inline-block' }}
-          >
-            👋
-          </span>
-          I&lsquo;m
-        </p>
-        <h1
-          className={cn(
-            'capitalize text-transparent font-bold font-secondary',
-            'text-5xl sm:text-7xl',
-            'bg-clip-text text-transparent',
-            'animate-gradient bg-[length:200%_200%]',
-            'bg-gradient-to-r from-primary-500 from-10% via-cyan-500 dark:via-orange-500 via-30% to-emerald-500 dark:to-red-500',
-          )}
-          data-fade='2'
-        >
-          Muhammad Ihsan
-        </h1>
-        <p
-          className={cn(
-            'font-primary text-balance',
-            'text-md md:text-lg',
-            'w-full max-w-2xl',
-          )}
-          data-fade='3'
-        >
-          Being a good <span className='font-semibold'>Software Engineer</span>{' '}
-          is not just about writing code. It's about creating an excellent user
-          experience and collaborating effectively with other team members.
-        </p>
-        <div className='flex gap-4 mt-4' data-fade='4'>
-          <HeroSocialMedia />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className='flex flex-col gap-6 max-w-3xl'
+      >
+        <div className='inline-flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-accent-soft/80 border border-accent/25 text-xs font-mono text-accent font-medium select-none'>
+          <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
+          <span>Available for full-time &amp; consulting</span>
         </div>
 
-        <div className='absolute ml-1 -bottom-36' data-fade='5'>
-          <HeroTech />
+        <h1 className='font-primary font-bold text-4xl sm:text-5xl lg:text-[56px] leading-[1.08] tracking-tight text-ink'>
+          Frontend engineer building fast,{' '}
+          <span className='text-accent'>maintainable web apps</span>.
+        </h1>
+
+        <p className='text-body text-base sm:text-lg leading-relaxed max-w-2xl'>
+          I&apos;m{' '}
+          <span className='font-semibold text-ink'>Muhammad Ihsan</span>, a
+          software engineer in Jakarta with{' '}
+          <span className='font-medium text-ink'>4+ years</span> of experience.
+          I build React, Next.js, and TypeScript applications, and I&apos;m
+          expanding into full-stack work.
+        </p>
+
+        <div className='pt-2'>
+          <HeroSocialMedia />
         </div>
-      </div>
-      <a
-        href='#summary'
-        className={cn(
-          'flex flex-col items-center justify-center w-full mx-auto',
-          'absolute bottom-1',
-          'animate-bounce',
-        )}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+        className='mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
       >
-        <ChevronUp />
-        <p className='text-xs'>scroll up</p>
-      </a>
+        <HeroTech />
+
+        <div className='flex items-center gap-8 sm:ml-auto tabular-nums'>
+          <div className='flex flex-col'>
+            <span className='font-primary text-2xl font-bold tracking-tight text-ink leading-none'>
+              4+
+            </span>
+            <span className='font-mono text-[11px] uppercase tracking-wider text-muted mt-1.5'>
+              Years XP
+            </span>
+          </div>
+          <div className='flex flex-col'>
+            <span className='font-primary text-2xl font-bold tracking-tight text-ink leading-none'>
+              10+
+            </span>
+            <span className='font-mono text-[11px] uppercase tracking-wider text-muted mt-1.5'>
+              Projects
+            </span>
+          </div>
+          <div className='flex flex-col'>
+            <span className='font-primary text-2xl font-bold tracking-tight text-ink leading-none'>
+              2
+            </span>
+            <span className='font-mono text-[11px] uppercase tracking-wider text-muted mt-1.5'>
+              Companies
+            </span>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };

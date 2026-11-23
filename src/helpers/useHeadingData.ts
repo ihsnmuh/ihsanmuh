@@ -21,7 +21,10 @@ const getNestedHeadings = (headingElements: HTMLElement[]): NestedHeading[] => {
     if (heading.nodeName === 'H2') {
       nestedHeadings.push({ id, title, items: [] });
     } else if (heading.nodeName === 'H3' && nestedHeadings.length > 0) {
-      nestedHeadings[nestedHeadings.length - 1].items.push({ id, title });
+      const lastHeading = nestedHeadings[nestedHeadings.length - 1];
+      if (lastHeading) {
+        lastHeading.items.push({ id, title });
+      }
     }
   });
 
@@ -29,17 +32,22 @@ const getNestedHeadings = (headingElements: HTMLElement[]): NestedHeading[] => {
 };
 
 // Hook to use headings data
-const useHeadingsData = () => {
+const useHeadingsData = (depsKey?: string) => {
   const [nestedHeadings, setNestedHeadings] = useState<NestedHeading[]>([]);
 
   useEffect(() => {
-    const headingElements = Array.from(
-      document.querySelectorAll('h2, h3'),
-    ) as HTMLElement[];
+    const allHeadings = document.querySelectorAll('h2, h3');
+    const headingElements = Array.from(allHeadings).filter((el) => {
+      const element = el as HTMLElement;
+      return (
+        !element.hasAttribute('data-toc-exclude') &&
+        !element.closest('[data-toc-exclude]')
+      );
+    }) as HTMLElement[];
 
     const newNestedHeadings = getNestedHeadings(headingElements);
     setNestedHeadings(newNestedHeadings);
-  }, []);
+  }, [depsKey]);
 
   return { nestedHeadings };
 };

@@ -7,7 +7,7 @@ export const DataPortofolio = [
     category: 'Personal Challenge',
     description:
       'A personal website that explains how I love the world of frontend developer',
-    stacks: ['Typescript', 'Next.js', 'React.js', 'TailwindCSS', 'MaterialUI'],
+    stacks: ['TypeScript', 'Next.js', 'React.js', 'TailwindCSS', 'MaterialUI'],
     github: 'https://github.com/ihsnmuh/story-ihsan',
     website: 'https://story-ihsan-ihsnmuh.vercel.app/',
     create_at: '2024-01-06T00:00:00.000Z',
@@ -34,7 +34,7 @@ export const DataPortofolio = [
     category: 'Internal Project',
     description:
       'This project was created to manage the news on the matamatapolitik.com website',
-    stacks: ['Typescript', 'Next.js', 'React.js', 'MaterialUI', 'GRPC'],
+    stacks: ['TypeScript', 'Next.js', 'React.js', 'MaterialUI', 'GRPC'],
     github: '',
     website: 'https://www.matamatapolitik.com',
     create_at: '2024-01-04T00:00:00.000Z',
@@ -54,7 +54,7 @@ export const DataPortofolio = [
       'Heroku',
       'Firebase',
       'Express',
-      'PostgresQL',
+      'PostgreSQL',
     ],
     github: 'https://github.com/ihsnmuh/qurantara-client',
     website: 'https://qurantara-30c57.web.app/',
@@ -68,7 +68,7 @@ export const DataPortofolio = [
     category: 'Personal Challenge',
     description:
       'Sugoku Mobile App is An interactive mobile game to play sudoku with 3 level difficulties',
-    stacks: ['Javascript', 'Expo', 'ReactNative'],
+    stacks: ['JavaScript', 'Expo', 'ReactNative'],
     github: 'https://github.com/ihsnmuh/sugoku',
     website: 'https://expo.dev/@ihsnmuh/sugoku-ihsan',
     create_at: '2024-01-02T00:00:00.000Z',
@@ -84,7 +84,7 @@ export const DataPortofolio = [
     stacks: [
       'Sequelize',
       'Express',
-      'PostgresQL',
+      'PostgreSQL',
       'Jest',
       'Vue.js',
       'Bootstrap',
@@ -106,7 +106,7 @@ export const DataPortofolio = [
     stacks: [
       'Sequelize',
       'Express',
-      'PostgresQL',
+      'PostgreSQL',
       'JWT',
       'Jest',
       'Vue.js',
@@ -130,8 +130,8 @@ export const DataPortofolio = [
     stacks: [
       'Sequelize',
       'Express',
-      'PostgresQL',
-      'JWt',
+      'PostgreSQL',
+      'JWT',
       'JQuery',
       'Ajax',
       'Bootstrap',
@@ -150,7 +150,7 @@ export const DataPortofolio = [
     title: 'Nonton Movies',
     category: 'Personal Challenge',
     description: 'Movie Web is a website to search popular Movie and Tv Series',
-    stacks: ['Javascript', 'Firebase', 'React.js', 'Bootstrap'],
+    stacks: ['JavaScript', 'Firebase', 'React.js', 'Bootstrap'],
     github: '',
     website: 'https://nonton-moviesme.web.app/',
     create_at: '2023-12-29T00:00:00.000Z',
