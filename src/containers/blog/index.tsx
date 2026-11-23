@@ -215,10 +215,10 @@ const BlogContainer = (props: IBlogContainer) => {
                     </div>
 
                     <motion.div
+                      key={`${year}-${selectedTag}-${debouncedSearch}`}
                       variants={staggerContainerVariants}
                       initial='hidden'
-                      whileInView='visible'
-                      viewport={{ once: true, amount: 0.08 }}
+                      animate='visible'
                       className='divide-y divide-hairline border-t border-b border-hairline'
                     >
                       {yearPosts.map((post) => (
