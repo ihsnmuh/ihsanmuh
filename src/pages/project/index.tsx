@@ -10,7 +10,15 @@ import { queryProjectList } from '@/queries/projectList';
 const Project = () => {
   return (
     <>
-      <Seo title='Project | Muhammad Ihsan' tags={['project']} />
+      <Seo
+        templateTitle='Projects'
+        description='Web applications, internal tools, and UI experiments built and shipped by Muhammad Ihsan.'
+        tags={['projects']}
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Projects', path: '/project' },
+        ]}
+      />
       <ProjectContainer />
     </>
   );

@@ -27,6 +27,7 @@ export default function Custom404() {
       <Seo
         templateTitle='404 - Page Not Found'
         description='The page you are looking for does not exist.'
+        robots='noindex, nofollow'
       />
       <div className='py-20 sm:py-28 text-center'>
         <p className='font-mono text-xs uppercase tracking-widest text-muted mb-3'>
