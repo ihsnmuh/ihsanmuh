@@ -62,9 +62,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <motion.main
           key={asPath.split('?')[0]}
           id='main-content'
-          initial={{ opacity: 0, y: 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.28, ease: EDITORIAL_EASE }}
+          transition={{ duration: 0.24, ease: EDITORIAL_EASE }}
           className='flex-1 w-full max-w-4xl mx-auto pt-24 sm:pt-28 pb-20 px-5 sm:px-6'
         >
           {children}

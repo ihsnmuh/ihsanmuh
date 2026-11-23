@@ -20,9 +20,10 @@ const optionsHandler = (
     ...(options?.headers || {}),
   };
 
-  const newUrl: string = options?.withLocalAPI
-    ? `${process.env.NEXT_PUBLIC_API}${url}`
-    : url;
+  const apiBase =
+    typeof window !== 'undefined' ? '/api' : process.env.NEXT_PUBLIC_API || '';
+
+  const newUrl: string = options?.withLocalAPI ? `${apiBase}${url}` : url;
   delete options?.withLocalAPI;
 
   const newOptions: RequestInit = {
