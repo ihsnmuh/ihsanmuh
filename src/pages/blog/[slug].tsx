@@ -21,14 +21,26 @@ const Post = (props: BlogPostSingleProps) => {
   const { source, frontMatter, relatedPosts } = props;
   const { banner, tags, title, publishedAt, timeReading, slug } = frontMatter;
 
+  const isDraft =
+    frontMatter.isShow === false ||
+    String(frontMatter.isShow).toLowerCase() === 'false' ||
+    String(frontMatter.isShow) === '0';
+
   return (
     <>
       <Seo
         isBlog
-        title={`${frontMatter.title} | Muhammad Ihsan`}
+        templateTitle={frontMatter.title}
         description={frontMatter.description || ''}
         image={`${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner || ''}`}
+        date={publishedAt}
         tags={tags}
+        robots={isDraft ? 'noindex, nofollow' : 'follow, index'}
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Writing', path: '/blog' },
+          { name: title, path: `/blog/${slug}` },
+        ]}
       />
       <Detail
         source={source}

@@ -19,7 +19,15 @@ const Blog = (props: IBlogPage) => {
 
   return (
     <>
-      <Seo isBlog title='Blog | Muhammad Ihsan' tags={['blog']} />
+      <Seo
+        templateTitle='Writing'
+        description='Articles and engineering notes on frontend architecture, React, Next.js, TypeScript, and web performance by Muhammad Ihsan.'
+        tags={['writing', 'blog']}
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Writing', path: '/blog' },
+        ]}
+      />
       <BlogContainer posts={filteredPost} />
     </>
   );
