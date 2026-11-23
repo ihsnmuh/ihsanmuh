@@ -25,7 +25,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+      <ThemeProvider
+        attribute='class'
+        defaultTheme='system'
+        enableSystem
+        disableTransitionOnChange
+      >
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <ProgressBar />

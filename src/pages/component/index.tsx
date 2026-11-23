@@ -7,7 +7,6 @@ import {
   Plus,
   Shield,
 } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import React from 'react';
 
 import Button from '@/components/Atoms/buttons/Button';
@@ -24,14 +23,12 @@ import Skeleton from '@/components/Atoms/Skeleton';
 type Color = (typeof colorList)[number];
 
 export default function ComponentPage() {
-  const { theme, setTheme } = useTheme();
+  const theme = 'light' as string;
   const [color, setColor] = React.useState<Color>('sky');
 
-  function toggleMode() {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  }
+  function toggleMode() {}
 
-  const textColor = theme === 'dark' ? 'text-gray-300' : 'text-gray-600';
+  const textColor = 'text-gray-600';
 
   return (
     <main>
@@ -209,14 +206,12 @@ export default function ComponentPage() {
                 </ButtonLink>
                 <ButtonLink
                   variant='outline'
-                  isDarkBg={theme === 'dark'}
                   href='https://theodorusclarence.com'
                 >
                   Outline Variant
                 </ButtonLink>
                 <ButtonLink
                   variant='ghost'
-                  isDarkBg={theme === 'dark'}
                   href='https://theodorusclarence.com'
                 >
                   Ghost Variant
@@ -239,12 +234,8 @@ export default function ComponentPage() {
               </p>
               <div className='flex flex-wrap gap-2'>
                 <Button variant='primary'>Primary Variant</Button>
-                <Button variant='outline' isDarkBg={theme === 'dark'}>
-                  Outline Variant
-                </Button>
-                <Button variant='ghost' isDarkBg={theme === 'dark'}>
-                  Ghost Variant
-                </Button>
+                <Button variant='outline'>Outline Variant</Button>
+                <Button variant='ghost'>Ghost Variant</Button>
                 <Button variant='dark'>Dark Variant</Button>
                 <Button variant='light'>Light Variant</Button>
               </div>
@@ -260,16 +251,10 @@ export default function ComponentPage() {
                   variant='outline'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={theme === 'dark'}
                 >
                   Icon
                 </Button>
-                <Button
-                  variant='ghost'
-                  leftIcon={Plus}
-                  rightIcon={ArrowRight}
-                  isDarkBg={theme === 'dark'}
-                >
+                <Button variant='ghost' leftIcon={Plus} rightIcon={ArrowRight}>
                   Icon
                 </Button>
                 <Button variant='dark' leftIcon={Plus} rightIcon={ArrowRight}>
@@ -283,10 +268,10 @@ export default function ComponentPage() {
                 <Button size='sm' variant='primary'>
                   Small Size
                 </Button>
-                <Button size='sm' variant='outline' isDarkBg={theme === 'dark'}>
+                <Button size='sm' variant='outline'>
                   Small Size
                 </Button>
-                <Button size='sm' variant='ghost' isDarkBg={theme === 'dark'}>
+                <Button size='sm' variant='ghost'>
                   Small Size
                 </Button>
                 <Button size='sm' variant='dark'>
@@ -310,7 +295,6 @@ export default function ComponentPage() {
                   variant='outline'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={theme === 'dark'}
                 >
                   Icon
                 </Button>
@@ -319,7 +303,6 @@ export default function ComponentPage() {
                   variant='ghost'
                   leftIcon={Plus}
                   rightIcon={ArrowRight}
-                  isDarkBg={theme === 'dark'}
                 >
                   Icon
                 </Button>
@@ -346,10 +329,10 @@ export default function ComponentPage() {
                 <Button disabled variant='primary'>
                   Disabled
                 </Button>
-                <Button disabled variant='outline' isDarkBg={theme === 'dark'}>
+                <Button disabled variant='outline'>
                   Disabled
                 </Button>
-                <Button disabled variant='ghost' isDarkBg={theme === 'dark'}>
+                <Button disabled variant='ghost'>
                   Disabled
                 </Button>
                 <Button disabled variant='dark'>
@@ -363,10 +346,10 @@ export default function ComponentPage() {
                 <Button isLoading variant='primary'>
                   Disabled
                 </Button>
-                <Button isLoading variant='outline' isDarkBg={theme === 'dark'}>
+                <Button isLoading variant='outline'>
                   Disabled
                 </Button>
-                <Button isLoading variant='ghost' isDarkBg={theme === 'dark'}>
+                <Button isLoading variant='ghost'>
                   Disabled
                 </Button>
                 <Button isLoading variant='dark'>

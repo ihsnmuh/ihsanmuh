@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/Atoms/title';
 import ShowcaseProjectCard from '@/components/Molecules/card/ShowcaseProjectCard';
 import SearchFilter from '@/components/Molecules/SearchFilter';
 
@@ -22,7 +21,6 @@ const ProjectContainer = () => {
     ...queryProjectList({ limit: 100 }),
   });
 
-  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -30,7 +28,6 @@ const ProjectContainer = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Compute categories with counts
   const categoriesWithCounts = useMemo(() => {
     if (!data) return [{ name: ALL_CATEGORY, count: 0 }];
 
@@ -51,7 +48,6 @@ const ProjectContainer = () => {
     ];
   }, [data]);
 
-  // Filter projects by active category and search term
   const filteredProjects = useMemo(() => {
     if (!data) return [];
     let result = data;
@@ -76,55 +72,43 @@ const ProjectContainer = () => {
   }, [data, activeCategory, debouncedSearch]);
 
   return (
-    <section className={cn('layout py-20', show && 'fade-in-start')}>
-      <div className='mt-10 max-w-3xl' data-fade='1'>
-        <p
-          className={cn(
-            'text-[11px] font-semibold uppercase tracking-[0.2em]',
-            'text-primary-500 dark:text-primary-400',
-            'mb-3',
-          )}
-        >
+    <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
+      <header data-fade='1' className='mb-10'>
+        <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
           Portfolio
         </p>
-        <Title title='Projects' />
-        <p
-          className={cn(
-            'mt-4 text-base md:text-lg leading-relaxed',
-            'text-gray-500 dark:text-gray-400',
-            'max-w-2xl',
-          )}
-        >
-          Real work over ideas. A selection of projects I&apos;ve shipped—from
-          AI-powered products to internal tools and experiments.
+        <h1 className='font-primary text-3xl sm:text-4xl font-bold tracking-tight text-ink'>
+          Selected Projects
+        </h1>
+        <p className='mt-3 text-base leading-relaxed text-body max-w-2xl'>
+          Web applications, internal tools, and UI experiments I have built and
+          shipped.
         </p>
-      </div>
+      </header>
 
       <SearchFilter
         data-fade='2'
-        className='mt-8'
         search={search}
         onSearchChange={_setSearch}
         searchPlaceholder='Search projects by title, stack, or description...'
         activeFilter={activeCategory}
         onFilterChange={setActiveCategory}
         filters={categoriesWithCounts}
-        filterLabel='Filter by:'
+        filterLabel='Category:'
       />
 
       <div className='min-h-[320px] mt-8' data-fade='3'>
         {filteredProjects.length > 0 ? (
           <>
-            {/* Search/Filter stats description banner */}
             {(search || activeCategory !== ALL_CATEGORY) && (
-              <div className='mb-6 flex items-center gap-3'>
-                <span className='text-xs sm:text-sm text-slate-500 dark:text-slate-400'>
-                  Found {filteredProjects.length} project
+              <div className='mb-5 flex items-center gap-3'>
+                <span className='text-xs font-mono text-muted'>
+                  Showing {filteredProjects.length} project
                   {filteredProjects.length !== 1 ? 's' : ''}{' '}
                   {activeCategory !== ALL_CATEGORY && (
                     <span>
                       in{' '}
-                      <span className='font-semibold text-primary-500 dark:text-primary-400'>
+                      <span className='font-medium text-ink'>
                         {activeCategory}
                       </span>
                     </span>
@@ -133,32 +117,27 @@ const ProjectContainer = () => {
                     <span>
                       {' '}
                       matching &ldquo;
-                      <span className='font-semibold text-slate-850 dark:text-slate-200'>
-                        {search}
-                      </span>
+                      <span className='font-medium text-ink'>{search}</span>
                       &rdquo;
                     </span>
                   )}
                 </span>
-                <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
+                <div className='h-px flex-1 bg-hairline' />
               </div>
             )}
 
-            <div
-              className={cn('grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8')}
-            >
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               {filteredProjects.map((project) => (
                 <ShowcaseProjectCard key={project.title} {...project} />
               ))}
             </div>
           </>
         ) : (
-          <div className='flex flex-col items-center justify-center text-center py-20'>
-            <div className='w-16 h-px mb-6 bg-gray-200 dark:bg-gray-700' />
-            <p className='font-secondary text-lg font-semibold text-gray-400 dark:text-gray-500'>
+          <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
+            <p className='font-primary text-base font-semibold text-ink'>
               No projects found
             </p>
-            <p className='text-sm text-gray-400 dark:text-gray-500 mt-1.5'>
+            <p className='text-sm text-muted mt-1'>
               {search
                 ? `No results for "${search}". Try different keywords.`
                 : 'No projects in this category yet.'}
@@ -166,7 +145,7 @@ const ProjectContainer = () => {
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

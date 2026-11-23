@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
-import Title from '@/components/Atoms/title';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
 import SearchFilter from '@/components/Molecules/SearchFilter';
@@ -44,7 +43,6 @@ const BlogContainer = (props: IBlogContainer) => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Extract unique tags dynamically
   const allTags = useMemo(() => {
     const tagsSet = new Set<string>();
     posts.forEach((post) => {
@@ -77,34 +75,23 @@ const BlogContainer = (props: IBlogContainer) => {
     : filteredPosts;
 
   return (
-    <section className={cn('layout py-20', show && 'fade-in-start')}>
-      <div className='mt-10 max-w-3xl' data-fade='1'>
-        <p
-          className={cn(
-            'text-[11px] font-semibold uppercase tracking-[0.2em]',
-            'text-primary-500 dark:text-primary-400',
-            'mb-3',
-          )}
-        >
-          Journal
+    <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
+      <header data-fade='1' className='mb-10'>
+        <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
+          Writing
         </p>
-        <Title title='Personal Blog' />
-        <p
-          className={cn(
-            'mt-4 text-base md:text-lg leading-relaxed',
-            'text-gray-500 dark:text-gray-400',
-            'max-w-2xl',
-          )}
-        >
-          Writing helps me think clearly. Here I break down what I learn, from
-          frontend patterns and performance tricks to lessons picked up along
-          the way.
+        <h1 className='font-primary text-3xl sm:text-4xl font-bold tracking-tight text-ink'>
+          Articles &amp; Notes
+        </h1>
+        <p className='mt-3 text-base leading-relaxed text-body max-w-2xl'>
+          Writing helps me think clearly. Here I share notes on frontend
+          architecture, web performance, and lessons from day-to-day engineering
+          work.
         </p>
-      </div>
+      </header>
 
       <SearchFilter
         data-fade='2'
-        className='mt-10'
         search={search}
         onSearchChange={_setSearch}
         searchPlaceholder='Search articles...'
@@ -113,37 +100,33 @@ const BlogContainer = (props: IBlogContainer) => {
         filters={allTags}
       />
 
-      {/* Articles count status description */}
-      <div className='h-7 mt-3 flex items-center pl-1'>
+      <div className='h-6 mt-3 flex items-center'>
         {(search || selectedTag !== 'All') && (
-          <p className='text-xs text-slate-400 dark:text-slate-500'>
+          <p className='text-xs font-mono text-muted'>
             Found {filteredPosts.length} article
             {filteredPosts.length !== 1 ? 's' : ''}{' '}
             {selectedTag !== 'All' && (
               <span>
-                under tag &ldquo;
-                <span className='font-semibold text-primary-500 dark:text-primary-400'>
-                  {selectedTag}
-                </span>
-                &rdquo;
+                under{' '}
+                <span className='font-medium text-ink'>{selectedTag}</span>
               </span>
             )}
             {search && (
               <span>
                 {' '}
-                for &ldquo;<span className='font-semibold'>{search}</span>
-                &rdquo;
+                matching &ldquo;
+                <span className='font-medium text-ink'>{search}</span>&rdquo;
               </span>
             )}
           </p>
         )}
       </div>
 
-      <div className='min-h-[320px]' data-fade='3'>
+      <div className='min-h-[320px] mt-4' data-fade='3'>
         {Array.isArray(filteredPosts) && filteredPosts.length > 0 ? (
           <>
             {featuredPost && (
-              <div className='mt-4'>
+              <div className='mb-12'>
                 <FeaturedPostCard {...featuredPost} />
               </div>
             )}
@@ -151,56 +134,32 @@ const BlogContainer = (props: IBlogContainer) => {
             {remainingPosts.length > 0 && (
               <>
                 {featuredPost && (
-                  <div className='my-10 flex items-center gap-4'>
-                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
-                    <span
-                      className={cn(
-                        'text-[10px] font-semibold uppercase tracking-[0.2em]',
-                        'text-gray-400 dark:text-gray-500',
-                        'shrink-0',
-                      )}
-                    >
-                      All Articles
-                    </span>
-                    <div className='h-px flex-1 bg-gray-200 dark:bg-gray-700/60' />
-                  </div>
+                  <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
+                    All Articles
+                  </p>
                 )}
 
-                <div
-                  className={cn(
-                    'grid grid-cols-1 lg:grid-cols-2 gap-x-8',
-                    'divide-y lg:divide-y-0 divide-gray-100 dark:divide-gray-800',
-                  )}
-                >
+                <div className='divide-y divide-hairline border-t border-b border-hairline'>
                   {remainingPosts.map((post) => (
-                    <div
-                      key={post.slug}
-                      className={cn(
-                        'lg:border-b lg:border-gray-100 lg:dark:border-gray-800 h-full',
-                      )}
-                    >
-                      <EditorialPostCard {...post} />
-                    </div>
+                    <EditorialPostCard key={post.slug} {...post} />
                   ))}
                 </div>
               </>
             )}
           </>
         ) : (
-          <div className='flex flex-col items-center justify-center text-center py-20'>
-            <div
-              className={cn('w-16 h-px mb-6', 'bg-gray-200 dark:bg-gray-700')}
-            />
-            <p className='font-secondary text-lg font-semibold text-gray-400 dark:text-gray-500'>
+          <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
+            <p className='font-primary text-base font-semibold text-ink'>
               No articles found
             </p>
-            <p className='text-sm text-gray-400 dark:text-gray-500 mt-1.5'>
-              No results for &ldquo;{search}&rdquo;. Try a different keyword.
+            <p className='text-sm text-muted mt-1'>
+              No results for &ldquo;{search}&rdquo;. Try a different keyword or
+              tag.
             </p>
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 

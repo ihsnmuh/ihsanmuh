@@ -36,22 +36,22 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className='min-h-screen flex items-center justify-center px-4 bg-gray-50 dark:bg-gray-900'>
+        <div className='min-h-screen flex items-center justify-center px-4 bg-desk'>
           <div className='text-center max-w-md'>
             <div className='text-6xl mb-4'>⚠️</div>
-            <h1 className='text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4'>
+            <h1 className='text-3xl font-bold text-deep-moss font-primary mb-4'>
               Something went wrong
             </h1>
-            <p className='text-gray-600 dark:text-gray-400 mb-6'>
+            <p className='text-olive-char font-ui mb-6'>
               We're sorry, but something unexpected happened. The error has been
               logged and we'll look into it.
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className='mb-6 text-left'>
-                <summary className='cursor-pointer text-sm text-gray-500 dark:text-gray-400 mb-2'>
+                <summary className='cursor-pointer text-sm text-sage-gray mb-2'>
                   Error Details (Development only)
                 </summary>
-                <pre className='p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-xs overflow-auto'>
+                <pre className='p-4 bg-soft-linen border border-hairline rounded-xs text-xs overflow-auto'>
                   {this.state.error.toString()}
                   {this.state.error.stack}
                 </pre>
@@ -60,13 +60,13 @@ class ErrorBoundary extends Component<Props, State> {
             <div className='flex gap-4 justify-center'>
               <button
                 onClick={this.handleReset}
-                className='inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors'
+                className='inline-flex items-center px-6 py-3 border border-transparent text-base font-medium font-ui rounded-[4px] text-deep-moss bg-amber-glow hover:bg-dark-amber focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue focus-visible:ring-offset-2 transition-colors'
               >
                 Go Home
               </button>
               <button
                 onClick={() => window.location.reload()}
-                className='inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors'
+                className='inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-desk focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors'
               >
                 Try Again
               </button>

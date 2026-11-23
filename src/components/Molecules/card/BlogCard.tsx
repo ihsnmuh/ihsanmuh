@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
@@ -36,21 +35,25 @@ const PostCard = (props: IPostCard) => {
 
   const { views, likes, isLoading } = usePostStats(slug);
 
-  const date = format(new Date(publishedAt ?? ''), 'MMMM dd, yyyy');
+  const date = publishedAt ? format(new Date(publishedAt), 'MMM dd, yyyy') : '';
   const reading = timeReadingText ?? '';
 
   return (
     <Link href={`/blog/${slug}`} className='block h-full'>
       <WrapperCard
         className={cn(
-          'group h-full overflow-hidden transition-all duration-300 ease-in-out',
-          'hover:shadow-xl hover:-translate-y-1',
+          'group h-full flex flex-col overflow-hidden bg-surface text-ink',
+          'border border-hairline rounded-lg hover:border-hairline-strong transition-all duration-200',
           className,
         )}
       >
-        <div className='relative overflow-hidden'>
+        <div className='relative overflow-hidden border-b border-hairline bg-subtle'>
           <NextImage
-            className='w-full aspect-video transition-transform duration-300 group-hover:scale-105'
+            className='w-full aspect-video'
+            classNames={{
+              image:
+                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+            }}
             src={`/images/blog/${banner}`}
             alt={title}
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
@@ -60,53 +63,48 @@ const PostCard = (props: IPostCard) => {
             }}
             useSkeleton
           />
-          <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-          <div className='absolute flex flex-wrap gap-2 right-3 bottom-3'>
-            {tags?.map((tag) => <TagPill key={tag} name={tag} />)}
-          </div>
         </div>
 
-        <div className='flex flex-col gap-3 p-5'>
+        <div className='flex flex-col flex-1 gap-2.5 p-5'>
+          {tags?.length > 0 && (
+            <div className='flex flex-wrap gap-1.5'>
+              {tags.slice(0, 2).map((tag) => (
+                <TagPill key={tag} name={tag} />
+              ))}
+            </div>
+          )}
+
           <h3
             {...(excludeFromToC && { 'data-toc-exclude': 'true' })}
-            className='font-bold text-lg leading-tight line-clamp-2 transition-colors group-hover:text-primary-500 dark:group-hover:text-primary-400'
+            className='font-primary font-semibold text-base sm:text-lg tracking-tight leading-snug line-clamp-2 text-ink group-hover:text-accent transition-colors duration-150'
           >
             {title}
           </h3>
 
-          <p className='text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed'>
+          <p className='text-sm text-body line-clamp-2 leading-relaxed'>
             {description}
           </p>
 
-          <div className='flex flex-col gap-2 mt-auto pt-3 border-t border-gray-200 dark:border-gray-700'>
-            <div className='flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400'>
-              <Calendar className='h-3.5 w-3.5' />
-              <time dateTime={publishedAt}>{date}</time>
+          <div className='flex items-center justify-between gap-2 mt-auto pt-4 border-t border-hairline/70 text-xs font-mono text-muted tabular-nums'>
+            <div className='flex items-center gap-2'>
+              {date && <time dateTime={publishedAt}>{date}</time>}
+              {reading && (
+                <>
+                  <span aria-hidden='true'>·</span>
+                  <span>{reading}</span>
+                </>
+              )}
             </div>
 
-            <div className='flex items-center justify-between gap-3 flex-wrap'>
-              {reading ? (
-                <div className='flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400'>
-                  <Clock className='h-3.5 w-3.5' />
-                  <span>{reading}</span>
-                </div>
+            <div className='flex items-center gap-2.5'>
+              {isLoading ? (
+                <span className='h-3 w-12 animate-pulse rounded bg-subtle' />
               ) : (
-                <div />
+                <>
+                  <ViewCounterStats views={views} showIcon />
+                  <LikeButtonStats likes={likes} showIcon />
+                </>
               )}
-
-              <div className='flex items-center gap-3'>
-                {isLoading ? (
-                  <div className='flex items-center gap-3'>
-                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
-                    <span className='h-4 w-12 animate-pulse rounded bg-gray-200 dark:bg-gray-700' />
-                  </div>
-                ) : (
-                  <>
-                    <ViewCounterStats views={views} showIcon />
-                    <LikeButtonStats likes={likes} showIcon />
-                  </>
-                )}
-              </div>
             </div>
           </div>
         </div>

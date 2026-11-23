@@ -42,7 +42,7 @@ export const Headings: FC<IHeadingList> = ({
   <ul
     className={cn(
       variant === 'desktop'
-        ? 'border-l border-slate-100 dark:border-zinc-800/80 ml-1 pl-4 space-y-2.5 mt-2'
+        ? 'border-l border-hairline/80 ml-1 pl-3.5 space-y-2 mt-2'
         : 'mt-2 space-y-1',
       className,
     )}
@@ -56,20 +56,20 @@ export const Headings: FC<IHeadingList> = ({
         <li key={heading.id} className='relative'>
           <UnstyledLink
             className={cn(
-              'block text-sm transition-all duration-200',
+              'block text-xs transition-colors duration-150',
               variant === 'mobile' && [
-                'px-3 py-2 rounded-md hover:bg-slate-200/60 dark:hover:bg-slate-700/40',
+                'px-2.5 py-1.5 rounded-sm hover:bg-pale-stone',
                 heading.id === activeId
-                  ? 'text-primary-500 font-semibold bg-primary-500/5 dark:bg-primary-500/10'
-                  : 'text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200',
+                  ? 'text-deep-moss font-bold bg-amber-glow/20 border border-dark-amber/30'
+                  : 'text-olive-char hover:text-deep-moss',
               ],
               variant === 'desktop' && [
-                'font-primary py-0.5 leading-snug',
+                'font-ui py-0.5 leading-snug',
                 heading.id === activeId
-                  ? 'text-primary-500 dark:text-primary-400 font-bold -ml-[17px] border-l-2 border-primary-500 dark:border-primary-400 pl-[15px]'
+                  ? 'text-signal-blue font-bold -ml-[15px] border-l-2 border-signal-blue pl-[13px]'
                   : isHeadingActive
-                    ? 'text-slate-700 dark:text-zinc-300 font-semibold'
-                    : 'text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200',
+                    ? 'text-deep-moss font-semibold'
+                    : 'text-sage-gray hover:text-deep-moss',
               ],
             )}
             href={`#${heading.id}`}
@@ -78,23 +78,23 @@ export const Headings: FC<IHeadingList> = ({
             {heading.title}
           </UnstyledLink>
           {heading.items.length > 0 && (
-            <ul className='pl-3.5 space-y-1.5 mt-1.5 border-l border-slate-100 dark:border-zinc-800/40 ml-0.5'>
+            <ul className='pl-3 space-y-1 mt-1 border-l border-hairline/60 ml-0.5'>
               {heading.items.map((item) => (
                 <li key={item.id}>
                   <UnstyledLink
                     className={cn(
-                      'block text-xs transition-colors duration-200',
+                      'block text-[11px] transition-colors duration-150',
                       variant === 'mobile' && [
-                        'px-3 py-1.5 rounded-md hover:bg-slate-200/60 dark:hover:bg-slate-700/40',
+                        'px-2.5 py-1 rounded-sm hover:bg-pale-stone',
                         item.id === activeId
-                          ? 'text-primary-500 font-semibold'
-                          : 'text-slate-500 dark:text-zinc-400',
+                          ? 'text-signal-blue font-semibold'
+                          : 'text-sage-gray',
                       ],
                       variant === 'desktop' && [
-                        'font-primary py-0.5 leading-snug',
+                        'font-ui py-0.5 leading-snug',
                         item.id === activeId
-                          ? 'text-primary-500 dark:text-primary-400 font-bold -ml-[15px] border-l-2 border-primary-500 dark:border-primary-400 pl-[13px]'
-                          : 'text-slate-400 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300',
+                          ? 'text-signal-blue font-bold -ml-[13px] border-l-2 border-signal-blue pl-[11px]'
+                          : 'text-sage-gray hover:text-deep-moss',
                       ],
                     )}
                     href={`#${item.id}`}
@@ -125,30 +125,30 @@ const TabelOfContent: FC<ITabelOfContent> = ({ slug }) => {
       <aside className='hidden lg:block'>
         <div
           className={cn(
-            'p-5 shadow-sm backdrop-blur',
-            'background-card border-slate-200 dark:border-zinc-700/40 rounded-2xl',
+            'p-4 rounded-sm shadow-none',
+            'bg-paper-white border border-hairline',
           )}
         >
           <h4
             className={cn(
-              'font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-zinc-500 font-bold mb-4 flex items-center gap-1.5 pb-2.5 w-full',
-              'border-b border-slate-100 dark:border-zinc-800/40',
+              'font-mono text-xs uppercase tracking-widest text-sage-gray font-bold mb-3 flex items-center gap-1.5 pb-2 w-full',
+              'border-b border-hairline/70',
             )}
           >
-            <List size={14} className='text-primary-500' />
+            <List size={14} className='text-amber-glow' />
             Table Of Contents
           </h4>
           <Headings headings={nestedHeadings} activeId={activeId} />
 
-          <div className='border-t border-slate-100 dark:border-zinc-800/40 my-4' />
+          <div className='border-t border-hairline/70 my-3' />
 
-          <div className='flex items-center justify-between gap-3'>
-            <span className='font-primary text-xs text-slate-500 dark:text-zinc-400 font-semibold'>
+          <div className='flex items-center justify-between gap-2'>
+            <span className='font-ui text-xs text-sage-gray font-medium'>
               Like this post?
             </span>
             <LikeButton
               slug={slug}
-              className='px-3 py-1 bg-slate-100 hover:bg-red-50 dark:bg-zinc-800 dark:hover:bg-red-950/20 border border-slate-200 dark:border-zinc-700/60 hover:border-red-200 dark:hover:border-red-900/40 rounded-md font-medium transition-all text-xs'
+              className='px-2.5 py-1 bg-soft-linen hover:bg-pale-stone border border-hairline rounded-sm font-ui font-medium transition-colors text-xs text-deep-moss'
             />
           </div>
         </div>

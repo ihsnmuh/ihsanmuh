@@ -15,7 +15,6 @@ const IconLinkVariant = [
 ] as const;
 
 type IconLinkProps = {
-  isDarkBg?: boolean;
   variant?: (typeof IconLinkVariant)[number];
   icon?: IconType | LucideIcon;
   classNames?: {
@@ -25,14 +24,7 @@ type IconLinkProps = {
 
 const IconLink = React.forwardRef<HTMLAnchorElement, IconLinkProps>(
   (
-    {
-      className,
-      icon: Icon,
-      variant = 'outline',
-      isDarkBg = false,
-      classNames,
-      ...rest
-    },
+    { className, icon: Icon, variant = 'outline', classNames, ...rest },
     ref,
   ) => {
     return (
@@ -40,44 +32,39 @@ const IconLink = React.forwardRef<HTMLAnchorElement, IconLinkProps>(
         ref={ref}
         type='button'
         className={cn(
-          'inline-flex items-center justify-center rounded font-medium',
-          'focus-visible:ring-primary-500 focus:outline-none focus-visible:ring',
-          'shadow-sm',
-          'transition-colors duration-75',
-          'min-h-[28px] min-w-[28px] p-1 md:min-h-[34px] md:min-w-[34px] md:p-2',
+          'inline-flex items-center justify-center rounded-sm font-medium',
+          'focus-visible:ring-amber-glow focus:outline-none focus-visible:ring-2',
+          'shadow-none transition-colors duration-150',
+          'min-h-[28px] min-w-[28px] p-1.5 md:min-h-[32px] md:min-w-[32px] md:p-2',
           //#region  //*=========== Variants ===========
           [
             variant === 'primary' && [
-              'bg-primary-500 text-white',
-              'border-primary-600 border',
-              'hover:bg-primary-600 hover:text-white',
-              'active:bg-primary-700',
-              'disabled:bg-primary-700',
+              'bg-amber-glow text-deep-moss',
+              'border-dark-amber border',
+              'hover:bg-dark-amber hover:text-deep-moss',
+              'active:bg-burnished-gold',
+              'disabled:bg-pale-stone disabled:text-ash-green',
             ],
             variant === 'outline' && [
-              'text-primary-500',
-              'border-primary-500 border',
-              'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
-              isDarkBg &&
-                'hover:bg-gray-900 active:bg-gray-800 disabled:bg-gray-800',
+              'text-burnished-gold bg-transparent',
+              'border-burnished-gold border',
+              'hover:bg-pale-stone active:bg-soft-linen disabled:bg-transparent disabled:text-ash-green',
             ],
             variant === 'ghost' && [
-              'text-primary-500',
+              'text-deep-moss',
               'shadow-none',
-              'hover:bg-primary-50 active:bg-primary-100 disabled:bg-primary-100',
-              isDarkBg &&
-                'hover:bg-gray-900 active:bg-gray-800 disabled:bg-gray-800',
+              'hover:bg-pale-stone active:bg-soft-linen disabled:text-ash-green',
             ],
             variant === 'light' && [
-              'bg-white text-gray-700',
-              'border border-gray-300',
-              'hover:text-dark hover:bg-gray-100',
-              'active:bg-white/80 disabled:bg-gray-200',
+              'bg-paper-white text-deep-moss',
+              'border border-hairline',
+              'hover:bg-pale-stone',
+              'active:bg-soft-linen disabled:bg-pale-stone',
             ],
             variant === 'dark' && [
-              'bg-gray-900 text-white',
-              'border border-gray-600',
-              'hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700',
+              'bg-deep-moss text-paper-white',
+              'border border-deep-moss',
+              'hover:opacity-90 active:opacity-100 disabled:bg-pale-stone disabled:text-ash-green',
             ],
           ],
           //#endregion  //*======== Variants ===========

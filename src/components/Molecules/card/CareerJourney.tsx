@@ -11,12 +11,11 @@ const MILESTONES = [
     title: 'Agricultural Engineering',
     institution: 'Bogor Agricultural University (IPB)',
     icon: Sprout,
-    iconColor:
-      'text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20',
-    borderColor: 'border-emerald-500/30 dark:border-emerald-400/20',
+    iconColor: 'text-moss-green bg-moss-green/15',
+    borderColor: 'border-moss-green/30',
     description:
       'Studied engineering principles applied to agricultural systems. This agronomy foundation taught me analytical problem-solving, thermodynamics, and system structures. It gave me the curiosity to peek under the hood of complex systems.',
-    badge: 'Origin',
+    badge: 'Degree',
   },
   {
     id: 'bootcamp',
@@ -24,12 +23,11 @@ const MILESTONES = [
     title: 'Fullstack JavaScript Developer',
     institution: 'Hacktiv8 Bootcamp',
     icon: Code,
-    iconColor:
-      'text-primary-500 dark:text-primary-400 bg-primary-500/10 dark:bg-primary-500/20',
-    borderColor: 'border-primary-500/30 dark:border-primary-400/20',
+    iconColor: 'text-amber-glow bg-amber-glow/15',
+    borderColor: 'border-amber-glow/30',
     description:
-      'Pivoted to software development with a rigorous 12-hour/day coding bootcamp. Mastered JS/TS ecosystem, React, Node.js, and databases. Awarded the Best Individual Project for build quality and architectural decisions.',
-    badge: 'The Pivot',
+      'Switched into software development through a 12-hour-a-day coding bootcamp covering JavaScript, TypeScript, React, Node.js, and databases. Received the Best Individual Project award.',
+    badge: 'Bootcamp',
     badgeIcon: Trophy,
   },
   {
@@ -38,33 +36,31 @@ const MILESTONES = [
     title: 'Software Engineer (Frontend)',
     institution: 'Female Daily Network',
     icon: Briefcase,
-    iconColor:
-      'text-violet-500 dark:text-violet-400 bg-violet-500/10 dark:bg-violet-500/20',
-    borderColor: 'border-violet-500/30 dark:border-violet-400/20',
+    iconColor: 'text-signal-blue bg-signal-blue/15',
+    borderColor: 'border-signal-blue/30',
     description:
-      "Developed high-performance web applications at Indonesia's largest beauty platform. Crafted end-to-end ticketing flows, video streaming widgets, and CMS architectures. Evolved reusable UI libraries in a monorepo, optimized app speed, and mentored junior developers.",
-    badge: 'Professional Craft',
+      "Built web applications at Indonesia's largest beauty platform, including event ticketing flows, video streaming widgets, and internal CMS tools. Maintained shared UI libraries in a monorepo, improved page speed, and mentored junior developers.",
+    badge: 'Work',
   },
 ];
 
 const CareerJourney = () => {
   return (
     <div className='w-full'>
-      <div className='flex flex-col gap-2 mb-8'>
-        <h3 className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-zinc-500'>
-          My Career Evolution
+      <div className='flex flex-col gap-2 mb-6'>
+        <h3 className='font-mono text-xs uppercase tracking-widest text-accent font-medium'>
+          Timeline
         </h3>
-        <h2 className='font-secondary text-2xl font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2'>
-          Connecting the Dots
+        <h2 className='font-primary text-xl sm:text-2xl font-bold text-ink tracking-tight'>
+          How I got into software
         </h2>
-        <p className='font-primary text-sm text-slate-500 dark:text-zinc-400 max-w-xl'>
-          Steve Jobs famously said you can only connect the dots looking
-          backward. Here is how my background in hardware engineering and
-          agronomy feeds my passion for software engineering today.
+        <p className='font-primary text-sm text-body max-w-xl leading-relaxed'>
+          I did not start in computer science. Here is how I moved from
+          agricultural engineering into building web applications.
         </p>
       </div>
 
-      <div className='relative pl-6 md:pl-10 border-l border-slate-200 dark:border-zinc-800/80 space-y-12 max-w-3xl mx-auto'>
+      <div className='relative pl-6 md:pl-8 border-l border-hairline space-y-6 max-w-3xl mx-auto'>
         {MILESTONES.map((milestone, idx) => {
           const Icon = milestone.icon;
           const BadgeIcon = milestone.badgeIcon;
@@ -72,83 +68,66 @@ const CareerJourney = () => {
           return (
             <motion.div
               key={milestone.id}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
               className='relative group'
             >
               {/* Timeline Dot Indicator */}
-              <div className='absolute -left-[35px] md:-left-[51px] top-1 z-20 flex items-center justify-center'>
-                <motion.div
-                  whileHover={{ scale: 1.15 }}
-                  className={cn(
-                    'w-[18px] h-[18px] md:w-6 md:h-6 rounded-full border bg-white dark:bg-zinc-950 flex items-center justify-center shadow-sm z-30 transition-colors',
-                    milestone.id === 'agri' &&
-                      'border-emerald-500 dark:border-emerald-400',
-                    milestone.id === 'bootcamp' &&
-                      'border-primary-500 dark:border-primary-400',
-                    milestone.id === 'engineer' &&
-                      'border-violet-500 dark:border-violet-400',
-                  )}
-                >
+              <div className='absolute -left-[31px] md:-left-[39px] top-1 z-20 flex items-center justify-center'>
+                <div className='w-4 h-4 rounded-full border border-hairline bg-paper-white flex items-center justify-center shadow-none'>
                   <div
                     className={cn(
-                      'w-2 h-2 md:w-3 md:h-3 rounded-full',
-                      milestone.id === 'agri' &&
-                        'bg-emerald-500 dark:bg-emerald-400',
-                      milestone.id === 'bootcamp' &&
-                        'bg-primary-500 dark:bg-primary-400',
-                      milestone.id === 'engineer' &&
-                        'bg-violet-500 dark:bg-violet-400',
+                      'w-2 h-2 rounded-full',
+                      milestone.id === 'agri' && 'bg-moss-green',
+                      milestone.id === 'bootcamp' && 'bg-amber-glow',
+                      milestone.id === 'engineer' && 'bg-signal-blue',
                     )}
                   />
-                </motion.div>
+                </div>
               </div>
 
               {/* Card Container */}
               <div
                 className={cn(
-                  'rounded-2xl border p-5 md:p-6 transition-all duration-300',
-                  'background-card border-slate-200 dark:border-zinc-700/40 hover:border-slate-300 dark:hover:border-zinc-600/60 shadow-sm relative group overflow-hidden',
+                  'rounded-sm border border-hairline p-4 sm:p-5 transition-colors duration-150',
+                  'bg-paper-white hover:bg-cream-paper shadow-none relative overflow-hidden',
                 )}
               >
-                {/* Spotlight Background */}
-                <div className='absolute inset-0 bg-gradient-to-tr from-primary-500/5 via-transparent to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none' />
-
-                <div className='flex flex-col sm:flex-row sm:items-start gap-4'>
+                <div className='flex flex-col sm:flex-row sm:items-start gap-3.5'>
                   {/* Icon Column */}
                   <div
                     className={cn(
-                      'w-12 h-12 rounded-xl flex items-center justify-center flex-none shadow-sm',
+                      'w-9 h-9 rounded-sm flex items-center justify-center flex-none border border-hairline',
                       milestone.iconColor,
                     )}
                   >
-                    <Icon size={22} />
+                    <Icon size={18} />
                   </div>
 
                   {/* Content Column */}
                   <div className='flex-1 min-w-0'>
-                    <div className='flex flex-wrap items-center gap-2 mb-1.5'>
-                      <span className='font-mono text-xs font-semibold text-primary-500 dark:text-primary-400 bg-primary-500/5 dark:bg-primary-400/5 px-2 py-0.5 rounded'>
+                    <div className='flex flex-wrap items-center gap-2 mb-1'>
+                      <span className='font-mono text-xs font-semibold text-deep-moss bg-soft-linen px-2 py-0.5 rounded-full border border-hairline'>
                         {milestone.period}
                       </span>
-                      <span className='font-primary text-xs font-semibold flex items-center gap-1 text-slate-500 dark:text-zinc-400 bg-slate-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded'>
+                      <span className='font-ui text-xs font-medium flex items-center gap-1 text-olive-char bg-pale-stone/70 px-2 py-0.5 rounded-full'>
                         {BadgeIcon && (
-                          <BadgeIcon size={12} className='text-amber-500' />
+                          <BadgeIcon size={12} className='text-amber-glow' />
                         )}
                         {milestone.badge}
                       </span>
                     </div>
 
-                    <h4 className='font-secondary text-lg font-bold text-slate-800 dark:text-zinc-100 mb-0.5 leading-snug'>
+                    <h4 className='font-primary text-base sm:text-lg font-bold text-deep-moss mb-0.5 leading-snug'>
                       {milestone.title}
                     </h4>
-                    <p className='font-primary text-xs md:text-sm text-slate-400 dark:text-zinc-500 mb-3.5 font-medium'>
+                    <p className='font-mono text-xs text-sage-gray mb-2.5'>
                       {milestone.institution}
                     </p>
 
-                    <p className='font-primary text-sm text-slate-600 dark:text-zinc-300 leading-relaxed text-pretty'>
+                    <p className='font-ui text-xs sm:text-sm text-olive-char leading-relaxed'>
                       {milestone.description}
                     </p>
                   </div>
@@ -157,8 +136,8 @@ const CareerJourney = () => {
 
               {/* Connector Arrow (Desktop only) */}
               {idx < MILESTONES.length - 1 && (
-                <div className='hidden md:flex absolute -bottom-9 left-1/2 -translate-x-1/2 text-slate-300 dark:text-zinc-800 z-10 animate-bounce'>
-                  <ArrowRight size={16} className='rotate-90' />
+                <div className='hidden md:flex absolute -bottom-5 left-1/2 -translate-x-1/2 text-sage-gray z-10'>
+                  <ArrowRight size={14} className='rotate-90 text-sage-gray' />
                 </div>
               )}
             </motion.div>

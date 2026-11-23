@@ -31,12 +31,12 @@ const Drawer = (props: IDrawerMobile) => {
       }}
       role='presentation'
     >
-      <div className='absolute inset-0 bg-black/50 backdrop-blur-[2px]' />
+      <div className='absolute inset-0 bg-deep-moss/40 backdrop-blur-xs' />
       <div
         className={cn(
           'absolute inset-x-0 bottom-0',
-          'w-full bg-slate-50 dark:bg-slate-900',
-          'rounded-t-2xl shadow-xl',
+          'w-full bg-paper-white border-t border-hairline',
+          'rounded-t-md shadow-xl',
           'max-h-[80vh] flex flex-col',
           'pb-[calc(env(safe-area-inset-bottom)+12px)]',
         )}
@@ -46,9 +46,9 @@ const Drawer = (props: IDrawerMobile) => {
         aria-label='Table of contents'
       >
         <div className='px-4 pt-3'>
-          <div className='bg-slate-300 dark:bg-slate-700 w-12 rounded-full h-1 mx-auto' />
-          <div className='mt-3 flex items-center justify-between gap-2'>
-            <p className='text-base font-semibold text-slate-900 dark:text-slate-100'>
+          <div className='bg-hairline w-10 rounded-full h-1 mx-auto' />
+          <div className='mt-2.5 flex items-center justify-between gap-2 border-b border-hairline/60 pb-2'>
+            <p className='text-sm font-bold font-primary text-deep-moss'>
               Table of contents
             </p>
             <IconButton
@@ -58,12 +58,12 @@ const Drawer = (props: IDrawerMobile) => {
               aria-label='Close table of contents'
               onClick={props.OnClick}
               className='shadow-none'
-              classNames={{ icon: 'text-lg' }}
+              classNames={{ icon: 'text-base' }}
             />
           </div>
         </div>
 
-        <nav className='mt-2 px-2 overflow-y-auto'>
+        <nav className='mt-2 px-3 overflow-y-auto'>
           <Headings
             headings={props.headings}
             activeId={props.activeId}
@@ -106,9 +106,9 @@ const TOCMobile = () => {
 
   return (
     <>
-      <div className='fixed bottom-4 right-4 block lg:hidden'>
+      <div className='fixed bottom-4 right-4 block lg:hidden z-40'>
         <IconButton
-          className='h-10 w-10 rounded-full shadow-lg'
+          className='h-9 w-9 rounded-sm shadow-md bg-amber-glow text-deep-moss border border-dark-amber'
           icon={TableOfContents}
           onClick={() => setIsOpen(true)}
           aria-label='Open Table of Contents'

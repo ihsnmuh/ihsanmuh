@@ -1,4 +1,4 @@
-import { ArrowRight, ExternalLink, Github } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -8,9 +8,9 @@ import { Tooltip } from '@/components/Atoms/Tooltip';
 
 import WrapperCard from './WrapperCard';
 
-const STACKS_VISIBLE = 4;
-
 import { IProject } from '@/types/interfaces/projects';
+
+const STACKS_VISIBLE = 4;
 
 interface IProjectProps extends IProject {
   className?: string;
@@ -37,161 +37,127 @@ const ProjectCard = (props: IProjectProps) => {
   return (
     <WrapperCard
       className={cn(
-        'group h-full flex flex-col',
-        isFeatured &&
-          'ring-2 ring-primary-500/10 dark:ring-primary-400/10 border-primary-500/40 dark:border-primary-500/30 shadow-md',
+        'group h-full flex overflow-hidden bg-surface text-ink',
+        'border border-hairline rounded-lg hover:border-hairline-strong transition-all duration-200',
+        isFeatured ? 'flex-col md:flex-row' : 'flex-col',
         className,
       )}
     >
-      {/* Accent gradient top border */}
-      <div
-        className={cn(
-          'h-1 w-full flex-shrink-0',
-          isFeatured
-            ? 'bg-gradient-to-r from-primary-500 via-violet-500 to-pink-500 dark:from-primary-400 dark:via-orange-400 dark:to-yellow-400'
-            : 'bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600',
-        )}
-      />
-
-      {/* Clickable image area */}
       <a
         href={projectUrl}
         target='_blank'
         rel='noopener noreferrer'
-        className='relative block flex-shrink-0'
+        className={cn(
+          'relative block overflow-hidden bg-subtle shrink-0',
+          isFeatured
+            ? 'md:w-[48%] border-b md:border-b-0 md:border-r border-hairline'
+            : 'border-b border-hairline',
+        )}
         aria-label={`Open ${title}`}
       >
-        <NextImage
-          className='w-full aspect-video'
-          src={`/images/project/${image}.png`}
-          alt={title}
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-          fill
-          style={{ objectFit: 'cover' }}
-          useSkeleton
-        />
-
-        {/* Category badge */}
-        {category && (
-          <span
-            className={cn(
-              'absolute top-3 left-3 z-10',
-              'text-xs font-semibold tracking-wide',
-              'bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm',
-              'text-primary-600 dark:text-primary-400',
-              'rounded-full px-2.5 py-0.5 border border-primary-200 dark:border-primary-800/50',
-            )}
-          >
-            {category}
-          </span>
-        )}
-
-        {/* Featured badge */}
-        {isFeatured && (
-          <span
-            className={cn(
-              'absolute top-3 right-3 z-10',
-              'text-[10px] font-bold uppercase tracking-widest',
-              'bg-gradient-to-r from-primary-500 to-violet-600 dark:from-primary-500 dark:to-orange-500 text-white',
-              'rounded-full px-2.5 py-0.5 shadow-sm border border-primary-400/20',
-            )}
-          >
-            Featured
-          </span>
-        )}
-
-        {/* Hover overlay — gradient from bottom */}
         <div
           className={cn(
-            'absolute inset-0 flex items-end justify-center pb-5',
-            'bg-gradient-to-t from-primary-900/75 via-primary-900/20 to-transparent',
-            'opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+            'relative w-full overflow-hidden',
+            isFeatured
+              ? 'aspect-video md:h-full md:aspect-auto min-h-[220px]'
+              : 'aspect-video',
           )}
         >
-          <span className='flex items-center gap-1.5 text-white text-sm font-medium'>
-            View Project
-            <ArrowRight size={14} />
-          </span>
+          <NextImage
+            className='w-full h-full'
+            classNames={{
+              image:
+                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+            }}
+            src={`/images/project/${image}.png`}
+            alt={title}
+            sizes={
+              isFeatured
+                ? '(max-width: 768px) 100vw, 50vw'
+                : '(max-width: 768px) 100vw, 45vw'
+            }
+            fill
+            style={{ objectFit: 'cover' }}
+            useSkeleton
+          />
         </div>
       </a>
 
-      {/* Content */}
-      <div className='p-4 flex flex-col flex-1'>
-        <a
-          href={projectUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='font-bold text-lg leading-snug group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-1'
-        >
-          {title}
-        </a>
+      <div className='p-5 sm:p-6 flex flex-col flex-1 justify-between'>
+        <div>
+          <div className='flex items-center justify-between gap-2 mb-2.5'>
+            <div className='flex items-center gap-2'>
+              {category && (
+                <span className='font-mono text-[11px] uppercase tracking-wider text-muted'>
+                  {category}
+                </span>
+              )}
+              {isFeatured && (
+                <span className='px-2 py-0.5 rounded-full bg-accent-soft text-accent text-[10px] font-mono font-medium'>
+                  Featured
+                </span>
+              )}
+            </div>
 
-        <p className='text-slate-500 dark:text-slate-400 text-sm mt-2 line-clamp-2 flex-1'>
-          {description}
-        </p>
-
-        {/* Footer: stacks + action icons */}
-        <div
-          className={cn(
-            'mt-4 pt-3 flex items-center justify-between gap-2',
-            'border-t border-slate-200 dark:border-zinc-700/40',
-          )}
-        >
-          <div className='flex flex-wrap gap-1.5 flex-1 min-w-0'>
-            {visibleStacks.map((data) => (
-              <StackPills key={data} name={data} />
-            ))}
-            {hiddenStacks.length > 0 && (
-              <Tooltip
-                content={
-                  <span className='flex flex-col gap-0.5'>
-                    {hiddenStacks.map((s) => (
-                      <span key={s}>{s}</span>
-                    ))}
-                  </span>
-                }
-              >
-                <div
-                  className={cn(
-                    'flex items-center justify-center w-7 h-7 rounded-full',
-                    'border border-slate-300 dark:border-zinc-700/40',
-                    'bg-white dark:bg-slate-700/50 shadow-sm cursor-default',
-                    'text-xs font-semibold text-slate-500 dark:text-slate-400',
-                    'hover:border-primary-400 dark:hover:border-primary-500',
-                    'hover:bg-primary-50 dark:hover:bg-primary-900/20',
-                    'transition-colors duration-200',
-                  )}
+            <div className='flex items-center gap-1 text-muted'>
+              {github && (
+                <a
+                  href={github}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label='GitHub repository'
+                  className='hover:text-ink hover:bg-subtle transition-colors duration-150 p-1.5 rounded-md'
                 >
-                  +{hiddenStacks.length}
-                </div>
-              </Tooltip>
-            )}
+                  <Github size={15} />
+                </a>
+              )}
+              {website && (
+                <a
+                  href={website}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  aria-label='Live website'
+                  className='hover:text-ink hover:bg-subtle transition-colors duration-150 p-1.5 rounded-md'
+                >
+                  <ArrowUpRight size={15} />
+                </a>
+              )}
+            </div>
           </div>
 
-          <div className='flex gap-2 flex-shrink-0'>
-            {github && (
-              <a
-                href={github}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='GitHub repository'
-                className='text-slate-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200'
-              >
-                <Github size={16} />
-              </a>
-            )}
-            {website && (
-              <a
-                href={website}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='Live website'
-                className='text-slate-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors duration-200'
-              >
-                <ExternalLink size={16} />
-              </a>
-            )}
-          </div>
+          <a
+            href={projectUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center gap-1.5 font-primary text-lg sm:text-xl font-semibold tracking-tight text-ink group-hover:text-accent transition-colors duration-150 leading-snug'
+          >
+            <span className='line-clamp-1'>{title}</span>
+          </a>
+
+          <p className='text-body text-sm mt-2 line-clamp-3 leading-relaxed'>
+            {description}
+          </p>
+        </div>
+
+        <div className='mt-5 pt-4 border-t border-hairline/70 flex flex-wrap gap-1.5'>
+          {visibleStacks.map((data) => (
+            <StackPills key={data} name={data} />
+          ))}
+          {hiddenStacks.length > 0 && (
+            <Tooltip
+              content={
+                <span className='flex flex-col gap-0.5 font-mono text-xs'>
+                  {hiddenStacks.map((s) => (
+                    <span key={s}>{s}</span>
+                  ))}
+                </span>
+              }
+            >
+              <div className='flex items-center justify-center px-2 py-0.5 rounded-full border border-hairline bg-subtle text-[10px] font-mono text-muted'>
+                +{hiddenStacks.length}
+              </div>
+            </Tooltip>
+          )}
         </div>
       </div>
     </WrapperCard>

@@ -1,13 +1,11 @@
-import { ArrowUpRight, ExternalLink, Github } from 'lucide-react';
-import { useRef } from 'react';
+import { ArrowUpRight, Github } from 'lucide-react';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
 import NextImage from '@/components/Atoms/NextImage';
 import StackPills from '@/components/Atoms/pills/StackPills';
 import { Tooltip } from '@/components/Atoms/Tooltip';
-
-import { useMouseMoveSpotlight } from '@/helpers/useMouseMoveSpotlight';
 
 import { IProject } from '@/types/interfaces/projects';
 
@@ -21,34 +19,30 @@ const ShowcaseProjectCard = (props: IProject) => {
   const visibleStacks = stacks?.slice(0, STACKS_VISIBLE) ?? [];
   const hiddenStacks = stacks?.slice(STACKS_VISIBLE) ?? [];
 
-  const cardRef = useRef<HTMLElement>(null);
-  useMouseMoveSpotlight(cardRef);
-
   return (
     <article
-      ref={cardRef}
       className={cn(
         'group relative flex flex-col h-full',
-        'rounded-xl overflow-hidden',
-        'border border-gray-200/80 dark:border-gray-700/40',
-        'bg-white dark:bg-slate-800/30',
-        'transition-all duration-300 ease-out',
-        'hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20',
-        'hover:border-gray-300 dark:hover:border-gray-600',
+        'rounded-lg overflow-hidden',
+        'border border-hairline hover:border-hairline-strong',
+        'bg-surface text-ink',
+        'transition-all duration-200',
       )}
     >
-      {/* Spotlight overlay effect */}
-      <div className='pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 card-spotlight' />
       <a
         href={projectUrl}
         target='_blank'
         rel='noopener noreferrer'
-        className='relative block overflow-hidden'
+        className='relative block overflow-hidden border-b border-hairline bg-subtle'
         aria-label={`Open ${title}`}
       >
-        <div className='relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800'>
+        <div className='relative aspect-[16/9] overflow-hidden'>
           <NextImage
-            className='w-full h-full transition-transform duration-500 ease-out group-hover:scale-[1.03]'
+            className='w-full h-full'
+            classNames={{
+              image:
+                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+            }}
             src={`/images/project/${image}.png`}
             alt={title}
             sizes='(max-width: 768px) 100vw, 50vw'
@@ -56,129 +50,27 @@ const ShowcaseProjectCard = (props: IProject) => {
             style={{ objectFit: 'cover' }}
             useSkeleton
           />
-          <div
-            className={cn(
-              'absolute inset-0',
-              'bg-gradient-to-t from-black/40 via-black/5 to-transparent',
-              'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
-            )}
-          />
-          <div
-            className={cn(
-              'absolute bottom-4 right-4',
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-full',
-              'bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm',
-              'text-xs font-medium text-gray-700 dark:text-gray-200',
-              'opacity-0 translate-y-2',
-              'transition-all duration-300',
-              'group-hover:opacity-100 group-hover:translate-y-0',
-            )}
-          >
-            View Project
-            <ArrowUpRight className='h-3 w-3' />
-          </div>
         </div>
-
-        {category && (
-          <span
-            className={cn(
-              'absolute top-3 left-3',
-              'px-2.5 py-1 rounded-full',
-              'text-[10px] font-semibold uppercase tracking-[0.12em]',
-              'bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm',
-              'text-gray-600 dark:text-gray-300',
-              'border border-white/20 dark:border-gray-700/50',
-            )}
-          >
-            {category}
-          </span>
-        )}
       </a>
 
       <div className='flex flex-col flex-1 p-5 sm:p-6'>
-        <a
-          href={projectUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='block'
-        >
-          <h3
-            className={cn(
-              'font-secondary font-bold text-lg sm:text-xl',
-              'leading-snug tracking-tight',
-              'text-gray-900 dark:text-gray-50',
-              'line-clamp-1',
-              'transition-colors duration-200',
-              'group-hover:text-primary-600 dark:group-hover:text-primary-400',
-            )}
-          >
-            {title}
-          </h3>
-        </a>
-
-        <p
-          className={cn(
-            'mt-2 text-sm leading-relaxed',
-            'text-gray-500 dark:text-gray-400',
-            'line-clamp-3',
-            'flex-1',
+        <div className='flex items-center justify-between gap-2 mb-2'>
+          {category ? (
+            <span className='font-mono text-[11px] uppercase tracking-wider text-muted'>
+              {category}
+            </span>
+          ) : (
+            <span />
           )}
-        >
-          {description}
-        </p>
 
-        <div
-          className={cn(
-            'mt-4 pt-4',
-            'border-t border-gray-100 dark:border-gray-700/40',
-            'flex items-center justify-between gap-3',
-          )}
-        >
-          <div className='flex flex-wrap gap-1.5 min-w-0'>
-            {visibleStacks.map((stack) => (
-              <StackPills key={stack} name={stack} />
-            ))}
-            {hiddenStacks.length > 0 && (
-              <Tooltip
-                content={
-                  <span className='flex flex-col gap-0.5'>
-                    {hiddenStacks.map((s) => (
-                      <span key={s}>{s}</span>
-                    ))}
-                  </span>
-                }
-              >
-                <div
-                  className={cn(
-                    'flex items-center justify-center w-7 h-7 rounded-full',
-                    'border border-slate-300 dark:border-zinc-700/40',
-                    'bg-white dark:bg-slate-700/50 shadow-sm cursor-default',
-                    'text-xs font-semibold text-slate-500 dark:text-slate-400',
-                    'hover:border-primary-400 dark:hover:border-primary-500',
-                    'hover:bg-primary-50 dark:hover:bg-primary-900/20',
-                    'transition-colors duration-200',
-                  )}
-                >
-                  +{hiddenStacks.length}
-                </div>
-              </Tooltip>
-            )}
-          </div>
-
-          <div className='flex items-center gap-2 shrink-0'>
+          <div className='flex items-center gap-1 text-muted'>
             {github && (
               <a
                 href={github}
                 target='_blank'
                 rel='noopener noreferrer'
                 aria-label='GitHub repository'
-                className={cn(
-                  'p-1.5 rounded-md',
-                  'text-gray-400 dark:text-gray-500',
-                  'hover:text-primary-600 dark:hover:text-primary-400',
-                  'hover:bg-gray-100 dark:hover:bg-gray-700/50',
-                  'transition-colors duration-200',
-                )}
+                className='p-1.5 rounded-md hover:text-ink hover:bg-subtle transition-colors duration-150'
                 onClick={(e) => e.stopPropagation()}
               >
                 <Github className='h-4 w-4' />
@@ -190,19 +82,49 @@ const ShowcaseProjectCard = (props: IProject) => {
                 target='_blank'
                 rel='noopener noreferrer'
                 aria-label='Live website'
-                className={cn(
-                  'p-1.5 rounded-md',
-                  'text-gray-400 dark:text-gray-500',
-                  'hover:text-primary-600 dark:hover:text-primary-400',
-                  'hover:bg-gray-100 dark:hover:bg-gray-700/50',
-                  'transition-colors duration-200',
-                )}
+                className='p-1.5 rounded-md hover:text-ink hover:bg-subtle transition-colors duration-150'
                 onClick={(e) => e.stopPropagation()}
               >
-                <ExternalLink className='h-4 w-4' />
+                <ArrowUpRight className='h-4 w-4' />
               </a>
             )}
           </div>
+        </div>
+
+        <a
+          href={projectUrl}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='block'
+        >
+          <h3 className='font-primary font-semibold text-lg sm:text-xl tracking-tight leading-snug text-ink line-clamp-1 group-hover:text-accent transition-colors duration-150'>
+            {title}
+          </h3>
+        </a>
+
+        <p className='mt-2 text-sm leading-relaxed text-body line-clamp-3 flex-1'>
+          {description}
+        </p>
+
+        <div className='mt-5 pt-4 border-t border-hairline/70 flex flex-wrap gap-1.5'>
+          {visibleStacks.map((stack) => (
+            <StackPills key={stack} name={stack} />
+          ))}
+          {hiddenStacks.length > 0 && (
+            <Tooltip
+              content={
+                <span className='flex flex-col gap-0.5 font-mono text-xs'>
+                  {hiddenStacks.map((s) => (
+                    <span key={s}>{s}</span>
+                  ))}
+                </span>
+              }
+            >
+              <div className='flex items-center justify-center px-2 py-0.5 rounded-full border border-hairline bg-subtle text-[10px] font-mono text-muted'>
+                +{hiddenStacks.length}
+              </div>
+            </Tooltip>
+          )}
         </div>
       </div>
     </article>

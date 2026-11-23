@@ -7,7 +7,7 @@ const PolaroidGallery = () => {
   return (
     <div className='relative w-full max-w-[280px] mx-auto md:mx-0 flex justify-center items-center py-2'>
       <motion.div
-        className='w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-zinc-700/40 rounded-2xl p-4 pb-6 shadow-xl cursor-grab active:cursor-grabbing group'
+        className='w-64 bg-white border border-slate-200 rounded-2xl p-4 pb-6 shadow-xl cursor-grab active:cursor-grabbing group'
         initial={{ rotate: -3, scale: 0.95, y: 15, opacity: 0 }}
         animate={{ rotate: -3, scale: 0.95, y: 0, opacity: 1 }}
         whileHover={{
@@ -23,7 +23,7 @@ const PolaroidGallery = () => {
         dragElastic={0.1}
         transition={{ duration: 0.5 }}
       >
-        <div className='relative aspect-square w-full overflow-hidden bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 rounded-xl mb-4 pointer-events-none select-none'>
+        <div className='relative aspect-square w-full overflow-hidden bg-gradient-to-tr from-slate-100 to-slate-200 rounded-xl mb-4 pointer-events-none select-none'>
           <ImageFallback
             src='/images/avatar.png'
             alt='Muhammad Ihsan'
@@ -33,7 +33,7 @@ const PolaroidGallery = () => {
           />
         </div>
         <div className='mt-2 text-center pointer-events-none select-none'>
-          <span className='font-mono text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors duration-300'>
+          <span className='font-mono text-xs uppercase tracking-widest text-slate-400 group-hover:text-primary-500 transition-colors duration-300'>
             @chernodev
           </span>
         </div>

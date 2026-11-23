@@ -1,7 +1,6 @@
 import Blog from '@/components/Organism/Home/blog';
 import Hero from '@/components/Organism/Home/Hero';
 import Portofolio from '@/components/Organism/Home/portofolio';
-import PrinciplesSection from '@/components/Organism/Home/principles';
 import Summary from '@/components/Organism/Home/Summary';
 
 import { TPosts } from '@/types/interfaces/posts';
@@ -14,14 +13,12 @@ const HomeContainer = (props: IHomeContainer) => {
   const { posts } = props;
 
   return (
-    <>
+    <div className='space-y-20 sm:space-y-24'>
       <Hero />
       <Summary />
-      <PrinciplesSection />
       <Portofolio />
-      {/* <TestimonialsSection /> */}
       <Blog posts={posts} />
-    </>
+    </div>
   );
 };
 

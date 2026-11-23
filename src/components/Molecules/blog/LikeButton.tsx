@@ -25,10 +25,7 @@ export function LikeButtonStats({
 }) {
   return (
     <span
-      className={cn(
-        'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-        className,
-      )}
+      className={cn('flex items-center gap-1 text-sm text-gray-600', className)}
     >
       {showIcon && <Heart className='h-4 w-4' />}
       <span>
@@ -54,7 +51,7 @@ export function LikeButton({
     return (
       <span
         className={cn(
-          'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
+          'flex items-center gap-1 text-sm text-gray-600',
           className,
         )}
       >
@@ -80,9 +77,7 @@ export function LikeButton({
       disabled={isLiked || isLoading}
       className={cn(
         'flex items-center gap-1 text-sm transition-colors',
-        isLiked
-          ? 'text-red-500 dark:text-red-400'
-          : 'text-gray-600 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400',
+        isLiked ? 'text-red-500' : 'text-gray-600 hover:text-red-500',
         (isLiked || isLoading) && 'cursor-not-allowed',
         className,
       )}

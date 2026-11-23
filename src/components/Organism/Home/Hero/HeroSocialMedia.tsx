@@ -5,62 +5,62 @@ import { cn } from '@/lib/utils';
 
 const HeroSocialMedia = () => {
   return (
-    <div className='flex flex-wrap items-center gap-3 sm:gap-4'>
-      {/* Primary CTA — Download CV */}
+    <div className='flex flex-wrap items-center gap-3'>
       <Link
         href={process.env.NEXT_PUBLIC_CV_LINK || ''}
         className={cn(
-          'flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md',
-          'bg-primary-500 hover:bg-primary-600 text-white',
-          'font-primary text-sm font-semibold',
-          'transition-colors duration-200',
+          'inline-flex items-center gap-2 px-4 py-2.5 rounded-md',
+          'bg-cta text-cta-fg text-sm font-medium',
+          'hover:bg-cta-hover active:scale-[0.98]',
+          'transition-all duration-150 select-none',
         )}
       >
         <FileText size={15} />
-        Download CV
+        <span>Download CV</span>
       </Link>
 
-      {/* Secondary CTA — Get in Touch */}
       <Link
         href='mailto:me@ihsanmuh.com'
         className={cn(
-          'flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md',
-          'border border-slate-300 dark:border-slate-700',
-          'hover:border-primary-500 dark:hover:border-primary-500',
-          'hover:text-primary-500',
-          'font-primary text-sm font-semibold',
-          'transition-colors duration-200',
+          'inline-flex items-center gap-2 px-4 py-2.5 rounded-md',
+          'bg-surface text-ink text-sm font-medium border border-hairline-strong',
+          'hover:bg-subtle active:scale-[0.98]',
+          'transition-all duration-150 select-none',
         )}
       >
         <Mail size={15} />
-        Get in Touch
+        <span>Email me</span>
       </Link>
 
-      {/* Divider */}
-      <div className='h-6 w-px hidden sm:block bg-slate-300 dark:bg-slate-700' />
+      <div className='h-5 w-px hidden sm:block bg-hairline mx-1' />
 
-      {/* Social icons — same row, same baseline */}
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-1 text-muted'>
         <Link
           href='https://github.com/ihsnmuh'
+          target='_blank'
+          rel='noopener noreferrer'
           aria-label='GitHub'
-          className='text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white transition-colors duration-200'
+          className='hover:text-accent hover:bg-accent-soft/60 transition-colors duration-150 p-2 rounded-md'
         >
-          <Github size={20} />
+          <Github size={17} />
         </Link>
         <Link
           href='https://www.linkedin.com/in/ihsanmuhammad19/'
+          target='_blank'
+          rel='noopener noreferrer'
           aria-label='LinkedIn'
-          className='text-slate-500 dark:text-slate-400 hover:text-[#0077b5] dark:hover:text-[#0077b5] transition-colors duration-200'
+          className='hover:text-accent hover:bg-accent-soft/60 transition-colors duration-150 p-2 rounded-md'
         >
-          <Linkedin size={20} />
+          <Linkedin size={17} />
         </Link>
         <Link
           href='https://instagram.com/chernodev'
+          target='_blank'
+          rel='noopener noreferrer'
           aria-label='Instagram'
-          className='text-slate-500 dark:text-slate-400 hover:text-pink-500 dark:hover:text-pink-500 transition-colors duration-200'
+          className='hover:text-accent hover:bg-accent-soft/60 transition-colors duration-150 p-2 rounded-md'
         >
-          <Instagram size={20} />
+          <Instagram size={17} />
         </Link>
       </div>
     </div>

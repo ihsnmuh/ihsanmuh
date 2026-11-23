@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
-import { Inter, Poppins } from 'next/font/google';
-import { useEffect, useState } from 'react';
+import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
+import Head from 'next/head';
+import React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -12,50 +13,56 @@ const CommandPalette = dynamic(
   { ssr: false },
 );
 
-const poppins = Poppins({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-poppins',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-plus-jakarta',
 });
 
-const inter = Inter({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
+  weight: ['400', '500'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-jetbrains-mono',
 });
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <div
-      className={cn(
-        inter.className,
-        inter.variable,
-        poppins.variable,
-        mounted && 'transition-colors duration-500',
-      )}
-    >
-      <a
-        href='#main-content'
+    <>
+      <Head>
+        <style>{`:root { --font-plus-jakarta: ${plusJakarta.style.fontFamily}; --font-jetbrains-mono: ${jetbrainsMono.style.fontFamily}; }`}</style>
+      </Head>
+      <div
         className={cn(
-          'sr-only focus:not-sr-only',
-          'fixed top-4 left-4 z-50 px-4 py-2',
-          'bg-primary-500 text-white rounded',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
+          plusJakarta.className,
+          plusJakarta.variable,
+          jetbrainsMono.variable,
+          'bg-canvas text-body min-h-screen flex flex-col selection:bg-accent-soft selection:text-ink transition-colors duration-200',
         )}
       >
-        Skip to content
-      </a>
-      <Header />
-      <main id='main-content'>{children}</main>
-      <Footer />
-      <CommandPalette />
-    </div>
+        <a
+          href='#main-content'
+          className={cn(
+            'sr-only focus:not-sr-only',
+            'fixed top-4 left-4 z-[60] px-4 py-2',
+            'bg-cta text-cta-fg rounded-md border border-hairline text-sm font-medium',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+          )}
+        >
+          Skip to content
+        </a>
+        <Header />
+        <main
+          id='main-content'
+          className='flex-1 w-full max-w-4xl mx-auto pt-24 sm:pt-28 pb-20 px-5 sm:px-6'
+        >
+          {children}
+        </main>
+        <Footer />
+        <CommandPalette />
+      </div>
+    </>
   );
 };
 

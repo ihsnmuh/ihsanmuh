@@ -37,20 +37,20 @@ const ReadingProgress = () => {
     <>
       {/* Vertical progress bar on the right side - desktop only */}
       <div
-        className='fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-2'
+        className='fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-1.5'
         role='progressbar'
         aria-valuenow={Math.round(progress)}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label='Reading progress'
       >
-        <div className='relative w-1 h-64 bg-gray-200 dark:bg-gray-700/50 rounded-full overflow-hidden'>
+        <div className='relative w-1 h-56 bg-soft-linen border border-hairline rounded-full overflow-hidden'>
           <div
-            className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary-500 via-primary-600 to-primary-700 rounded-full'
+            className='absolute bottom-0 left-0 right-0 bg-amber-glow'
             style={{ height: `${progress}%` }}
           />
         </div>
-        <div className='flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-gray-800 border-2 border-primary-500 shadow-md text-xs font-semibold text-primary-600 dark:text-primary-400'>
+        <div className='flex items-center justify-center w-8 h-8 rounded-sm bg-paper-white border border-hairline shadow-none font-mono text-[10px] font-bold text-deep-moss'>
           {Math.round(progress)}%
         </div>
       </div>

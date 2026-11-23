@@ -40,77 +40,74 @@ const ExperienceCard = (props: ExperienceCardProps) => {
   const hiddenCount = responsibilities.length - INITIAL_VISIBLE_COUNT;
 
   return (
-    <div className='relative flex md:gap-6'>
+    <div className='relative flex md:gap-5'>
       {/* Timeline column - desktop only */}
       <div className='hidden md:flex flex-col items-center flex-none'>
         <div
           className={cn(
-            'w-16 h-16 rounded-full flex-none',
-            'border-2 border-slate-300 dark:border-zinc-700/40',
-            'bg-white dark:bg-slate-800',
+            'w-12 h-12 rounded-sm flex-none',
+            'border border-hairline',
+            'bg-paper-white',
             'flex items-center justify-center',
-            'z-10 overflow-hidden',
+            'z-10 overflow-hidden shadow-none',
           )}
         >
           <ImageFallback
             src={company.logo}
             alt={company.name}
-            width={64}
-            height={64}
-            className='rounded-sm'
+            width={48}
+            height={48}
+            className='rounded-xs'
           />
         </div>
-        {!isLast && (
-          <div className='w-[1.5px] flex-1 bg-slate-300 dark:bg-slate-600' />
-        )}
+        {!isLast && <div className='w-[1px] flex-1 bg-hairline mt-2' />}
       </div>
 
       {/* Content card */}
-      <div className={cn('flex-1 min-w-0', !isLast && 'pb-6 md:pb-10')}>
+      <div className={cn('flex-1 min-w-0', !isLast && 'pb-5 md:pb-8')}>
         <div
           className={cn(
-            'rounded-lg border overflow-hidden',
-            'background-card',
-            'border-slate-300 dark:border-zinc-700/40',
+            'rounded-sm border border-hairline overflow-hidden',
+            'bg-paper-white text-deep-moss shadow-none',
           )}
         >
           {/* Header */}
           <div className='p-4 md:p-5'>
             <div className='flex items-start gap-3'>
-              {/* Logo - mobile only, inline in header */}
+              {/* Logo - mobile only */}
               <div
                 className={cn(
                   'md:hidden flex-none',
-                  'w-12 h-12 rounded-full',
-                  'border border-slate-300 dark:border-zinc-700/40',
-                  'bg-white dark:bg-slate-800',
+                  'w-10 h-10 rounded-sm',
+                  'border border-hairline',
+                  'bg-paper-white',
                   'flex items-center justify-center',
-                  'overflow-hidden',
+                  'overflow-hidden shadow-none',
                 )}
               >
                 <ImageFallback
                   src={company.logo}
                   alt={company.name}
-                  width={48}
-                  height={48}
-                  className='rounded-sm'
+                  width={40}
+                  height={40}
+                  className='rounded-xs'
                 />
               </div>
 
               <div className='flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1'>
                 <div>
-                  <h3 className='font-primary text-base md:text-lg font-semibold'>
+                  <h3 className='font-primary text-base md:text-lg font-bold text-deep-moss'>
                     {position}
                   </h3>
-                  <p className='font-primary text-sm text-slate-600 dark:text-slate-400'>
+                  <p className='font-ui text-xs sm:text-sm text-olive-char'>
                     {company.name} · {status}
                   </p>
                 </div>
                 <div className='sm:text-right flex-none'>
-                  <p className='font-primary text-xs md:text-sm font-medium'>
+                  <p className='font-mono text-xs font-medium text-deep-moss'>
                     {dateStart} – {dateEnd}
                   </p>
-                  <p className='font-primary text-xs text-slate-500 dark:text-slate-400'>
+                  <p className='font-mono text-[11px] text-sage-gray'>
                     {dateRange} · {location}
                   </p>
                 </div>
@@ -119,18 +116,18 @@ const ExperienceCard = (props: ExperienceCardProps) => {
           </div>
 
           {/* Responsibilities */}
-          <div className='border-t border-slate-200 dark:border-zinc-700/40 px-4 md:px-5 py-4'>
-            <p className='font-primary text-sm font-semibold mb-3'>
+          <div className='border-t border-hairline/70 px-4 md:px-5 py-3.5 bg-soft-linen/40'>
+            <p className='font-mono text-[11px] font-bold uppercase tracking-wider text-sage-gray mb-2.5'>
               Key Responsibilities
             </p>
 
-            <ul className='space-y-2'>
+            <ul className='space-y-1.5'>
               {responsibilities.slice(0, INITIAL_VISIBLE_COUNT).map((r) => (
-                <li key={r.id} className='flex gap-2'>
-                  <span className='text-primary-500 mt-0.5 flex-none text-sm'>
+                <li key={r.id} className='flex gap-2 items-start'>
+                  <span className='text-amber-glow mt-0.5 flex-none text-xs font-mono'>
                     ▸
                   </span>
-                  <p className='font-primary text-xs md:text-sm text-slate-700 dark:text-slate-300'>
+                  <p className='font-ui text-xs sm:text-sm text-olive-char leading-relaxed'>
                     {r.responsibility}
                   </p>
                 </li>
@@ -143,21 +140,21 @@ const ExperienceCard = (props: ExperienceCardProps) => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  className='space-y-2 mt-2 overflow-hidden'
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                  className='space-y-1.5 mt-1.5 overflow-hidden'
                 >
                   {responsibilities.slice(INITIAL_VISIBLE_COUNT).map((r) => (
                     <motion.li
                       key={r.id}
-                      initial={{ opacity: 0, y: -8 }}
+                      initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2, delay: 0.1 }}
-                      className='flex gap-2'
+                      transition={{ duration: 0.15 }}
+                      className='flex gap-2 items-start'
                     >
-                      <span className='text-primary-500 mt-0.5 flex-none text-sm'>
+                      <span className='text-amber-glow mt-0.5 flex-none text-xs font-mono'>
                         ▸
                       </span>
-                      <p className='font-primary text-xs md:text-sm text-slate-700 dark:text-slate-300'>
+                      <p className='font-ui text-xs sm:text-sm text-olive-char leading-relaxed'>
                         {r.responsibility}
                       </p>
                     </motion.li>
@@ -171,19 +168,18 @@ const ExperienceCard = (props: ExperienceCardProps) => {
                 type='button'
                 onClick={() => setIsExpanded((prev) => !prev)}
                 className={cn(
-                  'mt-4 font-primary text-xs md:text-sm font-medium',
-                  'text-primary-500 dark:text-primary-300',
-                  'hover:text-primary-600 dark:hover:text-primary-200',
+                  'mt-3 font-ui text-xs font-semibold',
+                  'text-burnished-gold hover:text-dark-amber',
                   'cursor-pointer transition-colors',
-                  'flex items-center gap-1.5',
+                  'flex items-center gap-1',
                 )}
               >
                 <motion.div
                   animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                   className='flex items-center'
                 >
-                  <ChevronDown size={16} />
+                  <ChevronDown size={14} />
                 </motion.div>
                 {isExpanded ? 'Show less' : `Show ${hiddenCount} more`}
               </button>
