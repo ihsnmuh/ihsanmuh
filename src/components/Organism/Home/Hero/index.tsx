@@ -21,7 +21,7 @@ const Hero = () => {
     >
       <motion.div
         variants={staggerContainerVariants}
-        initial='hidden'
+        initial={false}
         animate='visible'
         className='flex flex-col gap-6 max-w-3xl'
       >
@@ -59,9 +59,9 @@ const Hero = () => {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.28, ease: EDITORIAL_EASE }}
+        transition={{ duration: 0.4, ease: EDITORIAL_EASE }}
         className='mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
       >
         <HeroTech />
