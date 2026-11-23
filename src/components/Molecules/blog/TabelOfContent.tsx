@@ -1,4 +1,4 @@
-import { List } from 'lucide-react';
+import { ArrowUp, Check, Link2 } from 'lucide-react';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 
@@ -8,8 +8,6 @@ import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 
 import useHeadingsData from '@/helpers/useHeadingData';
 import useIntersectionObserver from '@/helpers/useIntersectionObserver';
-
-import { LikeButton } from './LikeButton';
 
 interface IHeadingItem {
   id: string;
@@ -42,7 +40,7 @@ export const Headings: FC<IHeadingList> = ({
   <ul
     className={cn(
       variant === 'desktop'
-        ? 'border-l border-hairline/80 ml-1 pl-3.5 space-y-2 mt-2'
+        ? 'border-l border-hairline pl-3.5 space-y-2 mt-3'
         : 'mt-2 space-y-1',
       className,
     )}
@@ -58,18 +56,18 @@ export const Headings: FC<IHeadingList> = ({
             className={cn(
               'block text-xs transition-colors duration-150',
               variant === 'mobile' && [
-                'px-2.5 py-1.5 rounded-sm hover:bg-pale-stone',
+                'px-2.5 py-2 rounded-md hover:bg-subtle',
                 heading.id === activeId
-                  ? 'text-deep-moss font-bold bg-amber-glow/20 border border-dark-amber/30'
-                  : 'text-olive-char hover:text-deep-moss',
+                  ? 'text-accent font-semibold bg-accent-soft/70'
+                  : 'text-body hover:text-ink',
               ],
               variant === 'desktop' && [
-                'font-ui py-0.5 leading-snug',
+                'font-primary py-0.5 leading-snug',
                 heading.id === activeId
-                  ? 'text-signal-blue font-bold -ml-[15px] border-l-2 border-signal-blue pl-[13px]'
+                  ? 'text-accent font-semibold -ml-[15px] border-l-2 border-accent pl-[13px]'
                   : isHeadingActive
-                    ? 'text-deep-moss font-semibold'
-                    : 'text-sage-gray hover:text-deep-moss',
+                    ? 'text-ink font-medium'
+                    : 'text-muted hover:text-ink',
               ],
             )}
             href={`#${heading.id}`}
@@ -78,23 +76,23 @@ export const Headings: FC<IHeadingList> = ({
             {heading.title}
           </UnstyledLink>
           {heading.items.length > 0 && (
-            <ul className='pl-3 space-y-1 mt-1 border-l border-hairline/60 ml-0.5'>
+            <ul className='pl-3 space-y-1.5 mt-1.5 border-l border-hairline/70 ml-0.5'>
               {heading.items.map((item) => (
                 <li key={item.id}>
                   <UnstyledLink
                     className={cn(
                       'block text-[11px] transition-colors duration-150',
                       variant === 'mobile' && [
-                        'px-2.5 py-1 rounded-sm hover:bg-pale-stone',
+                        'px-2.5 py-1.5 rounded-md hover:bg-subtle',
                         item.id === activeId
-                          ? 'text-signal-blue font-semibold'
-                          : 'text-sage-gray',
+                          ? 'text-accent font-semibold'
+                          : 'text-muted',
                       ],
                       variant === 'desktop' && [
-                        'font-ui py-0.5 leading-snug',
+                        'font-primary py-0.5 leading-snug',
                         item.id === activeId
-                          ? 'text-signal-blue font-bold -ml-[13px] border-l-2 border-signal-blue pl-[11px]'
-                          : 'text-sage-gray hover:text-deep-moss',
+                          ? 'text-accent font-semibold -ml-[13px] border-l-2 border-accent pl-[11px]'
+                          : 'text-muted hover:text-ink',
                       ],
                     )}
                     href={`#${item.id}`}
@@ -112,48 +110,67 @@ export const Headings: FC<IHeadingList> = ({
   </ul>
 );
 
-const TabelOfContent: FC<ITabelOfContent> = ({ slug }) => {
+const TabelOfContent: FC<ITabelOfContent> = () => {
   const { asPath } = useRouter();
   const [activeId, setActiveId] = useState<string>('');
+  const [copied, setCopied] = useState(false);
 
   useIntersectionObserver(setActiveId, asPath);
 
   const { nestedHeadings } = useHeadingsData(asPath);
 
+  const handleCopyLink = () => {
+    if (typeof window === 'undefined') return;
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  };
+
+  const scrollToTop = () => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <>
-      <aside className='hidden lg:block'>
-        <div
-          className={cn(
-            'p-4 rounded-sm shadow-none',
-            'bg-paper-white border border-hairline',
-          )}
-        >
-          <h4
-            className={cn(
-              'font-mono text-xs uppercase tracking-widest text-sage-gray font-bold mb-3 flex items-center gap-1.5 pb-2 w-full',
-              'border-b border-hairline/70',
-            )}
-          >
-            <List size={14} className='text-amber-glow' />
-            Table Of Contents
-          </h4>
+    <aside className='hidden lg:block'>
+      {nestedHeadings.length > 0 && (
+        <div>
+          <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+            On this page
+          </p>
           <Headings headings={nestedHeadings} activeId={activeId} />
-
-          <div className='border-t border-hairline/70 my-3' />
-
-          <div className='flex items-center justify-between gap-2'>
-            <span className='font-ui text-xs text-sage-gray font-medium'>
-              Like this post?
-            </span>
-            <LikeButton
-              slug={slug}
-              className='px-2.5 py-1 bg-soft-linen hover:bg-pale-stone border border-hairline rounded-sm font-ui font-medium transition-colors text-xs text-deep-moss'
-            />
-          </div>
         </div>
-      </aside>
-    </>
+      )}
+
+      <div
+        className={cn(
+          'flex flex-col gap-2 pt-5 text-xs text-muted',
+          nestedHeadings.length > 0 && 'mt-6 border-t border-hairline',
+        )}
+      >
+        <button
+          type='button'
+          onClick={handleCopyLink}
+          className='inline-flex items-center gap-2 hover:text-accent transition-colors w-fit'
+        >
+          {copied ? (
+            <Check size={13} className='text-accent' />
+          ) : (
+            <Link2 size={13} />
+          )}
+          <span>{copied ? 'Link copied' : 'Copy link'}</span>
+        </button>
+
+        <button
+          type='button'
+          onClick={scrollToTop}
+          className='inline-flex items-center gap-2 hover:text-accent transition-colors w-fit'
+        >
+          <ArrowUp size={13} />
+          <span>Back to top</span>
+        </button>
+      </div>
+    </aside>
   );
 };
 
