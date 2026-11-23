@@ -2,6 +2,7 @@
 
 User-agent: *
 Allow: /
+Allow: /api/og
 
 # Disallow admin/API and internal routes
 Disallow: /api/
