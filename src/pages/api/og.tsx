@@ -7,16 +7,16 @@ export const config = {
 
 const SITE_URL = `https://${process.env.NEXT_PUBLIC_URL}`;
 
-// Theme colors from globals.css (dark mode primary palette)
+// Editorial Minimalism Dark Mode palette (synced with globals.css)
 const COLORS = {
-  bg: '#0f172a', // slate-900
-  bgGradientEnd: '#1e293b', // slate-800
-  surface: 'rgba(30, 41, 59, 0.6)', // slate-800/60
-  text: '#f1f5f9', // slate-100
-  textMuted: '#94a3b8', // slate-400
-  accent: '#facc15', // primary-400 dark mode (amber)
-  accentMuted: '#eab308', // primary-500
-  border: 'rgba(148, 163, 184, 0.2)',
+  bg: '#0E0E10',
+  bgGradientEnd: '#16161A',
+  surface: '#1F1F24',
+  text: '#F4F4F0',
+  textMuted: '#A1A1AA',
+  accent: '#F5B942',
+  accentMuted: '#D99B26',
+  border: '#26262C',
 };
 
 const FONT_WEIGHTS = [400, 600, 700, 800] as const;
@@ -43,12 +43,12 @@ async function loadImageAsDataUrl(url: string): Promise<string> {
   return `data:${contentType};base64,${arrayBufferToBase64(buffer)}`;
 }
 
-async function loadPoppinsFont(weight: number): Promise<ArrayBuffer> {
-  const url = `https://fonts.googleapis.com/css2?family=Poppins:wght@${weight}&display=swap`;
+async function loadPlusJakartaFont(weight: number): Promise<ArrayBuffer> {
+  const url = `https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@${weight}&display=swap`;
   const css = await fetch(url).then((r) => r.text());
   const match = /url\((https:\/\/[^)]+)\)/.exec(css);
   const fontUrl = match?.[1];
-  if (!fontUrl) throw new Error(`Failed to load Poppins ${weight}`);
+  if (!fontUrl) throw new Error(`Failed to load Plus Jakarta Sans ${weight}`);
   const res = await fetch(fontUrl);
   if (res.status !== 200)
     throw new Error(`Failed to fetch font: ${res.status}`);
@@ -60,7 +60,7 @@ export default async function handler(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const [fontData, avatarSrc] = await Promise.all([
-      Promise.all(FONT_WEIGHTS.map((w) => loadPoppinsFont(w))),
+      Promise.all(FONT_WEIGHTS.map((w) => loadPlusJakartaFont(w))),
       loadImageAsDataUrl(`${SITE_URL}/images/avatar.png`).catch(() => null),
     ]);
 
@@ -70,7 +70,7 @@ export default async function handler(req: NextRequest) {
       'Muhammad Ihsan';
     const description =
       searchParams.get('description') ||
-      'Software Engineer passionate about creating excellent user experiences. I work with TypeScript, React, and Next.js.';
+      'Software engineer in Jakarta building React, Next.js, and TypeScript web applications.';
     const type = searchParams.get('type') || 'website';
     const tagsParam = searchParams.get('tags');
     let tags: string[];
@@ -99,7 +99,7 @@ export default async function handler(req: NextRequest) {
             flexDirection: 'row',
             alignItems: 'stretch',
             background: COLORS.bg,
-            fontFamily: 'Poppins, system-ui, sans-serif',
+            fontFamily: 'Plus Jakarta Sans, system-ui, sans-serif',
           }}
         >
           {/* Left: content */}
@@ -298,7 +298,7 @@ export default async function handler(req: NextRequest) {
         width: 1200,
         height: 630,
         fonts: FONT_WEIGHTS.map((weight, i) => ({
-          name: 'Poppins',
+          name: 'Plus Jakarta Sans',
           data: fontData[i]!,
           style: 'normal' as const,
           weight,
