@@ -38,7 +38,7 @@ const ProjectCard = (props: IProjectProps) => {
     <WrapperCard
       className={cn(
         'group h-full flex overflow-hidden bg-surface text-ink',
-        'border border-hairline rounded-lg hover:border-hairline-strong transition-all duration-200',
+        'border border-hairline rounded-lg hover:border-hairline-strong hover:-translate-y-0.5 transition-all duration-200',
         isFeatured ? 'flex-col md:flex-row' : 'flex-col',
         className,
       )}
