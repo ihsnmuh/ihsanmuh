@@ -54,7 +54,7 @@ const HeroSocialMedia = () => {
           <Linkedin size={17} />
         </Link>
         <Link
-          href='https://instagram.com/chernodev'
+          href='https://instagram.com/dailyjuniordev'
           target='_blank'
           rel='noopener noreferrer'
           aria-label='Instagram'
