@@ -9,6 +9,8 @@ import {
   staggerItemVariants,
 } from '@/components/Atoms/Motion';
 
+import { Experiences } from '@/constant/experience';
+
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
 
@@ -95,7 +97,7 @@ const Hero = () => {
           </div>
           <div className='flex flex-col'>
             <span className='font-primary text-2xl font-bold tracking-tight text-ink leading-none'>
-              2
+              {Experiences.length}
             </span>
             <span className='font-mono text-[11px] uppercase tracking-wider text-muted mt-1.5'>
               Companies

@@ -4,7 +4,7 @@ export interface IExperience {
   status: string;
   company: ICompany;
   start: string;
-  end?: any;
+  end?: string | null;
   location: string;
   responsibilities: IResponsibility[];
 }
@@ -14,5 +14,6 @@ interface IResponsibility {
 }
 interface ICompany {
   name: string;
-  logo: string;
+  logo?: string;
+  shortName?: string;
 }

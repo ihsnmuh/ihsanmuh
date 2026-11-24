@@ -33,15 +33,28 @@ const Summary = () => {
         className='space-y-4 max-w-2xl text-base leading-relaxed text-body'
       >
         <p>
-          I spent 4 years at{' '}
+          I&apos;m currently at{' '}
+          <span className='font-medium text-ink'>
+            Bank Rakyat Indonesia (BRI)
+          </span>
+          , working on{' '}
+          <UnderlineLink
+            href='https://bri-ub.bri.co.id/'
+            className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4 transition-colors'
+          >
+            Universal Biller
+          </UnderlineLink>{' '}
+          (an internal dashboard and external website) and building its design
+          system from Figma into code. Before that, I spent four years at{' '}
           <UnderlineLink
             href='https://femaledaily.com/'
             className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4 transition-colors'
           >
             Female Daily Network
-          </UnderlineLink>
-          , Indonesia&apos;s largest beauty platform, building event ticketing
-          flows, video streaming widgets, and internal CMS dashboards.
+          </UnderlineLink>{' '}
+          maintaining all of its web platforms and building new features across
+          them, including event ticketing, commerce, beauty reviews, video
+          streaming, and internal CMS dashboards.
         </p>
         <p>
           I work mainly across the{' '}
