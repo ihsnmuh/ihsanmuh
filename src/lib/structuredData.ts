@@ -71,7 +71,7 @@ export const getPersonSchema = (): PersonSchema => ({
   ],
   jobTitle: 'Software Engineer',
   description:
-    'Software engineer in Jakarta with 4+ years of experience building React, Next.js, and TypeScript web applications.',
+    'Software engineer in Jakarta with 4+ years of experience building full-stack web applications across the React and TypeScript ecosystem.',
 });
 
 export const getWebsiteSchema = (): WebsiteSchema => ({

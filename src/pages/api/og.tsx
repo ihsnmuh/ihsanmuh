@@ -125,7 +125,7 @@ export default async function handler(req: NextRequest) {
       'Muhammad Ihsan';
     const description =
       searchParams.get('description') ||
-      'Software engineer in Jakarta building React, Next.js, and TypeScript web applications.';
+      'Software engineer in Jakarta building full-stack web applications across the React and TypeScript ecosystem.';
     const type = searchParams.get('type') || 'website';
     const tagsParam = searchParams.get('tags');
     let tags: string[];

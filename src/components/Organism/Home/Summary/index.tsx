@@ -44,9 +44,9 @@ const Summary = () => {
           flows, video streaming widgets, and internal CMS dashboards.
         </p>
         <p>
-          My main stack is{' '}
+          I work mainly across the{' '}
           <span className='font-medium text-ink'>
-            React, Next.js, TypeScript, and Node.js
+            React and TypeScript ecosystem
           </span>
           . I care about fast load times, readable code, and interfaces that
           stay out of the user&apos;s way.

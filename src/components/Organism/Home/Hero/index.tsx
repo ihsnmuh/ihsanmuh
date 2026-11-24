@@ -59,8 +59,8 @@ const Hero = () => {
           <span className='font-semibold text-ink'>Muhammad Ihsan</span>, a
           software engineer in Jakarta with{' '}
           <span className='font-medium text-ink'>4+ years</span> of experience.
-          I build full-stack web applications with React, Next.js, TypeScript,
-          and modern backend tooling.
+          I build full-stack web applications across the React and TypeScript
+          ecosystem.
         </motion.p>
 
         <motion.div variants={staggerItemVariants} className='pt-2'>
