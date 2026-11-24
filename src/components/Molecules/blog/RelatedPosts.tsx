@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from 'react';
+
 import PostCard from '@/components/Molecules/card/BlogCard';
 
 import { IPost } from '@/types/interfaces/posts';
@@ -5,6 +7,8 @@ import { IPost } from '@/types/interfaces/posts';
 type RelatedPostsProps = {
   posts: IPost[];
 };
+
+type TStatsMap = Record<string, { views: number; likes: number }>;
 
 function isPostActive(post: IPost): boolean {
   const isShow = post.isShow;
@@ -18,9 +22,45 @@ function isPostActive(post: IPost): boolean {
 }
 
 export default function RelatedPosts({ posts }: RelatedPostsProps) {
-  const activePosts = posts.filter(isPostActive);
+  const visiblePosts = useMemo(
+    () => posts.filter(isPostActive).slice(0, 2),
+    [posts],
+  );
+  const slugsKey = visiblePosts.map((post) => post.slug).join(',');
+  const [statsMap, setStatsMap] = useState<TStatsMap>({});
 
-  if (activePosts.length === 0) {
+  useEffect(() => {
+    if (!slugsKey) return;
+
+    const controller = new AbortController();
+    let cancelled = false;
+
+    const fetchBatchStats = async () => {
+      try {
+        const response = await fetch(
+          `/api/stats?slugs=${encodeURIComponent(slugsKey)}`,
+          { signal: controller.signal },
+        );
+        if (!cancelled && response.ok) {
+          const data: TStatsMap = await response.json();
+          setStatsMap(data);
+        }
+      } catch (error) {
+        if (!cancelled && (error as Error).name !== 'AbortError') {
+          console.warn('Failed to fetch related posts stats:', error);
+        }
+      }
+    };
+
+    fetchBatchStats();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [slugsKey]);
+
+  if (visiblePosts.length === 0) {
     return null;
   }
 
@@ -34,9 +74,18 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
         Related Articles
       </div>
       <div className='grid gap-6 md:grid-cols-2'>
-        {activePosts.slice(0, 2).map((post) => (
-          <PostCard key={post.slug} {...post} excludeFromToC />
-        ))}
+        {visiblePosts.map((post) => {
+          const batchStats = statsMap[post.slug];
+          return (
+            <PostCard
+              key={post.slug}
+              {...post}
+              views={batchStats?.views ?? post.views ?? 0}
+              likes={batchStats?.likes ?? post.likes ?? 0}
+              excludeFromToC
+            />
+          );
+        })}
       </div>
     </section>
   );

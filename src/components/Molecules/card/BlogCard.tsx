@@ -30,10 +30,15 @@ const PostCard = (props: IPostCard) => {
     timeReading: timeReadingText,
     publishedAt,
     description,
+    views: initialViews,
+    likes: initialLikes,
     excludeFromToC = false,
   } = props;
 
-  const { views, likes, isLoading } = usePostStats(slug);
+  const { views, likes, isLoading } = usePostStats(slug, {
+    initialViews,
+    initialLikes,
+  });
 
   const date = publishedAt ? format(new Date(publishedAt), 'MMM dd, yyyy') : '';
   const reading = timeReadingText ?? '';

@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import { getAllPosts } from '@/lib/blog';
+import { getProjectsFromDb } from '@/lib/projects';
 import { getPersonSchema, getWebsiteSchema } from '@/lib/structuredData';
 import { getViewsAndLikesForSlugs } from '@/lib/viewsLikes';
 
@@ -78,9 +79,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
     } as IPost;
   });
 
-  // * prefetch data project list
+  // * prefetch data project list directly from DB on SSR
+  const projectQuery = queryProjectList({ limit: 3, order: 'desc' });
   await queryClient.prefetchQuery({
-    ...queryProjectList({ limit: 3, order: 'desc' }),
+    queryKey: projectQuery.queryKey,
+    queryFn: () => getProjectsFromDb({ limit: 3, order: 'desc' }),
   });
 
   return {
