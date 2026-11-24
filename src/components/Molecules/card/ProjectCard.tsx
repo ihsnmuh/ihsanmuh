@@ -71,11 +71,7 @@ const ProjectCard = (props: IProjectProps) => {
             }}
             src={`/images/project/${image}.png`}
             alt={title}
-            sizes={
-              isFeatured
-                ? '(max-width: 768px) 100vw, 50vw'
-                : '(max-width: 768px) 100vw, 45vw'
-            }
+            sizes='(max-width: 768px) 100vw, 420px'
             fill
             style={{ objectFit: 'cover' }}
             useSkeleton
@@ -105,7 +101,7 @@ const ProjectCard = (props: IProjectProps) => {
                   href={github}
                   target='_blank'
                   rel='noopener noreferrer'
-                  aria-label='GitHub repository'
+                  aria-label={`${title} GitHub repository`}
                   className='hover:text-ink hover:bg-subtle transition-colors duration-150 p-1.5 rounded-md'
                 >
                   <Github size={15} />
@@ -116,7 +112,7 @@ const ProjectCard = (props: IProjectProps) => {
                   href={website}
                   target='_blank'
                   rel='noopener noreferrer'
-                  aria-label='Live website'
+                  aria-label={`${title} live website`}
                   className='hover:text-ink hover:bg-subtle transition-colors duration-150 p-1.5 rounded-md'
                 >
                   <ArrowUpRight size={15} />

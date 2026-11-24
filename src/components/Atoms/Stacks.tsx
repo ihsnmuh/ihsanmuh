@@ -1,3 +1,4 @@
+import React from 'react';
 import { BsFillBootstrapFill, BsRobot } from 'react-icons/bs';
 import { LuKey, LuLayers, LuNetwork, LuPalette } from 'react-icons/lu';
 import {
@@ -124,7 +125,12 @@ interface StackIconProps {
 const StackIcon = ({ type, size }: StackIconProps) => {
   const Stack = Stacks[type];
 
-  if (Stack) return Stack;
+  if (Stack) {
+    return React.cloneElement(Stack, {
+      'aria-label': type,
+      title: type,
+    });
+  }
 
   return (
     <span

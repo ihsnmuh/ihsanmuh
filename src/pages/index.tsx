@@ -51,7 +51,11 @@ export default function Home(props: IHomeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=300',
+  );
   const queryClient = new QueryClient();
   const allPosts = getAllPosts([
     'title',
