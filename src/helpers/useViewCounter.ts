@@ -85,14 +85,19 @@ export function useViewIncrement(slug: string) {
     isLoading: true,
     error: null,
   });
+  const activeSlugRef = useRef<string>('');
   const lastFiredSlugRef = useRef<string | null>(null);
 
   useEffect(() => {
+    activeSlugRef.current = slug;
     if (!slug) return;
-    if (lastFiredSlugRef.current === slug) return;
+    if (lastFiredSlugRef.current === slug) {
+      return () => {
+        activeSlugRef.current = '';
+      };
+    }
     lastFiredSlugRef.current = slug;
 
-    let cancelled = false;
     setState({ views: 0, isLoading: true, error: null });
 
     const incrementView = async () => {
@@ -100,7 +105,7 @@ export function useViewIncrement(slug: string) {
         const response = await fetch(`/api/views/${slug}`, { method: 'POST' });
         const data = await response.json();
 
-        if (!cancelled) {
+        if (activeSlugRef.current === slug) {
           setState({
             views: data.count ?? 0,
             isLoading: false,
@@ -108,7 +113,10 @@ export function useViewIncrement(slug: string) {
           });
         }
       } catch (error) {
-        if (!cancelled) {
+        if (lastFiredSlugRef.current === slug) {
+          lastFiredSlugRef.current = null;
+        }
+        if (activeSlugRef.current === slug) {
           console.warn('View increment error (non-critical):', error);
           setState((prev) => ({
             ...prev,
@@ -122,7 +130,7 @@ export function useViewIncrement(slug: string) {
     incrementView();
 
     return () => {
-      cancelled = true;
+      activeSlugRef.current = '';
     };
   }, [slug]);
 
