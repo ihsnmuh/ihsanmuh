@@ -30,29 +30,43 @@ export function useViewCounter(
       return;
     }
 
+    const controller = new AbortController();
+    let cancelled = false;
     setState({ views: 0, isLoading: true, error: null });
 
     const fetchViews = async () => {
       try {
-        const response = await fetch(`/api/views/${slug}`, { method: 'GET' });
+        const response = await fetch(`/api/views/${slug}`, {
+          method: 'GET',
+          signal: controller.signal,
+        });
         const data = await response.json();
 
-        setState({
-          views: data.count || 0,
-          isLoading: false,
-          error: null,
-        });
+        if (!cancelled) {
+          setState({
+            views: data.count || 0,
+            isLoading: false,
+            error: null,
+          });
+        }
       } catch (error) {
-        console.warn('View counter error (non-critical):', error);
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          views: 0,
-        }));
+        if (!cancelled && (error as Error).name !== 'AbortError') {
+          console.warn('View counter error (non-critical):', error);
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            views: 0,
+          }));
+        }
       }
     };
 
     fetchViews();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [slug, initialViews]);
 
   return state;
@@ -64,40 +78,52 @@ type ViewIncrementState = {
   error: string | null;
 };
 
-/** POSTs to increment view count once per page load. Use on article detail page. */
+/** POSTs to increment view count once per slug visit. Use on article detail page. */
 export function useViewIncrement(slug: string) {
   const [state, setState] = useState<ViewIncrementState>({
     views: 0,
     isLoading: true,
     error: null,
   });
-  const hasFired = useRef(false);
+  const lastFiredSlugRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!slug || hasFired.current) return;
-    hasFired.current = true;
+    if (!slug) return;
+    if (lastFiredSlugRef.current === slug) return;
+    lastFiredSlugRef.current = slug;
+
+    let cancelled = false;
+    setState({ views: 0, isLoading: true, error: null });
 
     const incrementView = async () => {
       try {
         const response = await fetch(`/api/views/${slug}`, { method: 'POST' });
         const data = await response.json();
 
-        setState({
-          views: data.count ?? 0,
-          isLoading: false,
-          error: null,
-        });
+        if (!cancelled) {
+          setState({
+            views: data.count ?? 0,
+            isLoading: false,
+            error: null,
+          });
+        }
       } catch (error) {
-        console.warn('View increment error (non-critical):', error);
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          views: 0,
-        }));
+        if (!cancelled) {
+          console.warn('View increment error (non-critical):', error);
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            views: 0,
+          }));
+        }
       }
     };
 
     incrementView();
+
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   return state;

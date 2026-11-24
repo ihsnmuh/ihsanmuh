@@ -13,8 +13,8 @@ import ProjectCard from '@/components/Molecules/card/ProjectCard';
 import { queryProjectList } from '@/queries/projectList';
 
 const Portofolio = () => {
-  const { data } = useQuery({
-    ...queryProjectList({ limit: 3 }),
+  const { data, isLoading } = useQuery({
+    ...queryProjectList({ limit: 3, order: 'desc' }),
   });
 
   const flagshipProject = data?.[0];
@@ -44,14 +44,22 @@ const Portofolio = () => {
         </UnstyledLink>
       </Reveal>
 
-      <motion.div
-        variants={staggerContainerVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.1 }}
-        className='space-y-5'
-      >
-        {flagshipProject && (
+      {isLoading && !flagshipProject ? (
+        <div className='space-y-5'>
+          <div className='h-72 rounded-xl border border-hairline bg-subtle/60 animate-pulse' />
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+            <div className='h-64 rounded-xl border border-hairline bg-subtle/60 animate-pulse' />
+            <div className='h-64 rounded-xl border border-hairline bg-subtle/60 animate-pulse' />
+          </div>
+        </div>
+      ) : flagshipProject ? (
+        <motion.div
+          variants={staggerContainerVariants}
+          initial='hidden'
+          whileInView='visible'
+          viewport={{ once: true, amount: 0.05 }}
+          className='space-y-5'
+        >
           <motion.div variants={staggerItemVariants}>
             <ProjectCard
               title={flagshipProject.title}
@@ -64,27 +72,27 @@ const Portofolio = () => {
               isFeatured={true}
             />
           </motion.div>
-        )}
 
-        {secondaryProjects.length > 0 && (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
-            {secondaryProjects.map((project) => (
-              <motion.div key={project.title} variants={staggerItemVariants}>
-                <ProjectCard
-                  title={project.title}
-                  image={project.image}
-                  category={project.category}
-                  description={project.description}
-                  stacks={project.stacks}
-                  github={project.github}
-                  website={project.website}
-                  isFeatured={false}
-                />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </motion.div>
+          {secondaryProjects.length > 0 && (
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+              {secondaryProjects.map((project) => (
+                <motion.div key={project.title} variants={staggerItemVariants}>
+                  <ProjectCard
+                    title={project.title}
+                    image={project.image}
+                    category={project.category}
+                    description={project.description}
+                    stacks={project.stacks}
+                    github={project.github}
+                    website={project.website}
+                    isFeatured={false}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.div>
+      ) : null}
     </section>
   );
 };

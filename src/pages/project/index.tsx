@@ -2,6 +2,8 @@ import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 
+import { getProjectsFromDb } from '@/lib/projects';
+
 import Seo from '@/components/Molecules/seo';
 import ProjectContainer from '@/containers/project';
 
@@ -27,9 +29,11 @@ const Project = () => {
 export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  // * prefach data project list
+  // * prefetch data project list directly from DB on SSR
+  const projectQuery = queryProjectList({ limit: 100, order: 'desc' });
   await queryClient.prefetchQuery({
-    ...queryProjectList({ limit: 100, order: 'desc' }),
+    queryKey: projectQuery.queryKey,
+    queryFn: () => getProjectsFromDb({ limit: 100, order: 'desc' }),
   });
 
   return {
