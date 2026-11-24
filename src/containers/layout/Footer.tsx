@@ -38,6 +38,7 @@ const Footer = () => {
           <div className='sm:col-span-6 flex flex-col gap-3'>
             <Link
               href='/'
+              prefetch={false}
               aria-label='ihsanmuh — Home'
               className='inline-flex items-center gap-2.5 w-fit group'
             >
@@ -63,6 +64,7 @@ const Footer = () => {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={false}
                     className='text-sm text-body hover:text-accent transition-colors duration-150'
                   >
                     {link.label}

@@ -46,7 +46,7 @@ const ShowcaseProjectCard = (props: IProject) => {
             }}
             src={`/images/project/${image}.png`}
             alt={title}
-            sizes='(max-width: 768px) 100vw, 420px'
+            sizes='(max-width: 768px) 100vw, 400px'
             fill
             style={{ objectFit: 'cover' }}
             useSkeleton
