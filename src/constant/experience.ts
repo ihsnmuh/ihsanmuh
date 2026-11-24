@@ -4,6 +4,35 @@ export const Experiences: IExperience[] = [
   {
     id: 1,
     position: 'Frontend Developer',
+    status: 'Contract',
+    company: {
+      name: 'Bank Rakyat Indonesia (BRI)',
+      logo: '/images/experience/bri.png',
+      shortName: 'BRI',
+    },
+    start: '2026-03-01',
+    location: 'Jakarta, Indonesia 🇮🇩',
+    responsibilities: [
+      {
+        id: 1,
+        responsibility:
+          'Working on Universal Biller, a pre-launch product at Bank BRI split into two web apps: an internal dashboard and an external website (bri-ub.bri.co.id).',
+      },
+      {
+        id: 2,
+        responsibility:
+          'Building frontend features across both the dashboard and external website as the product prepares for launch.',
+      },
+      {
+        id: 3,
+        responsibility:
+          'Implementing the design system from Figma into reusable code components for the team to use across features.',
+      },
+    ],
+  },
+  {
+    id: 2,
+    position: 'Frontend Developer',
     status: 'Full-time',
     company: {
       name: 'Female Daily Network',
@@ -86,7 +115,7 @@ export const Experiences: IExperience[] = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     position: 'Frontend Developer',
     status: 'Full-time',
     company: {

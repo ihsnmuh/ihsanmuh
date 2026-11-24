@@ -61,8 +61,8 @@ const AboutContainer = () => {
           Muhammad Ihsan
         </h1>
         <p className='mt-3 text-base leading-relaxed text-body max-w-2xl'>
-          Agronomist turned software engineer. I build for the web and enjoy
-          understanding how systems operate under the hood.
+          Agronomist turned software engineer. I build for the web and like
+          knowing how the systems behind it actually work.
         </p>
       </header>
 
@@ -108,29 +108,42 @@ const AboutContainer = () => {
 
         <Reveal delay={0.06} className='min-w-0 space-y-6'>
           <blockquote className='border-l-2 border-accent pl-4 py-1 font-primary italic text-base sm:text-lg text-ink leading-relaxed'>
-            &ldquo;I started on the frontend and kept asking how things worked
-            behind it, moving from UI components into APIs and backend
-            architecture.&rdquo;
+            I started on the frontend and kept asking what happened behind the
+            UI. That curiosity pulled me into APIs and backend work.
           </blockquote>
 
           <div className='space-y-4 text-base text-body leading-relaxed'>
             <p>
-              I&apos;m a software engineer with 4+ years of experience building
-              end-to-end web applications. Most of that time was spent at{' '}
+              I&apos;m a software engineer at{' '}
+              <span className='font-medium text-ink'>
+                Bank Rakyat Indonesia (BRI)
+              </span>
+              . Right now I&apos;m working on{' '}
+              <UnderlineLink
+                href='https://bri-ub.bri.co.id/'
+                className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4'
+              >
+                Universal Biller
+              </UnderlineLink>
+              , a pre-launch product with an internal dashboard and an external
+              website. I also build out the design system from Figma into
+              reusable code.
+            </p>
+            <p>
+              Before BRI, I spent four years at{' '}
               <UnderlineLink
                 href='https://femaledaily.com/'
                 className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4'
               >
                 Female Daily Network
               </UnderlineLink>
-              , Indonesia&apos;s largest beauty platform, where I built event
-              ticketing systems, video streaming widgets, CMS dashboards, and
-              recommendation engines.
+              , where I maintained all of their web platforms and built features
+              across editorial, commerce, beauty reviews, event ticketing, video
+              streaming, and internal CMS dashboards.
             </p>
             <p>
-              My path into tech wasn&apos;t a straight line. I switched into
-              software in 2021 after working in sales, procurement, and digital
-              marketing. Before that, I studied{' '}
+              I moved into software in 2021 after working in sales, procurement,
+              and digital marketing. Before that, I studied{' '}
               <span className='font-medium text-ink'>
                 Agricultural Engineering
               </span>{' '}
@@ -141,14 +154,14 @@ const AboutContainer = () => {
               >
                 IPB University
               </UnderlineLink>
-              , then retrained through{' '}
+              , then joined{' '}
               <span className='font-medium text-ink'>Hacktiv8</span>&apos;s
-              Fullstack JavaScript bootcamp where I received the Best Individual
+              Fullstack JavaScript bootcamp, where I won the Best Individual
               Project award.
             </p>
             <p>
-              I write about what I build and learn here, mostly web development
-              and software engineering. Feel free to reach out anytime.
+              I use this site to write about web development and whatever
+              I&apos;m learning at work.
             </p>
           </div>
 
@@ -257,18 +270,18 @@ const AboutContainer = () => {
       <Reveal>
         <section className='rounded-xl border border-hairline p-8 sm:p-10 text-center bg-surface'>
           <h2 className='font-primary font-semibold text-2xl sm:text-3xl tracking-tight text-ink mb-2'>
-            Want to work together?
+            Get in touch
           </h2>
           <p className='text-sm sm:text-base text-body max-w-md mx-auto mb-6'>
-            If you have a role, a consulting project, or a question about
-            software engineering, send me a note.
+            If you want to talk about a project or have a question about
+            something I wrote, email me or say hi on LinkedIn.
           </p>
           <div className='flex items-center justify-center gap-3 flex-wrap'>
             <a
               href='mailto:me@ihsanmuh.com'
               className='px-5 py-2.5 rounded-md text-sm font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all select-none'
             >
-              Send an email
+              Email me
             </a>
             <a
               href='https://www.linkedin.com/in/ihsanmuhammad19/'
@@ -276,7 +289,7 @@ const AboutContainer = () => {
               rel='noopener noreferrer'
               className='px-5 py-2.5 rounded-md text-sm font-medium bg-transparent text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-all select-none'
             >
-              Connect on LinkedIn
+              Message on LinkedIn
             </a>
           </div>
           <p className='flex items-center justify-center gap-1.5 font-mono text-[11px] text-muted mt-6'>
