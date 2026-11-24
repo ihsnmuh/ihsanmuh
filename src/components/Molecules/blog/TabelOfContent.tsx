@@ -1,6 +1,6 @@
 import { ArrowUp, Check, Link2 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -53,6 +53,7 @@ export const Headings: FC<IHeadingList> = ({
       return (
         <li key={heading.id} className='relative'>
           <UnstyledLink
+            data-toc-id={heading.id}
             className={cn(
               'block text-xs transition-colors duration-150',
               variant === 'mobile' && [
@@ -80,6 +81,7 @@ export const Headings: FC<IHeadingList> = ({
               {heading.items.map((item) => (
                 <li key={item.id}>
                   <UnstyledLink
+                    data-toc-id={item.id}
                     className={cn(
                       'block text-[11px] transition-colors duration-150',
                       variant === 'mobile' && [
@@ -114,10 +116,37 @@ const TabelOfContent: FC<ITabelOfContent> = () => {
   const { asPath } = useRouter();
   const [activeId, setActiveId] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const navRef = useRef<HTMLElement | null>(null);
 
   useIntersectionObserver(setActiveId, asPath);
 
   const { nestedHeadings } = useHeadingsData(asPath);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !activeId) return;
+
+    const activeLink = nav.querySelector<HTMLElement>(
+      `[data-toc-id="${CSS.escape(activeId)}"]`,
+    );
+    if (!activeLink) return;
+
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+    const buffer = 24;
+
+    if (
+      linkRect.top < navRect.top + buffer ||
+      linkRect.bottom > navRect.bottom - buffer
+    ) {
+      const targetScrollTop =
+        nav.scrollTop +
+        (linkRect.top - navRect.top) -
+        nav.clientHeight / 2 +
+        linkRect.height / 2;
+      nav.scrollTo({ top: Math.max(0, targetScrollTop), behavior: 'smooth' });
+    }
+  }, [activeId, nestedHeadings]);
 
   const handleCopyLink = () => {
     if (typeof window === 'undefined') return;
@@ -132,19 +161,29 @@ const TabelOfContent: FC<ITabelOfContent> = () => {
   };
 
   return (
-    <aside className='hidden lg:block'>
+    <aside className='hidden lg:flex lg:flex-col lg:max-h-[calc(100vh-7rem)]'>
       {nestedHeadings.length > 0 && (
-        <div>
-          <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+        <div className='flex flex-col min-h-0'>
+          <p className='shrink-0 font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
             On this page
           </p>
-          <Headings headings={nestedHeadings} activeId={activeId} />
+          <nav
+            ref={navRef}
+            aria-label='Table of contents'
+            className='mt-3 flex-1 min-h-0 overflow-y-auto overscroll-contain pl-0.5 pr-2'
+          >
+            <Headings
+              headings={nestedHeadings}
+              activeId={activeId}
+              className='mt-0'
+            />
+          </nav>
         </div>
       )}
 
       <div
         className={cn(
-          'flex flex-col gap-2 pt-5 text-xs text-muted',
+          'shrink-0 flex flex-col gap-2 pt-5 text-xs text-muted',
           nestedHeadings.length > 0 && 'mt-6 border-t border-hairline',
         )}
       >
