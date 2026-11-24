@@ -13,24 +13,39 @@ type LikeButtonProps = {
   initialLikes?: number;
 };
 
+function formatCompactCount(count: number): string {
+  if (count < 1000) return count.toLocaleString();
+  return new Intl.NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(count);
+}
+
 /** Display-only, no API call. Use in lists when likes are pre-fetched. */
 export function LikeButtonStats({
   likes,
   showIcon = true,
+  compact = false,
   className,
 }: {
   likes: number;
   showIcon?: boolean;
+  compact?: boolean;
   className?: string;
 }) {
+  const fullLabel = `${likes.toLocaleString()} like${likes !== 1 ? 's' : ''}`;
+
   return (
     <span
-      className={cn('flex items-center gap-1 text-sm text-muted', className)}
+      title={fullLabel}
+      aria-label={fullLabel}
+      className={cn(
+        'inline-flex items-center gap-1 whitespace-nowrap text-sm text-muted',
+        className,
+      )}
     >
-      {showIcon && <Heart className='h-3.5 w-3.5' />}
-      <span>
-        {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
-      </span>
+      {showIcon && <Heart className='h-3.5 w-3.5 shrink-0' />}
+      <span>{compact ? formatCompactCount(likes) : fullLabel}</span>
     </span>
   );
 }

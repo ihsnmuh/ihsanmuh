@@ -32,7 +32,11 @@ const Post = (props: BlogPostSingleProps) => {
         isBlog
         templateTitle={frontMatter.title}
         description={frontMatter.description || ''}
-        image={`${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner || ''}`}
+        image={
+          frontMatter.banner
+            ? `${process.env.NEXT_PUBLIC_ROOT}/images/blog/${frontMatter.banner}`
+            : undefined
+        }
         date={publishedAt}
         tags={tags}
         robots={isDraft ? 'noindex, nofollow' : 'follow, index'}
