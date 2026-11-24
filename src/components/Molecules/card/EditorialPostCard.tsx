@@ -30,7 +30,7 @@ const EditorialPostCard = (props: IPost) => {
   const date = publishedAt ? format(new Date(publishedAt), 'MMM dd, yyyy') : '';
 
   return (
-    <Link href={`/blog/${slug}`} className='group block'>
+    <Link href={`/blog/${slug}`} prefetch={false} className='group block'>
       <article
         className={cn(
           'py-5 sm:py-6 -mx-3 px-3 rounded-lg',

@@ -56,6 +56,7 @@ const Header = () => {
         <div className='max-w-4xl mx-auto px-5 sm:px-6 h-16 flex items-center justify-between'>
           <Link
             href='/'
+            prefetch={false}
             className='flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md'
             aria-label='ihsanmuh — Home'
           >
@@ -101,7 +102,6 @@ const Header = () => {
             <button
               onClick={() => window.dispatchEvent(new Event('open-search'))}
               type='button'
-              aria-label='Search'
               className='flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-hairline bg-surface/70 text-muted text-xs font-medium hover:text-ink hover:border-hairline-strong transition-colors duration-150 active:scale-[0.98]'
             >
               <Search size={13} aria-hidden='true' />
