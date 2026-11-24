@@ -7,8 +7,13 @@ export interface IQueryProjectList {
 }
 
 export const queryProjectList = (payload: IQueryProjectList) => {
+  const normalizedPayload = {
+    limit: payload.limit ?? 3,
+    order: payload.order ?? 'desc',
+  };
+
   return {
-    queryKey: PROJECT_LIST,
-    queryFn: async () => fetchProjectList(payload),
+    queryKey: [...PROJECT_LIST, normalizedPayload] as const,
+    queryFn: async () => fetchProjectList(normalizedPayload),
   };
 };
