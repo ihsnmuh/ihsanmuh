@@ -1,60 +1,53 @@
-# Ihsan Muh's Personal Website
+# ihsanmuh — Personal Website
 
-Welcome to my digital garden 🌱 - A place where I share my thoughts, experiences, and journey in technology and beyond.
-
-## About This Site
-
-This is my personal corner of the internet, built with modern web technologies and a passion for clean, efficient code. Here, I share my insights, projects, and the occasional tech tutorial. The site is designed to be fast, accessible, and a pleasure to read.
+Personal portfolio and engineering blog of **Muhammad Ihsan**, a software engineer in Jakarta building full-stack web applications across the React and TypeScript ecosystem.
 
 ## Features
 
-- 📝 **Blog**: Articles about technology, development, and personal experiences
-- 🎯 **Projects**: Showcase of my work and side projects
-- 🎨 **Modern Design**: Clean, responsive interface with dark mode support
-- ⚡ **Performance**: Built for speed and optimal user experience
-- 📱 **Mobile First**: Perfect experience across all devices
-- 🔍 **SEO Optimized**: Automatic sitemap and RSS feed generation
+- **Editorial Design (Light & Dark):** Warm monochrome paper canvas in Light Mode and deep obsidian in Dark Mode (`next-themes`, system-aware).
+- **MDX Blog:** Articles with Shiki syntax highlighting (`rehype-pretty-code`), reading-time estimation, table of contents, view counts, and likes stored in PostgreSQL.
+- **Projects Showcase:** Database-backed project catalog (`Prisma` + PostgreSQL) with category filtering and tech stack chips.
+- **Command Palette (`⌘K`):** Quick navigation and search across pages, articles, and projects.
+- **SEO & Syndication:** Dynamic Open Graph images (`/api/og`), JSON-LD structured data, automatic RSS feed (`/rss.xml`), and sitemap generation (`next-sitemap`).
 
 ## Tech Stack
 
 ### Core
 
-- **Framework**: [Next.js](https://nextjs.org/) 16 - React framework with App Router
-- **Language**: [TypeScript](https://www.typescriptlang.org/) 5 - Type-safe development
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) 3 - Utility-first CSS framework
-- **Database**: [Prisma](https://www.prisma.io/) 5 + PostgreSQL - Type-safe database ORM
-- **State Management**: [TanStack Query](https://tanstack.com/query/latest) v4 - Server state management
+- **Framework:** [Next.js](https://nextjs.org/) 16 (Pages Router) + [React](https://react.dev/) 19
+- **Language:** [TypeScript](https://www.typescriptlang.org/) 5 (strict mode)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) 3 with RGB CSS custom property tokens
+- **Database:** [Prisma](https://www.prisma.io/) 5 + PostgreSQL
+- **Server State:** [TanStack Query](https://tanstack.com/query/latest) v4
 
-### Content & Media
+### Content & UI
 
-- **Content**: [MDX](https://mdxjs.com/) via next-mdx-remote - Enhanced markdown with React components
-- **Syntax Highlighting**: [Shiki](https://shiki.matsu.io/) + rehype-pretty-code
-- **Animations**: [Motion](https://motion.dev/) - Smooth, performant animations
-- **Icons**: [Lucide React](https://lucide.dev/) + React Icons
-- **Themes**: [next-themes](https://github.com/pacocoursey/next-themes) - Dark mode support
+- **Content:** [MDX](https://mdxjs.com/) via `next-mdx-remote` + `gray-matter`
+- **Syntax Highlighting:** [Shiki](https://shiki.style/) + `rehype-pretty-code`
+- **Typography:** `Plus Jakarta Sans` + `JetBrains Mono` via `next/font/google`
+- **Motion & Icons:** [Motion](https://motion.dev/), [Lucide React](https://lucide.dev/), `react-icons`, `@radix-ui/react-tooltip`
+- **Themes:** [next-themes](https://github.com/pacocoursey/next-themes)
 
-### Developer Experience
+### Tooling & Quality
 
-- 🛠 **Code Quality**: ESLint + Prettier for consistent code style
-- 🔍 **Type Safety**: Strict TypeScript configuration
-- 🧪 **Testing**: [Vitest](https://vitest.dev/) + React Testing Library
-- 📦 **Git Hooks**: Husky + lint-staged + Commitlint
-- 🚀 **Fast Development**: Hot reloading and efficient build process
-- 📊 **Bundle Analysis**: Next.js Bundle Analyzer for optimization insights
+- **Lint & Format:** ESLint (with `simple-import-sort` & `unused-imports`) + Prettier
+- **Testing:** [Vitest](https://vitest.dev/) 4 + React Testing Library
+- **Git Hooks:** Husky + `lint-staged` + Commitlint (Conventional Commits)
+- **Bundle Analysis:** `@next/bundle-analyzer`
 
 ## Prerequisites
 
-- **Node.js**: v18.18.2 or higher (v18.x recommended)
-- **Package Manager**: Yarn 4.12.0 (automatically used via `packageManager` field)
-- **Database**: PostgreSQL instance (for Prisma)
-- **Docker** (optional): For containerized development and deployment
+- **Node.js:** v20.x or higher (Docker uses Node 20 Alpine; CI uses Node 22.x)
+- **Package Manager:** Yarn 4.12.0 (managed via Corepack / `packageManager` field)
+- **Database:** PostgreSQL instance
+- **Docker** (optional): For containerized builds and server deployment
 
 ## Getting Started
 
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ihsnmuh/ihsanmuh.git
 cd ihsanmuh
 ```
 
@@ -64,22 +57,21 @@ cd ihsanmuh
 yarn install
 ```
 
-### 3. Set up environment variables
+### 3. Configure environment variables
 
 ```bash
-# Create your own .env based on .env.example
 cp .env.example .env
 ```
 
-Required environment variables:
+Required environment variables (validated at build time by `checkEnvVars.ts`):
 
-- `NEXT_PUBLIC_ROOT` - Root URL of the site
-- `NEXT_PUBLIC_URL` - Public URL
-- `NEXT_PUBLIC_API` - API endpoint
-- `NEXT_PUBLIC_API_PROJECT` - API project identifier
-- `DATABASE_URL` - PostgreSQL connection string
+- `NEXT_PUBLIC_ROOT` — Root URL of the site
+- `NEXT_PUBLIC_URL` — Public domain (e.g., `ihsanmuh.com`)
+- `NEXT_PUBLIC_API` — API base URL
+- `NEXT_PUBLIC_API_PROJECT` — Projects API endpoint
+- `DATABASE_URL` — PostgreSQL connection string
 
-See `.env.example` for the complete list.
+See [`.env.example`](.env.example) for the full template (including optional integrations).
 
 ### 4. Set up the database
 
@@ -87,10 +79,10 @@ See `.env.example` for the complete list.
 # Generate Prisma client
 yarn generate
 
-# Run database migrations (if needed)
+# Run database migrations
 npx prisma migrate dev
 
-# (Optional) Seed the database
+# (Optional) Seed projects from prisma/project.json
 npx prisma db seed
 ```
 
@@ -100,196 +92,98 @@ npx prisma db seed
 yarn dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the site running locally!
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Docker Setup (Alternative)
+## Docker & Deployment
 
-If you prefer running the app with Docker instead of installing Node.js locally:
+All Docker configuration files live in `docker/`:
 
-### Quick Start with Docker
+| File                                    | Purpose                                         |
+| --------------------------------------- | ----------------------------------------------- |
+| `docker/Dockerfile`                     | Multi-stage production build (Node 20 Alpine)   |
+| `docker/docker-compose.server.yml`      | Server deployment with existing host PostgreSQL |
+| `docker/docker-compose.server-full.yml` | Server deployment with PostgreSQL in Docker     |
+| `docker/.dockerignore`                  | Docker build context exclusions                 |
 
-```bash
-# Make sure .env is configured (see step 3 above)
-
-# Start everything (build image + PostgreSQL + auto migrate + seed)
-yarn docker:up
-
-# Access the app at http://localhost:3000
-
-# View logs
-yarn docker:logs
-
-# Stop containers
-yarn docker:down
-
-# Stop and remove database data (clean slate)
-yarn docker:clean
-```
-
-The Docker setup includes:
-
-- **PostgreSQL database** (automatically configured)
-- **Automatic Prisma migrations and seeding**
-- **Volume persistence** for database data
-- **Health checks** for all services
-
-### Build and Run Manually
+Build and run the production image locally:
 
 ```bash
-# Build the production Docker image
+# Build production Docker image
 yarn docker:build
 
-# Run the container (connects to your own PostgreSQL)
+# Run container (uses .env)
 yarn docker:run
 ```
 
-### Docker Files
+In CI/CD:
 
-All Docker-related files are organized in the `docker/` folder:
-
-| File                                    | Purpose                                            |
-| --------------------------------------- | -------------------------------------------------- |
-| `docker/Dockerfile`                     | Multi-stage production build                       |
-| `docker/docker-compose.local.yml`       | Local development (build + PostgreSQL + auto seed) |
-| `docker/docker-compose.server.yml`      | Server deployment with existing host PostgreSQL    |
-| `docker/docker-compose.server-full.yml` | Server deployment with PostgreSQL in Docker        |
-| `docker/.env.example`                   | Environment variables template                     |
-
-See [`docker/README.md`](docker/README.md) for detailed Docker documentation, CI/CD integration, and server setup guides.
+- `.github/workflows/prod-ci.yml` runs formatting, lint, and type checks on pushes/PRs, then builds and pushes the Docker image to Docker Hub on `master`.
+- `.github/workflows/prod-cd.yml` triggers after `Build App` succeeds on `master`, pulls the new image on the server, runs `prisma migrate deploy` + `prisma db seed`, and restarts the container.
 
 ## Available Scripts
 
-### Development
+### Development & Build
 
-- `yarn dev` - Start development server at http://localhost:3000
-- `yarn build` - Build for production (includes RSS + sitemap generation)
-- `yarn build:analyze` - Build with bundle size analysis
-- `yarn start` - Start production server
+- `yarn dev` — Start development server at `http://localhost:3000`
+- `yarn build` — Production build (`next build` + RSS feed + sitemap)
+- `yarn build:analyze` — Production build with bundle analyzer
+- `yarn start` — Start production server
 
 ### Code Quality
 
-- `yarn lint` - Run ESLint on src/
-- `yarn lint:fix` - Fix ESLint issues and format code
-- `yarn format` - Format all files with Prettier
-- `yarn format:check` - Check code formatting without changes
-- `yarn typecheck` - Run TypeScript type checking
+- `yarn lint` — Run ESLint on `src/`
+- `yarn lint:fix` — Auto-fix ESLint issues and run Prettier
+- `yarn format` — Format all files with Prettier
+- `yarn format:check` — Verify Prettier formatting
+- `yarn typecheck` — Run `tsc --noEmit`
 
 ### Testing
 
-- `yarn test` - Run tests with Vitest
-- `yarn test:ui` - Run tests with Vitest UI
-- `yarn test:coverage` - Run tests with coverage report
+- `yarn test` — Run Vitest in watch mode (`yarn test --run` for single run)
+- `yarn test:ui` — Run Vitest interactive UI
+- `yarn test:coverage` — Generate coverage report
 
 ### Database
 
-- `yarn generate` - Generate Prisma client
-- `npx prisma migrate dev` - Create and apply migrations
-- `npx prisma studio` - Open Prisma Studio GUI
-- `npx prisma db seed` - Seed the database
-
-### Docker
-
-- `yarn docker:up` - Start local environment (build + PostgreSQL + migrate + seed)
-- `yarn docker:down` - Stop containers
-- `yarn docker:clean` - Stop and remove volumes (clean slate)
-- `yarn docker:logs` - View app container logs
-- `yarn docker:build` - Build production Docker image
-- `yarn docker:run` - Run production container
+- `yarn generate` — Generate Prisma client
+- `npx prisma migrate dev` — Create and apply migrations
+- `npx prisma studio` — Open Prisma Studio GUI
+- `npx prisma db seed` — Seed database from `prisma/project.json`
 
 ## Project Structure
 
-```
+```text
 ihsanmuh/
 ├── src/
-│   ├── components/         # Reusable UI components (Atoms/Molecules/Organism)
-│   ├── containers/         # Page-level compositions
-│   ├── contents/           # Blog posts and MDX content
-│   ├── constant/           # Site configuration and constants
-│   ├── helpers/            # Utility functions
-│   ├── lib/                # Core functionality (Prisma client, utils)
-│   ├── pages/              # Next.js pages and API routes
-│   │   └── api/            # API endpoints
-│   ├── queries/            # TanStack Query hooks
-│   ├── services/           # External API services
-│   ├── styles/             # Global styles
-│   └── types/              # TypeScript type definitions
-├── docker/                 # Docker configuration files
-│   ├── Dockerfile          # Multi-stage production build
-│   ├── docker-compose.local.yml    # Local dev (app + PostgreSQL)
-│   ├── docker-compose.server.yml   # Server deploy (host DB)
-│   └── docker-compose.server-full.yml # Server deploy (Docker DB)
-├── prisma/
-│   ├── schema.prisma       # Database schema
-│   └── seed.ts             # Database seeding script
-├── public/                 # Static assets
-└── scripts/                # Build and utility scripts
+│   ├── __tests__/          # Vitest unit & helper tests mirroring src/
+│   ├── components/         # UI components (Atoms / Molecules / Organism)
+│   ├── constant/           # Static site data, experiences, principles, query keys
+│   ├── containers/         # Page-level compositions (home, blog, about, project, layout)
+│   ├── contents/           # MDX blog posts
+│   ├── helpers/            # Hooks and pure utility helpers
+│   ├── lib/                # Prisma singleton, MDX loader, structured data, cn()
+│   ├── pages/              # Next.js Pages Router views & API routes (src/pages/api/*)
+│   ├── queries/            # TanStack Query key/fn configurations
+│   ├── services/           # API fetch wrappers
+│   ├── styles/             # Global CSS & semantic color tokens
+│   └── types/              # Shared TypeScript interfaces and types
+├── docker/                 # Production Dockerfile & server Compose configs
+├── prisma/                 # schema.prisma, migrations/, project.json, seed.ts
+├── public/                 # Static assets, images, favicons
+└── scripts/                # Build scripts (RSS generation)
 ```
 
-### Import Aliases
+Path alias `@/*` maps to `src/*`.
 
-The project uses TypeScript path aliases for cleaner imports:
+## Conventions & Documentation
 
-```typescript
-import { Component } from '@/components/Component';
-import { helper } from '@/helpers/utils';
-```
-
-The `@/*` alias maps to `src/*`.
-
-## Code Style & Conventions
-
-This project enforces strict code quality standards:
-
-### Formatting
-
-- **Prettier**: Automatic code formatting (single quotes, semicolons, 2-space tabs)
-- **ESLint**: Linting with auto-sort imports and unused import detection
-- All code must pass `yarn format:check` and `yarn lint`
-
-### Commits
-
-The project uses [Conventional Commits](https://www.conventionalcommits.org/) enforced by Commitlint:
-
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `style:` - Code style changes (formatting, etc.)
-- `refactor:` - Code refactoring
-- `test:` - Test updates
-- `chore:` - Maintenance tasks
-- `ci:` - CI/CD changes
-- `perf:` - Performance improvements
-- `revert:` - Revert previous changes
-
-### Git Hooks
-
-Husky enforces quality at commit time:
-
-- **pre-commit**: Runs Prettier and ESLint on staged files via lint-staged
-- **commit-msg**: Validates commit message format
-- **pre-push**: Runs production build to catch errors
-
-### TypeScript
-
-- Strict mode enabled
-- Avoid `any` types
-- Prefix unused variables with `_`
-- Use `type` for props/unions, `interface` for extendable objects
-
-## Contributing
-
-While this is a personal project, contributions follow these guidelines:
-
-1. Fork and create a feature branch
-2. Follow the code style conventions above
-3. Write meaningful commit messages
-4. Ensure all checks pass: `yarn typecheck && yarn lint && yarn test`
-5. Submit a pull request
+- **Design System:** See [`DESIGN.md`](DESIGN.md) and [`CONTEXT.md`](CONTEXT.md) for color tokens, typography, and layout rules.
+- **Agent & Contributor Guidelines:** See [`AGENTS.md`](AGENTS.md) for coding standards, import sorting, and workflow rules.
+- **Git Hooks (Husky):**
+  - `pre-commit`: runs `yarn format` and `yarn lint-staged` (Prettier on staged files)
+  - `commit-msg`: enforces [Conventional Commits](https://www.conventionalcommits.org/) via Commitlint
+  - `pre-push`: runs `yarn build`
 
 ## License
 
 This project is private and not licensed for public use. All rights reserved.
-
----
-
-Built with ❤️ using Next.js, TypeScript, and modern web technologies.

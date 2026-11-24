@@ -1,32 +1,34 @@
 # Agent Guidelines (Repo: ihsanmuh)
 
-This repo is a Next.js 16 + TypeScript personal site with Tailwind CSS, MDX content, and Prisma (Postgres).
-Supports both local development and Docker-based development.
+This repo is a Next.js 16 (Pages Router) + React 19 + TypeScript personal site with Tailwind CSS, MDX content, and Prisma (PostgreSQL).
+Supports both local development and Docker-based deployment.
 No Cursor rules (`.cursor/rules/`, `.cursorrules`) or Copilot rules (`.github/copilot-instructions.md`) exist.
 
 ## Quick Commands
 
 - Install: `yarn`
 - Dev server: `yarn dev` (http://localhost:3000)
-- Production build: `yarn build` (runs `next build` + `generate-rss` + `next-sitemap`)
+- Production build: `yarn build` (runs `next build` + `scripts/generate-rss.mjs` + `next-sitemap`)
+- Bundle analysis: `yarn build:analyze`
 - Start built app: `yarn start`
 - Lint: `yarn lint` (runs `eslint src/`)
 - Lint + auto-fix: `yarn lint:fix`
 - Format: `yarn format` (Prettier write)
 - Format check: `yarn format:check`
-- Type check: `yarn typecheck` (runs `tsc --noEmit`)
+- Type check: `yarn typecheck` (runs `tsc -p tsconfig.json --noEmit`)
 - Prisma client: `yarn generate`
 
 ### Docker Commands
 
 - Build image locally: `yarn docker:build`
 - Run container locally: `yarn docker:run`
-- CI/CD builds and pushes to Docker Hub automatically on `master`
-- See `docker/README.md` for detailed Docker documentation
+- Docker files live in `docker/` (`Dockerfile`, `docker-compose.server.yml`, `docker-compose.server-full.yml`).
+- CI/CD builds and pushes to Docker Hub automatically on `master`, then deploys via SSH.
 
 ## Tests (Vitest)
 
-- Run all tests: `yarn test`
+- Run all tests (watch): `yarn test`
+- Run all tests once: `yarn test --run`
 - Run a single test file: `yarn vitest src/__tests__/helpers/formatDate.test.ts`
 - Run tests matching a name: `yarn vitest -t "should format date"`
 - Interactive UI: `yarn test:ui`
@@ -40,15 +42,15 @@ No Cursor rules (`.cursor/rules/`, `.cursorrules`) or Copilot rules (`.github/co
 - Builds fail early if required env vars are missing (see `checkEnvVars.ts`).
 - Required: `NEXT_PUBLIC_ROOT`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_API`, `NEXT_PUBLIC_API_PROJECT`, `DATABASE_URL`
 - Template: `.env.example`
-- CI/Prod: GitHub workflow writes `.env` from `secrets.ENV_PROD` then runs `yarn build`.
+- CI/Prod: GitHub workflow writes `.env` from `secrets.ENV_PROD` then builds the Docker image.
 - Never commit real secrets; update `.env.example` when adding vars.
 
 ## Node / Package Manager
 
 - Package manager: Yarn 4.12.0 (`.yarnrc.yml` uses `node-modules` linker)
-- CI: Node 22.x with corepack enabled
+- Node.js: v20+ required
+- CI: Node 22.x with Corepack enabled
 - Docker: Node 20.x Alpine
-- Local pin: `.npmrc` specifies `v18.18.2`
 
 ## Lint / Format Details
 
@@ -78,33 +80,36 @@ No Cursor rules (`.cursor/rules/`, `.cursorrules`) or Copilot rules (`.github/co
 - Generate client: `yarn generate`
 - Migrate: `npx prisma migrate dev`
 - Studio: `npx prisma studio`
-- Seed: `npx prisma db seed`
-- Schema: `prisma/schema.prisma` (Models: `Projects`, `PostViews`)
+- Seed: `npx prisma db seed` (reads `prisma/project.json`)
+- Schema: `prisma/schema.prisma` (Models: `Projects`, `PostViews`, `PostLikes`)
 
 ## Git Hooks / CI
 
 Husky hooks (`.husky/`):
 
-- **pre-commit:** `yarn lint-staged` (runs Prettier on staged `*.{js,jsx,ts,tsx,html,css,json}`)
+- **pre-commit:** `yarn format` + `yarn lint-staged` (runs Prettier on staged `*.{js,jsx,ts,tsx,html,css,json}`)
 - **commit-msg:** commitlint (conventional commits)
 - **pre-push:** `yarn build`
 - Commitlint types: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `ci`, `test`, `revert`, `perf`, `vercel`
 
-CI pipeline (`.github/workflows/prod-ci.yml`): format:check, lint, typecheck, then Docker build+push on master.
+GitHub Actions workflows:
+
+- `.github/workflows/prod-ci.yml`: `format:check`, `lint`, `typecheck` on pushes/PRs, then Docker build + push on `master`.
+- `.github/workflows/prod-cd.yml`: SSH deploy on `master` after `Build App` succeeds (pull image, `prisma migrate deploy`, `prisma db seed`, restart container).
 
 ## Project Structure
 
-- `src/pages/*` -- Next.js pages + API routes (`src/pages/api/*`)
+- `src/pages/*` -- Next.js Pages Router views + API routes (`src/pages/api/*`)
 - `src/components/*` -- UI components (Atoms / Molecules / Organism)
 - `src/containers/*` -- Page-level compositions (home, blog, about, project, layout)
 - `src/lib/*` -- Core utilities (prisma client, MDX server helpers, utils, structured data)
-- `src/helpers/*` -- Reusable hooks and pure helpers (formatDate, readingTime, etc.)
+- `src/helpers/*` -- Reusable hooks and pure helpers (formatDate, readingTime, useViewCounter, usePostStats, etc.)
 - `src/services/*` -- API fetch wrappers
 - `src/queries/*` -- TanStack Query configurations (queryKey + queryFn)
 - `src/constant/*` -- Static data and query key constants
-- `src/contents/*` -- MDX blog posts and project data
+- `src/contents/*` -- MDX blog posts
 - `src/types/*` -- Shared TypeScript types and interfaces
-- `src/__tests__/*` -- Vitest test files mirroring src/ structure
+- `src/__tests__/*` -- Vitest test files mirroring `src/` structure
 
 ## Code Style Guidelines
 
@@ -154,10 +159,10 @@ CI pipeline (`.github/workflows/prod-ci.yml`): format:check, lint, typecheck, th
 
 ### React / Next.js Patterns
 
-- Use `next/dynamic` for heavy components (e.g., ThemeSwitcher in Header).
-- Use `next/font` for font loading (Inter + Poppins configured in Layout).
+- Use `next/dynamic` for heavy or client-only components (e.g., `ThemeSwitcher` in `Header`, `HeroGlyphCanvas` in `Hero`).
+- Use `next/font/google` for font loading (`Plus Jakarta Sans` + `JetBrains Mono` configured in `src/containers/layout/Layout.tsx`).
 - Use `React.forwardRef` for link/button wrapper components.
-- Prefer shared link components in `src/components/Atoms/links/*` (UnstyledLink handles external links with `target="_blank"` + `rel="noopener noreferrer"`).
+- Prefer shared link components in `src/components/Atoms/links/*` (`UnstyledLink` handles external links with `target="_blank"` + `rel="noopener noreferrer"`).
 - Use TanStack Query v4 for server-state; query configs live in `src/queries/`.
 
 ### Prisma Client Usage
@@ -172,16 +177,8 @@ CI pipeline (`.github/workflows/prod-ci.yml`): format:check, lint, typecheck, th
 - If you touch DB/schema: run `yarn generate` and create migrations with `npx prisma migrate dev`.
 - Add comments only for function/component documentation, not inline explanations.
 
-## Agent skills
+## Related Docs
 
-### Issue tracker
-
-Issues and specs live in GitHub Issues. See [`docs/agents/issue-tracker.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/issue-tracker.md).
-
-### Triage labels
-
-The triage skill maps canonical roles to label strings. See [`docs/agents/triage-labels.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/triage-labels.md).
-
-### Domain docs
-
-Single-context repo layout with `CONTEXT.md` and ADRs. See [`docs/agents/domain.md`](file:///Users/a2304/Documents/personal/ihsanmuh/docs/agents/domain.md).
+- Design system tokens & rules: [`DESIGN.md`](DESIGN.md)
+- Domain & ubiquitous language: [`CONTEXT.md`](CONTEXT.md)
+- Issues and specs: GitHub Issues
