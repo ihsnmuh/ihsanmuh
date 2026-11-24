@@ -21,7 +21,7 @@ const Blog = (props: IBlogPage) => {
     <>
       <Seo
         templateTitle='Writing'
-        description='Articles and engineering notes on frontend architecture, React, Next.js, TypeScript, and web performance by Muhammad Ihsan.'
+        description='Articles and engineering notes on software architecture, React, Next.js, TypeScript, and web performance by Muhammad Ihsan.'
         tags={['writing', 'blog']}
         breadcrumbs={[
           { name: 'Home', path: '/' },

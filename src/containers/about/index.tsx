@@ -13,7 +13,7 @@ import { Experiences } from '@/constant/experience';
 
 const QUICK_FACTS = [
   { label: 'Location', value: 'Jakarta, Indonesia' },
-  { label: 'Focus', value: 'Frontend & Full-stack' },
+  { label: 'Role', value: 'Software Engineer' },
   { label: 'Experience', value: '4+ years' },
   { label: 'Status', value: 'Open to roles', highlight: true },
 ];
@@ -116,8 +116,7 @@ const AboutContainer = () => {
           <div className='space-y-4 text-base text-body leading-relaxed'>
             <p>
               I&apos;m a software engineer with 4+ years of experience building
-              web applications, with a strong foundation on the frontend. Most
-              of that time was spent at{' '}
+              end-to-end web applications. Most of that time was spent at{' '}
               <UnderlineLink
                 href='https://femaledaily.com/'
                 className='text-ink font-medium underline decoration-hairline-strong hover:decoration-accent underline-offset-4'
@@ -149,7 +148,7 @@ const AboutContainer = () => {
             </p>
             <p>
               I write about what I build and learn here, mostly web development
-              and frontend engineering. Feel free to reach out anytime.
+              and software engineering. Feel free to reach out anytime.
             </p>
           </div>
 
@@ -262,7 +261,7 @@ const AboutContainer = () => {
           </h2>
           <p className='text-sm sm:text-base text-body max-w-md mx-auto mb-6'>
             If you have a role, a consulting project, or a question about
-            frontend work, send me a note.
+            software engineering, send me a note.
           </p>
           <div className='flex items-center justify-center gap-3 flex-wrap'>
             <a

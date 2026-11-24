@@ -6,7 +6,7 @@ const siteUrl = process.env.NEXT_PUBLIC_URL
   : 'https://ihsanmuh.com';
 
 const defaultMeta = {
-  title: 'Muhammad Ihsan | Frontend & Software Engineer',
+  title: 'Muhammad Ihsan | Software Engineer',
   siteName: 'Muhammad Ihsan',
   description:
     'Software engineer in Jakarta with 4+ years of experience building React, Next.js, and TypeScript web applications.',
