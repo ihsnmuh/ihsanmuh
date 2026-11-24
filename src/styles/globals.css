@@ -14,12 +14,12 @@
   --rgb-hairline: 231 229 224; /* #E7E5E0 */
   --rgb-hairline-strong: 214 211 205; /* #D6D3CD */
 
-  --rgb-accent: 47 128 250; /* #2F80FA Brand Blue */
-  --rgb-accent-hover: 29 108 232; /* #1D6CE8 */
+  --rgb-accent: 26 99 216; /* #1A63D8 Brand Blue (WCAG AA+) */
+  --rgb-accent-hover: 21 82 184; /* #1552B8 */
   --rgb-accent-soft: 235 243 255; /* #EBF3FF */
 
-  --rgb-cta: 47 128 250; /* #2F80FA Brand Blue CTA */
-  --rgb-cta-hover: 29 108 232; /* #1D6CE8 */
+  --rgb-cta: 26 99 216; /* #1A63D8 Brand Blue CTA (WCAG AA+) */
+  --rgb-cta-hover: 21 82 184; /* #1552B8 */
   --rgb-cta-fg: 255 255 255; /* #FFFFFF */
 
   --rgb-code-bg: 24 24 27; /* #18181B */

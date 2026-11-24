@@ -45,7 +45,7 @@ const ShowcaseProjectCard = (props: IProject) => {
             }}
             src={`/images/project/${image}.png`}
             alt={title}
-            sizes='(max-width: 768px) 100vw, 50vw'
+            sizes='(max-width: 768px) 100vw, 420px'
             fill
             style={{ objectFit: 'cover' }}
             useSkeleton
@@ -69,7 +69,7 @@ const ShowcaseProjectCard = (props: IProject) => {
                 href={github}
                 target='_blank'
                 rel='noopener noreferrer'
-                aria-label='GitHub repository'
+                aria-label={`${title} GitHub repository`}
                 className='p-1.5 rounded-md hover:text-ink hover:bg-subtle transition-colors duration-150'
                 onClick={(e) => e.stopPropagation()}
               >
@@ -81,7 +81,7 @@ const ShowcaseProjectCard = (props: IProject) => {
                 href={website}
                 target='_blank'
                 rel='noopener noreferrer'
-                aria-label='Live website'
+                aria-label={`${title} live website`}
                 className='p-1.5 rounded-md hover:text-ink hover:bg-subtle transition-colors duration-150'
                 onClick={(e) => e.stopPropagation()}
               >
