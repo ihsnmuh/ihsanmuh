@@ -12,24 +12,39 @@ type ViewCounterProps = {
   initialViews?: number;
 };
 
+function formatCompactCount(count: number): string {
+  if (count < 1000) return count.toLocaleString();
+  return new Intl.NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(count);
+}
+
 /** Display-only, no API call. Use in lists when views are pre-fetched. */
 export function ViewCounterStats({
   views,
   showIcon = true,
+  compact = false,
   className,
 }: {
   views: number;
   showIcon?: boolean;
+  compact?: boolean;
   className?: string;
 }) {
+  const fullLabel = `${views.toLocaleString()} view${views !== 1 ? 's' : ''}`;
+
   return (
     <span
-      className={cn('flex items-center gap-1 text-sm text-gray-600', className)}
+      title={fullLabel}
+      aria-label={fullLabel}
+      className={cn(
+        'inline-flex items-center gap-1 whitespace-nowrap text-sm text-muted',
+        className,
+      )}
     >
-      {showIcon && <Eye className='h-4 w-4' />}
-      <span>
-        {views.toLocaleString()} view{views !== 1 ? 's' : ''}
-      </span>
+      {showIcon && <Eye className='h-3.5 w-3.5 shrink-0' />}
+      <span>{compact ? formatCompactCount(views) : fullLabel}</span>
     </span>
   );
 }
