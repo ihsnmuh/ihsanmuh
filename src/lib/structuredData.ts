@@ -70,6 +70,10 @@ export const getPersonSchema = (): PersonSchema => ({
     'https://instagram.com/dailyjuniordev',
   ],
   jobTitle: 'Software Engineer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Bank Rakyat Indonesia (BRI)',
+  },
   description:
     'Software engineer in Jakarta with 4+ years of experience building full-stack web applications across the React and TypeScript ecosystem.',
 });
