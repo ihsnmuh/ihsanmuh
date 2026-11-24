@@ -71,7 +71,15 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const slugs = allPosts
     .map((p) => p.slug)
     .filter((s): s is string => Boolean(s));
-  const viewsLikes = await getViewsAndLikesForSlugs(slugs);
+  const projectQuery = queryProjectList({ limit: 3, order: 'desc' });
+
+  const [viewsLikes] = await Promise.all([
+    getViewsAndLikesForSlugs(slugs),
+    queryClient.prefetchQuery({
+      queryKey: projectQuery.queryKey,
+      queryFn: () => getProjectsFromDb({ limit: 3, order: 'desc' }),
+    }),
+  ]);
 
   const allPostsWithStats: IPost[] = allPosts.map((post) => {
     const slug = post.slug as string;
@@ -81,13 +89,6 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       views: stats?.views ?? 0,
       likes: stats?.likes ?? 0,
     } as IPost;
-  });
-
-  // * prefetch data project list directly from DB on SSR
-  const projectQuery = queryProjectList({ limit: 3, order: 'desc' });
-  await queryClient.prefetchQuery({
-    queryKey: projectQuery.queryKey,
-    queryFn: () => getProjectsFromDb({ limit: 3, order: 'desc' }),
   });
 
   return {
