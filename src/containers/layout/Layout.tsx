@@ -44,7 +44,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           plusJakarta.className,
           plusJakarta.variable,
           jetbrainsMono.variable,
-          'bg-canvas text-body min-h-screen flex flex-col selection:bg-accent-soft selection:text-ink transition-colors duration-200',
+          'bg-canvas text-body min-h-screen flex flex-col overflow-x-clip selection:bg-accent-soft selection:text-ink transition-colors duration-200',
         )}
       >
         <a

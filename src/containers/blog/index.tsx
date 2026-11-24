@@ -140,7 +140,7 @@ const BlogContainer = (props: IBlogContainer) => {
           Articles &amp; Notes
         </h1>
         <p className='mt-3 text-base leading-relaxed text-body max-w-2xl'>
-          Writing helps me think clearly. Here I share notes on frontend
+          Writing helps me think clearly. Here I share notes on software
           architecture, web performance, and lessons from day-to-day engineering
           work.
         </p>

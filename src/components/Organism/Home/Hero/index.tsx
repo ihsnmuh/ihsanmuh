@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import dynamic from 'next/dynamic';
 
 import { LoaderView } from '@/lib/loader';
 
@@ -11,6 +12,11 @@ import {
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
 
+const HeroGlyphCanvas = dynamic(
+  () => import('@/components/Atoms/canvas/HeroGlyphCanvas'),
+  { ssr: false },
+);
+
 const Hero = () => {
   const show = LoaderView();
 
@@ -19,11 +25,15 @@ const Hero = () => {
       className='relative text-body pt-6 sm:pt-12'
       data-fade-in={show ? 'true' : 'false'}
     >
+      <div className='pointer-events-none absolute -top-24 sm:-top-28 -bottom-16 left-1/2 -translate-x-1/2 w-screen'>
+        <HeroGlyphCanvas />
+      </div>
+
       <motion.div
         variants={staggerContainerVariants}
         initial={false}
         animate='visible'
-        className='flex flex-col gap-6 max-w-3xl'
+        className='relative z-10 flex flex-col gap-6 max-w-3xl'
       >
         <motion.div
           variants={staggerItemVariants}
@@ -37,7 +47,7 @@ const Hero = () => {
           variants={staggerItemVariants}
           className='font-primary font-bold text-4xl sm:text-5xl lg:text-[56px] leading-[1.08] tracking-tight text-ink'
         >
-          Frontend engineer building fast,{' '}
+          Software engineer building fast,{' '}
           <span className='text-accent'>maintainable web apps</span>.
         </motion.h1>
 
@@ -49,8 +59,8 @@ const Hero = () => {
           <span className='font-semibold text-ink'>Muhammad Ihsan</span>, a
           software engineer in Jakarta with{' '}
           <span className='font-medium text-ink'>4+ years</span> of experience.
-          I build React, Next.js, and TypeScript applications, and I&apos;m
-          expanding into full-stack work.
+          I build full-stack web applications with React, Next.js, TypeScript,
+          and modern backend tooling.
         </motion.p>
 
         <motion.div variants={staggerItemVariants} className='pt-2'>
@@ -62,7 +72,7 @@ const Hero = () => {
         initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: EDITORIAL_EASE }}
-        className='mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
+        className='relative z-10 mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
       >
         <HeroTech />
 

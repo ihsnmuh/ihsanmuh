@@ -20,3 +20,366 @@ Mengulang bagi gw adalah momen untuk:
 - **Menghilangkan “Magic”**: Memahami apa yang sebenernya terjadi di balik layar agar kita tidak menebak-nebak saat melakukan debugging.
 - **Efisiensi code:** Dengan memahami konsep seperti _purity_ dan _side effects_, kita bisa menulis kode yang lebih bersih, minim _bug_, dan lebih _maintainable_.
 - **Prepare for new thing**: Memahami fundamental yang kuat memudahkan kita untuk mengadopsi teknologi baru.
+
+Untuk bahan _refresh_ kali ini, gw merangkum konsep-konsep inti React dari video [Every React Concept Explained in 12 Minutes](https://www.youtube.com/watch?v=wIyHSOugGGw). Kalau kalian lebih suka nonton langsung, videonya bisa diputar di bawah ini.
+
+<LiteYouTubeEmbed
+  id='wIyHSOugGGw'
+  poster='maxresdefault'
+  title='Every React Concept Explained in 12 Minutes'
+  noCookie={true}
+  aspectHeight={9}
+  aspectWidth={16}
+/>
+
+## 1. Fondasi UI: Components, JSX, dan Fragments
+
+### Components & Component Tree
+
+Di React, seluruh tampilan UI dibangun dari potongan-potongan kecil yang independen dan bisa dipakai ulang, namanya **Component**. Bentuknya sederhana: fungsi JavaScript biasa yang me-return tampilan UI.
+
+Component ini bisa saling dibungkus satu sama lain (parent dan child), lalu membentuk struktur pohon yang disebut **Component Tree**. Misalnya `App` membungkus `Header`, `Main`, dan `Footer`, lalu di dalam `Main` ada `ArticleList` dan `ArticleCard`.
+
+```tsx
+function Greeting() {
+  return <h1>Halo, dunia!</h1>;
+}
+
+function App() {
+  return (
+    <main>
+      <Greeting />
+    </main>
+  );
+}
+```
+
+### JSX
+
+Kode yang mirip HTML di dalam fungsi tadi namanya **JSX (JavaScript XML)**. Di balik layar, JSX bukan HTML beneran, melainkan syntax sugar yang di-compile menjadi pemanggilan fungsi JavaScript.
+
+Karena pada dasarnya masih JavaScript, kita bisa menyisipkan variabel atau ekspresi JavaScript langsung ke dalam markup menggunakan kurung kurawal `{}`.
+
+```tsx
+function UserGreeting() {
+  const name = 'Ihsan';
+  return <p>Selamat datang, {name.toUpperCase()}!</p>;
+}
+```
+
+### Fragments
+
+Setiap component di React wajib me-return satu root element. Masalahnya, kadang kita cuma mau merender dua elemen sejajar tanpa menambah `<div>` baru yang bikin DOM makin penuh. Solusinya pakai **Fragment** (`<>...</>`), pembungkus transparan yang tidak ikut dirender ke DOM.
+
+```tsx
+function ProfileHeader() {
+  return (
+    <>
+      <h2>Ihsan</h2>
+      <p>Software Engineer</p>
+    </>
+  );
+}
+```
+
+## 2. Mengalirkan Data: Props, Children, Conditional Rendering, dan Lists
+
+### Props
+
+Supaya component tidak statis dan bisa dipakai ulang dengan data berbeda, kita kirim data dari parent ke child lewat **Props** (properties). Props sifatnya _read-only_, jadi child component tidak boleh mengubah nilai props yang diterimanya.
+
+```tsx
+type CardProps = {
+  title: string;
+  views: number;
+};
+
+function ArticleCard({ title, views }: CardProps) {
+  return (
+    <article>
+      <h3>{title}</h3>
+      <span>{views} views</span>
+    </article>
+  );
+}
+```
+
+### Children & Composition
+
+Selain props biasa, React punya prop khusus bernama `children`. Prop ini berisi apa pun yang kita selipkan di antara tag pembuka dan penutup sebuah component. Pola ini disebut **Composition** dan enak banget dipakai buat bikin layout wrapper seperti modal, card, atau section container.
+
+```tsx
+function Card({ children }: { children: React.ReactNode }) {
+  return <div className='rounded-lg border p-4'>{children}</div>;
+}
+
+// Pemakaian:
+<Card>
+  <h3>Judul</h3>
+  <p>Isi konten di dalam card.</p>
+</Card>;
+```
+
+### Conditional Rendering
+
+Untuk menampilkan UI berdasarkan kondisi tertentu, kita langsung pakai ekspresi JavaScript biasa di dalam JSX, seperti ternary operator (`? :`) atau logical AND (`&&`).
+
+```tsx
+function LoginStatus({ isLoggedIn }: { isLoggedIn: boolean }) {
+  return (
+    <div>
+      {isLoggedIn ? <p>Sudah login</p> : <p>Silakan login dulu</p>}
+      {isLoggedIn && <button>Logout</button>}
+    </div>
+  );
+}
+```
+
+### Lists & Keys
+
+Saat merender array data, kita biasa memakai `.map()`. Setiap item di dalam list wajib diberi prop `key` yang unik dan stabil (misalnya `id` dari database, bukan index array kalau datanya bisa berubah urutan). `key` ini dipakai React untuk melacak item mana yang berubah, ditambah, atau dihapus.
+
+```tsx
+const tags = [
+  { id: '1', name: 'React' },
+  { id: '2', name: 'TypeScript' },
+];
+
+function TagList() {
+  return (
+    <ul>
+      {tags.map((tag) => (
+        <li key={tag.id}>{tag.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## 3. Interaktivitas & Cara React Menampilkan Halaman
+
+Bagian ini yang paling kena sama pertanyaan interview di awal tadi: _gimana sih sebenernya proses React menampilkan dan mengupdate halaman?_
+
+### State & Event Handlers
+
+Props datang dari luar, sedangkan **State** adalah memori internal milik component yang nilainya bisa berubah seiring waktu. Biasanya state berubah karena interaksi user yang ditangani oleh **Event Handler** seperti `onClick` atau `onChange`.
+
+```tsx
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount((prev) => prev + 1)}>
+      Diklik {count} kali
+    </button>
+  );
+}
+```
+
+### Rendering & Declarative UI
+
+React menggunakan pendekatan **Declarative UI**. Kita tidak perlu memanipulasi DOM secara manual (seperti `document.getElementById(...).innerText = ...`). Tugas kita cukup mendeskripsikan tampilan UI seharusnya seperti apa untuk state tertentu, lalu biarkan React yang mengurus perubahan DOM-nya saat state berubah.
+
+### Virtual DOM, Reconciliation, dan Commit
+
+Saat state atau props berubah, ada tiga tahapan utama yang terjadi di balik layar:
+
+1. **Render (Virtual DOM)**: React memanggil ulang fungsi component dan menghasilkan representasi pohon UI baru di memori (Virtual DOM).
+2. **Reconciliation (Diffing)**: React membandingkan Virtual DOM yang baru dengan versi sebelumnya untuk mencari bagian mana saja yang benar-benar berubah.
+3. **Commit**: React hanya menerapkan perubahan yang diperlukan ke Real DOM browser, bukan mengganti seluruh halaman dari nol.
+
+### State Updates Are Not Instant
+
+Satu hal yang sering bikin bingung pemula: memanggil `setState` tidak langsung mengubah nilai variabel state di baris kode berikutnya. React menjadwalkan update secara _asynchronous_ dan menggabungkan beberapa update sekaligus (_batching_) supaya tidak terjadi render berulang-ulang yang tidak perlu.
+
+Kalau nilai state baru bergantung pada nilai sebelumnya, biasakan pakai _updater function_:
+
+```tsx
+// Kurang aman kalau dipanggil berurutan dalam satu event:
+setCount(count + 1);
+
+// Lebih aman karena selalu mengambil nilai terbaru:
+setCount((prevCount) => prevCount + 1);
+```
+
+## 4. Menjaga Kode Tetap Predictable
+
+### Purity (Pure Components)
+
+React mengasumsikan component kita adalah **Pure Function**: kalau diberi input (props dan state) yang sama, hasilnya (JSX) harus selalu sama, dan tidak mengubah variabel di luar scope-nya saat proses render berlangsung.
+
+Kalau component tidak pure, bug aneh bakal sering muncul (itulah kenapa `React.StrictMode` sengaja merender component dua kali di mode development untuk membantu menangkap bug _impurity_).
+
+### Forms & Controlled Inputs
+
+Di HTML biasa, elemen `<input>` menyimpan nilainya sendiri di dalam DOM. Di React, kita umumnya memakai pola **Controlled Input**: nilai input disimpan di state React (`value={text}`) dan diupdate lewat `onChange`. Dengan begitu, state React menjadi satu-satunya _source of truth_ untuk data form.
+
+```tsx
+function SearchInput() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <input
+      type='text'
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder='Cari artikel...'
+    />
+  );
+}
+```
+
+### Lifting State Up
+
+Ketika dua component yang sejajar (sibling) perlu berbagi data state yang sama, pindahkan state tersebut ke parent terdekat yang membungkus keduanya, lalu kirim nilai dan fungsi pengubahnya lewat props. Pola ini disebut **Lifting State Up**.
+
+## 5. Hooks & Lifecycle Component
+
+### Hooks & Custom Hooks
+
+**Hooks** adalah fungsi spesial dari React (diawali kata `use`) yang memungkinkan function component mengakses fitur React seperti state, lifecycle, dan context.
+
+Kalau kita punya logika stateful yang dipakai berulang di beberapa component, kita bisa mengekstraknya menjadi **Custom Hook**, yaitu fungsi biasa yang namanya diawali `use` dan memanggil hooks lain di dalamnya.
+
+```tsx
+function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue);
+  const toggle = () => setValue((prev) => !prev);
+  return { value, toggle };
+}
+```
+
+### Component Lifecycle
+
+Setiap component melewati tiga fase hidup:
+
+1. **Mounting**: Component pertama kali dibuat dan masuk ke DOM.
+2. **Updating**: Component di-render ulang karena props atau state berubah.
+3. **Unmounting**: Component dihapus dari DOM.
+
+### useEffect, Side Effects, dan Cleanup Functions
+
+Proses render harus tetap pure. Jadi, segala sesuatu yang berinteraksi dengan dunia luar di luar proses render (seperti fetch API, set timer, akses `localStorage`, atau pasang event listener di `window`) disebut **Side Effect** dan ditaruh di dalam `useEffect`.
+
+Array dependency di argumen kedua menentukan kapan effect dijalankan ulang:
+
+- `[]` (array kosong): jalan sekali saat mount.
+- `[dep]`: jalan saat mount dan setiap kali `dep` berubah.
+
+Kalau effect membuat subscription, interval, atau event listener, selalu kembalikan **Cleanup Function** agar tidak terjadi memory leak saat component unmount atau sebelum effect dijalankan ulang.
+
+```tsx
+import { useEffect } from 'react';
+
+function WindowResizeLogger() {
+  useEffect(() => {
+    const handleResize = () => console.log(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return null;
+}
+```
+
+### useRef
+
+`useRef` punya dua kegunaan utama:
+
+1. Menyimpan nilai yang tetap bertahan antar render, tapi perubahannya **tidak memicu re-render** (berbeda dengan `useState`).
+2. Mengakses elemen DOM secara langsung, misalnya untuk memfokuskan `<input>` atau mengukur tinggi elemen.
+
+```tsx
+import { useRef } from 'react';
+
+function FocusInput() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <input ref={inputRef} type='text' />
+      <button onClick={() => inputRef.current?.focus()}>Focus</button>
+    </>
+  );
+}
+```
+
+## 6. Mengelola State yang Lebih Kompleks
+
+### Prop Drilling
+
+Saat aplikasi makin besar, sering kali kita harus meneruskan props melewati banyak layer component perantara yang sebenarnya tidak butuh data tersebut. Masalah ini disebut **Prop Drilling** dan bikin kode jadi berisik serta susah dirawat.
+
+### Context & useContext
+
+Untuk mengatasi prop drilling pada data yang sifatnya global (seperti tema dark/light, bahasa, atau user yang sedang login), kita bisa pakai **Context API**. Parent menyediakan data lewat `Provider`, lalu component mana pun di bawahnya bisa langsung mengambil data tersebut dengan `useContext`.
+
+```tsx
+import { createContext, useContext } from 'react';
+
+const ThemeContext = createContext<'light' | 'dark'>('light');
+
+function ThemeBadge() {
+  const theme = useContext(ThemeContext);
+  return <span>Tema aktif: {theme}</span>;
+}
+```
+
+### useReducer
+
+Kalau logika perubahan state dalam satu component mulai rumit (banyak kondisi atau saling bergantung), `useReducer` bisa jadi alternatif `useState`. Kita memisahkan logika perubahan state ke dalam satu fungsi `reducer` dan memicu perubahan dengan mengirim `action` lewat `dispatch`.
+
+## 7. Pola Lanjutan & Fitur Modern React
+
+### Portals
+
+Normalnya, child component selalu dirender di dalam DOM parent-nya. Tapi untuk elemen seperti modal, tooltip, atau toast notification, kita sering butuh merendernya di luar hierarki DOM parent (misalnya langsung di `document.body`) agar tidak terpotong `overflow: hidden` atau terganggu `z-index`. **Portals** (`createPortal`) menyelesaikan masalah ini tanpa memutus struktur component tree React.
+
+### Suspense & `use` API
+
+**Suspense** memungkinkan kita menampilkan UI fallback (seperti skeleton atau loading spinner) sambil menunggu component di dalamnya selesai memuat data atau kode (_lazy loading_).
+
+Di React modern (React 19), hadir juga **`use` API** yang bisa membaca nilai dari Promise atau Context secara langsung di dalam render dan terintegrasi dengan Suspense.
+
+```tsx
+import { Suspense } from 'react';
+
+function Dashboard() {
+  return (
+    <Suspense fallback={<p>Loading data...</p>}>
+      <AnalyticsPanel />
+    </Suspense>
+  );
+}
+```
+
+### Memoization & React Compiler
+
+Untuk menghindari kalkulasi berat yang diulang-ulang di setiap render, React menyediakan memoization seperti `useMemo`, `useCallback`, dan `React.memo`. Kabar baiknya, dengan hadirnya **React Compiler**, optimasi memoization ini ke depannya bisa ditangani secara otomatis saat build tanpa harus membungkus kode secara manual.
+
+### Actions
+
+Di React 19, konsep **Actions** menyederhanakan penanganan mutasi data async (seperti submit form). React bisa otomatis melacak status pending, error, hingga optimistic update lewat hook seperti `useActionState` atau `useOptimistic`, sehingga boilerplate loading state jauh berkurang.
+
+### Server Components, Client Components, dan Hydration
+
+Di ekosistem React modern (seperti Next.js App Router), component dibagi menjadi dua:
+
+- **Server Components (RSC)**: Dijalankan di server, bisa langsung akses database atau filesystem, dan tidak ikut dikirim sebagai bundle JavaScript ke browser.
+- **Client Components**: Component interaktif yang butuh state, hooks, atau browser API (ditandai dengan `'use client'`).
+
+Ketika halaman dirender dulu di server menjadi HTML statis, browser akan langsung menampilkan kontennya lebih cepat. Setelah file JavaScript selesai diunduh, React menjalankan proses **Hydration**, yaitu memasangkan kembali event listener dan interaktivitas ke HTML statis tersebut agar halaman bisa merespons klik, input, dan state seperti biasa.
+
+## Penutup
+
+Ternyata kalau ditarik mundur dan dilihat gambaran besarnya, semua konsep React itu saling menyambung. Mulai dari komponen sederhana yang me-return JSX, aliran data lewat props dan state, proses Virtual DOM sampai commit ke browser, hingga pemisahan Server dan Client Components di versi terbaru.
+
+Kalau nanti ketemu pertanyaan interview _"gimana sih cara React nampilin halaman?"_ lagi, setidaknya sekarang udah ngga nge-freeze dan bisa jelasin alurnya dari render, reconciliation, sampai commit dengan lebih pede wkwk.
+
+Referensi utama catatan ini dari video [Every React Concept Explained in 12 Minutes](https://www.youtube.com/watch?v=wIyHSOugGGw) di YouTube. Semoga catatan ini juga kepake buat kalian yang lagi _back to basic_ bareng gw.
