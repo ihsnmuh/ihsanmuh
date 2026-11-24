@@ -9,7 +9,7 @@ const defaultMeta = {
   title: 'Muhammad Ihsan | Software Engineer',
   siteName: 'Muhammad Ihsan',
   description:
-    'Software engineer in Jakarta with 4+ years of experience building React, Next.js, and TypeScript web applications.',
+    'Software engineer in Jakarta with 4+ years of experience building full-stack web applications across the React and TypeScript ecosystem.',
   url: siteUrl,
   image: `${siteUrl}/favicon/android-chrome-512x512.png`,
   type: 'website',

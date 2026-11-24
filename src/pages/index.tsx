@@ -29,7 +29,7 @@ export default function Home(props: IHomeProps) {
     <>
       <Seo
         title='Muhammad Ihsan | Software Engineer'
-        description='Software engineer in Jakarta with 4+ years of experience building fast, maintainable web applications with React, Next.js, and TypeScript.'
+        description='Software engineer in Jakarta with 4+ years of experience building fast, maintainable full-stack web applications across the React and TypeScript ecosystem.'
         tags={['home']}
       />
       <Head>
