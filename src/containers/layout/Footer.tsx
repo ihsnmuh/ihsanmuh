@@ -38,7 +38,7 @@ const Footer = () => {
           <div className='sm:col-span-6 flex flex-col gap-3'>
             <Link
               href='/'
-              aria-label='Home'
+              aria-label='ihsanmuh — Home'
               className='inline-flex items-center gap-2.5 w-fit group'
             >
               <div className='w-7 h-7 rounded-md bg-surface border border-hairline flex items-center justify-center p-1 group-hover:border-accent/40 transition-colors'>

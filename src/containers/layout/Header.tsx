@@ -57,7 +57,7 @@ const Header = () => {
           <Link
             href='/'
             className='flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md'
-            aria-label='Home'
+            aria-label='ihsanmuh — Home'
           >
             <div className='w-8 h-8 rounded-md bg-surface border border-hairline flex items-center justify-center p-1.5 group-hover:border-accent/40 transition-colors'>
               <KufiLogo className='w-full h-full text-accent fill-current' />
@@ -101,12 +101,15 @@ const Header = () => {
             <button
               onClick={() => window.dispatchEvent(new Event('open-search'))}
               type='button'
-              aria-label='Open search'
+              aria-label='Search'
               className='flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-hairline bg-surface/70 text-muted text-xs font-medium hover:text-ink hover:border-hairline-strong transition-colors duration-150 active:scale-[0.98]'
             >
-              <Search size={13} />
+              <Search size={13} aria-hidden='true' />
               <span>Search</span>
-              <kbd className='text-[10px] font-mono bg-subtle px-1.5 py-0.5 rounded border border-hairline/80 text-muted'>
+              <kbd
+                aria-hidden='true'
+                className='text-[10px] font-mono bg-subtle px-1.5 py-0.5 rounded border border-hairline/80 text-muted'
+              >
                 ⌘K
               </kbd>
             </button>
