@@ -32,18 +32,39 @@ export default async function handler(
 
     if (req.method === 'POST') {
       try {
-        const post = await prisma.postViews.upsert({
-          where: { slug },
-          update: {
-            count: {
-              increment: 1,
+        let post;
+        try {
+          post = await prisma.postViews.upsert({
+            where: { slug },
+            update: {
+              count: {
+                increment: 1,
+              },
             },
-          },
-          create: {
-            slug,
-            count: 1,
-          },
-        });
+            create: {
+              slug,
+              count: 1,
+            },
+          });
+        } catch (upsertError) {
+          if (
+            typeof upsertError === 'object' &&
+            upsertError !== null &&
+            'code' in upsertError &&
+            upsertError.code === 'P2002'
+          ) {
+            post = await prisma.postViews.update({
+              where: { slug },
+              data: {
+                count: {
+                  increment: 1,
+                },
+              },
+            });
+          } else {
+            throw upsertError;
+          }
+        }
         return res.status(200).json({ count: post.count });
       } catch (dbError) {
         console.warn('Database not ready for view increment:', dbError);

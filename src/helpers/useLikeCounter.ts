@@ -34,9 +34,11 @@ export function useLikeCounter(
     isLoading: typeof initialLikes !== 'number',
     error: null,
   });
+  const activeSlugRef = useRef<string>(slug);
   const hasLikedRef = useRef<boolean>(false);
 
   useEffect(() => {
+    activeSlugRef.current = slug;
     if (!slug) return;
 
     const likedForSlug = interactive
@@ -51,7 +53,9 @@ export function useLikeCounter(
         isLoading: false,
         error: null,
       });
-      return;
+      return () => {
+        activeSlugRef.current = '';
+      };
     }
 
     const controller = new AbortController();
@@ -93,56 +97,64 @@ export function useLikeCounter(
 
     return () => {
       cancelled = true;
+      activeSlugRef.current = '';
       controller.abort();
     };
   }, [slug, interactive, initialLikes]);
 
   const handleLike = async () => {
-    if (!interactive) return;
+    const targetSlug = slug;
+    if (!interactive || !targetSlug) return;
     if (hasLikedRef.current || state.isLoading) return;
 
     hasLikedRef.current = true;
     setState((prev) => ({ ...prev, isLoading: true }));
 
     try {
-      const response = await fetch(`/api/likes/${slug}`, {
+      const response = await fetch(`/api/likes/${targetSlug}`, {
         method: 'POST',
       });
       const data = await response.json();
 
       if (!response.ok) {
-        hasLikedRef.current = false;
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          error: data.message ?? 'Failed to like',
-        }));
+        if (activeSlugRef.current === targetSlug) {
+          hasLikedRef.current = false;
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            error: data.message ?? 'Failed to like',
+          }));
+        }
         return;
       }
 
       const likedPosts = getLikedPostsFromStorage();
-      if (!likedPosts.includes(slug)) {
-        likedPosts.push(slug);
+      if (!likedPosts.includes(targetSlug)) {
+        likedPosts.push(targetSlug);
         localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
       }
 
-      setState((prev) => {
-        const newCount =
-          typeof data.count === 'number' ? data.count : prev.likes + 1;
-        return {
-          ...prev,
-          likes: newCount,
-          isLiked: true,
-          isLoading: false,
-          error: null,
-        };
-      });
+      if (activeSlugRef.current === targetSlug) {
+        setState((prev) => {
+          const newCount =
+            typeof data.count === 'number' ? data.count : prev.likes + 1;
+          return {
+            ...prev,
+            likes: newCount,
+            isLiked: true,
+            isLoading: false,
+            error: null,
+          };
+        });
+      }
     } catch {
-      hasLikedRef.current = false;
-      setState((prev) => ({
-        ...prev,
-        isLoading: false,
-      }));
+      if (activeSlugRef.current === targetSlug) {
+        hasLikedRef.current = false;
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+        }));
+      }
     }
   };
 
