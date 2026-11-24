@@ -40,7 +40,7 @@ const Hero = () => {
           className='inline-flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-accent-soft/80 border border-accent/25 text-xs font-mono text-accent font-medium select-none'
         >
           <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
-          <span>Available for full-time &amp; consulting</span>
+          <span>Open for work &amp; freelance</span>
         </motion.div>
 
         <motion.h1

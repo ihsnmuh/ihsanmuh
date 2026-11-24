@@ -99,6 +99,7 @@ const Seo = (props: SeoProps) => {
       <meta property='og:description' content={meta.description} />
       <meta property='og:title' content={meta.title} />
       <meta property='og:image' content={meta.image} />
+      <meta property='og:image:type' content='image/png' />
       <meta property='og:image:width' content='1200' />
       <meta property='og:image:height' content='630' />
       <meta property='og:image:alt' content={meta.title} />

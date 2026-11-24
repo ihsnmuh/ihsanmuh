@@ -90,8 +90,8 @@ const PostCard = (props: IPostCard) => {
             {description}
           </p>
 
-          <div className='flex items-center justify-between gap-2 mt-auto pt-4 border-t border-hairline/70 text-xs font-mono text-muted tabular-nums'>
-            <div className='flex items-center gap-2'>
+          <div className='flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 mt-auto pt-4 border-t border-hairline/70 text-xs font-mono text-muted tabular-nums'>
+            <div className='flex items-center gap-2 whitespace-nowrap'>
               {date && <time dateTime={publishedAt}>{date}</time>}
               {reading && (
                 <>
@@ -101,13 +101,23 @@ const PostCard = (props: IPostCard) => {
               )}
             </div>
 
-            <div className='flex items-center gap-2.5'>
+            <div className='flex items-center gap-3 whitespace-nowrap'>
               {isLoading ? (
                 <span className='h-3 w-12 animate-pulse rounded bg-subtle' />
               ) : (
                 <>
-                  <ViewCounterStats views={views} showIcon />
-                  <LikeButtonStats likes={likes} showIcon />
+                  <ViewCounterStats
+                    views={views}
+                    showIcon
+                    compact
+                    className='text-xs'
+                  />
+                  <LikeButtonStats
+                    likes={likes}
+                    showIcon
+                    compact
+                    className='text-xs'
+                  />
                 </>
               )}
             </div>
