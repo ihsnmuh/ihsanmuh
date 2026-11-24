@@ -23,6 +23,7 @@ const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
         <Link
           href={href}
           ref={ref}
+          prefetch={false}
           className={className}
           {...rest}
           {...nextLinkProps}
