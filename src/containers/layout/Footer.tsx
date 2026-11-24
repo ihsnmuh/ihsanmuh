@@ -49,8 +49,8 @@ const Footer = () => {
               </span>
             </Link>
             <p className='text-sm text-muted max-w-xs leading-relaxed'>
-              Software engineer in Jakarta building web applications with React,
-              Next.js, and TypeScript.
+              Software engineer in Jakarta building full-stack web applications
+              across the React and TypeScript ecosystem.
             </p>
           </div>
 
