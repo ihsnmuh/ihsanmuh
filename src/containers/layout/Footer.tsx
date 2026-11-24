@@ -1,7 +1,13 @@
 import { ArrowUpRight } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import KufiLogo from '@/components/Atoms/svg/KufiLogo';
+
+const FooterPixelMascot = dynamic(
+  () => import('@/components/Atoms/canvas/FooterPixelMascot'),
+  { ssr: false },
+);
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,14 +20,19 @@ const socialLinks = [
   { href: 'mailto:me@ihsanmuh.com', label: 'Email' },
   { href: 'https://github.com/ihsnmuh', label: 'GitHub' },
   { href: 'https://www.linkedin.com/in/ihsanmuhammad19/', label: 'LinkedIn' },
-  { href: 'https://instagram.com/chernodev', label: 'Instagram' },
+  { href: 'https://instagram.com/dailyjuniordev', label: 'Instagram' },
 ];
 
 const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className='border-t border-hairline mt-20 py-14 text-body transition-colors duration-200'>
+    <footer className='relative border-t border-hairline mt-20 py-14 text-body transition-colors duration-200'>
+      <div className='absolute -top-[80px] inset-x-0 pointer-events-none'>
+        <div className='max-w-4xl mx-auto px-5 sm:px-6 pointer-events-auto'>
+          <FooterPixelMascot />
+        </div>
+      </div>
       <div className='max-w-4xl mx-auto px-5 sm:px-6'>
         <div className='grid grid-cols-1 gap-10 sm:grid-cols-12'>
           <div className='sm:col-span-6 flex flex-col gap-3'>

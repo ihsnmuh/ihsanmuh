@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import dynamic from 'next/dynamic';
 
 import { LoaderView } from '@/lib/loader';
 
@@ -11,6 +12,11 @@ import {
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
 
+const HeroGlyphCanvas = dynamic(
+  () => import('@/components/Atoms/canvas/HeroGlyphCanvas'),
+  { ssr: false },
+);
+
 const Hero = () => {
   const show = LoaderView();
 
@@ -19,11 +25,15 @@ const Hero = () => {
       className='relative text-body pt-6 sm:pt-12'
       data-fade-in={show ? 'true' : 'false'}
     >
+      <div className='pointer-events-none absolute -top-24 sm:-top-28 -bottom-16 left-1/2 -translate-x-1/2 w-screen'>
+        <HeroGlyphCanvas />
+      </div>
+
       <motion.div
         variants={staggerContainerVariants}
         initial={false}
         animate='visible'
-        className='flex flex-col gap-6 max-w-3xl'
+        className='relative z-10 flex flex-col gap-6 max-w-3xl'
       >
         <motion.div
           variants={staggerItemVariants}
@@ -62,7 +72,7 @@ const Hero = () => {
         initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: EDITORIAL_EASE }}
-        className='mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
+        className='relative z-10 mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row sm:items-center justify-between gap-6'
       >
         <HeroTech />
 

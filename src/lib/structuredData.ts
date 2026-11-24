@@ -67,7 +67,7 @@ export const getPersonSchema = (): PersonSchema => ({
   sameAs: [
     'https://github.com/ihsnmuh',
     'https://www.linkedin.com/in/ihsanmuhammad19/',
-    'https://instagram.com/chernodev',
+    'https://instagram.com/dailyjuniordev',
   ],
   jobTitle: 'Software Engineer',
   description:
