@@ -21,6 +21,8 @@ const useIntersectionObserver = (
   >({});
 
   useEffect(() => {
+    headingElementsRef.current = {};
+
     const callback = (headings: IntersectionObserverEntryWithId[]) => {
       //* Update the reference with current headings being observed
       headingElementsRef.current = headings.reduce((map, headingElement) => {
@@ -65,6 +67,10 @@ const useIntersectionObserver = (
     //* Select heading elements to observe (h2 and h3)
     const headingElements = Array.from(
       document.querySelectorAll('h2, h3'),
+    ).filter(
+      (el) =>
+        !el.hasAttribute('data-toc-exclude') &&
+        !el.closest('[data-toc-exclude]'),
     ) as IHeadingElement[];
     headingElements.forEach((element) => observer.observe(element));
 
