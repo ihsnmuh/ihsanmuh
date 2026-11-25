@@ -60,7 +60,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </a>
         <Header />
         <motion.main
-          key={asPath.split('?')[0]}
+          key={asPath.split(/[?#]/)[0]}
           id='main-content'
           initial={false}
           animate={{ opacity: 1, y: 0 }}

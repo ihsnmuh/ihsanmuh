@@ -114,16 +114,17 @@ const Drawer = ({ headings, activeId, onClose }: IDrawerMobile) => {
 
 const TOCMobile = () => {
   const { asPath } = useRouter();
-  const { nestedHeadings } = useHeadingsData(asPath);
+  const cleanPath = asPath.split(/[?#]/)[0] || '/';
+  const { nestedHeadings } = useHeadingsData(cleanPath);
 
   const [isOpen, setIsOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>('');
 
-  useIntersectionObserver(setActiveId, asPath);
+  useIntersectionObserver(setActiveId, cleanPath);
 
   useEffect(() => {
     setIsOpen(false);
-  }, [asPath]);
+  }, [cleanPath]);
 
   useEffect(() => {
     if (isOpen) {

@@ -18,6 +18,14 @@ const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
         ? openNewTab
         : href && !href.startsWith('/') && !href.startsWith('#');
 
+    if (href.startsWith('#')) {
+      return (
+        <a ref={ref} href={href} className={className} {...rest}>
+          {children}
+        </a>
+      );
+    }
+
     if (!isNewTab) {
       return (
         <Link
