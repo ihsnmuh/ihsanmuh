@@ -3,7 +3,7 @@ import { ArrowLeft, Calendar, Check, Clock, Link2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
@@ -32,6 +32,7 @@ interface IDetailBlog {
   components: any;
   image: string | undefined;
   title: string;
+  description?: string;
   publishedAt: string;
   timeReading: string | undefined;
   tags: string[];
@@ -45,6 +46,7 @@ const Detail = (props: IDetailBlog) => {
     components,
     image,
     title,
+    description,
     publishedAt,
     timeReading,
     tags,
@@ -52,20 +54,28 @@ const Detail = (props: IDetailBlog) => {
     relatedPosts,
   } = props;
   const [copied, setCopied] = useState(false);
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const publishDate = format(new Date(publishedAt), 'MMMM dd, yyyy');
+
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    };
+  }, []);
 
   const handleCopyLink = () => {
     if (typeof window === 'undefined') return;
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
   };
 
   return (
     <>
       <ReadingProgress />
       <div className='pt-2 sm:pt-4'>
-        <div className='flex flex-wrap items-center justify-between gap-3 mb-8'>
+        <div className='mb-6 sm:mb-8'>
           <Link
             href='/blog'
             className='inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent transition-colors group'
@@ -76,22 +86,28 @@ const Detail = (props: IDetailBlog) => {
             />
             <span>Back to writing</span>
           </Link>
+        </div>
 
+        <header className='pb-8 border-b border-hairline mb-8 sm:mb-10'>
           {tags?.length > 0 && (
-            <div className='flex flex-wrap gap-1.5'>
+            <div className='flex flex-wrap items-center gap-1.5 mb-3.5'>
               {tags.map((tag) => (
                 <TagPill key={tag} name={tag} />
               ))}
             </div>
           )}
-        </div>
 
-        <header className='pb-8 border-b border-hairline mb-8'>
-          <h1 className='font-primary text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-ink leading-[1.14] mb-5 max-w-3xl'>
+          <h1 className='font-primary text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-ink leading-[1.3] sm:leading-[1.24] md:leading-[1.2] [text-wrap:pretty]'>
             {title}
           </h1>
 
-          <div className='flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted tabular-nums'>
+          {description && (
+            <p className='mt-3.5 text-sm sm:text-base leading-relaxed text-body max-w-3xl'>
+              {description}
+            </p>
+          )}
+
+          <div className='mt-6 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-muted tabular-nums'>
             <div className='flex flex-wrap items-center gap-x-3.5 gap-y-2'>
               <div className='flex items-center gap-1.5'>
                 <Calendar size={13} />
@@ -142,7 +158,7 @@ const Detail = (props: IDetailBlog) => {
           </div>
         )}
 
-        <div className='lg:grid lg:grid-cols-[minmax(0,1fr)_210px] lg:gap-12'>
+        <div className='lg:grid lg:grid-cols-[minmax(0,1fr)_228px] lg:gap-10'>
           <div className='min-w-0'>
             <article className='mdx prose max-w-none'>
               <MDXRemote {...source} components={components} />

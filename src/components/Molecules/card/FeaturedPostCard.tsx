@@ -14,10 +14,22 @@ import { usePostStats } from '@/helpers/usePostStats';
 import { IPost } from '@/types/interfaces/posts';
 
 const FeaturedPostCard = (props: IPost) => {
-  const { slug, title, banner, tags, timeReading, publishedAt, description } =
-    props;
+  const {
+    slug,
+    title,
+    banner,
+    tags,
+    timeReading,
+    publishedAt,
+    description,
+    views: initialViews,
+    likes: initialLikes,
+  } = props;
 
-  const { views, likes, isLoading } = usePostStats(slug);
+  const { views, likes, isLoading } = usePostStats(slug, {
+    initialViews,
+    initialLikes,
+  });
   const date = publishedAt
     ? format(new Date(publishedAt), 'MMMM dd, yyyy')
     : '';
