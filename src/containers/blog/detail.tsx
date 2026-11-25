@@ -13,6 +13,11 @@ import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
 import TOCMobile from '@/components/Molecules/blog/TOCMobile';
 import { ViewIncrement } from '@/components/Molecules/blog/ViewCounter';
 
+const GiscusComments = dynamic(
+  () => import('@/components/Molecules/blog/GiscusComments'),
+  { ssr: false },
+);
+
 const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
   { ssr: false },
@@ -179,6 +184,7 @@ const Detail = (props: IDetailBlog) => {
             </div>
           </div>
         </div>
+        <GiscusComments key={slug} slug={slug} />
 
         <TOCMobile />
         <RelatedPosts posts={relatedPosts} />
