@@ -19,11 +19,11 @@ pre [data-line] {
 }
 
 .prose h2 {
-  @apply mb-4 mt-10 font-primary text-2xl font-semibold tracking-tight text-ink md:text-3xl;
+  @apply mb-4 mt-10 font-primary text-xl font-semibold leading-snug tracking-tight text-ink md:text-2xl;
 }
 
 .prose h3 {
-  @apply mt-8 mb-3 font-primary text-lg font-semibold tracking-tight text-ink md:text-xl;
+  @apply mt-8 mb-3 font-primary text-lg font-semibold leading-snug tracking-tight text-ink md:text-xl;
 }
 
 .prose h4 {
@@ -153,7 +153,7 @@ html.light pre {
 }
 
 [data-line] {
-  @apply border-l-2 border-l-transparent px-5;
+  @apply border-l-2 border-l-transparent pl-5 pr-20;
 }
 
 [data-highlighted-line] {
@@ -223,7 +223,7 @@ html.dark .prose [data-theme='light'] {
 
 [data-rehype-pretty-code-title],
 [data-rehype-pretty-code-caption] {
-  @apply bg-[#1f1f24] border-b border-white/10 px-5 py-2 text-xs font-mono text-zinc-300 font-medium;
+  @apply bg-[#1f1f24] border-b border-white/10 pl-5 pr-24 py-2.5 text-xs font-mono text-zinc-300 font-medium leading-5;
 }
 
 /* Word Wrap */

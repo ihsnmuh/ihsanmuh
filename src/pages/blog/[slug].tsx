@@ -51,6 +51,7 @@ const Post = (props: BlogPostSingleProps) => {
         components={components}
         image={banner}
         title={title}
+        description={frontMatter.description}
         publishedAt={publishedAt}
         timeReading={timeReading}
         tags={tags}

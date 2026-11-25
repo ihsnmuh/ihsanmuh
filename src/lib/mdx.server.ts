@@ -33,7 +33,14 @@ export const getFileDatabySlug = async (slug: string) => {
       remarkPlugins: [require('remark-code-titles'), remarkGfm],
       rehypePlugins: [
         rehypeSlug,
-        rehypeAutolinkHeadings,
+        [
+          rehypeAutolinkHeadings,
+          {
+            properties: {
+              className: ['hash-anchor'],
+            },
+          },
+        ],
         [
           rehypePrettyCode,
           {
