@@ -44,14 +44,14 @@
     animation: san-roll-in 160ms var(--san-ease-out) both;
   }
 
-  .san-face-swap {
+  .san-svg[data-animated='true'] .san-face-swap {
     animation: san-face-in 140ms var(--san-ease-out) both;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .san-roll > b,
-  .san-face-swap {
+  .san-svg[data-animated='true'] .san-face-swap {
     animation: san-fade-only 150ms var(--san-ease-out) both;
   }
 }

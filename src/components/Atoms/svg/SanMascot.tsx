@@ -118,7 +118,7 @@ const SanMascot = ({
             width='1240'
             height='1240'
             fill={ground}
-            className='san-ground transition-colors duration-200'
+            className='san-ground'
           />
         )}
 
