@@ -1,5 +1,5 @@
 import { ArrowUp, TableOfContents, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -39,7 +39,7 @@ const Drawer = ({ headings, activeId, onClose }: IDrawerMobile) => {
       }}
       role='presentation'
     >
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -47,7 +47,7 @@ const Drawer = ({ headings, activeId, onClose }: IDrawerMobile) => {
         className='absolute inset-0 bg-ink/40 backdrop-blur-xs'
       />
 
-      <motion.div
+      <m.div
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
@@ -107,7 +107,7 @@ const Drawer = ({ headings, activeId, onClose }: IDrawerMobile) => {
             <span>Back to top</span>
           </button>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };
@@ -156,7 +156,7 @@ const TOCMobile = () => {
             'inline-flex items-center gap-2 min-h-[44px] px-4 py-2.5 rounded-full',
             'bg-cta text-cta-fg text-xs font-primary font-semibold',
             'shadow-subtle-2 hover:bg-cta-hover active:scale-[0.97]',
-            'transition-all duration-150 select-none',
+            'transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none',
           )}
         >
           <TableOfContents size={16} />

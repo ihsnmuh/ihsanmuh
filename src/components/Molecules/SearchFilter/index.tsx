@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import React, { useEffect, useId, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -142,7 +142,7 @@ const SearchFilter = ({
                   )}
                 >
                   {isActive && (
-                    <motion.span
+                    <m.span
                       layoutId={`active-filter-${pillGroupId}`}
                       transition={SPRING_SNAPPY}
                       className='absolute inset-0 rounded-full bg-cta'

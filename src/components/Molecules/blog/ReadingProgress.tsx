@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring } from 'motion/react';
+import { m, useScroll, useSpring } from 'motion/react';
 
 const ReadingProgress = () => {
   const { scrollYProgress } = useScroll();
@@ -13,7 +13,7 @@ const ReadingProgress = () => {
       className='fixed top-16 left-0 right-0 z-40 h-[2px] bg-transparent pointer-events-none'
       aria-hidden='true'
     >
-      <motion.div
+      <m.div
         style={{ scaleX }}
         className='h-full w-full bg-accent origin-left'
       />
