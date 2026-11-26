@@ -62,7 +62,7 @@ const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
       onClick={handleCopy}
       aria-label={copied ? 'Code copied' : 'Copy code'}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-mono font-medium transition-all',
+        'inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-mono font-medium transition-[background-color,border-color,color,transform]',
         'border border-white/10 bg-zinc-800/90 text-zinc-300 backdrop-blur-sm',
         'hover:border-white/20 hover:bg-zinc-700/90 hover:text-zinc-100',
         'active:scale-[0.97] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent',

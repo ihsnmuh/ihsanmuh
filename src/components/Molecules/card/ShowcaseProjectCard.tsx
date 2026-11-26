@@ -24,10 +24,10 @@ const ShowcaseProjectCard = (props: IProject) => {
       className={cn(
         'group relative flex flex-col h-full',
         'rounded-lg overflow-hidden',
-        'border border-hairline-strong/80 dark:border-hairline hover:border-hairline-strong hover:-translate-y-0.5',
+        'border border-hairline-strong/80 dark:border-hairline hover:border-hairline-strong [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5',
         'shadow-[0_1px_2px_rgba(24,24,27,0.05)] hover:shadow-[0_8px_24px_-12px_rgba(24,24,27,0.12)] dark:shadow-none',
         'bg-surface text-ink',
-        'transition-all duration-200',
+        'transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)]',
       )}
     >
       <a

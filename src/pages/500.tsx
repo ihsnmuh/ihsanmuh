@@ -25,14 +25,14 @@ export default function Custom500() {
         <div className='mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center'>
           <Link
             href='/'
-            className='inline-flex items-center px-5 py-2.5 rounded-md text-sm font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all select-none'
+            className='inline-flex items-center px-5 py-2.5 rounded-md text-sm font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
           >
             Back to Home
           </Link>
           <button
             type='button'
             onClick={() => window.location.reload()}
-            className='inline-flex items-center px-5 py-2.5 rounded-md text-sm font-medium bg-surface text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-all select-none'
+            className='inline-flex items-center px-5 py-2.5 rounded-md text-sm font-medium bg-surface text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
           >
             Reload Page
           </button>
