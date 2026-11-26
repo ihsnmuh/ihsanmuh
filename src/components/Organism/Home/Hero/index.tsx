@@ -1,5 +1,7 @@
 import dynamic from 'next/dynamic';
 
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
+
 import { Experiences } from '@/constant/experience';
 import { useAfterIdle } from '@/helpers/useAfterIdle';
 
@@ -21,8 +23,14 @@ const Hero = () => {
       </div>
 
       <div className='relative z-10 flex flex-col gap-6 max-w-3xl'>
-        <div className='hero-rise [--hero-delay:0ms] inline-flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-accent-soft/80 border border-accent/25 text-xs font-mono text-accent font-medium select-none'>
-          <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
+        <div className='hero-rise [--hero-delay:0ms] inline-flex items-center gap-2 w-fit pl-1.5 pr-3 py-0.5 rounded-full bg-accent-soft/80 border border-accent/25 text-xs font-mono text-accent font-medium select-none'>
+          <SanMascotLazy
+            size={20}
+            mood='grin'
+            fallback={
+              <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
+            }
+          />
           <span>Open for work &amp; freelance</span>
         </div>
 

@@ -6,6 +6,7 @@ import {
   FileText,
   FolderKanban,
   Search,
+  Smile,
   X,
 } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
@@ -18,7 +19,10 @@ import React, {
   useState,
 } from 'react';
 
+import { TSanMood } from '@/lib/san';
 import { cn } from '@/lib/utils';
+
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
 
 import { queryProjectList } from '@/queries/projectList';
 
@@ -163,6 +167,15 @@ const CommandPalette = () => {
         url: '/about',
         icon: <Compass className='h-4 w-4' />,
       },
+      {
+        id: 'nav-san',
+        category: 'Navigation',
+        title: 'San',
+        description:
+          'The illustrated mascot: 16 moods, haircuts, layers, and SVG parts.',
+        url: '/san',
+        icon: <Smile className='h-4 w-4' />,
+      },
     ],
     [],
   );
@@ -226,6 +239,12 @@ const CommandPalette = () => {
         item.category.toLowerCase().includes(query),
     );
   }, [navigationItems, actionItems, blogItems, projectItems, searchQuery]);
+
+  const paletteMood: TSanMood = !searchQuery.trim()
+    ? 'curious'
+    : filteredItems.length === 0
+      ? 'awkward'
+      : 'focused';
 
   // Handle selected index reset when search query changes
   useEffect(() => {
@@ -324,7 +343,12 @@ const CommandPalette = () => {
             )}
           >
             <div className='flex items-center gap-3 px-4 py-3.5 bg-surface border-b border-hairline'>
-              <Search className='h-4 w-4 text-muted shrink-0' />
+              <SanMascotLazy
+                immediate
+                size={24}
+                mood={paletteMood}
+                fallback={<Search className='h-4 w-4 text-muted' />}
+              />
               <input
                 ref={inputRef}
                 type='text'

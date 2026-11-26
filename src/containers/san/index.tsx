@@ -392,46 +392,51 @@ const SanContainer = () => {
             </h2>
           </div>
         </ScrollReveal>
-        <ScrollReveal delay={80} className='space-y-4'>
+        <div className='space-y-4'>
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
-            {SAN_HAIRSTYLES.map((styleId) => {
+            {SAN_HAIRSTYLES.map((styleId, index) => {
               const isSelected = hairstyle === styleId;
               const styleMeta = SAN_HAIRSTYLE_META[styleId];
               return (
-                <button
+                <ScrollReveal
                   key={styleId}
-                  type='button'
-                  onClick={() => setHairstyle(styleId)}
-                  aria-pressed={isSelected}
-                  className={cn(
-                    'san-mood flex flex-col items-center p-4 rounded-lg border text-center',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-                    isSelected
-                      ? 'border-accent bg-accent-soft/40'
-                      : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
-                  )}
+                  delay={index * 60}
+                  className='h-full'
                 >
-                  <div className='san-mood-face'>
-                    <SanMascot
-                      mood={mood}
-                      hairstyle={styleId}
-                      showFacialHair={showFacialHair}
-                      size={96}
-                      shape='circle'
-                      className='pointer-events-none'
-                    />
-                  </div>
-                  <span className='mt-2.5 text-sm font-semibold text-ink'>
-                    {styleMeta.label}
-                  </span>
-                  <span className='mt-0.5 text-[11px] text-muted leading-snug'>
-                    {styleMeta.note}
-                  </span>
-                </button>
+                  <button
+                    type='button'
+                    onClick={() => setHairstyle(styleId)}
+                    aria-pressed={isSelected}
+                    className={cn(
+                      'san-mood flex h-full w-full flex-col items-center p-4 rounded-lg border text-center',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                      isSelected
+                        ? 'border-accent bg-accent-soft/40'
+                        : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
+                    )}
+                  >
+                    <div className='san-mood-face'>
+                      <SanMascot
+                        mood={mood}
+                        hairstyle={styleId}
+                        showFacialHair={showFacialHair}
+                        size={96}
+                        shape='circle'
+                        className='pointer-events-none'
+                      />
+                    </div>
+                    <span className='mt-2.5 text-sm font-semibold text-ink'>
+                      {styleMeta.label}
+                    </span>
+                    <span className='mt-0.5 text-[11px] text-muted leading-snug'>
+                      {styleMeta.note}
+                    </span>
+                  </button>
+                </ScrollReveal>
               );
             })}
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
       {/* 3. Mix Parts */}
@@ -715,48 +720,53 @@ const SanContainer = () => {
             </p>
           </div>
         </ScrollReveal>
-        <ScrollReveal delay={80} className='space-y-4'>
+        <div className='space-y-4'>
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
-            {SAN_MOODS.map((item) => {
+            {SAN_MOODS.map((item, index) => {
               const isSelected = mood === item;
               const [moodTurn] = SAN_POSE[item];
               return (
-                <button
+                <ScrollReveal
                   key={item}
-                  type='button'
-                  onClick={() => setMood(item)}
-                  aria-pressed={isSelected}
-                  className={cn(
-                    'san-mood flex flex-col items-center p-4 rounded-lg border text-center',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-                    isSelected
-                      ? 'border-accent bg-accent-soft/40'
-                      : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
-                  )}
+                  delay={(index % 4) * 60}
+                  className='h-full'
                 >
-                  <div className='san-mood-face'>
-                    <SanMascot
-                      mood={item}
-                      hairstyle={hairstyle}
-                      showFacialHair={showFacialHair}
-                      size={96}
-                      shape='circle'
-                      className='pointer-events-none'
-                    />
-                  </div>
-                  <div className='mt-2.5 w-full flex items-baseline justify-between gap-2 px-1'>
-                    <span className='text-sm font-semibold text-ink'>
-                      {SAN_MOOD_META[item].label}
-                    </span>
-                    <span className='font-mono text-[11px] text-muted'>
-                      {moodTurn > 0 ? `+${moodTurn}` : moodTurn}&deg;
-                    </span>
-                  </div>
-                </button>
+                  <button
+                    type='button'
+                    onClick={() => setMood(item)}
+                    aria-pressed={isSelected}
+                    className={cn(
+                      'san-mood flex h-full w-full flex-col items-center p-4 rounded-lg border text-center',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                      isSelected
+                        ? 'border-accent bg-accent-soft/40'
+                        : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
+                    )}
+                  >
+                    <div className='san-mood-face'>
+                      <SanMascot
+                        mood={item}
+                        hairstyle={hairstyle}
+                        showFacialHair={showFacialHair}
+                        size={96}
+                        shape='circle'
+                        className='pointer-events-none'
+                      />
+                    </div>
+                    <div className='mt-2.5 w-full flex items-baseline justify-between gap-2 px-1'>
+                      <span className='text-sm font-semibold text-ink'>
+                        {SAN_MOOD_META[item].label}
+                      </span>
+                      <span className='font-mono text-[11px] text-muted'>
+                        {moodTurn > 0 ? `+${moodTurn}` : moodTurn}&deg;
+                      </span>
+                    </div>
+                  </button>
+                </ScrollReveal>
               );
             })}
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
       {/* 6. Theme Colors & Palette */}
@@ -780,7 +790,7 @@ const SanContainer = () => {
             </p>
           </div>
         </ScrollReveal>
-        <ScrollReveal delay={80} className='space-y-5'>
+        <div className='space-y-5'>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <div className='rounded-xl border border-hairline bg-[#FAF9F6] p-6 flex flex-col items-center gap-4'>
               <div className='w-full flex items-center justify-between font-mono text-[11px]'>
@@ -817,46 +827,51 @@ const SanContainer = () => {
 
           {/* Click-to-copy palette swatches */}
           <div className='grid grid-cols-2 sm:grid-cols-3 gap-2.5'>
-            {PALETTE_SWATCHES.map((swatch) => {
+            {PALETTE_SWATCHES.map((swatch, index) => {
               const isCopied = copiedHex === swatch.hex;
               return (
-                <button
+                <ScrollReveal
                   key={swatch.name}
-                  type='button'
-                  onClick={() => handleCopyHex(swatch.hex)}
-                  className={cn(
-                    'san-color flex items-center gap-3 min-h-[56px] p-3 rounded-lg border border-hairline bg-surface',
-                    'hover:border-hairline-strong text-left transition-colors',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-                  )}
+                  delay={(index % 3) * 60}
+                  className='h-full'
                 >
-                  <span
-                    className='san-color-dot w-8 h-8 rounded-full border border-hairline-strong shrink-0'
-                    style={{ backgroundColor: swatch.hex }}
-                  />
-                  <span className='min-w-0 flex-1'>
-                    <span className='block text-xs font-semibold text-ink truncate'>
-                      {swatch.name}
+                  <button
+                    type='button'
+                    onClick={() => handleCopyHex(swatch.hex)}
+                    className={cn(
+                      'san-color flex h-full w-full items-center gap-3 min-h-[56px] p-3 rounded-lg border border-hairline bg-surface',
+                      'hover:border-hairline-strong text-left transition-colors',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                    )}
+                  >
+                    <span
+                      className='san-color-dot w-8 h-8 rounded-full border border-hairline-strong shrink-0'
+                      style={{ backgroundColor: swatch.hex }}
+                    />
+                    <span className='min-w-0 flex-1'>
+                      <span className='block text-xs font-semibold text-ink truncate'>
+                        {swatch.name}
+                      </span>
+                      <span className='block font-mono text-[11px] text-muted'>
+                        {isCopied ? (
+                          <span
+                            key='copied'
+                            className='san-roll-text inline-flex items-center gap-1 text-accent'
+                          >
+                            <Check className='w-3 h-3' />
+                            copied
+                          </span>
+                        ) : (
+                          swatch.hex
+                        )}
+                      </span>
                     </span>
-                    <span className='block font-mono text-[11px] text-muted'>
-                      {isCopied ? (
-                        <span
-                          key='copied'
-                          className='san-roll-text inline-flex items-center gap-1 text-accent'
-                        >
-                          <Check className='w-3 h-3' />
-                          copied
-                        </span>
-                      ) : (
-                        swatch.hex
-                      )}
-                    </span>
-                  </span>
-                </button>
+                  </button>
+                </ScrollReveal>
               );
             })}
           </div>
-        </ScrollReveal>
+        </div>
       </section>
     </div>
   );

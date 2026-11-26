@@ -1,6 +1,14 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
+import {
+  resolveSanParts,
+  SAN_MOODS,
+  SAN_SKIN_MARKUP,
+  SAN_VIEW_BOX,
+  TSanMood,
+} from '@/lib/san';
+
 export const config = {
   runtime: 'edge',
 };
@@ -46,6 +54,51 @@ function getTitleFontSize(title: string): string {
   if (title.length > 52) return '42px';
   if (title.length > 36) return '48px';
   return '54px';
+}
+
+const SAN_TAG_MOODS: Array<[RegExp, TSanMood]> = [
+  [/react|next|typescript|javascript|frontend|css|tailwind/i, 'focused'],
+  [/docker|linux|devops|tool|stow|terminal|cli/i, 'cool'],
+  [/career|story|life|career|learn|journey/i, 'curious'],
+  [/ship|launch|release|project/i, 'shipped'],
+];
+
+/**
+ * Picks San's mood for the OG portrait: explicit `mood` param first, then tags, then page type.
+ */
+function pickSanMood(
+  explicit: string | null,
+  type: string,
+  tags: string[],
+): TSanMood {
+  if (explicit && (SAN_MOODS as readonly string[]).includes(explicit)) {
+    return explicit as TSanMood;
+  }
+  const haystack = tags.join(' ');
+  for (const [pattern, mood] of SAN_TAG_MOODS) {
+    if (pattern.test(haystack)) return mood;
+  }
+  return type === 'article' ? 'idea' : 'grin';
+}
+
+function buildSanPortraitDataUrl(mood: TSanMood, ground: string): string {
+  const parts = resolveSanParts({ mood, showMarks: true });
+  const markup = [
+    SAN_SKIN_MARKUP,
+    parts.blushMarkup,
+    parts.hairMarkup,
+    parts.browsMarkup,
+    parts.glassesMarkup,
+    parts.eyesMarkup,
+    parts.extraMarkup,
+    parts.facialHairMarkup,
+    parts.mouthMarkup,
+    parts.marksMarkup,
+  ]
+    .filter(Boolean)
+    .join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${SAN_VIEW_BOX}"><rect width="1240" height="1240" fill="${ground}"/>${markup}</svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 function getAllowedImageUrl(rawUrl: string | null): string | null {
@@ -143,6 +196,10 @@ export default async function handler(req: NextRequest) {
 
     const themeParam = searchParams.get('theme');
     const colors = themeParam === 'dark' ? THEMES.dark : THEMES.light;
+    const sanSrc = buildSanPortraitDataUrl(
+      pickSanMood(searchParams.get('mood'), type, tags),
+      colors.accent,
+    );
 
     return new ImageResponse(
       (
@@ -329,20 +386,16 @@ export default async function handler(req: NextRequest) {
                   justifyContent: 'center',
                 }}
               >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='180'
-                  height='193'
-                  viewBox='0 0 42 45'
-                  fill={colors.accent}
-                >
-                  <path d='M38.333 0H42v3.613h-3.667V0ZM10.667 6.898H7v3.613h3.667V6.898ZM38.333 6.898H42v3.613h-3.667V6.898ZM38.333 13.796H42v17.408h-3.667V13.796Z' />
-                  <path
-                    d='M31.333 34.49H42V45H0V34.49h3.333v-3.286H0v-10.51h7.333v3.613H3.667v3.284h7v-6.898h3.666v10.511H7v3.285h3.667v6.898h13.666v-3.285H14V34.49h14v6.898h3.333v-6.898ZM35 38.101h3.333v3.285H35v-3.285Zm-28 0H3.667v3.285H7v-3.285Z'
-                    fillRule='evenodd'
-                  />
-                  <path d='M14.333 13.796H3.667V3.613h10.666V0H0v17.409h14.333v-3.613ZM17.667 0h17.666v17.409h-3.666V3.613H21.333v3.285h7v3.613h-7v3.285h7v3.613h-7V27.59h10.334v-3.284h-7v-3.614h10.666v10.511H17.667V0Z' />
-                </svg>
+                <img
+                  src={sanSrc}
+                  alt=''
+                  width={300}
+                  height={300}
+                  style={{
+                    borderRadius: '9999px',
+                    border: `6px solid ${colors.border}`,
+                  }}
+                />
               </div>
             )}
           </div>
