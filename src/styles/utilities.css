@@ -30,44 +30,63 @@
       0 1px,
       100% 1px;
   }
+}
 
-  [data-fade] {
-    @apply translate-y-10 opacity-0 transition duration-300 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100;
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise {
+    animation: hero-rise 300ms var(--ease-out) var(--hero-delay, 0ms) backwards;
   }
-  .fade-in-start [data-fade],
-  [data-fade-in='true'] [data-fade] {
-    @apply translate-y-0 opacity-100;
+
+  .item-enter {
+    animation: item-enter 220ms var(--ease-out) var(--item-delay, 0ms) backwards;
   }
-  .fade-in-start [data-fade='1'],
-  [data-fade-in='true'] [data-fade='1'] {
-    transition-delay: 100ms;
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 300ms var(--ease-out),
+      transform 300ms var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
   }
-  .fade-in-start [data-fade='2'],
-  [data-fade-in='true'] [data-fade='2'] {
-    transition-delay: 200ms;
+  .scroll-reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: none;
   }
-  .fade-in-start [data-fade='3'],
-  [data-fade-in='true'] [data-fade='3'] {
-    transition-delay: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item-enter {
+    animation: hero-fade 150ms ease-out backwards;
   }
-  .fade-in-start [data-fade='4'],
-  [data-fade-in='true'] [data-fade='4'] {
-    transition-delay: 400ms;
+  .hero-rise {
+    animation: hero-fade 200ms ease-out backwards;
   }
-  .fade-in-start [data-fade='5'],
-  [data-fade-in='true'] [data-fade='5'] {
-    transition-delay: 500ms;
+  .scroll-reveal {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
   }
-  .fade-in-start [data-fade='6'],
-  [data-fade-in='true'] [data-fade='6'] {
-    transition-delay: 600ms;
+  .scroll-reveal[data-revealed='true'] {
+    opacity: 1;
   }
-  .fade-in-start [data-fade='7'],
-  [data-fade-in='true'] [data-fade='7'] {
-    transition-delay: 700ms;
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
   }
-  .fade-in-start [data-fade='8'],
-  [data-fade-in='true'] [data-fade='8'] {
-    transition-delay: 800ms;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes item-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
 }

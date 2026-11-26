@@ -1,12 +1,7 @@
 import { Code, Compass, Zap } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
-import {
-  Reveal,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 
 import { Principles } from '@/constant/principles';
 
@@ -19,17 +14,17 @@ const principleIcons = {
 const Summary = () => {
   return (
     <section id='summary' className='text-body'>
-      <Reveal className='mb-8'>
+      <ScrollReveal className='mb-8'>
         <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
           About &amp; Principles
         </p>
         <h2 className='font-primary font-semibold text-2xl sm:text-3xl text-ink tracking-tight'>
           Background and working principles
         </h2>
-      </Reveal>
+      </ScrollReveal>
 
-      <Reveal
-        delay={0.05}
+      <ScrollReveal
+        delay={50}
         className='space-y-4 max-w-2xl text-base leading-relaxed text-body'
       >
         <p>
@@ -64,36 +59,28 @@ const Summary = () => {
           . I care about fast load times, readable code, and interfaces that
           stay out of the user&apos;s way.
         </p>
-      </Reveal>
+      </ScrollReveal>
 
-      <motion.div
-        variants={staggerContainerVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.15 }}
-        className='mt-10 grid grid-cols-1 md:grid-cols-3 gap-4'
-      >
-        {Principles.map((principle) => {
+      <div className='mt-10 grid grid-cols-1 md:grid-cols-3 gap-4'>
+        {Principles.map((principle, index) => {
           const IconComponent = principleIcons[principle.icon] || Code;
           return (
-            <motion.div
-              key={principle.id}
-              variants={staggerItemVariants}
-              className='p-5 rounded-lg border border-hairline bg-surface hover:border-hairline-strong hover:-translate-y-0.5 transition-all duration-200'
-            >
-              <div className='w-8 h-8 rounded-md bg-accent-soft border border-accent/20 flex items-center justify-center text-accent mb-4'>
-                <IconComponent size={15} />
+            <ScrollReveal key={principle.id} delay={40 + index * 60}>
+              <div className='h-full p-5 rounded-lg border border-hairline bg-surface hover:border-hairline-strong [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 transition-[border-color,transform] duration-200 ease-[var(--ease-out)]'>
+                <div className='w-8 h-8 rounded-md bg-accent-soft border border-accent/20 flex items-center justify-center text-accent mb-4'>
+                  <IconComponent size={15} />
+                </div>
+                <h3 className='font-primary font-semibold text-base text-ink mb-1.5'>
+                  {principle.title}
+                </h3>
+                <p className='text-sm leading-relaxed text-muted'>
+                  {principle.description}
+                </p>
               </div>
-              <h3 className='font-primary font-semibold text-base text-ink mb-1.5'>
-                {principle.title}
-              </h3>
-              <p className='text-sm leading-relaxed text-muted'>
-                {principle.description}
-              </p>
-            </motion.div>
+            </ScrollReveal>
           );
         })}
-      </motion.div>
+      </div>
     </section>
   );
 };

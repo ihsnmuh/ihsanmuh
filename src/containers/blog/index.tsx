@@ -1,14 +1,6 @@
-import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { LoaderView } from '@/lib/loader';
-import { cn } from '@/lib/utils';
-
-import {
-  Reveal,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
 import SearchFilter, { FilterItem } from '@/components/Molecules/SearchFilter';
@@ -58,8 +50,6 @@ const BlogContainer = (props: IBlogContainer) => {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedTag, setSelectedTag] = useState('All');
-
-  const show = LoaderView();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -122,7 +112,7 @@ const BlogContainer = (props: IBlogContainer) => {
   };
 
   return (
-    <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
+    <div className='pt-2 sm:pt-4'>
       <header className='mb-10'>
         <div className='flex items-center gap-3 mb-2'>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
@@ -188,17 +178,17 @@ const BlogContainer = (props: IBlogContainer) => {
         {filteredPosts.length > 0 ? (
           <div className='space-y-14'>
             {featuredPost && (
-              <Reveal>
+              <div>
                 <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
                   Latest Post
                 </p>
                 <FeaturedPostCard {...featuredPost} />
-              </Reveal>
+              </div>
             )}
 
             {groupedByYear.length > 0 && (
               <div className='space-y-12'>
-                {groupedByYear.map(([year, yearPosts]) => (
+                {groupedByYear.map(([year, yearPosts], yearIndex) => (
                   <section
                     key={year}
                     aria-label={`Articles from ${year}`}
@@ -214,22 +204,39 @@ const BlogContainer = (props: IBlogContainer) => {
                       </span>
                     </div>
 
-                    <motion.div
+                    <div
                       key={`${year}-${selectedTag}-${debouncedSearch}`}
-                      variants={staggerContainerVariants}
-                      initial='hidden'
-                      animate='visible'
                       className='divide-y divide-hairline border-t border-b border-hairline'
                     >
-                      {yearPosts.map((post) => (
-                        <motion.div
-                          key={post.slug}
-                          variants={staggerItemVariants}
-                        >
-                          <EditorialPostCard {...post} />
-                        </motion.div>
-                      ))}
-                    </motion.div>
+                      {yearPosts.map((post, index) => {
+                        const card = <EditorialPostCard {...post} />;
+                        const delay = (index % 4) * 60;
+
+                        if (isSearchingOrFiltering) {
+                          return (
+                            <div
+                              key={post.slug}
+                              className='item-enter'
+                              style={
+                                {
+                                  '--item-delay': `${Math.min(index, 5) * 30}ms`,
+                                } as React.CSSProperties
+                              }
+                            >
+                              {card}
+                            </div>
+                          );
+                        }
+                        if (yearIndex === 0 && index < 3) {
+                          return <div key={post.slug}>{card}</div>;
+                        }
+                        return (
+                          <ScrollReveal key={post.slug} delay={delay}>
+                            {card}
+                          </ScrollReveal>
+                        );
+                      })}
+                    </div>
                   </section>
                 ))}
               </div>
@@ -246,7 +253,7 @@ const BlogContainer = (props: IBlogContainer) => {
             <button
               type='button'
               onClick={resetFilters}
-              className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all'
+              className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)]'
             >
               Reset filters
             </button>

@@ -40,9 +40,9 @@ const FeaturedPostCard = (props: IPost) => {
         className={cn(
           'grid grid-cols-1 md:grid-cols-2 gap-0 relative',
           'rounded-lg overflow-hidden',
-          'border border-hairline hover:border-hairline-strong hover:-translate-y-0.5',
+          'border border-hairline hover:border-hairline-strong [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5',
           'bg-surface text-ink',
-          'transition-all duration-200',
+          'transition-[border-color,transform] duration-200 ease-[var(--ease-out)]',
         )}
       >
         <div className='relative aspect-[16/10] md:aspect-auto min-h-[220px] overflow-hidden border-b md:border-b-0 md:border-r border-hairline bg-subtle'>
@@ -58,6 +58,7 @@ const FeaturedPostCard = (props: IPost) => {
             fill
             style={{ objectFit: 'cover' }}
             useSkeleton
+            priority
           />
         </div>
 

@@ -1,5 +1,5 @@
 import { Menu, Moon, Search, Sun, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
@@ -86,7 +86,7 @@ const Header = () => {
                   )}
                 >
                   {active && (
-                    <motion.span
+                    <m.span
                       layoutId='active-nav-pill'
                       transition={SPRING_SNAPPY}
                       className='absolute inset-0 rounded-md bg-accent-soft/80 -z-10'
@@ -122,7 +122,7 @@ const Header = () => {
             >
               {mounted ? (
                 <AnimatePresence mode='wait' initial={false}>
-                  <motion.span
+                  <m.span
                     key={resolvedTheme}
                     initial={{ opacity: 0, rotate: -30, scale: 0.75 }}
                     animate={{ opacity: 1, rotate: 0, scale: 1 }}
@@ -135,7 +135,7 @@ const Header = () => {
                     ) : (
                       <Moon size={15} />
                     )}
-                  </motion.span>
+                  </m.span>
                 </AnimatePresence>
               ) : (
                 <span className='w-3.5 h-3.5' />
@@ -183,7 +183,7 @@ const Header = () => {
 
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -201,7 +201,7 @@ const Header = () => {
               {links.map((link, i) => {
                 const active = isActive(link);
                 return (
-                  <motion.div
+                  <m.div
                     key={`fullscreen-${link.href}${i}`}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -221,11 +221,11 @@ const Header = () => {
                         <span className='w-1.5 h-1.5 rounded-full bg-accent' />
                       )}
                     </UnstyledLink>
-                  </motion.div>
+                  </m.div>
                 );
               })}
 
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.22, delay: links.length * 0.04 }}
@@ -233,13 +233,13 @@ const Header = () => {
               >
                 <Link
                   href='mailto:me@ihsanmuh.com'
-                  className='w-full flex justify-center items-center py-3 rounded-md bg-cta text-cta-fg text-sm font-medium hover:bg-cta-hover active:scale-[0.99] transition-all'
+                  className='w-full flex justify-center items-center py-3 rounded-md bg-cta text-cta-fg text-sm font-medium hover:bg-cta-hover active:scale-[0.99] transition-[background-color,transform] duration-150 ease-[var(--ease-out)]'
                 >
                   Email me
                 </Link>
-              </motion.div>
+              </m.div>
             </nav>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

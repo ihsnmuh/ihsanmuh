@@ -1,13 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
-import {
-  Reveal,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import ProjectCard from '@/components/Molecules/card/ProjectCard';
 
 import { queryProjectList } from '@/queries/projectList';
@@ -22,7 +17,7 @@ const Portofolio = () => {
 
   return (
     <section className='text-body'>
-      <Reveal className='flex items-end justify-between mb-8 gap-4'>
+      <ScrollReveal className='flex items-end justify-between mb-8 gap-4'>
         <div>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
             Selected Work
@@ -42,7 +37,7 @@ const Portofolio = () => {
             className='group-hover:translate-x-0.5 transition-transform'
           />
         </UnstyledLink>
-      </Reveal>
+      </ScrollReveal>
 
       {isLoading && !flagshipProject ? (
         <div className='space-y-5'>
@@ -53,14 +48,8 @@ const Portofolio = () => {
           </div>
         </div>
       ) : flagshipProject ? (
-        <motion.div
-          variants={staggerContainerVariants}
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true, amount: 0.05 }}
-          className='space-y-5'
-        >
-          <motion.div variants={staggerItemVariants}>
+        <div className='space-y-5'>
+          <ScrollReveal delay={40}>
             <ProjectCard
               title={flagshipProject.title}
               image={flagshipProject.image}
@@ -71,12 +60,12 @@ const Portofolio = () => {
               website={flagshipProject.website}
               isFeatured={true}
             />
-          </motion.div>
+          </ScrollReveal>
 
           {secondaryProjects.length > 0 && (
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
-              {secondaryProjects.map((project) => (
-                <motion.div key={project.title} variants={staggerItemVariants}>
+              {secondaryProjects.map((project, index) => (
+                <ScrollReveal key={project.title} delay={100 + index * 60}>
                   <ProjectCard
                     title={project.title}
                     image={project.image}
@@ -87,11 +76,11 @@ const Portofolio = () => {
                     website={project.website}
                     isFeatured={false}
                   />
-                </motion.div>
+                </ScrollReveal>
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       ) : null}
     </section>
   );

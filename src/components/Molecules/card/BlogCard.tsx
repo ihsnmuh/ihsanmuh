@@ -48,7 +48,7 @@ const PostCard = (props: IPostCard) => {
       <WrapperCard
         className={cn(
           'group h-full flex flex-col overflow-hidden bg-surface text-ink',
-          'border border-hairline rounded-lg hover:border-hairline-strong transition-all duration-200',
+          'border border-hairline rounded-lg hover:border-hairline-strong transition-colors duration-200',
           className,
         )}
       >
