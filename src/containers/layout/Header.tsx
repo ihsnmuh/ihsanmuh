@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
+import { emitSanReaction } from '@/lib/sanReact';
+import { getThemeTransitionMs, transitionTheme } from '@/lib/themeTransition';
 import { cn } from '@/lib/utils';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
-import KufiLogo from '@/components/Atoms/svg/KufiLogo';
+import SanLogo from '@/components/Atoms/svg/SanLogo';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -47,7 +49,18 @@ const Header = () => {
   };
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    const nextTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+    const settleMs = 220;
+    const holdMs = settleMs + Math.max(getThemeTransitionMs(), 600) + 300;
+
+    emitSanReaction(nextTheme === 'dark' ? 'tired' : 'grin', {
+      holdMs,
+      backdrop: true,
+    });
+    // Let the blur settle first, then sweep the new theme in from the center.
+    setTimeout(() => {
+      void transitionTheme(nextTheme, () => setTheme(nextTheme));
+    }, settleMs);
   };
 
   return (
@@ -60,8 +73,8 @@ const Header = () => {
             className='flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md'
             aria-label='ihsanmuh — Home'
           >
-            <div className='w-8 h-8 rounded-md bg-surface border border-hairline flex items-center justify-center p-1.5 group-hover:border-accent/40 transition-colors'>
-              <KufiLogo className='w-full h-full text-accent fill-current' />
+            <div className='w-8 h-8 rounded-full overflow-hidden border border-hairline group-hover:border-accent/40 transition-colors'>
+              <SanLogo />
             </div>
             <span className='font-primary text-base font-bold tracking-tight text-ink group-hover:text-accent transition-colors'>
               ihsanmuh
