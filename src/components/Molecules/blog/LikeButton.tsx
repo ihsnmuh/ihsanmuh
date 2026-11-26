@@ -1,8 +1,12 @@
 import { Heart } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import SanBurst from '@/components/Atoms/svg/SanBurst';
+
 import { useLikeCounter } from '@/helpers/useLikeCounter';
+import { useSanBurst } from '@/helpers/useSanBurst';
 
 type LikeButtonProps = {
   slug: string;
@@ -62,6 +66,19 @@ export function LikeButton({
     initialLikes,
   });
 
+  const { burst, trigger } = useSanBurst();
+  const wasLikedRef = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (wasLikedRef.current === null) {
+      wasLikedRef.current = isLiked;
+      return;
+    }
+    if (isLiked && !wasLikedRef.current) trigger();
+    wasLikedRef.current = isLiked;
+  }, [isLiked, isLoading, trigger]);
+
   if (isLoading) {
     return (
       <span
@@ -89,7 +106,7 @@ export function LikeButton({
       onClick={handleLike}
       disabled={isLiked || isLoading}
       className={cn(
-        'flex items-center gap-1.5 text-sm transition-colors',
+        'relative flex items-center gap-1.5 text-sm transition-colors',
         isLiked ? 'text-danger' : 'text-muted hover:text-danger',
         (isLiked || isLoading) && 'cursor-not-allowed',
         className,
@@ -102,6 +119,11 @@ export function LikeButton({
       <span>
         {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
       </span>
+      <SanBurst
+        burst={burst}
+        mood='love'
+        className='bottom-full left-1/2 mb-1 -translate-x-1/2'
+      />
     </button>
   );
 }
