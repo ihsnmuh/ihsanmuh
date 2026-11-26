@@ -2,7 +2,7 @@ import { ArrowUpRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-import KufiLogo from '@/components/Atoms/svg/KufiLogo';
+import SanLogo from '@/components/Atoms/svg/SanLogo';
 
 const FooterPixelMascot = dynamic(
   () => import('@/components/Atoms/canvas/FooterPixelMascot'),
@@ -42,8 +42,8 @@ const Footer = () => {
               aria-label='ihsanmuh — Home'
               className='inline-flex items-center gap-2.5 w-fit group'
             >
-              <div className='w-7 h-7 rounded-md bg-surface border border-hairline flex items-center justify-center p-1 group-hover:border-accent/40 transition-colors'>
-                <KufiLogo className='w-full h-full text-accent fill-current' />
+              <div className='w-7 h-7 rounded-full overflow-hidden border border-hairline group-hover:border-accent/40 transition-colors'>
+                <SanLogo />
               </div>
               <span className='font-primary text-base font-bold tracking-tight text-ink group-hover:text-accent transition-colors'>
                 ihsanmuh
