@@ -12,7 +12,7 @@ const HeroSocialMedia = () => {
           'inline-flex items-center gap-2 px-4 py-2.5 rounded-md',
           'bg-cta text-cta-fg text-sm font-medium',
           'hover:bg-cta-hover active:scale-[0.98]',
-          'transition-all duration-150 select-none',
+          'transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none',
         )}
       >
         <FileText size={15} />
@@ -25,7 +25,7 @@ const HeroSocialMedia = () => {
           'inline-flex items-center gap-2 px-4 py-2.5 rounded-md',
           'bg-surface text-ink text-sm font-medium border border-hairline-strong',
           'hover:bg-subtle active:scale-[0.98]',
-          'transition-all duration-150 select-none',
+          'transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none',
         )}
       >
         <Mail size={15} />

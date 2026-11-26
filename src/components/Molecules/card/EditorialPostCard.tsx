@@ -45,7 +45,7 @@ const EditorialPostCard = (props: IPost) => {
             {date && <time dateTime={publishedAt}>{date}</time>}
             <ArrowUpRight
               size={14}
-              className='hidden sm:inline-block opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent'
+              className='hidden sm:inline-block opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-[opacity,transform] duration-150 ease-[var(--ease-out)] text-accent'
             />
           </div>
         </div>
