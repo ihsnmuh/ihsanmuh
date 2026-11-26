@@ -3,7 +3,7 @@
  *
  * Built on the 1240x1240 vector anatomy of `avatar-base.svg` with
  * bold rounded ink strokes, two-part moustache, chin stubble ticks,
- * 4 haircuts, 12 moods, and a theme-aware accent background.
+ * 4 haircuts, 16 moods, and a theme-aware accent background.
  */
 
 export const SAN_PALETTE = {
@@ -11,6 +11,7 @@ export const SAN_PALETTE = {
   paper: '#F8F3EC',
   white: '#FFFFFF',
   blush: '#F9BEB3',
+  heart: '#E5484D',
   hairSheenLight: '#9D9D9D',
   hairSheenDark: '#484848',
   noseBridge: '#555555',
@@ -64,6 +65,9 @@ export const SAN_HAIRSTYLE_META: Record<TSanHairstyle, ISanHairstyleMeta> = {
 export const SAN_MOODS = [
   'grin',
   'chill',
+  'wink',
+  'love',
+  'cool',
   'focused',
   'idea',
   'curious',
@@ -73,6 +77,7 @@ export const SAN_MOODS = [
   'skeptic',
   'awkward',
   'shocked',
+  'dizzy',
   '404',
 ] as const;
 
@@ -91,6 +96,17 @@ export const SAN_MOOD_META: Record<TSanMood, ISanMoodMeta> = {
     note: 'Big everyday smile, the default face.',
   },
   chill: { id: 'chill', label: 'Chill', note: 'Relaxed face for calm pages.' },
+  wink: { id: 'wink', label: 'Wink', note: 'Quick playful nod.' },
+  love: {
+    id: 'love',
+    label: 'Love',
+    note: 'Heart eyes for favorite posts and projects.',
+  },
+  cool: {
+    id: 'cool',
+    label: 'Cool',
+    note: 'Shades on when everything passes CI.',
+  },
   focused: {
     id: 'focused',
     label: 'Focused',
@@ -136,6 +152,11 @@ export const SAN_MOOD_META: Record<TSanMood, ISanMoodMeta> = {
     label: 'Shocked',
     note: 'Watching an alert fire in production.',
   },
+  dizzy: {
+    id: 'dizzy',
+    label: 'Dizzy',
+    note: 'After untangling nested callbacks for hours.',
+  },
   '404': { id: '404', label: '404', note: 'Blank stare for missing pages.' },
 };
 
@@ -144,6 +165,9 @@ export const SAN_POSE: Record<TSanMood, readonly [turn: number, drop: number]> =
   {
     grin: [0, 0],
     chill: [2, 0],
+    wink: [-6, 0],
+    love: [-7, -4],
+    cool: [4, -6],
     focused: [5, 8],
     idea: [-2, -16],
     curious: [8, 0],
@@ -153,6 +177,7 @@ export const SAN_POSE: Record<TSanMood, readonly [turn: number, drop: number]> =
     skeptic: [5, 6],
     awkward: [-2, 10],
     shocked: [2, -16],
+    dizzy: [-4, 4],
     '404': [7, 16],
   };
 
@@ -162,6 +187,7 @@ const INK = SAN_PALETTE.ink;
 const PAPER = SAN_PALETTE.paper;
 const WHITE = SAN_PALETTE.white;
 const BLUSH = SAN_PALETTE.blush;
+const HEART = SAN_PALETTE.heart;
 const SHEEN_LIGHT = SAN_PALETTE.hairSheenLight;
 const SHEEN_DARK = SAN_PALETTE.hairSheenDark;
 const NOSE_BRIDGE = SAN_PALETTE.noseBridge;
@@ -366,6 +392,34 @@ const diamondEye = (x: number, y: number, r = 46) =>
   `<path d="M${x} ${y - r} Q${x} ${y} ${x + r} ${y} Q${x} ${y} ${x} ${y + r} Q${x} ${y} ${x - r} ${y} Q${x} ${y} ${x} ${y - r} Z" fill="${INK}"/>` +
   `<circle cx="${x}" cy="${y}" r="11" fill="${WHITE}"/>`;
 
+/** Bold heart shape for `love` eyes and marks */
+const heartPath = (x: number, y: number, scale = 1) => {
+  const at = (dx: number, dy: number) =>
+    `${round(x + dx * scale)} ${round(y + dy * scale)}`;
+  return `M${at(0, 38)} C${at(-64, -4)} ${at(-38, -52)} ${at(0, -16)} C${at(38, -52)} ${at(64, -4)} ${at(0, 38)} Z`;
+};
+
+/** Crisp X eye for `dizzy` */
+const crossEye = (x: number, y: number, r = 32) =>
+  line(
+    `<path d="M${x - r} ${y - r} L${x + r} ${y + r} M${x + r} ${y - r} L${x - r} ${y + r}"/>`,
+    22,
+  );
+
+/** Dark sunglasses overlay for `cool` with lens clipPath for sliding light glint */
+const COOL_SHADES =
+  `<defs>` +
+  `<clipPath id="san-cool-lenses">` +
+  `<rect x="386" y="608" width="204" height="126" rx="34" transform="rotate(-4 488 671)"/>` +
+  `<rect x="644" y="586" width="204" height="126" rx="34" transform="rotate(-4 746 649)"/>` +
+  `</clipPath>` +
+  `</defs>` +
+  `<g stroke="${INK}" stroke-linecap="round" stroke-linejoin="round">` +
+  `<rect x="386" y="608" width="204" height="126" rx="34" transform="rotate(-4 488 671)" fill="${INK}" stroke-width="20"/>` +
+  `<rect x="644" y="586" width="204" height="126" rx="34" transform="rotate(-4 746 649)" fill="${INK}" stroke-width="20"/>` +
+  `<path d="M590 662 Q617 650 644 658" fill="none" stroke-width="20"/>` +
+  `</g>`;
+
 /** Minimalist dev glasses overlay for `focused` */
 const DEV_GLASSES =
   `<g stroke="${INK}" stroke-linecap="round" stroke-linejoin="round">` +
@@ -421,6 +475,12 @@ const baseSparkle =
 const monoMark = (text: string, x = 935, y = 345, size = 92) =>
   `<text x="${x}" y="${y}" fill="${WHITE}" stroke="${INK}" stroke-width="22" paint-order="stroke" stroke-linejoin="round" font-size="${size}" font-family="var(--font-jetbrains-mono), ui-monospace, monospace" font-weight="700">${text}</text>`;
 
+const drawableCheckMark =
+  `<g stroke-linecap="round" stroke-linejoin="round" fill="none">` +
+  `<path d="M936 332 L964 360 L1018 296" stroke="${INK}" stroke-width="32" pathLength="100" class="san-check-path"/>` +
+  `<path d="M936 332 L964 360 L1018 296" stroke="${WHITE}" stroke-width="14" pathLength="100" class="san-check-path"/>` +
+  `</g>`;
+
 export interface ISanParts {
   brows: [left: string, right: string];
   eyes: [left: string, right: string];
@@ -444,6 +504,35 @@ export const SAN_PARTS: Record<TSanMood, ISanParts> = {
     eyes: [pillEye(LEFT_X, LEFT_Y), pillEye(RIGHT_X, RIGHT_Y)],
     mouth: calmSmileMouth,
     blush: 0.85,
+  },
+  wink: {
+    brows: browPair('M416 574 Q475 528 545 558', 'M670 572 Q729 538 800 564'),
+    eyes: [pillEye(LEFT_X, LEFT_Y), baseGrinEyes[1]],
+    mouth: shippedSmirk,
+    blush: 0.9,
+  },
+  love: {
+    brows: browPair('M414 562 Q475 514 545 546', 'M670 540 Q729 496 800 528'),
+    eyes: [
+      `<path d="${heartPath(LEFT_X, LEFT_Y, 0.95)}" fill="${HEART}"/>`,
+      `<path d="${heartPath(RIGHT_X, RIGHT_Y, 0.95)}" fill="${HEART}"/>`,
+    ],
+    mouth: calmSmileMouth,
+    blush: 1.15,
+    marks: [
+      `<path d="${heartPath(964, 326, 0.88)}" fill="${HEART}" stroke="${INK}" stroke-width="16" stroke-linejoin="round"/>`,
+      `<path d="${heartPath(1038, 434, 0.56)}" fill="${HEART}" stroke="${INK}" stroke-width="15" stroke-linejoin="round"/>`,
+    ],
+  },
+  cool: {
+    brows: browPair('M418 572 L544 568', 'M670 542 Q729 506 800 534'),
+    glasses: COOL_SHADES,
+    eyes: [
+      `<g clip-path="url(#san-cool-lenses)"><path class="san-shades-glint" d="M432 728 L492 604 M462 728 L522 604" fill="none" stroke="${WHITE}" stroke-width="14" stroke-linecap="round" stroke-opacity="0.9"/></g>`,
+      `<g clip-path="url(#san-cool-lenses)"><path class="san-shades-glint" d="M690 706 L750 582 M720 706 L780 582" fill="none" stroke="${WHITE}" stroke-width="14" stroke-linecap="round" stroke-opacity="0.9"/></g>`,
+    ],
+    mouth: shippedSmirk,
+    blush: 0.5,
   },
   focused: {
     brows: browPair('M418 574 L544 584', 'M672 574 L798 556'),
@@ -478,7 +567,7 @@ export const SAN_PARTS: Record<TSanMood, ISanParts> = {
     eyes: [halfLidEye(LEFT_X, LEFT_Y, 6), halfLidEye(RIGHT_X, RIGHT_Y, 6)],
     mouth: shippedSmirk,
     blush: 0.65,
-    marks: [monoMark('✓', 935, 355, 106)],
+    marks: [drawableCheckMark],
   },
   vibing: {
     brows: baseBrows,
@@ -517,7 +606,11 @@ export const SAN_PARTS: Record<TSanMood, ISanParts> = {
     eyes: [halfLidEye(LEFT_X, LEFT_Y, 18), halfLidEye(RIGHT_X, RIGHT_Y, 18)],
     mouth: skepticMouth,
     blush: 0,
-    marks: [monoMark('...', 905, 355, 86)],
+    marks: [
+      `<circle cx="932" cy="336" r="13" fill="${WHITE}" stroke="${INK}" stroke-width="14"/>`,
+      `<circle cx="976" cy="336" r="13" fill="${WHITE}" stroke="${INK}" stroke-width="14"/>`,
+      `<circle cx="1020" cy="336" r="13" fill="${WHITE}" stroke="${INK}" stroke-width="14"/>`,
+    ],
   },
   awkward: {
     brows: browPair('M416 598 L544 566', 'M670 554 L800 582'),
@@ -540,6 +633,16 @@ export const SAN_PARTS: Record<TSanMood, ISanParts> = {
     mouth: shockedMouth,
     blush: 0,
     marks: [monoMark('?!', 914, 348, 98)],
+  },
+  dizzy: {
+    brows: browPair('M416 592 Q475 560 544 584', 'M670 568 Q729 536 800 564'),
+    eyes: [crossEye(LEFT_X, LEFT_Y), crossEye(RIGHT_X, RIGHT_Y)],
+    mouth: vibingMouth,
+    blush: 0.7,
+    marks: [
+      baseSparkle,
+      `<path d="M210 388 Q214 406 232 410 Q214 416 210 434 Q204 416 186 410 Q204 406 210 388 Z" fill="${WHITE}" stroke="${INK}" stroke-width="13" stroke-linejoin="round"/>`,
+    ],
   },
   '404': {
     brows: browPair('M418 574 L544 596', 'M670 538 Q729 494 800 528'),
@@ -637,12 +740,16 @@ export const resolveSanParts = ({
     hairMarkup: SAN_HAIR_MARKUP_MAP[hairstyle],
     facialHairMarkup: showFacialHair ? SAN_FACIAL_HAIR_MARKUP : '',
     blushMarkup,
-    browsMarkup: eyeSource.brows.join(''),
+    browsMarkup: `<g class="san-brow san-brow-l">${eyeSource.brows[0]}</g><g class="san-brow san-brow-r">${eyeSource.brows[1]}</g>`,
     glassesMarkup: eyeSource.glasses ?? '',
-    eyesMarkup: eyeSource.eyes.join(''),
+    eyesMarkup: `<g class="san-eye san-eye-l">${eyeSource.eyes[0]}</g><g class="san-eye san-eye-r">${eyeSource.eyes[1]}</g>`,
     mouthMarkup: mouthSource.mouth,
     extraMarkup: eyeSource.extra ?? '',
-    marksMarkup: showMarks ? (extraSource.marks ?? []).join('') : '',
+    marksMarkup: showMarks
+      ? (extraSource.marks ?? [])
+          .map((mark, idx) => `<g class="san-mark san-mark-${idx}">${mark}</g>`)
+          .join('')
+      : '',
   };
 };
 

@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'motion/react';
+import { useReducedMotion } from 'motion/react';
 import React from 'react';
 
 import {
@@ -12,8 +12,6 @@ import {
 } from '@/lib/san';
 import { cn } from '@/lib/utils';
 
-import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
-
 type TSanMascotProps = {
   mood?: TSanMood;
   hairstyle?: TSanHairstyle;
@@ -25,7 +23,9 @@ type TSanMascotProps = {
   ground?: string | null;
   shape?: 'circle' | 'rounded' | 'none';
   showMarks?: boolean;
+  animated?: boolean;
   interactive?: boolean;
+  disableTapScale?: boolean;
   className?: string;
   onClick?: () => void;
   ariaLabel?: string;
@@ -33,7 +33,7 @@ type TSanMascotProps = {
 
 /**
  * San: illustrated portrait mascot component for ihsanmuh.
- * Supports 12 moods, 4 haircuts, custom mixed parts, and a theme-aware accent background.
+ * Uses GPU-composited CSS transforms for interruptible mood poses and per-mood CSS motion.
  */
 const SanMascot = ({
   mood = 'grin',
@@ -46,7 +46,9 @@ const SanMascot = ({
   ground = SAN_GROUND_TOKEN,
   shape = 'circle',
   showMarks = true,
+  animated = false,
   interactive = false,
+  disableTapScale = false,
   className,
   onClick,
   ariaLabel,
@@ -66,6 +68,7 @@ const SanMascot = ({
     ariaLabel ?? `San mascot showing ${SAN_MOOD_META[mood].label} mood`;
 
   const isClickable = Boolean(onClick || interactive);
+  const faceKey = `${eyesMood ?? mood}-${mouthMood ?? mood}-${extraMood ?? mood}`;
 
   const shapeClass =
     shape === 'circle'
@@ -75,7 +78,7 @@ const SanMascot = ({
         : '';
 
   return (
-    <motion.div
+    <div
       role={isClickable ? 'button' : undefined}
       tabIndex={isClickable ? 0 : undefined}
       aria-label={label}
@@ -86,15 +89,16 @@ const SanMascot = ({
           onClick?.();
         }
       }}
-      whileTap={
-        isClickable && !prefersReducedMotion ? { scale: 0.96 } : undefined
-      }
       style={{ width: size, height: size }}
       className={cn(
         'relative inline-flex items-center justify-center select-none shrink-0',
         shapeClass,
         isClickable &&
-          'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
+          'cursor-pointer transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
+        isClickable &&
+          !disableTapScale &&
+          !prefersReducedMotion &&
+          'active:scale-[0.97]',
         className,
       )}
     >
@@ -103,7 +107,9 @@ const SanMascot = ({
         viewBox={SAN_VIEW_BOX}
         width={size}
         height={size}
-        className='block w-full h-full'
+        data-mood={mood}
+        data-animated={animated ? 'true' : undefined}
+        className='san-svg block w-full h-full'
       >
         {ground && (
           <rect
@@ -112,41 +118,75 @@ const SanMascot = ({
             width='1240'
             height='1240'
             fill={ground}
-            className='transition-colors duration-300'
+            className='san-ground transition-colors duration-200'
           />
         )}
 
-        <motion.g
-          initial={false}
-          animate={{ y: drop, rotate: turn }}
-          transition={prefersReducedMotion ? { duration: 0 } : SPRING_SNAPPY}
-          style={{ originX: '620px', originY: '620px' }}
+        <g
+          style={{
+            transform: `translateY(${drop}px) rotate(${turn}deg)`,
+            transformBox: 'view-box',
+            transformOrigin: '50% 50%',
+            transition: prefersReducedMotion
+              ? 'none'
+              : 'transform 240ms cubic-bezier(0.23, 1, 0.32, 1)',
+          }}
         >
-          <g dangerouslySetInnerHTML={{ __html: SAN_SKIN_MARKUP }} />
-          {resolved.blushMarkup && (
-            <g dangerouslySetInnerHTML={{ __html: resolved.blushMarkup }} />
-          )}
-          <g dangerouslySetInnerHTML={{ __html: resolved.hairMarkup }} />
-          <g dangerouslySetInnerHTML={{ __html: resolved.browsMarkup }} />
-          {resolved.glassesMarkup && (
-            <g dangerouslySetInnerHTML={{ __html: resolved.glassesMarkup }} />
-          )}
-          <g dangerouslySetInnerHTML={{ __html: resolved.eyesMarkup }} />
-          {resolved.extraMarkup && (
-            <g dangerouslySetInnerHTML={{ __html: resolved.extraMarkup }} />
-          )}
-          {resolved.facialHairMarkup && (
-            <g
-              dangerouslySetInnerHTML={{ __html: resolved.facialHairMarkup }}
-            />
-          )}
-          <g dangerouslySetInnerHTML={{ __html: resolved.mouthMarkup }} />
-          {resolved.marksMarkup && (
-            <g dangerouslySetInnerHTML={{ __html: resolved.marksMarkup }} />
-          )}
-        </motion.g>
+          <g className='san-intro-wrap'>
+            <g className='san-head'>
+              <g dangerouslySetInnerHTML={{ __html: SAN_SKIN_MARKUP }} />
+              {resolved.blushMarkup && (
+                <g
+                  className='san-blush'
+                  dangerouslySetInnerHTML={{ __html: resolved.blushMarkup }}
+                />
+              )}
+              <g dangerouslySetInnerHTML={{ __html: resolved.hairMarkup }} />
+
+              <g key={faceKey} className='san-face-swap'>
+                <g
+                  className='san-brows'
+                  dangerouslySetInnerHTML={{ __html: resolved.browsMarkup }}
+                />
+                {resolved.glassesMarkup && (
+                  <g
+                    className='san-glasses'
+                    dangerouslySetInnerHTML={{ __html: resolved.glassesMarkup }}
+                  />
+                )}
+                <g
+                  className='san-eyes'
+                  dangerouslySetInnerHTML={{ __html: resolved.eyesMarkup }}
+                />
+                {resolved.extraMarkup && (
+                  <g
+                    className='san-extra'
+                    dangerouslySetInnerHTML={{ __html: resolved.extraMarkup }}
+                  />
+                )}
+                {resolved.facialHairMarkup && (
+                  <g
+                    dangerouslySetInnerHTML={{
+                      __html: resolved.facialHairMarkup,
+                    }}
+                  />
+                )}
+                <g
+                  className='san-mouth'
+                  dangerouslySetInnerHTML={{ __html: resolved.mouthMarkup }}
+                />
+                {resolved.marksMarkup && (
+                  <g
+                    className='san-marks'
+                    dangerouslySetInnerHTML={{ __html: resolved.marksMarkup }}
+                  />
+                )}
+              </g>
+            </g>
+          </g>
+        </g>
       </svg>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,0 +1,1172 @@
+/*
+ * /san: mascot page motion, 16 bespoke 2-3s loop animations, & 3D layers.
+ * Built to Emil Kowalski's animation standards: custom ease-out / ease-in-out
+ * curves, GPU-composited transform & opacity, no scale(0), pointer: fine hover
+ * gating, and gentler opacity-only reduced motion.
+ */
+
+:root {
+  --san-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --san-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --san-ease-loop: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.san-word {
+  display: inline-block;
+  overflow: clip;
+  margin-bottom: -0.14em;
+  padding-bottom: 0.14em;
+  vertical-align: bottom;
+}
+
+.san-word > span {
+  display: inline-block;
+}
+
+.san-roll {
+  display: inline-flex;
+  align-items: baseline;
+  overflow: clip;
+  vertical-align: baseline;
+}
+
+.san-roll > b {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .san-word > span {
+    animation: san-hero-rise 420ms var(--san-ease-out)
+      calc(40ms + var(--i, 0) * 60ms) both;
+  }
+
+  .san-roll > b {
+    animation: san-roll-in 160ms var(--san-ease-out) both;
+  }
+
+  .san-face-swap {
+    animation: san-face-in 140ms var(--san-ease-out) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .san-roll > b,
+  .san-face-swap {
+    animation: san-fade-only 150ms var(--san-ease-out) both;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .san-rise {
+    animation: san-hero-rise 520ms var(--san-ease-out)
+      calc(60ms + var(--i, 0) * 90ms) both;
+  }
+
+  .san-stage-face .san-ground {
+    animation: san-ground-wipe 700ms var(--san-ease-out) 200ms both;
+  }
+
+  .san-stage-face .san-intro-wrap {
+    animation: san-face-rise 620ms var(--san-ease-out) 520ms both;
+  }
+}
+
+@keyframes san-ground-wipe {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
+@keyframes san-face-rise {
+  from {
+    transform: translateY(36px) scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.san-svg .san-intro-wrap {
+  transform-box: view-box;
+  transform-origin: 50% 60%;
+}
+
+@keyframes san-hero-rise {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes san-roll-in {
+  from {
+    transform: translateY(35%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.san-svg .san-face-swap {
+  transform-box: view-box;
+  transform-origin: 50% 54%;
+}
+
+@keyframes san-face-in {
+  from {
+    opacity: 0.55;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes san-fade-only {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+ * 16 Bespoke Per-Mood 2-3s Seamless Loop Animations
+ * Active on [data-animated="true"] and on fine-pointer tile :hover.
+ * ========================================================================== */
+
+.san-svg .san-head {
+  transform-box: view-box;
+  transform-origin: 50% 54%;
+}
+
+.san-svg .san-eye,
+.san-svg .san-brow,
+.san-svg .san-mouth,
+.san-svg .san-mark,
+.san-svg .san-blush {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.san-svg .san-check-path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Grin: eyes squeeze into happy arcs, head bobs like laughing, sparkle twinkles */
+  .san-svg[data-animated='true'][data-mood='grin'] .san-head {
+    animation: san-grin-laugh 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='grin'] .san-eye {
+    animation: san-grin-squeeze 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='grin'] .san-mark-0 {
+    animation: san-twinkle 2.2s var(--san-ease-in-out) infinite;
+  }
+
+  /* 2. Chill: slow gentle head sway, one lazy blink */
+  .san-svg[data-animated='true'][data-mood='chill'] .san-head {
+    animation: san-chill-sway 2.8s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='chill'] .san-eye {
+    animation: san-chill-lazy-blink 2.8s var(--san-ease-in-out) infinite;
+  }
+
+  /* 3. Wink: one eye winks, smirk lifts, quick head tilt */
+  .san-svg[data-animated='true'][data-mood='wink'] .san-head {
+    animation: san-wink-tilt 2.4s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='wink'] .san-eye-r {
+    animation: san-wink-squeeze 2.4s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='wink'] .san-mouth {
+    animation: san-wink-smirk 2.4s var(--san-ease-out) infinite;
+  }
+
+  /* 4. Love: heart eyes pulse, small hearts float up and fade */
+  .san-svg[data-animated='true'][data-mood='love'] .san-eye {
+    animation: san-love-pulse 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='love'] .san-mark-0 {
+    animation: san-float-fade 2.2s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='love'] .san-mark-1 {
+    animation: san-float-fade 2.2s var(--san-ease-out) -1.1s infinite;
+  }
+
+  /* 5. Cool: light glint slides across sunglasses, confident chin-up nod */
+  .san-svg[data-animated='true'][data-mood='cool'] .san-head {
+    animation: san-cool-nod 2.5s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='cool'] .san-shades-glint {
+    animation: san-cool-glint 2.5s var(--san-ease-in-out) infinite;
+  }
+
+  /* 6. Focused: eyes move left to right like reading code, "{}" icon pulses */
+  .san-svg[data-animated='true'][data-mood='focused'] .san-eye {
+    animation: san-focused-scan 2.6s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='focused'] .san-mark-0 {
+    animation: san-pulse-badge 2.6s var(--san-ease-loop) infinite;
+  }
+
+  /* 7. Idea: sparkle eyes twinkle, head jolts up, "!" pops in */
+  .san-svg[data-animated='true'][data-mood='idea'] .san-head {
+    animation: san-idea-jolt 2.4s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='idea'] .san-eye,
+  .san-svg[data-animated='true'][data-mood='idea'] .san-mark-0 {
+    animation: san-twinkle 2.4s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='idea'] .san-mark-1 {
+    animation: san-pop-badge 2.4s var(--san-ease-out) infinite;
+  }
+
+  /* 8. Curious: head tilts side to side, eyebrow raises, "?" bobs */
+  .san-svg[data-animated='true'][data-mood='curious'] .san-head {
+    animation: san-curious-tilt 2.6s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='curious'] .san-brow-r {
+    animation: san-brow-raise 2.6s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='curious'] .san-mark-0 {
+    animation: san-bob-mark 2.6s var(--san-ease-loop) infinite;
+  }
+
+  /* 9. Shipped: content smile, checkmark draws itself, proud nod */
+  .san-svg[data-animated='true'][data-mood='shipped'] .san-head {
+    animation: san-proud-nod 2.4s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='shipped'] .san-check-path {
+    animation: san-draw-check 2.4s var(--san-ease-out) infinite;
+  }
+
+  /* 10. Vibing: eyes closed, head bobs to a beat, music notes float up */
+  .san-svg[data-animated='true'][data-mood='vibing'] .san-head {
+    animation: san-vibe-beat 2s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='vibing'] .san-mark-0 {
+    animation: san-float-fade 2s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='vibing'] .san-mark-1 {
+    animation: san-float-fade 2s var(--san-ease-out) -1s infinite;
+  }
+
+  /* 11. Late Night (tired): drowsy blink, head droops then jerks up, "zZ" floats up */
+  .san-svg[data-animated='true'][data-mood='tired'] .san-head {
+    animation: san-tired-droop-jerk 2.8s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='tired'] .san-eye {
+    animation: san-tired-drowsy-eye 2.8s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='tired'] .san-mark-0 {
+    animation: san-tired-zzz 2.8s var(--san-ease-out) infinite;
+  }
+
+  /* 12. Skeptic: flat stare, eyebrow slowly raises, "..." appears one by one */
+  .san-svg[data-animated='true'][data-mood='skeptic'] .san-brow-r {
+    animation: san-skeptic-brow 2.6s var(--san-ease-in-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='skeptic'] .san-mark-0 {
+    animation: san-dot-1 2.6s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='skeptic'] .san-mark-1 {
+    animation: san-dot-2 2.6s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='skeptic'] .san-mark-2 {
+    animation: san-dot-3 2.6s var(--san-ease-out) infinite;
+  }
+
+  /* 13. Awkward: nervous grimace, sweat drop slides down, eyes dart */
+  .san-svg[data-animated='true'][data-mood='awkward'] .san-eye {
+    animation: san-awkward-dart 2.4s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='awkward'] .san-mouth {
+    animation: san-awkward-grimace 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='awkward'] .san-mark-0 {
+    animation: san-sweat-slide 2.4s var(--san-ease-out) infinite;
+  }
+
+  /* 14. Shocked: eyes go wide, head jumps back, "?!" pops in */
+  .san-svg[data-animated='true'][data-mood='shocked'] .san-head {
+    animation: san-shock-jump 2.2s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='shocked'] .san-eye {
+    animation: san-shock-wide 2.2s var(--san-ease-out) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='shocked'] .san-mark-0 {
+    animation: san-pop-badge 2.2s var(--san-ease-out) infinite;
+  }
+
+  /* 15. Dizzy: X eyes, head wobbles in circles, stars orbit around the head */
+  .san-svg[data-animated='true'][data-mood='dizzy'] .san-head {
+    animation: san-dizzy-circle 2.4s linear infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='dizzy'] .san-eye {
+    animation: san-dizzy-x 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='dizzy'] .san-mark-0 {
+    animation: san-star-orbit-r 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='dizzy'] .san-mark-1 {
+    animation: san-star-orbit-l 2.4s var(--san-ease-loop) infinite;
+  }
+
+  /* 16. 404: blank stare, "404" badge glitches, tiny glitch jitter */
+  .san-svg[data-animated='true'][data-mood='404'] .san-head {
+    animation: san-404-head-jitter 2.5s steps(2, end) infinite;
+  }
+  .san-svg[data-animated='true'][data-mood='404'] .san-mark-0 {
+    animation: san-404-badge-glitch 2.5s steps(2, end) infinite;
+  }
+}
+
+/* Fine-pointer hover preview on the 16 mood tiles */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .san-mood:hover .san-svg[data-mood='grin'] .san-head {
+    animation: san-grin-laugh 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='grin'] .san-eye {
+    animation: san-grin-squeeze 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='grin'] .san-mark-0 {
+    animation: san-twinkle 2.2s var(--san-ease-in-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='chill'] .san-head {
+    animation: san-chill-sway 2.8s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='chill'] .san-eye {
+    animation: san-chill-lazy-blink 2.8s var(--san-ease-in-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='wink'] .san-head {
+    animation: san-wink-tilt 2.4s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='wink'] .san-eye-r {
+    animation: san-wink-squeeze 2.4s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='wink'] .san-mouth {
+    animation: san-wink-smirk 2.4s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='love'] .san-eye {
+    animation: san-love-pulse 2.2s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='love'] .san-mark-0 {
+    animation: san-float-fade 2.2s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='love'] .san-mark-1 {
+    animation: san-float-fade 2.2s var(--san-ease-out) -1.1s infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='cool'] .san-head {
+    animation: san-cool-nod 2.5s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='cool'] .san-shades-glint {
+    animation: san-cool-glint 2.5s var(--san-ease-in-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='focused'] .san-eye {
+    animation: san-focused-scan 2.6s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='focused'] .san-mark-0 {
+    animation: san-pulse-badge 2.6s var(--san-ease-loop) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='idea'] .san-head {
+    animation: san-idea-jolt 2.4s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='idea'] .san-eye,
+  .san-mood:hover .san-svg[data-mood='idea'] .san-mark-0 {
+    animation: san-twinkle 2.4s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='idea'] .san-mark-1 {
+    animation: san-pop-badge 2.4s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='curious'] .san-head {
+    animation: san-curious-tilt 2.6s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='curious'] .san-brow-r {
+    animation: san-brow-raise 2.6s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='curious'] .san-mark-0 {
+    animation: san-bob-mark 2.6s var(--san-ease-loop) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='shipped'] .san-head {
+    animation: san-proud-nod 2.4s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='shipped'] .san-check-path {
+    animation: san-draw-check 2.4s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='vibing'] .san-head {
+    animation: san-vibe-beat 2s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='vibing'] .san-mark-0 {
+    animation: san-float-fade 2s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='vibing'] .san-mark-1 {
+    animation: san-float-fade 2s var(--san-ease-out) -1s infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='tired'] .san-head {
+    animation: san-tired-droop-jerk 2.8s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='tired'] .san-eye {
+    animation: san-tired-drowsy-eye 2.8s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='tired'] .san-mark-0 {
+    animation: san-tired-zzz 2.8s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='skeptic'] .san-brow-r {
+    animation: san-skeptic-brow 2.6s var(--san-ease-in-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='skeptic'] .san-mark-0 {
+    animation: san-dot-1 2.6s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='skeptic'] .san-mark-1 {
+    animation: san-dot-2 2.6s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='skeptic'] .san-mark-2 {
+    animation: san-dot-3 2.6s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='awkward'] .san-eye {
+    animation: san-awkward-dart 2.4s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='awkward'] .san-mouth {
+    animation: san-awkward-grimace 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='awkward'] .san-mark-0 {
+    animation: san-sweat-slide 2.4s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='shocked'] .san-head {
+    animation: san-shock-jump 2.2s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='shocked'] .san-eye {
+    animation: san-shock-wide 2.2s var(--san-ease-out) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='shocked'] .san-mark-0 {
+    animation: san-pop-badge 2.2s var(--san-ease-out) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='dizzy'] .san-head {
+    animation: san-dizzy-circle 2.4s linear infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='dizzy'] .san-eye {
+    animation: san-dizzy-x 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='dizzy'] .san-mark-0 {
+    animation: san-star-orbit-r 2.4s var(--san-ease-loop) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='dizzy'] .san-mark-1 {
+    animation: san-star-orbit-l 2.4s var(--san-ease-loop) infinite;
+  }
+
+  .san-mood:hover .san-svg[data-mood='404'] .san-head {
+    animation: san-404-head-jitter 2.5s steps(2, end) infinite;
+  }
+  .san-mood:hover .san-svg[data-mood='404'] .san-mark-0 {
+    animation: san-404-badge-glitch 2.5s steps(2, end) infinite;
+  }
+}
+
+/* Keyframes (2-3s seamless loops, transform & opacity only) */
+
+@keyframes san-grin-laugh {
+  0%,
+  65%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  16% {
+    transform: translateY(-54px) rotate(-3.6deg);
+  }
+  30% {
+    transform: translateY(-12px) rotate(0deg);
+  }
+  44% {
+    transform: translateY(-45px) rotate(2.4deg);
+  }
+}
+
+@keyframes san-grin-squeeze {
+  0%,
+  65%,
+  100% {
+    transform: scaleY(1);
+  }
+  16%,
+  44% {
+    transform: scaleY(0.72);
+  }
+}
+
+@keyframes san-twinkle {
+  0%,
+  100% {
+    transform: scale(0.84) rotate(0deg);
+    opacity: 0.82;
+  }
+  50% {
+    transform: scale(1.28) rotate(24deg);
+    opacity: 1;
+  }
+}
+
+@keyframes san-chill-sway {
+  0%,
+  100% {
+    transform: rotate(-4.3deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(4.3deg) translateY(-24px);
+  }
+}
+
+@keyframes san-chill-lazy-blink {
+  0%,
+  58%,
+  74%,
+  100% {
+    transform: scaleY(1);
+  }
+  65%,
+  67% {
+    transform: scaleY(0.06);
+  }
+}
+
+@keyframes san-wink-tilt {
+  0%,
+  68%,
+  100% {
+    transform: rotate(0deg) translateY(0px);
+  }
+  24%,
+  42% {
+    transform: rotate(-5deg) translateY(-14px);
+  }
+}
+
+@keyframes san-wink-squeeze {
+  0%,
+  68%,
+  100% {
+    transform: scaleY(1);
+  }
+  24%,
+  42% {
+    transform: scaleY(0.6) translateY(8px);
+  }
+}
+
+@keyframes san-wink-smirk {
+  0%,
+  68%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  24%,
+  42% {
+    transform: translateY(-12px) rotate(-3deg);
+  }
+}
+
+@keyframes san-love-pulse {
+  0%,
+  62%,
+  100% {
+    transform: scale(1);
+  }
+  16% {
+    transform: scale(1.36);
+  }
+  30% {
+    transform: scale(1);
+  }
+  44% {
+    transform: scale(1.24);
+  }
+}
+
+@keyframes san-float-fade {
+  0% {
+    transform: translateY(48px) scale(0.8);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-126px) scale(1.12);
+    opacity: 0;
+  }
+}
+
+@keyframes san-cool-nod {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  30%,
+  46% {
+    transform: translateY(-48px) rotate(6deg);
+  }
+}
+
+@keyframes san-cool-glint {
+  0%,
+  18% {
+    transform: translateX(-115px);
+    opacity: 0;
+  }
+  32% {
+    opacity: 1;
+  }
+  58% {
+    opacity: 1;
+  }
+  72%,
+  100% {
+    transform: translateX(125px);
+    opacity: 0;
+  }
+}
+
+@keyframes san-focused-scan {
+  0%,
+  100% {
+    transform: translateX(-48px);
+  }
+  28% {
+    transform: translateX(6px);
+  }
+  56% {
+    transform: translateX(54px);
+  }
+  72% {
+    transform: translateX(-48px);
+  }
+}
+
+@keyframes san-pulse-badge {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 1;
+  }
+}
+
+@keyframes san-idea-jolt {
+  0%,
+  72%,
+  100% {
+    transform: translateY(0px);
+  }
+  20% {
+    transform: translateY(-78px);
+  }
+  36%,
+  52% {
+    transform: translateY(-48px);
+  }
+}
+
+@keyframes san-pop-badge {
+  0%,
+  12%,
+  88%,
+  100% {
+    transform: scale(0.8) translateY(24px);
+    opacity: 0;
+  }
+  26%,
+  72% {
+    transform: scale(1.16) translateY(0px);
+    opacity: 1;
+  }
+  38% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes san-curious-tilt {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(8.4deg);
+  }
+}
+
+@keyframes san-brow-raise {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  45%,
+  65% {
+    transform: translateY(-22px);
+  }
+}
+
+@keyframes san-bob-mark {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-9.6deg);
+  }
+  50% {
+    transform: translateY(-48px) rotate(9.6deg);
+  }
+}
+
+@keyframes san-proud-nod {
+  0%,
+  68%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  24% {
+    transform: translateY(42px) rotate(3.6deg);
+  }
+  44% {
+    transform: translateY(-24px) rotate(-2.4deg);
+  }
+}
+
+@keyframes san-draw-check {
+  0%,
+  14% {
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  48%,
+  82% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  96%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes san-vibe-beat {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0px) rotate(-4.8deg);
+  }
+  25% {
+    transform: translateY(54px) rotate(3.6deg);
+  }
+  75% {
+    transform: translateY(54px) rotate(-1.2deg);
+  }
+}
+
+@keyframes san-tired-droop-jerk {
+  0%,
+  86%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  64% {
+    transform: translateY(84px) rotate(-9.6deg);
+  }
+  74% {
+    transform: translateY(-30px) rotate(3.6deg);
+  }
+}
+
+@keyframes san-tired-drowsy-eye {
+  0%,
+  86%,
+  100% {
+    transform: scaleY(1);
+  }
+  55%,
+  66% {
+    transform: scaleY(0.06);
+  }
+  74% {
+    transform: scaleY(1.24);
+  }
+}
+
+@keyframes san-tired-zzz {
+  0% {
+    transform: translateY(36px) scale(0.84);
+    opacity: 0;
+  }
+  20%,
+  56% {
+    opacity: 1;
+  }
+  68%,
+  100% {
+    transform: translateY(-114px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes san-skeptic-brow {
+  0%,
+  18%,
+  88%,
+  100% {
+    transform: translateY(0px);
+  }
+  48%,
+  74% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes san-dot-1 {
+  0%,
+  14%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  24%,
+  78% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes san-dot-2 {
+  0%,
+  30%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  40%,
+  78% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes san-dot-3 {
+  0%,
+  46%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  56%,
+  78% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes san-awkward-dart {
+  0%,
+  72%,
+  100% {
+    transform: translateX(0px);
+  }
+  22%,
+  36% {
+    transform: translateX(-16px);
+  }
+  48%,
+  62% {
+    transform: translateX(16px);
+  }
+}
+
+@keyframes san-awkward-grimace {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  30% {
+    transform: scaleX(1.12);
+  }
+  60% {
+    transform: scaleX(0.94);
+  }
+}
+
+@keyframes san-sweat-slide {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  18%,
+  68% {
+    opacity: 1;
+  }
+  92%,
+  100% {
+    transform: translateY(126px);
+    opacity: 0;
+  }
+}
+
+@keyframes san-shock-jump {
+  0%,
+  74%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  18% {
+    transform: translateY(-72px) scale(0.94);
+  }
+  34%,
+  54% {
+    transform: translateY(-36px) scale(1);
+  }
+}
+
+@keyframes san-shock-wide {
+  0%,
+  74%,
+  100% {
+    transform: scale(1);
+  }
+  18%,
+  46% {
+    transform: scale(1.28);
+  }
+}
+
+@keyframes san-dizzy-circle {
+  0% {
+    transform: translate(0px, -30px) rotate(-6deg);
+  }
+  25% {
+    transform: translate(30px, 0px) rotate(0deg);
+  }
+  50% {
+    transform: translate(0px, 30px) rotate(6deg);
+  }
+  75% {
+    transform: translate(-30px, 0px) rotate(0deg);
+  }
+  100% {
+    transform: translate(0px, -30px) rotate(-6deg);
+  }
+}
+
+@keyframes san-dizzy-x {
+  0%,
+  100% {
+    transform: rotate(-38.4deg);
+  }
+  50% {
+    transform: rotate(38.4deg);
+  }
+}
+
+@keyframes san-star-orbit-r {
+  0%,
+  100% {
+    transform: translate(-54px, -30px) scale(0.84);
+  }
+  50% {
+    transform: translate(54px, 42px) scale(1.24);
+  }
+}
+
+@keyframes san-star-orbit-l {
+  0%,
+  100% {
+    transform: translate(54px, 36px) scale(1.2);
+  }
+  50% {
+    transform: translate(-54px, -36px) scale(0.84);
+  }
+}
+
+@keyframes san-404-head-jitter {
+  0%,
+  72%,
+  88%,
+  100% {
+    transform: translate(0px, 0px);
+  }
+  75% {
+    transform: translate(-21px, 6px);
+  }
+  80% {
+    transform: translate(24px, -6px);
+  }
+  84% {
+    transform: translate(-12px, 0px);
+  }
+}
+
+@keyframes san-404-badge-glitch {
+  0%,
+  70%,
+  90%,
+  100% {
+    transform: translate(0px, 0px);
+    opacity: 1;
+  }
+  74% {
+    transform: translate(-48px, 12px);
+    opacity: 0.45;
+  }
+  79% {
+    transform: translate(54px, -12px);
+    opacity: 1;
+  }
+  84% {
+    transform: translate(-24px, 6px);
+    opacity: 0.6;
+  }
+}
+
+/* Pullable stage face */
+.san-stage-face {
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.san-stage-face:active {
+  cursor: grabbing;
+}
+
+/* Mood & haircut tiles: crisp editorial ease-out, gated to fine pointers */
+.san-mood {
+  transition:
+    border-color 150ms var(--san-ease-out),
+    background-color 150ms var(--san-ease-out),
+    transform 180ms var(--san-ease-out);
+}
+
+.san-mood-face {
+  transition: transform 180ms var(--san-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .san-mood:hover {
+    transform: translateY(-2px);
+  }
+
+  .san-mood:hover .san-mood-face {
+    transform: scale(1.05);
+  }
+
+  .san-mood:active .san-mood-face {
+    transform: scale(0.96);
+  }
+}
+
+/* Layer build-up steps */
+.san-step {
+  transition:
+    border-color 150ms var(--san-ease-out),
+    background-color 150ms var(--san-ease-out);
+}
+
+.san-step-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.san-step-layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity 200ms var(--san-ease-out);
+}
+
+.san-step-layer > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Scroll-linked entrance for mood and step tiles (opacity + translate only) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .san-mood,
+    .san-step {
+      animation: san-tile-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes san-tile-enter {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .san-roll-text {
+    animation: san-roll-in 160ms var(--san-ease-out) both;
+  }
+}
+
+/* Click-to-copy palette swatches */
+.san-color-dot {
+  transition: transform 180ms var(--san-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .san-color:hover .san-color-dot {
+    transform: scale(1.1);
+  }
+
+  .san-color:active .san-color-dot {
+    transform: scale(0.94);
+  }
+}

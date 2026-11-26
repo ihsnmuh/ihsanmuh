@@ -6,7 +6,7 @@ const SanPage = () => {
     <>
       <Seo
         templateTitle='San'
-        description='San is my illustrated mascot for this site. One SVG file holds 12 moods, 4 haircuts, and a custom face mixer.'
+        description='San is my illustrated mascot for this site. One SVG file holds 16 moods, 4 haircuts, and a custom face mixer.'
         tags={['san', 'mascot', 'branding']}
         breadcrumbs={[
           { name: 'Home', path: '/' },

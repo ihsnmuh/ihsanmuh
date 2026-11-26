@@ -1,6 +1,7 @@
-import { Download, Shuffle } from 'lucide-react';
+import { Check, Download, Shuffle } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useTheme } from 'next-themes';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import {
   buildSanSvgFile,
@@ -14,28 +15,73 @@ import {
   SAN_PALETTE,
   SAN_POSE,
   TSanHairstyle,
+  TSanLayer,
   TSanMood,
 } from '@/lib/san';
 import { cn } from '@/lib/utils';
 
-import { Reveal } from '@/components/Atoms/Motion';
+import { Reveal, SPRING_SNAPPY } from '@/components/Atoms/Motion';
 import SanMascot from '@/components/Atoms/svg/SanMascot';
 
-const LAYER_LABELS: Record<(typeof SAN_LAYERS)[number], string> = {
-  ground: '01 · Ground',
-  head: '02 · Head',
-  blush: '03 · Blush',
-  hair: '04 · Hair',
-  brows: '05 · Brows',
-  face: '06 · Face',
-  marks: '07 · Marks',
+const LAYER_INFO: Record<
+  TSanLayer,
+  { number: string; title: string; detail: string }
+> = {
+  ground: {
+    number: '01',
+    title: 'Ground',
+    detail: 'Accent circle synced to light and dark mode.',
+  },
+  head: {
+    number: '02',
+    title: 'Head',
+    detail: 'Ears, jawline, and rounded nose.',
+  },
+  blush: {
+    number: '03',
+    title: 'Blush',
+    detail: 'Tilted cheek ovals, hidden on serious moods.',
+  },
+  hair: {
+    number: '04',
+    title: 'Hair',
+    detail: 'Swappable cut with layered sheen strands.',
+  },
+  brows: {
+    number: '05',
+    title: 'Brows',
+    detail: 'Thick arched lines that carry the expression.',
+  },
+  face: {
+    number: '06',
+    title: 'Face',
+    detail: 'Eyes, glasses, moustache, beard, and mouth.',
+  },
+  marks: {
+    number: '07',
+    title: 'Marks',
+    detail: 'Sparkle or monospace accents around the head.',
+  },
 };
 
+const PALETTE_SWATCHES = [
+  { name: 'Light ground', hex: SAN_PALETTE.lightGround, role: 'Light accent' },
+  { name: 'Dark ground', hex: SAN_PALETTE.darkGround, role: 'Dark accent' },
+  { name: 'Ink', hex: SAN_PALETTE.ink, role: 'Outlines & hair' },
+  { name: 'Paper', hex: SAN_PALETTE.paper, role: 'Skin base' },
+  { name: 'Blush', hex: SAN_PALETTE.blush, role: 'Cheeks' },
+  { name: 'Sheen', hex: SAN_PALETTE.hairSheenLight, role: 'Hair highlights' },
+] as const;
+
 const SanContainer = () => {
+  const prefersReducedMotion = useReducedMotion();
   const { resolvedTheme } = useTheme();
   const [mood, setMood] = useState<TSanMood>('grin');
   const [hairstyle, setHairstyle] = useState<TSanHairstyle>('textured-crop');
   const [showFacialHair, setShowFacialHair] = useState(true);
+  const [activeLayer, setActiveLayer] = useState<TSanLayer | null>(null);
+  const [copiedHex, setCopiedHex] = useState<string | null>(null);
+  const suppressNextClickRef = useRef(false);
 
   const [mixHair, setMixHair] = useState<TSanHairstyle>('taper-fade');
   const [mixEyes, setMixEyes] = useState<TSanMood>('idea');
@@ -77,6 +123,16 @@ const SanContainer = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  }, []);
+
+  const handleCopyHex = useCallback((hex: string) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(hex).catch(() => undefined);
+    }
+    setCopiedHex(hex);
+    setTimeout(() => {
+      setCopiedHex((prev) => (prev === hex ? null : prev));
+    }, 1500);
   }, []);
 
   const currentGroundHex =
@@ -122,13 +178,24 @@ const SanContainer = () => {
     <div className='pt-2 sm:pt-4 space-y-16'>
       {/* Header */}
       <header className='space-y-3'>
-        <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+        <p
+          className='san-rise font-mono text-[11px] uppercase tracking-wider text-accent font-medium'
+          style={{ '--i': 0 } as React.CSSProperties}
+        >
           Mascot
         </p>
         <h1 className='font-primary text-3xl sm:text-4xl font-bold tracking-tight text-ink'>
-          San
+          <span
+            className='san-word'
+            style={{ '--i': 1 } as React.CSSProperties}
+          >
+            <span>San</span>
+          </span>
         </h1>
-        <p className='text-base leading-relaxed text-body max-w-2xl'>
+        <p
+          className='san-rise text-base leading-relaxed text-body max-w-2xl'
+          style={{ '--i': 3 } as React.CSSProperties}
+        >
           San is my illustrated stand-in across this site. Everything lives in
           one <code className='font-mono text-xs text-ink'>1240x1240</code> SVG
           file, split into separate face, hair, brow, and expression parts so I
@@ -136,7 +203,7 @@ const SanContainer = () => {
         </p>
       </header>
 
-      {/* 1. Interactive Stage */}
+      {/* 1. Interactive Pullable Stage */}
       <Reveal>
         <section
           aria-label='Interactive San mood stage'
@@ -145,8 +212,10 @@ const SanContainer = () => {
           <div className='flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6 py-3 border-b border-hairline bg-subtle/50'>
             <div className='flex items-center gap-2 font-mono text-xs'>
               <span className='text-muted'>mood:</span>
-              <span className='px-2 py-0.5 rounded bg-accent-soft text-accent font-medium'>
-                {mood}
+              <span className='san-roll px-2 py-0.5 rounded bg-accent-soft text-accent font-medium'>
+                <b key={mood} className='font-medium'>
+                  {mood}
+                </b>
               </span>
               <span className='hidden sm:inline text-muted'>
                 hair: {hairstyle} · turn {turn}&deg; · drop {drop}px
@@ -183,23 +252,59 @@ const SanContainer = () => {
             </div>
           </div>
 
-          <div className='flex flex-col items-center justify-center px-6 py-12 sm:py-16 bg-canvas/40'>
-            <SanMascot
-              mood={mood}
-              hairstyle={hairstyle}
-              showFacialHair={showFacialHair}
-              size={220}
-              shape='circle'
-              interactive
-              onClick={handleCycleMood}
-              className='ring-1 ring-hairline'
-            />
+          <div className='flex flex-col items-center justify-center px-6 py-12 sm:py-16 bg-canvas/40 overflow-hidden'>
+            <motion.div
+              initial={
+                prefersReducedMotion
+                  ? false
+                  : { transform: 'scale(0.94)', opacity: 0 }
+              }
+              animate={{ transform: 'scale(1)', opacity: 1 }}
+              drag={!prefersReducedMotion}
+              dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
+              dragElastic={0.32}
+              dragTransition={{ bounceStiffness: 420, bounceDamping: 26 }}
+              onDragStart={() => {
+                suppressNextClickRef.current = true;
+              }}
+              onDragEnd={(_event, info) => {
+                const distance = Math.hypot(info.offset.x, info.offset.y);
+                const velocity = Math.hypot(info.velocity.x, info.velocity.y);
+                if (distance > 48 || velocity > 300) {
+                  handleCycleMood();
+                }
+                requestAnimationFrame(() => {
+                  suppressNextClickRef.current = false;
+                });
+              }}
+              transition={SPRING_SNAPPY}
+              className='san-stage-face rounded-full'
+            >
+              <SanMascot
+                mood={mood}
+                hairstyle={hairstyle}
+                showFacialHair={showFacialHair}
+                size={220}
+                shape='circle'
+                animated
+                interactive
+                disableTapScale
+                onClick={() => {
+                  if (suppressNextClickRef.current) return;
+                  handleCycleMood();
+                }}
+                className='ring-1 ring-hairline'
+              />
+            </motion.div>
+
             <p className='mt-6 text-sm text-ink font-medium text-center'>
-              {activeMeta.label}:{' '}
-              <span className='text-body font-normal'>{activeMeta.note}</span>
+              <span className='san-roll'>
+                <b key={activeMeta.label}>{activeMeta.label}</b>
+              </span>
+              : <span className='text-body font-normal'>{activeMeta.note}</span>
             </p>
             <p className='mt-1.5 font-mono text-[11px] text-muted text-center'>
-              Click the portrait to step through all 12 moods ·{' '}
+              Click or pull the portrait to switch through all 16 moods ·{' '}
               {activeHairMeta.label}
             </p>
           </div>
@@ -220,7 +325,7 @@ const SanContainer = () => {
                       onClick={() => setHairstyle(styleId)}
                       aria-pressed={isActive}
                       className={cn(
-                        'min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-md border font-mono text-xs transition-all active:scale-[0.98]',
+                        'min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-md border font-mono text-xs transition-[transform,color,background-color,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]',
                         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
                         isActive
                           ? 'border-accent bg-accent-soft text-accent font-medium'
@@ -236,7 +341,7 @@ const SanContainer = () => {
                   onClick={() => setShowFacialHair((prev) => !prev)}
                   aria-pressed={showFacialHair}
                   className={cn(
-                    'min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-md border font-mono text-xs transition-all active:scale-[0.98]',
+                    'min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-md border font-mono text-xs transition-[transform,color,background-color,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
                     showFacialHair
                       ? 'border-accent bg-accent-soft text-accent font-medium'
@@ -258,7 +363,7 @@ const SanContainer = () => {
                     onClick={() => setMood(item)}
                     aria-pressed={isActive}
                     className={cn(
-                      'min-h-[44px] sm:min-h-[38px] px-3 py-2 rounded-md border text-left text-xs font-mono transition-all active:scale-[0.98]',
+                      'min-h-[44px] sm:min-h-[38px] px-3 py-2 rounded-md border text-left text-xs font-mono transition-[transform,color,background-color,border-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97]',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
                       isActive
                         ? 'border-accent bg-accent-soft text-accent font-medium'
@@ -295,22 +400,25 @@ const SanContainer = () => {
                   key={styleId}
                   type='button'
                   onClick={() => setHairstyle(styleId)}
+                  aria-pressed={isSelected}
                   className={cn(
-                    'flex flex-col items-center p-4 rounded-lg border text-center transition-all active:scale-[0.98]',
+                    'san-mood flex flex-col items-center p-4 rounded-lg border text-center',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
                     isSelected
                       ? 'border-accent bg-accent-soft/40'
                       : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
                   )}
                 >
-                  <SanMascot
-                    mood={mood}
-                    hairstyle={styleId}
-                    showFacialHair={showFacialHair}
-                    size={96}
-                    shape='circle'
-                    className='pointer-events-none'
-                  />
+                  <div className='san-mood-face'>
+                    <SanMascot
+                      mood={mood}
+                      hairstyle={styleId}
+                      showFacialHair={showFacialHair}
+                      size={96}
+                      shape='circle'
+                      className='pointer-events-none'
+                    />
+                  </div>
                   <span className='mt-2.5 text-sm font-semibold text-ink'>
                     {styleMeta.label}
                   </span>
@@ -382,6 +490,7 @@ const SanContainer = () => {
                 extraMood={mixExtra}
                 size={184}
                 shape='rounded'
+                animated
                 interactive
                 onClick={handleShuffleMix}
                 className='ring-1 ring-hairline'
@@ -492,7 +601,7 @@ const SanContainer = () => {
         </section>
       </Reveal>
 
-      {/* 4. Layers */}
+      {/* 4. 3D Scroll-Driven Exploded Layers */}
       <Reveal delay={0.05}>
         <section className='space-y-4'>
           <div>
@@ -505,44 +614,88 @@ const SanContainer = () => {
             </h2>
             <p className='mt-1 text-sm text-body max-w-2xl'>
               I stack seven SVG groups from back to front to draw each face.
-              Empty groups stay hidden when a mood skips blush or marks.
+              Each step adds one group on top of the last. Click a step to see
+              that group on its own.
             </p>
           </div>
 
-          <div className='grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5'>
-            {SAN_LAYERS.map((layerKey) => {
-              const svg = layers[layerKey];
+          <ol className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
+            {SAN_LAYERS.map((layerKey, index) => {
+              const info = LAYER_INFO[layerKey];
+              const isUnused = !layers[layerKey];
+              const isIsolated = activeLayer === layerKey;
               return (
-                <div
-                  key={layerKey}
-                  className={cn(
-                    'rounded-lg border border-hairline bg-surface p-3 flex flex-col items-center justify-between gap-2',
-                    !svg && 'opacity-45',
-                  )}
-                >
-                  <div className='w-20 h-20 flex items-center justify-center rounded-md bg-canvas/70 border border-hairline/60 overflow-hidden'>
-                    {svg ? (
-                      <div
-                        className='w-full h-full'
-                        dangerouslySetInnerHTML={{ __html: svg }}
-                      />
-                    ) : (
-                      <span className='font-mono text-[10px] text-muted'>
-                        unused
-                      </span>
+                <li key={layerKey}>
+                  <button
+                    type='button'
+                    disabled={isUnused}
+                    aria-pressed={isIsolated}
+                    onClick={() =>
+                      setActiveLayer((prev) =>
+                        prev === layerKey ? null : layerKey,
+                      )
+                    }
+                    className={cn(
+                      'san-step group w-full rounded-xl border bg-surface p-3 text-left',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                      isUnused && 'opacity-40 cursor-default',
+                      isIsolated
+                        ? 'border-accent bg-accent-soft'
+                        : 'border-hairline hover:bg-hover',
                     )}
-                  </div>
-                  <span className='font-mono text-[10px] text-muted text-center'>
-                    {LAYER_LABELS[layerKey]}
-                  </span>
-                </div>
+                  >
+                    <span
+                      className='san-step-art block aspect-square rounded-lg bg-subtle'
+                      aria-hidden='true'
+                    >
+                      {SAN_LAYERS.slice(0, index + 1).map((key, depth) => {
+                        const svg = layers[key];
+                        if (!svg) return null;
+                        const isCurrent = depth === index;
+                        const dim = !isCurrent;
+                        return (
+                          <span
+                            key={key}
+                            className='san-step-layer'
+                            style={{
+                              opacity: isIsolated
+                                ? isCurrent
+                                  ? 1
+                                  : 0
+                                : dim
+                                  ? 0.28
+                                  : 1,
+                            }}
+                            dangerouslySetInnerHTML={{ __html: svg }}
+                          />
+                        );
+                      })}
+                    </span>
+                    <span className='mt-3 flex items-baseline gap-2'>
+                      <span className='font-mono text-xs text-muted'>
+                        {info.number}
+                      </span>
+                      <span className='text-sm font-semibold text-ink'>
+                        {info.title}
+                      </span>
+                      {isUnused && (
+                        <span className='font-mono text-[10px] text-muted'>
+                          unused
+                        </span>
+                      )}
+                    </span>
+                    <span className='mt-1 block text-xs text-muted'>
+                      {info.detail}
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </section>
       </Reveal>
 
-      {/* 5. All 12 Moods */}
+      {/* 5. All 16 Moods */}
       <Reveal delay={0.06}>
         <section className='space-y-4'>
           <div>
@@ -550,40 +703,50 @@ const SanContainer = () => {
               Moods
             </p>
             <h2 className='font-primary text-xl font-bold tracking-tight text-ink'>
-              All 12 moods
+              All 16 moods
             </h2>
+            <p className='mt-1 text-sm text-body'>
+              Hover any card to preview its motion, or click to load it on the
+              stage.
+            </p>
           </div>
 
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
             {SAN_MOODS.map((item) => {
               const isSelected = mood === item;
+              const [moodTurn] = SAN_POSE[item];
               return (
                 <button
                   key={item}
                   type='button'
                   onClick={() => setMood(item)}
+                  aria-pressed={isSelected}
                   className={cn(
-                    'flex flex-col items-center p-4 rounded-lg border text-center transition-all active:scale-[0.98]',
+                    'san-mood flex flex-col items-center p-4 rounded-lg border text-center',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
                     isSelected
                       ? 'border-accent bg-accent-soft/40'
                       : 'border-hairline bg-surface hover:border-hairline-strong hover:bg-subtle/40',
                   )}
                 >
-                  <SanMascot
-                    mood={item}
-                    hairstyle={hairstyle}
-                    showFacialHair={showFacialHair}
-                    size={96}
-                    shape='circle'
-                    className='pointer-events-none'
-                  />
-                  <span className='mt-2.5 text-sm font-semibold text-ink'>
-                    {SAN_MOOD_META[item].label}
-                  </span>
-                  <span className='mt-0.5 font-mono text-[11px] text-muted'>
-                    {item}
-                  </span>
+                  <div className='san-mood-face'>
+                    <SanMascot
+                      mood={item}
+                      hairstyle={hairstyle}
+                      showFacialHair={showFacialHair}
+                      size={96}
+                      shape='circle'
+                      className='pointer-events-none'
+                    />
+                  </div>
+                  <div className='mt-2.5 w-full flex items-baseline justify-between gap-2 px-1'>
+                    <span className='text-sm font-semibold text-ink'>
+                      {SAN_MOOD_META[item].label}
+                    </span>
+                    <span className='font-mono text-[11px] text-muted'>
+                      {moodTurn > 0 ? `+${moodTurn}` : moodTurn}&deg;
+                    </span>
+                  </div>
                 </button>
               );
             })}
@@ -591,9 +754,9 @@ const SanContainer = () => {
         </section>
       </Reveal>
 
-      {/* 6. Theme Colors */}
+      {/* 6. Theme Colors & Palette */}
       <Reveal delay={0.08}>
-        <section className='space-y-4'>
+        <section className='space-y-5'>
           <div>
             <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
               Theme colors
@@ -608,7 +771,7 @@ const SanContainer = () => {
               <code className='font-mono text-xs text-ink'>#1A63D8</code> in
               light mode and{' '}
               <code className='font-mono text-xs text-ink'>#F5B942</code> in
-              dark mode.
+              dark mode. Click any swatch to copy its hex code.
             </p>
           </div>
 
@@ -625,6 +788,7 @@ const SanContainer = () => {
                 size={136}
                 ground={SAN_PALETTE.lightGround}
                 shape='circle'
+                animated
               />
             </div>
 
@@ -640,8 +804,51 @@ const SanContainer = () => {
                 size={136}
                 ground={SAN_PALETTE.darkGround}
                 shape='circle'
+                animated
               />
             </div>
+          </div>
+
+          {/* Click-to-copy palette swatches */}
+          <div className='grid grid-cols-2 sm:grid-cols-3 gap-2.5'>
+            {PALETTE_SWATCHES.map((swatch) => {
+              const isCopied = copiedHex === swatch.hex;
+              return (
+                <button
+                  key={swatch.name}
+                  type='button'
+                  onClick={() => handleCopyHex(swatch.hex)}
+                  className={cn(
+                    'san-color flex items-center gap-3 min-h-[56px] p-3 rounded-lg border border-hairline bg-surface',
+                    'hover:border-hairline-strong text-left transition-colors',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+                  )}
+                >
+                  <span
+                    className='san-color-dot w-8 h-8 rounded-full border border-hairline-strong shrink-0'
+                    style={{ backgroundColor: swatch.hex }}
+                  />
+                  <span className='min-w-0 flex-1'>
+                    <span className='block text-xs font-semibold text-ink truncate'>
+                      {swatch.name}
+                    </span>
+                    <span className='block font-mono text-[11px] text-muted'>
+                      {isCopied ? (
+                        <span
+                          key='copied'
+                          className='san-roll-text inline-flex items-center gap-1 text-accent'
+                        >
+                          <Check className='w-3 h-3' />
+                          copied
+                        </span>
+                      ) : (
+                        swatch.hex
+                      )}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </section>
       </Reveal>

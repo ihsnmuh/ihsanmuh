@@ -14,6 +14,7 @@ import '@/styles/main.css';
 import '@/styles/utilities.css';
 import '@/styles/globals.css';
 import '@/styles/mdx.css';
+import '@/styles/san.css';
 
 import ProgressBar from '@/components/Atoms/ProgressBar';
 import ErrorBoundary from '@/components/Organism/ErrorBoundary';
