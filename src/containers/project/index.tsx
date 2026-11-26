@@ -1,15 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'motion/react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { LoaderView } from '@/lib/loader';
-import { cn } from '@/lib/utils';
-
-import {
-  Reveal,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import ProjectCard from '@/components/Molecules/card/ProjectCard';
 import ShowcaseProjectCard from '@/components/Molecules/card/ShowcaseProjectCard';
 import SearchFilter from '@/components/Molecules/SearchFilter';
@@ -19,7 +11,6 @@ import { queryProjectList } from '@/queries/projectList';
 const ALL_CATEGORY = 'All';
 
 const ProjectContainer = () => {
-  const show = LoaderView();
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORY);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -94,7 +85,7 @@ const ProjectContainer = () => {
   };
 
   return (
-    <div className={cn('pt-2 sm:pt-4', show && 'fade-in-start')}>
+    <div className='pt-2 sm:pt-4'>
       <header className='mb-10'>
         <div className='flex items-center gap-3 mb-2'>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
@@ -176,12 +167,12 @@ const ProjectContainer = () => {
         ) : filteredProjects.length > 0 ? (
           <div className='space-y-12'>
             {featuredProject && (
-              <Reveal>
+              <div>
                 <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
                   Featured Project
                 </p>
                 <ProjectCard {...featuredProject} isFeatured={true} />
-              </Reveal>
+              </div>
             )}
 
             {remainingProjects.length > 0 && (
@@ -192,23 +183,46 @@ const ProjectContainer = () => {
                   </p>
                 )}
 
-                <motion.div
+                <div
                   key={`${activeCategory}-${debouncedSearch}`}
-                  variants={staggerContainerVariants}
-                  initial='hidden'
-                  animate='visible'
                   className='grid grid-cols-1 md:grid-cols-2 gap-6'
                 >
-                  {remainingProjects.map((project) => (
-                    <motion.div
-                      key={project.title}
-                      variants={staggerItemVariants}
-                      className='h-full'
-                    >
-                      <ShowcaseProjectCard {...project} />
-                    </motion.div>
-                  ))}
-                </motion.div>
+                  {remainingProjects.map((project, index) => {
+                    const card = <ShowcaseProjectCard {...project} />;
+
+                    if (isSearchingOrFiltering) {
+                      return (
+                        <div
+                          key={project.title}
+                          className='h-full item-enter'
+                          style={
+                            {
+                              '--item-delay': `${Math.min(index, 5) * 30}ms`,
+                            } as React.CSSProperties
+                          }
+                        >
+                          {card}
+                        </div>
+                      );
+                    }
+                    if (index < 2) {
+                      return (
+                        <div key={project.title} className='h-full'>
+                          {card}
+                        </div>
+                      );
+                    }
+                    return (
+                      <ScrollReveal
+                        key={project.title}
+                        delay={(index % 2) * 60}
+                        className='h-full'
+                      >
+                        {card}
+                      </ScrollReveal>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -226,7 +240,7 @@ const ProjectContainer = () => {
               <button
                 type='button'
                 onClick={resetFilters}
-                className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all'
+                className='mt-5 px-4 py-2 rounded-md text-xs font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)]'
               >
                 Reset filters
               </button>

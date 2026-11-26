@@ -303,7 +303,7 @@ export const Headings: FC<IHeadingList> = ({
                   ref={setDotRef(item.id)}
                   aria-hidden='true'
                   className={cn(
-                    'absolute h-[7px] w-[7px] rounded-full transition-all duration-200',
+                    'absolute h-[7px] w-[7px] rounded-full transition-[background-color,box-shadow,transform] duration-200 ease-[var(--ease-out)]',
                     variant === 'mobile' ? 'top-[12px]' : 'top-[7px]',
                     item.level === 2 ? 'left-[4.5px]' : 'left-[20.5px]',
                     isActive

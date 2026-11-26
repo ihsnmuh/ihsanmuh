@@ -1,11 +1,10 @@
 import { GraduationCap, MapPin, Trophy } from 'lucide-react';
 import Image from 'next/image';
 
-import { LoaderView } from '@/lib/loader';
 import { cn } from '@/lib/utils';
 
 import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
-import { Reveal } from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
 import GroupedTechStack from '@/components/Molecules/card/GroupedTechStack';
 
@@ -49,10 +48,8 @@ const EDUCATION = [
 ];
 
 const AboutContainer = () => {
-  const show = LoaderView();
-
   return (
-    <div className={cn('pt-2 sm:pt-4 space-y-16', show && 'fade-in-start')}>
+    <div className='pt-2 sm:pt-4 space-y-16'>
       <header>
         <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
           About
@@ -67,7 +64,7 @@ const AboutContainer = () => {
       </header>
 
       <section className='grid grid-cols-1 md:grid-cols-[240px_minmax(0,1fr)] gap-10 items-start'>
-        <Reveal className='space-y-4'>
+        <div className='space-y-4'>
           <div className='p-2 bg-surface border border-hairline rounded-xl w-fit md:w-full'>
             <div className='relative overflow-hidden rounded-lg w-48 h-48 md:w-full md:h-56 bg-subtle'>
               <Image
@@ -75,7 +72,7 @@ const AboutContainer = () => {
                 alt='Muhammad Ihsan'
                 width={260}
                 height={260}
-                className='object-cover w-full h-full grayscale-[20%] hover:grayscale-0 transition-all duration-500'
+                className='object-cover w-full h-full grayscale-[20%] [@media(hover:hover)_and_(pointer:fine)]:hover:grayscale-0 transition-[filter] duration-300 ease-[var(--ease-out)]'
                 priority
               />
             </div>
@@ -104,9 +101,9 @@ const AboutContainer = () => {
               </div>
             ))}
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal delay={0.06} className='min-w-0 space-y-6'>
+        <div className='min-w-0 space-y-6'>
           <blockquote className='border-l-2 border-accent pl-4 py-1 font-primary italic text-base sm:text-lg text-ink leading-relaxed'>
             I started on the frontend and kept asking what happened behind the
             UI. That curiosity pulled me into APIs and backend work.
@@ -180,94 +177,96 @@ const AboutContainer = () => {
               </div>
             ))}
           </div>
-        </Reveal>
+        </div>
       </section>
 
       <section className='pt-14 border-t border-hairline grid grid-cols-1 md:grid-cols-[180px_minmax(0,1fr)] gap-6 md:gap-10 items-start'>
-        <div className='md:sticky md:top-24 space-y-1.5'>
+        <ScrollReveal className='md:sticky md:top-24 space-y-1.5'>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
             Experience
           </p>
           <p className='text-xs text-muted leading-relaxed'>
             4+ years shipping production web applications.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className='min-w-0'>
           {Experiences.map((experience, index) => (
-            <ExperienceCard
-              key={experience.id}
-              id={experience.id}
-              position={experience.position}
-              status={experience.status}
-              company={experience.company}
-              start={experience.start}
-              end={experience.end}
-              location={experience.location}
-              responsibilities={experience.responsibilities}
-              isLast={index === Experiences.length - 1}
-            />
+            <ScrollReveal key={experience.id} delay={Math.min(index, 4) * 60}>
+              <ExperienceCard
+                id={experience.id}
+                position={experience.position}
+                status={experience.status}
+                company={experience.company}
+                start={experience.start}
+                end={experience.end}
+                location={experience.location}
+                responsibilities={experience.responsibilities}
+                isLast={index === Experiences.length - 1}
+              />
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       <section className='pt-14 border-t border-hairline grid grid-cols-1 md:grid-cols-[180px_minmax(0,1fr)] gap-6 md:gap-10 items-start'>
-        <div className='md:sticky md:top-24 space-y-1.5'>
+        <ScrollReveal className='md:sticky md:top-24 space-y-1.5'>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
             Tools &amp; Stack
           </p>
           <p className='text-xs text-muted leading-relaxed'>
             Languages, frameworks, and tools I use day to day.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className='min-w-0'>
-          <GroupedTechStack />
+          <ScrollReveal delay={60}>
+            <GroupedTechStack />
+          </ScrollReveal>
         </div>
       </section>
 
       <section className='pt-14 border-t border-hairline grid grid-cols-1 md:grid-cols-[180px_minmax(0,1fr)] gap-6 md:gap-10 items-start'>
-        <div className='md:sticky md:top-24 space-y-1.5'>
+        <ScrollReveal className='md:sticky md:top-24 space-y-1.5'>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
             Education
           </p>
           <p className='text-xs text-muted leading-relaxed'>
             Engineering degree and full-stack retraining.
           </p>
-        </div>
+        </ScrollReveal>
 
         <div className='flex flex-col gap-3 min-w-0'>
-          {EDUCATION.map((edu) => (
-            <div
-              key={edu.institution}
-              className='flex items-start gap-4 p-5 rounded-lg border border-hairline bg-surface hover:border-hairline-strong transition-colors'
-            >
-              <div className='flex-none w-10 h-10 rounded-md border border-accent/20 bg-accent-soft text-accent flex items-center justify-center'>
-                <GraduationCap size={18} />
-              </div>
-              <div className='flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1'>
-                <div>
-                  <h3 className='font-primary text-base font-semibold text-ink'>
-                    {edu.institution}
-                  </h3>
-                  <p className='text-sm text-body mt-0.5'>{edu.degree}</p>
-                  {edu.note && (
-                    <p className='flex items-center gap-1.5 font-mono text-xs text-muted mt-1.5'>
-                      <Trophy size={12} className='text-accent' />
-                      <span>{edu.note}</span>
-                    </p>
-                  )}
+          {EDUCATION.map((edu, index) => (
+            <ScrollReveal key={edu.institution} delay={index * 60}>
+              <div className='flex items-start gap-4 p-5 rounded-lg border border-hairline bg-surface hover:border-hairline-strong transition-colors'>
+                <div className='flex-none w-10 h-10 rounded-md border border-accent/20 bg-accent-soft text-accent flex items-center justify-center'>
+                  <GraduationCap size={18} />
                 </div>
-                <p className='font-mono text-xs text-muted tabular-nums shrink-0'>
-                  {edu.period}
-                </p>
+                <div className='flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1'>
+                  <div>
+                    <h3 className='font-primary text-base font-semibold text-ink'>
+                      {edu.institution}
+                    </h3>
+                    <p className='text-sm text-body mt-0.5'>{edu.degree}</p>
+                    {edu.note && (
+                      <p className='flex items-center gap-1.5 font-mono text-xs text-muted mt-1.5'>
+                        <Trophy size={12} className='text-accent' />
+                        <span>{edu.note}</span>
+                      </p>
+                    )}
+                  </div>
+                  <p className='font-mono text-xs text-muted tabular-nums shrink-0'>
+                    {edu.period}
+                  </p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
-      <Reveal>
+      <ScrollReveal>
         <section className='rounded-xl border border-hairline p-8 sm:p-10 text-center bg-surface'>
           <h2 className='font-primary font-semibold text-2xl sm:text-3xl tracking-tight text-ink mb-2'>
             Get in touch
@@ -279,7 +278,7 @@ const AboutContainer = () => {
           <div className='flex items-center justify-center gap-3 flex-wrap'>
             <a
               href='mailto:me@ihsanmuh.com'
-              className='px-5 py-2.5 rounded-md text-sm font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-all select-none'
+              className='px-5 py-2.5 rounded-md text-sm font-medium bg-cta text-cta-fg hover:bg-cta-hover active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
             >
               Email me
             </a>
@@ -287,7 +286,7 @@ const AboutContainer = () => {
               href='https://www.linkedin.com/in/ihsanmuhammad19/'
               target='_blank'
               rel='noopener noreferrer'
-              className='px-5 py-2.5 rounded-md text-sm font-medium bg-transparent text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-all select-none'
+              className='px-5 py-2.5 rounded-md text-sm font-medium bg-transparent text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
             >
               Message on LinkedIn
             </a>
@@ -297,7 +296,7 @@ const AboutContainer = () => {
             <span>Jakarta, Indonesia</span>
           </p>
         </section>
-      </Reveal>
+      </ScrollReveal>
     </div>
   );
 };

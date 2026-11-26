@@ -1,6 +1,6 @@
 import { format, formatDistanceStrict } from 'date-fns';
 import { ChevronDown } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import React, { useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -106,7 +106,7 @@ const ExperienceCard = (props: ExperienceCardProps) => {
 
           <AnimatePresence initial={false}>
             {isExpanded && hasMore && (
-              <motion.ul
+              <m.ul
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -123,7 +123,7 @@ const ExperienceCard = (props: ExperienceCardProps) => {
                     </p>
                   </li>
                 ))}
-              </motion.ul>
+              </m.ul>
             )}
           </AnimatePresence>
 
@@ -133,13 +133,13 @@ const ExperienceCard = (props: ExperienceCardProps) => {
               onClick={() => setIsExpanded((prev) => !prev)}
               className='mt-3.5 font-mono text-xs font-medium text-accent hover:text-accent-hover transition-colors inline-flex items-center gap-1'
             >
-              <motion.span
+              <m.span
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.18 }}
                 className='inline-flex items-center'
               >
                 <ChevronDown size={14} />
-              </motion.span>
+              </m.span>
               <span>
                 {isExpanded ? 'Show less' : `Show ${hiddenCount} more`}
               </span>

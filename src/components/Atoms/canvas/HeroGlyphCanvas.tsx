@@ -55,13 +55,55 @@ const HeroGlyphCanvas = () => {
 
     const mouse = { x: -999, y: -999, inside: false };
 
+    const CELL = 24;
+    const ALPHA_STEPS = 200;
+    let cols = 0;
+    let rows = 0;
+    let yMasks = new Float32Array(0);
+    let readabilityMasks = new Float32Array(0);
+    const fillStyleCache = new Map<string, string>();
+
+    /** Static per-cell masks depend only on canvas size, so compute them once per resize. */
+    const buildMasks = () => {
+      cols = Math.ceil(width / CELL);
+      rows = Math.ceil(height / CELL);
+      yMasks = new Float32Array(cols * rows);
+      readabilityMasks = new Float32Array(cols * rows);
+
+      for (let r = 0; r < rows; r++) {
+        const yNorm = (r * CELL + CELL * 0.5) / height;
+        const yMask = Math.pow(Math.sin(yNorm * Math.PI), 0.6);
+        for (let c = 0; c < cols; c++) {
+          const xNorm = (c * CELL + CELL * 0.5) / width;
+          // Keep glyphs very quiet directly behind the center headline & bio copy
+          const textDist = Math.hypot(
+            (xNorm - 0.44) * 1.5,
+            (yNorm - 0.46) * 1.4,
+          );
+          yMasks[r * cols + c] = yMask;
+          readabilityMasks[r * cols + c] =
+            0.22 + 0.78 * Math.min(1, textDist / 0.52);
+        }
+      }
+    };
+
+    /** Quantizes alpha so fillStyle strings are reused instead of rebuilt per glyph. */
+    const getFillStyle = (rgb: string, alpha: number) => {
+      const step = Math.round(alpha * ALPHA_STEPS);
+      const key = `${rgb}|${step}`;
+      let style = fillStyleCache.get(key);
+      if (!style) {
+        style = `rgba(${rgb}, ${step / ALPHA_STEPS})`;
+        fillStyleCache.set(key, style);
+      }
+      return style;
+    };
+
     const draw = () => {
       if (width === 0 || height === 0) return;
 
       ctx.clearRect(0, 0, width, height);
-      const cell = 24;
-      const cols = Math.ceil(width / cell);
-      const rows = Math.ceil(height / cell);
+      const cell = CELL;
 
       const baseFont =
         '400 11px ui-monospace, SFMono-Regular, Menlo, monospace';
@@ -78,17 +120,9 @@ const HeroGlyphCanvas = () => {
           const x = c * cell + cell * 0.5;
           const y = r * cell + cell * 0.5;
 
-          const xNorm = x / width;
-          const yNorm = y / height;
-          const yMask = Math.pow(Math.sin(yNorm * Math.PI), 0.6);
+          const yMask = yMasks[r * cols + c] ?? 0;
           if (yMask <= 0.02) continue;
-
-          // Keep glyphs very quiet directly behind the center headline & bio copy
-          const textDist = Math.hypot(
-            (xNorm - 0.44) * 1.5,
-            (yNorm - 0.46) * 1.4,
-          );
-          const readabilityMask = 0.22 + 0.78 * Math.min(1, textDist / 0.52);
+          const readabilityMask = readabilityMasks[r * cols + c] ?? 1;
           const mask = yMask * readabilityMask;
 
           const wave =
@@ -116,14 +150,15 @@ const HeroGlyphCanvas = () => {
               0.78,
               (0.24 + hover * 0.54) * yMask * hoverReadability,
             );
-            ctx.fillStyle = `rgba(${palette.accentRgb}, ${alpha})`;
+            ctx.fillStyle = getFillStyle(palette.accentRgb, alpha);
           } else {
             if (currentFont !== baseFont) {
               ctx.font = baseFont;
               currentFont = baseFont;
             }
             const alpha = (0.055 + (wave + 1) * 0.045) * mask;
-            ctx.fillStyle = `rgba(${palette.mutedRgb}, ${alpha})`;
+            if (alpha < 1 / ALPHA_STEPS) continue;
+            ctx.fillStyle = getFillStyle(palette.mutedRgb, alpha);
           }
 
           ctx.fillText(glyph, x, y);
@@ -139,6 +174,7 @@ const HeroGlyphCanvas = () => {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildMasks();
       draw();
     };
 
@@ -203,7 +239,6 @@ const HeroGlyphCanvas = () => {
     };
 
     const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(canvas);
 
     const intersectionObserver = new IntersectionObserver(
       (entries) => {
@@ -218,6 +253,7 @@ const HeroGlyphCanvas = () => {
 
     const themeObserver = new MutationObserver(() => {
       palette = readPalette();
+      fillStyleCache.clear();
       draw();
     });
     themeObserver.observe(document.documentElement, {
@@ -234,6 +270,7 @@ const HeroGlyphCanvas = () => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const init = () => {
+      resizeObserver.observe(canvas);
       resize();
       startLoop();
     };

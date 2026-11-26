@@ -8,7 +8,7 @@ import {
   Search,
   X,
 } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import { useRouter } from 'next/router';
 import React, {
   useCallback,
@@ -303,7 +303,7 @@ const CommandPalette = () => {
     <AnimatePresence>
       {isOpen && (
         <div className='fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4'>
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -311,7 +311,7 @@ const CommandPalette = () => {
             className='fixed inset-0 bg-deep-moss/40 backdrop-blur-sm'
           />
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.98, y: -6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: -6 }}
@@ -420,14 +420,14 @@ const CommandPalette = () => {
                             </div>
 
                             {isSelected && (
-                              <motion.div
+                              <m.div
                                 initial={{ opacity: 0, x: -4 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 className='flex items-center gap-1 text-[11px] font-mono text-muted shrink-0 pr-1'
                               >
                                 <span>Open</span>
                                 <CornerDownLeft className='h-3 w-3' />
-                              </motion.div>
+                              </m.div>
                             )}
                           </div>
                         );
@@ -472,7 +472,7 @@ const CommandPalette = () => {
                 Press <kbd className='font-bold'>⌘K</kbd> anywhere
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       )}
     </AnimatePresence>

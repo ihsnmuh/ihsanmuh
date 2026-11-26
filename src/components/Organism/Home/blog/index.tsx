@@ -1,13 +1,8 @@
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
 import React from 'react';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
-import {
-  Reveal,
-  staggerContainerVariants,
-  staggerItemVariants,
-} from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 
 import { TPosts } from '@/types/interfaces/posts';
@@ -21,7 +16,7 @@ const Blog = (props: IBlog) => {
 
   return (
     <section className='text-body'>
-      <Reveal className='flex items-end justify-between mb-6 gap-4'>
+      <ScrollReveal className='flex items-end justify-between mb-6 gap-4'>
         <div>
           <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-2'>
             Writing
@@ -41,20 +36,11 @@ const Blog = (props: IBlog) => {
             className='group-hover:translate-x-0.5 transition-transform'
           />
         </UnstyledLink>
-      </Reveal>
+      </ScrollReveal>
 
-      <motion.div
-        variants={staggerContainerVariants}
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, amount: 0.1 }}
-        className='divide-y divide-hairline border-t border-b border-hairline'
-      >
-        {posts?.slice(0, 4)?.map((post) => (
-          <motion.div
-            key={post.slug || post.title}
-            variants={staggerItemVariants}
-          >
+      <div className='divide-y divide-hairline border-t border-b border-hairline'>
+        {posts?.slice(0, 4)?.map((post, index) => (
+          <ScrollReveal key={post.slug || post.title} delay={40 + index * 60}>
             <EditorialPostCard
               title={post.title}
               publishedAt={post.publishedAt}
@@ -66,9 +52,9 @@ const Blog = (props: IBlog) => {
               views={post.views}
               likes={post.likes}
             />
-          </motion.div>
+          </ScrollReveal>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 };

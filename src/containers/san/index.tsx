@@ -1,5 +1,5 @@
 import { Check, Download, Shuffle } from 'lucide-react';
-import { motion, useReducedMotion } from 'motion/react';
+import { m, useReducedMotion } from 'motion/react';
 import { useTheme } from 'next-themes';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
@@ -20,7 +20,8 @@ import {
 } from '@/lib/san';
 import { cn } from '@/lib/utils';
 
-import { Reveal, SPRING_SNAPPY } from '@/components/Atoms/Motion';
+import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
+import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import SanMascot from '@/components/Atoms/svg/SanMascot';
 
 const LAYER_INFO: Record<
@@ -204,7 +205,7 @@ const SanContainer = () => {
       </header>
 
       {/* 1. Interactive Pullable Stage */}
-      <Reveal>
+      <div>
         <section
           aria-label='Interactive San mood stage'
           className='rounded-xl border border-hairline bg-surface overflow-hidden'
@@ -253,7 +254,7 @@ const SanContainer = () => {
           </div>
 
           <div className='flex flex-col items-center justify-center px-6 py-12 sm:py-16 bg-canvas/40 overflow-hidden'>
-            <motion.div
+            <m.div
               initial={
                 prefersReducedMotion
                   ? false
@@ -295,7 +296,7 @@ const SanContainer = () => {
                 }}
                 className='ring-1 ring-hairline'
               />
-            </motion.div>
+            </m.div>
 
             <p className='mt-6 text-sm text-ink font-medium text-center'>
               <span className='san-roll'>
@@ -377,11 +378,11 @@ const SanContainer = () => {
             </div>
           </div>
         </section>
-      </Reveal>
+      </div>
 
       {/* 2. Haircuts */}
-      <Reveal delay={0.03}>
-        <section className='space-y-4'>
+      <section className='space-y-4'>
+        <ScrollReveal>
           <div>
             <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
               Haircuts
@@ -390,7 +391,8 @@ const SanContainer = () => {
               Four haircuts
             </h2>
           </div>
-
+        </ScrollReveal>
+        <ScrollReveal delay={80} className='space-y-4'>
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
             {SAN_HAIRSTYLES.map((styleId) => {
               const isSelected = hairstyle === styleId;
@@ -429,12 +431,12 @@ const SanContainer = () => {
               );
             })}
           </div>
-        </section>
-      </Reveal>
+        </ScrollReveal>
+      </section>
 
       {/* 3. Mix Parts */}
-      <Reveal delay={0.04}>
-        <section className='space-y-4'>
+      <section className='space-y-4'>
+        <ScrollReveal>
           <div className='flex flex-wrap items-end justify-between gap-3'>
             <div>
               <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
@@ -478,7 +480,8 @@ const SanContainer = () => {
               </button>
             </div>
           </div>
-
+        </ScrollReveal>
+        <ScrollReveal delay={80} className='space-y-4'>
           <div className='rounded-xl border border-hairline bg-surface p-5 sm:p-6 grid grid-cols-1 md:grid-cols-[220px_minmax(0,1fr)] gap-6 items-center'>
             <div className='flex flex-col items-center gap-3'>
               <SanMascot
@@ -598,12 +601,12 @@ const SanContainer = () => {
               </div>
             </div>
           </div>
-        </section>
-      </Reveal>
+        </ScrollReveal>
+      </section>
 
       {/* 4. 3D Scroll-Driven Exploded Layers */}
-      <Reveal delay={0.05}>
-        <section className='space-y-4'>
+      <section className='space-y-4'>
+        <ScrollReveal>
           <div>
             <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
               Layers
@@ -618,7 +621,8 @@ const SanContainer = () => {
               that group on its own.
             </p>
           </div>
-
+        </ScrollReveal>
+        <ScrollReveal delay={80} className='space-y-4'>
           <ol className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
             {SAN_LAYERS.map((layerKey, index) => {
               const info = LAYER_INFO[layerKey];
@@ -692,12 +696,12 @@ const SanContainer = () => {
               );
             })}
           </ol>
-        </section>
-      </Reveal>
+        </ScrollReveal>
+      </section>
 
       {/* 5. All 16 Moods */}
-      <Reveal delay={0.06}>
-        <section className='space-y-4'>
+      <section className='space-y-4'>
+        <ScrollReveal>
           <div>
             <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
               Moods
@@ -710,7 +714,8 @@ const SanContainer = () => {
               stage.
             </p>
           </div>
-
+        </ScrollReveal>
+        <ScrollReveal delay={80} className='space-y-4'>
           <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
             {SAN_MOODS.map((item) => {
               const isSelected = mood === item;
@@ -751,12 +756,12 @@ const SanContainer = () => {
               );
             })}
           </div>
-        </section>
-      </Reveal>
+        </ScrollReveal>
+      </section>
 
       {/* 6. Theme Colors & Palette */}
-      <Reveal delay={0.08}>
-        <section className='space-y-5'>
+      <section className='space-y-5'>
+        <ScrollReveal>
           <div>
             <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
               Theme colors
@@ -774,7 +779,8 @@ const SanContainer = () => {
               dark mode. Click any swatch to copy its hex code.
             </p>
           </div>
-
+        </ScrollReveal>
+        <ScrollReveal delay={80} className='space-y-5'>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <div className='rounded-xl border border-hairline bg-[#FAF9F6] p-6 flex flex-col items-center gap-4'>
               <div className='w-full flex items-center justify-between font-mono text-[11px]'>
@@ -850,8 +856,8 @@ const SanContainer = () => {
               );
             })}
           </div>
-        </section>
-      </Reveal>
+        </ScrollReveal>
+      </section>
     </div>
   );
 };
