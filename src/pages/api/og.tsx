@@ -151,15 +151,15 @@ async function loadAvatarAsDataUrl(): Promise<string> {
   return `data:image/png;base64,${arrayBufferToBase64(buffer)}`;
 }
 
-async function loadPlusJakartaFont(weight: number): Promise<ArrayBuffer> {
-  const url = `https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@${weight}&display=swap`;
-  const css = await fetch(url).then((r) => r.text());
-  const match = /url\((https:\/\/[^)]+)\)/.exec(css);
-  const fontUrl = match?.[1];
-  if (!fontUrl) throw new Error(`Failed to load Plus Jakarta Sans ${weight}`);
-  const res = await fetch(fontUrl);
-  if (res.status !== 200)
-    throw new Error(`Failed to fetch font: ${res.status}`);
+async function loadPlusJakartaFont(
+  weight: (typeof FONT_WEIGHTS)[number],
+): Promise<ArrayBuffer> {
+  const res = await fetch(
+    weight === 700
+      ? new URL('../../fonts/og/plus-jakarta-sans-700.ttf', import.meta.url)
+      : new URL('../../fonts/og/plus-jakarta-sans-400.ttf', import.meta.url),
+  );
+  if (!res.ok) throw new Error(`Failed to load font ${weight}: ${res.status}`);
   return res.arrayBuffer();
 }
 
