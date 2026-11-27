@@ -1,7 +1,7 @@
 import type { domMax } from 'motion/react';
 import { LazyMotion, MotionConfig } from 'motion/react';
 import dynamic from 'next/dynamic';
-import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
+import localFont from 'next/font/local';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -18,18 +18,29 @@ const CommandPalette = dynamic(
   { ssr: false },
 );
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+const plusJakarta = localFont({
+  src: [
+    {
+      path: '../../fonts/plus-jakarta-sans-latin.woff2',
+      weight: '200 800',
+      style: 'normal',
+    },
+  ],
   display: 'swap',
   variable: '--font-plus-jakarta',
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
+const jetbrainsMono = localFont({
+  src: [
+    {
+      path: '../../fonts/jetbrains-mono-latin.woff2',
+      weight: '100 800',
+      style: 'normal',
+    },
+  ],
   display: 'swap',
   variable: '--font-jetbrains-mono',
+  adjustFontFallback: false,
 });
 
 /**
