@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import SanMascot from '@/components/Atoms/svg/SanMascot';
 import Seo from '@/components/Molecules/seo';
 
 export default function Custom404() {
@@ -30,6 +31,13 @@ export default function Custom404() {
         robots='noindex, nofollow'
       />
       <div className='py-20 sm:py-28 text-center'>
+        <SanMascot
+          mood='404'
+          size={132}
+          animated
+          className='mx-auto mb-6'
+          ariaLabel='San looking confused'
+        />
         <p className='font-mono text-xs uppercase tracking-widest text-muted mb-3'>
           Error 404
         </p>

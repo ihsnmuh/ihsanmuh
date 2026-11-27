@@ -1,14 +1,18 @@
-import { GraduationCap, MapPin, Trophy } from 'lucide-react';
+import { Check, Copy, GraduationCap, MapPin, Trophy } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import UnderlineLink from '@/components/Atoms/links/UnderlineLink';
 import ScrollReveal from '@/components/Atoms/ScrollReveal';
+import SanBurst from '@/components/Atoms/svg/SanBurst';
+import SanLogo from '@/components/Atoms/svg/SanLogo';
 import ExperienceCard from '@/components/Molecules/card/ExperienceCard';
 import GroupedTechStack from '@/components/Molecules/card/GroupedTechStack';
 
 import { Experiences } from '@/constant/experience';
+import { useSanBurst } from '@/helpers/useSanBurst';
 
 const QUICK_FACTS = [
   { label: 'Location', value: 'Jakarta, Indonesia' },
@@ -47,7 +51,31 @@ const EDUCATION = [
   },
 ];
 
+const CONTACT_EMAIL = 'me@ihsanmuh.com';
+
 const AboutContainer = () => {
+  const [emailCopied, setEmailCopied] = useState(false);
+  const { burst, trigger } = useSanBurst();
+  const copyEmailRef = useRef<HTMLButtonElement>(null);
+  const emailTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (emailTimerRef.current) clearTimeout(emailTimerRef.current);
+    };
+  }, []);
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+    } catch {
+      return;
+    }
+    setEmailCopied(true);
+    trigger();
+    if (emailTimerRef.current) clearTimeout(emailTimerRef.current);
+    emailTimerRef.current = setTimeout(() => setEmailCopied(false), 1800);
+  };
   return (
     <div className='pt-2 sm:pt-4 space-y-16'>
       <header>
@@ -66,15 +94,28 @@ const AboutContainer = () => {
       <section className='grid grid-cols-1 md:grid-cols-[240px_minmax(0,1fr)] gap-10 items-start'>
         <div className='space-y-4'>
           <div className='p-2 bg-surface border border-hairline rounded-xl w-fit md:w-full'>
-            <div className='relative overflow-hidden rounded-lg w-48 h-48 md:w-full md:h-56 bg-subtle'>
-              <Image
-                src='/images/avatar.png'
-                alt='Muhammad Ihsan'
-                width={260}
-                height={260}
-                className='object-cover w-full h-full grayscale-[20%] [@media(hover:hover)_and_(pointer:fine)]:hover:grayscale-0 transition-[filter] duration-300 ease-[var(--ease-out)]'
-                priority
-              />
+            <div
+              title='Hover to meet San'
+              className='avatar-flip relative w-48 h-48 md:w-full md:h-56'
+            >
+              <div className='avatar-flip-inner'>
+                <div className='avatar-flip-face overflow-hidden rounded-lg bg-subtle'>
+                  <Image
+                    src='/images/avatar.png'
+                    alt='Muhammad Ihsan'
+                    width={260}
+                    height={260}
+                    className='object-cover w-full h-full grayscale-[20%] [@media(hover:hover)_and_(pointer:fine)]:hover:grayscale-0 transition-[filter] duration-300 ease-[var(--ease-out)]'
+                    priority
+                  />
+                </div>
+                <div
+                  aria-hidden='true'
+                  className='avatar-flip-face avatar-flip-back overflow-hidden rounded-lg'
+                >
+                  <SanLogo />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -283,13 +324,30 @@ const AboutContainer = () => {
               Email me
             </a>
             <a
-              href='https://www.linkedin.com/in/ihsanmuhammad19/'
+              href='https://www.linkedin.com/in/ihsnmuh/'
               target='_blank'
               rel='noopener noreferrer'
               className='px-5 py-2.5 rounded-md text-sm font-medium bg-transparent text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
             >
               Message on LinkedIn
             </a>
+            <button
+              ref={copyEmailRef}
+              type='button'
+              onClick={handleCopyEmail}
+              className='inline-flex items-center gap-1.5 px-3 py-2.5 rounded-md text-sm font-medium text-muted hover:text-ink active:scale-[0.98] transition-[color,transform] duration-150 ease-[var(--ease-out)] select-none'
+            >
+              {emailCopied ? <Check size={14} /> : <Copy size={14} />}
+              <span aria-live='polite'>
+                {emailCopied ? 'Email copied' : 'Copy email'}
+              </span>
+            </button>
+            <SanBurst
+              burst={burst}
+              mood='wink'
+              size={44}
+              anchorRef={copyEmailRef}
+            />
           </div>
           <p className='flex items-center justify-center gap-1.5 font-mono text-[11px] text-muted mt-6'>
             <MapPin size={12} className='text-accent' />

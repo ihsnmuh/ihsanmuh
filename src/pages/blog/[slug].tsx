@@ -4,6 +4,7 @@ import React from 'react';
 
 import { getRelatedPosts, postFilePaths } from '@/lib/blog';
 import { getFileDatabySlug } from '@/lib/mdx.server';
+import { SAN_MOODS } from '@/lib/san';
 
 import { components } from '@/components/Atoms/MDXComponent';
 import Seo from '@/components/Molecules/seo';
@@ -19,7 +20,8 @@ type BlogPostSingleProps = {
 
 const Post = (props: BlogPostSingleProps) => {
   const { source, frontMatter, relatedPosts } = props;
-  const { banner, tags, title, publishedAt, timeReading, slug } = frontMatter;
+  const { banner, tags, title, publishedAt, timeReading, slug, mood } =
+    frontMatter;
 
   const isDraft =
     frontMatter.isShow === false ||
@@ -39,6 +41,7 @@ const Post = (props: BlogPostSingleProps) => {
         }
         date={publishedAt}
         tags={tags}
+        mood={mood}
         robots={isDraft ? 'noindex, nofollow' : 'follow, index'}
         breadcrumbs={[
           { name: 'Home', path: '/' },
@@ -96,6 +99,13 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
       (post.isShow && typeof post.isShow === 'boolean' && post.isShow === true),
   );
 
+  const frontMatterMood = (rawFrontMatter as { mood?: string }).mood;
+  const rawMood =
+    frontMatterMood &&
+    (SAN_MOODS as readonly string[]).includes(frontMatterMood)
+      ? frontMatterMood
+      : undefined;
+
   // Ensure frontMatter has all required IPost fields
   const frontMatter: IPost = {
     title: (rawFrontMatter as any).title || '',
@@ -106,6 +116,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
     slug: params.slug,
     timeReading: (rawFrontMatter as any).timeReading || '',
     isShow: (rawFrontMatter as any).isShow,
+    ...(rawMood && { mood: rawMood }),
   };
 
   return {

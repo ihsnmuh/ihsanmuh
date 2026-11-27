@@ -1127,10 +1127,9 @@
   height: 100%;
 }
 
-/* Scroll-linked entrance for mood and step tiles (opacity + translate only) */
+/* Scroll-linked entrance for step tiles (opacity + translate only); mood tiles enter via ScrollReveal */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .san-mood,
     .san-step {
       animation: san-tile-enter linear both;
       animation-timeline: view();

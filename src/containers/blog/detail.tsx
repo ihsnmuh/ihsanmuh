@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
+import SanBurst from '@/components/Atoms/svg/SanBurst';
 import { LikeButton } from '@/components/Molecules/blog/LikeButton';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
 import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
@@ -22,6 +23,8 @@ const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
   { ssr: false },
 );
+
+import { useSanBurst } from '@/helpers/useSanBurst';
 
 import { IPost } from '@/types/interfaces/posts';
 
@@ -54,6 +57,9 @@ const Detail = (props: IDetailBlog) => {
     relatedPosts,
   } = props;
   const [copied, setCopied] = useState(false);
+  const { burst, trigger } = useSanBurst();
+  const shareRef = useRef<HTMLButtonElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const publishDate = format(new Date(publishedAt), 'MMMM dd, yyyy');
 
@@ -67,13 +73,14 @@ const Detail = (props: IDetailBlog) => {
     if (typeof window === 'undefined') return;
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
+    trigger();
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
   };
 
   return (
     <>
-      <ReadingProgress />
+      <ReadingProgress targetRef={articleRef} />
       <div className='pt-2 sm:pt-4'>
         <div className='mb-6 sm:mb-8'>
           <Link
@@ -127,6 +134,7 @@ const Detail = (props: IDetailBlog) => {
             </div>
 
             <button
+              ref={shareRef}
               type='button'
               onClick={handleCopyLink}
               className='inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors'
@@ -136,8 +144,14 @@ const Detail = (props: IDetailBlog) => {
               ) : (
                 <Link2 size={13} />
               )}
-              <span>{copied ? 'Copied' : 'Share'}</span>
+              <span aria-live='polite'>{copied ? 'Copied' : 'Share'}</span>
             </button>
+            <SanBurst
+              burst={burst}
+              mood='wink'
+              size={44}
+              anchorRef={shareRef}
+            />
           </div>
         </header>
 
@@ -160,7 +174,7 @@ const Detail = (props: IDetailBlog) => {
 
         <div className='lg:grid lg:grid-cols-[minmax(0,1fr)_228px] lg:gap-10'>
           <div className='min-w-0'>
-            <article className='mdx prose max-w-none'>
+            <article ref={articleRef} className='mdx prose max-w-none'>
               <MDXRemote {...source} components={components} />
             </article>
 
@@ -188,7 +202,9 @@ const Detail = (props: IDetailBlog) => {
                   ) : (
                     <Link2 size={14} />
                   )}
-                  <span>{copied ? 'Copied' : 'Copy link'}</span>
+                  <span aria-live='polite'>
+                    {copied ? 'Copied' : 'Copy link'}
+                  </span>
                 </button>
               </div>
             </div>

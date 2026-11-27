@@ -1,0 +1,40 @@
+# Muhammad Ihsan
+
+> Personal site of Muhammad Ihsan, a software engineer in Jakarta building full-stack web applications with React and TypeScript. It holds a blog, a project list, and San, the site mascot.
+
+Articles are written mostly in Indonesian. Each article also has a plain Markdown version.
+
+## Pages
+
+- [Home](https://ihsanmuh.com/): Introduction and latest articles.
+- [About](https://ihsanmuh.com/about): Background, work experience, education, and tech stack of Muhammad Ihsan, a software engineer in Jakarta.
+- [Blog](https://ihsanmuh.com/blog): Articles and engineering notes on software architecture, React, Next.js, TypeScript, and web performance.
+- [Projects](https://ihsanmuh.com/project): Web applications, internal tools, and UI experiments built and shipped by Muhammad Ihsan.
+- [San](https://ihsanmuh.com/san): San is the illustrated mascot of this site: 16 moods, 4 haircuts, and a custom face mixer. The idea comes from Gri by Griko Nibras (https://nibras.co/gri/).
+
+## Blog
+
+- [Tidak Takut Kehilangan Dotfiles Lagi dengan GNU Stow!](https://ihsanmuh.com/blog/save-your-dotfiles.md): Kelola dotfiles dengan mudah dan rapi menggunakan GNU Stow! Tidak perlu setting ulang dari nol setelah reinstall sistem.
+- [Deploy Personal Web Next.js ke VPS dengan Mudah](https://ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah.md): Panduan lengkap langkah demi langkah untuk mendeploy aplikasi Next.js ke VPS, mulai dari pemilihan VPS, konfigurasi server, hingga pengaturan domain dan keamanan.
+- [Galau Karir dan Cara Gw Menentukan Arah](https://ihsanmuh.com/blog/galau-karier-dan-cara-gw-menentukan-arah.md): Artikel ini menceritakan tentang perjalanan gw dalam menemukan passion dan karier setelah lulus kuliah
+
+## Projects
+
+- [Femaledaily Website](https://www.femaledaily.com): Female Daily is a comprehensive beauty platform and community based in Indonesia. It serves as a central hub for beauty enthusiasts to find information, share experiences, and discover products.
+- [Femaledaily Studio](https://studio.femaledaily.com): Female Daily Studio is the dedicated e-commerce branch of the Female Daily Network. While the main Female Daily site focuses on community reviews and editorial content, the Studio serves as an online retail destination for beauty products.
+- [Personal Website V2](https://ihsanmuh.com): Personal Project build with love
+- [Personal Website V1](https://story-ihsan-ihsnmuh.vercel.app/): A personal website that explains how I love the world of frontend developer
+- [Krealogi: UI/UX Challenge](https://ihsnmuh.medium.com/integrasi-logistik-expedisi-marketplace-pada-aplikasi-krealogi-ux-case-study-b52f5f9b4563): This project describes the features of marketplace and logistics integration.
+- [Matamata Politik Dashboard](https://www.matamatapolitik.com): This project was created to manage the news on the matamatapolitik.com website
+- [Qurantara](https://qurantara-30c57.web.app/): This website functions as a medium for reading and listening to the Quran, reading hadith, and also viewing prayer schedules based on regions
+- [Sugoku Mobile App](https://expo.dev/@ihsnmuh/sugoku-ihsan): Sugoku Mobile App is An interactive mobile game to play sudoku with 3 level difficulties
+- [E-Commerce Wannabe](https://ecommerce-client-mu.web.app/): Like Web e-commerce in general, you can order some gadget and add to the cart, but this is very simple
+- [Kanban Mu](https://kanban-mu.web.app/): Kanban mu is an application to managing tasks with many users
+- [Fancy Todo](https://fancy-todosmu.web.app/): Fancy Todo is an application for managing your to-do list with other users.
+- [Nonton Movies](https://nonton-moviesme.web.app/): Movie Web is a website to search popular Movie and Tv Series
+- [Entertain Me](https://expo.dev/@ihsnmuh/entertaime-ihsan): EntertainMe is a mobile app for managing data movie and series
+
+## Optional
+
+- [RSS feed](https://ihsanmuh.com/feed.xml): Blog updates.
+- [Sitemap](https://ihsanmuh.com/sitemap.xml): Every public page.

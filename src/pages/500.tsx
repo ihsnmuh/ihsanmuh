@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import SanMascot from '@/components/Atoms/svg/SanMascot';
 import Seo from '@/components/Molecules/seo';
 
 export default function Custom500() {
@@ -11,6 +12,13 @@ export default function Custom500() {
         robots='noindex, nofollow'
       />
       <div className='py-20 sm:py-28 text-center'>
+        <SanMascot
+          mood='dizzy'
+          size={132}
+          animated
+          className='mx-auto mb-6'
+          ariaLabel='San feeling dizzy'
+        />
         <p className='font-mono text-xs uppercase tracking-widest text-danger mb-3'>
           Error 500
         </p>

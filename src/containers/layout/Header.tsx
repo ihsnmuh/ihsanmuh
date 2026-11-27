@@ -2,14 +2,15 @@ import { Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
-import KufiLogo from '@/components/Atoms/svg/KufiLogo';
+import SanLogo from '@/components/Atoms/svg/SanLogo';
+
+import { useThemeToggle } from '@/helpers/useThemeToggle';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -21,7 +22,12 @@ const links = [
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useThemeToggle();
+  const themeLabel = !mounted
+    ? 'Toggle color theme'
+    : resolvedTheme === 'dark'
+      ? 'Switch to light mode'
+      : 'Switch to dark mode';
   const { asPath } = useRouter();
   const pathSplit = asPath.split('/')[1]?.toLowerCase() || '';
 
@@ -46,10 +52,6 @@ const Header = () => {
     return pathSplit === target;
   };
 
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
-  };
-
   return (
     <>
       <header className='fixed top-0 left-0 right-0 z-50 bg-canvas/85 backdrop-blur-md border-b border-hairline/70 transition-colors duration-200'>
@@ -60,8 +62,8 @@ const Header = () => {
             className='flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md'
             aria-label='ihsanmuh — Home'
           >
-            <div className='w-8 h-8 rounded-md bg-surface border border-hairline flex items-center justify-center p-1.5 group-hover:border-accent/40 transition-colors'>
-              <KufiLogo className='w-full h-full text-accent fill-current' />
+            <div className='w-8 h-8 rounded-full overflow-hidden border border-hairline group-hover:border-accent/40 transition-colors'>
+              <SanLogo />
             </div>
             <span className='font-primary text-base font-bold tracking-tight text-ink group-hover:text-accent transition-colors'>
               ihsanmuh
@@ -117,7 +119,7 @@ const Header = () => {
             <button
               type='button'
               onClick={toggleTheme}
-              aria-label='Toggle color theme'
+              aria-label={themeLabel}
               className='w-8 h-8 flex items-center justify-center rounded-md border border-hairline bg-surface/70 text-muted hover:text-accent hover:border-accent/40 transition-colors duration-150 active:scale-[0.95] overflow-hidden'
             >
               {mounted ? (
@@ -155,7 +157,7 @@ const Header = () => {
             <button
               type='button'
               onClick={toggleTheme}
-              aria-label='Toggle color theme'
+              aria-label={themeLabel}
               className='p-2 rounded-md border border-hairline bg-surface text-muted hover:text-accent transition-colors'
             >
               {mounted ? (

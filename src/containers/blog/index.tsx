@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import ScrollReveal from '@/components/Atoms/ScrollReveal';
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
 import EditorialPostCard from '@/components/Molecules/card/EditorialPostCard';
 import FeaturedPostCard from '@/components/Molecules/card/FeaturedPostCard';
 import SearchFilter, { FilterItem } from '@/components/Molecules/SearchFilter';
@@ -243,7 +244,8 @@ const BlogContainer = (props: IBlogContainer) => {
             )}
           </div>
         ) : (
-          <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
+          <div className='flex flex-col items-center justify-center text-center py-16 border border-hairline rounded-lg bg-surface'>
+            <SanMascotLazy mood='awkward' size={88} animated className='mb-4' />
             <p className='font-primary text-base font-semibold text-ink'>
               No articles found
             </p>

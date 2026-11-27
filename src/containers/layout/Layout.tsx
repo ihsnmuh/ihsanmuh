@@ -8,6 +8,8 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import SanReactor from '@/components/Organism/SanReactor';
+
 import Footer from './Footer';
 import Header from './Header';
 
@@ -88,6 +90,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </main>
           <Footer />
           <CommandPalette />
+          <SanReactor />
         </div>
       </MotionConfig>
     </LazyMotion>
