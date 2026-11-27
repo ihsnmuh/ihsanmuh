@@ -33,6 +33,12 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .heart-nudge {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heart-nudge 640ms var(--ease-out) 2;
+  }
+
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
@@ -207,5 +213,11 @@
   }
   .avatar-flip:hover .avatar-flip-back {
     opacity: 1;
+  }
+}
+
+@keyframes heart-nudge {
+  40% {
+    transform: scale(1.4);
   }
 }
