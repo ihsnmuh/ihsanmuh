@@ -28,6 +28,8 @@ type SeoProps = {
   banner?: string;
   canonical?: string;
   tags?: string | string[];
+  /** San's mood for the OG portrait. */
+  mood?: string;
   modifiedDate?: string;
   breadcrumbs?: IBreadcrumbItem[];
 } & Partial<typeof defaultMeta>;
@@ -69,6 +71,7 @@ const Seo = (props: SeoProps) => {
   });
   if (tagList.length > 0) ogParams.set('tags', tagList.join(','));
   if (props.image) ogParams.set('image', props.image);
+  if (props.mood) ogParams.set('mood', props.mood);
   meta['image'] = `${meta.url}/api/og?${ogParams.toString()}`;
 
   const breadcrumbSchema =

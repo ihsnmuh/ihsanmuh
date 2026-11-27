@@ -6,6 +6,7 @@ import {
   FileText,
   FolderKanban,
   Search,
+  Smile,
   X,
 } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
@@ -18,8 +19,13 @@ import React, {
   useState,
 } from 'react';
 
+import { TSanMood } from '@/lib/san';
 import { cn } from '@/lib/utils';
 
+import SanBurst from '@/components/Atoms/svg/SanBurst';
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
+
+import { useSanBurst } from '@/helpers/useSanBurst';
 import { queryProjectList } from '@/queries/projectList';
 
 interface SearchItem {
@@ -57,6 +63,7 @@ const CommandPalette = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { burst: sanBurst, trigger: triggerSan } = useSanBurst();
   const listRef = useRef<HTMLDivElement>(null);
 
   // Copy Link action
@@ -64,12 +71,13 @@ const CommandPalette = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.href);
       setCopied(true);
+      triggerSan();
       setTimeout(() => {
         setCopied(false);
         setIsOpen(false);
       }, 1000);
     }
-  }, []);
+  }, [triggerSan]);
 
   // Fetch projects using projectList query hook
   const { data: projects = [] } = useQuery({
@@ -163,6 +171,15 @@ const CommandPalette = () => {
         url: '/about',
         icon: <Compass className='h-4 w-4' />,
       },
+      {
+        id: 'nav-san',
+        category: 'Navigation',
+        title: 'San',
+        description:
+          'The illustrated mascot: 16 moods, haircuts, layers, and SVG parts.',
+        url: '/san',
+        icon: <Smile className='h-4 w-4' />,
+      },
     ],
     [],
   );
@@ -226,6 +243,12 @@ const CommandPalette = () => {
         item.category.toLowerCase().includes(query),
     );
   }, [navigationItems, actionItems, blogItems, projectItems, searchQuery]);
+
+  const paletteMood: TSanMood = !searchQuery.trim()
+    ? 'curious'
+    : filteredItems.length === 0
+      ? 'awkward'
+      : 'focused';
 
   // Handle selected index reset when search query changes
   useEffect(() => {
@@ -300,182 +323,197 @@ const CommandPalette = () => {
   }, [filteredItems]);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className='fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4'>
-          <m.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className='fixed inset-0 bg-deep-moss/40 backdrop-blur-sm'
-          />
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <div className='fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4'>
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className='fixed inset-0 bg-deep-moss/40 backdrop-blur-sm'
+            />
 
-          <m.div
-            initial={{ opacity: 0, scale: 0.98, y: -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: -6 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
-            onAnimationComplete={() => inputRef.current?.focus()}
-            ref={containerRef}
-            className={cn(
-              'relative w-full max-w-xl rounded-xl border border-hairline overflow-hidden shadow-xl flex flex-col max-h-[65vh]',
-              'bg-surface text-body',
-            )}
-          >
-            <div className='flex items-center gap-3 px-4 py-3.5 bg-surface border-b border-hairline'>
-              <Search className='h-4 w-4 text-muted shrink-0' />
-              <input
-                ref={inputRef}
-                type='text'
-                placeholder='Search pages, articles, projects...'
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={cn(
-                  'w-full bg-transparent text-ink placeholder-muted font-primary',
-                  'text-sm focus-visible:outline-none',
-                )}
-              />
-              <div className='flex items-center gap-1.5 shrink-0'>
-                <span className='font-mono text-[10px] text-muted border border-hairline rounded px-1.5 py-0.5 bg-subtle'>
-                  ESC
-                </span>
-                <button
-                  type='button'
-                  onClick={() => setIsOpen(false)}
-                  aria-label='Close search'
-                  className='text-muted hover:text-ink p-1 rounded transition-colors'
-                >
-                  <X className='h-4 w-4' />
-                </button>
-              </div>
-            </div>
-
-            <div
-              ref={listRef}
-              className='flex-1 overflow-y-auto p-2 scrollbar-thin'
-            >
-              {filteredItems.length > 0 ? (
-                Object.entries(groupedItems).map(([category, group]) => (
-                  <div key={category} className='mb-3 last:mb-1'>
-                    <div className='px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-wider text-sage-gray'>
-                      {category}
-                    </div>
-
-                    <div className='space-y-0.5 mt-1'>
-                      {group.items.map((item, idx) => {
-                        const itemFlatIndex = group.startIdx + idx;
-                        const isSelected = itemFlatIndex === selectedIndex;
-
-                        return (
-                          <div
-                            key={item.id}
-                            data-active={isSelected}
-                            onMouseEnter={() => setSelectedIndex(itemFlatIndex)}
-                            onClick={() => {
-                              if (item.action) {
-                                item.action();
-                              } else if (item.url) {
-                                if (item.url.startsWith('http')) {
-                                  window.open(
-                                    item.url,
-                                    '_blank',
-                                    'noopener,noreferrer',
-                                  );
-                                } else {
-                                  router.push(item.url);
-                                }
-                                setIsOpen(false);
-                              }
-                            }}
-                            className={cn(
-                              'group flex items-center justify-between px-3 py-2.5 rounded-md cursor-pointer transition-colors duration-100',
-                              isSelected
-                                ? 'bg-subtle text-ink'
-                                : 'hover:bg-subtle/60 text-body',
-                            )}
-                          >
-                            <div className='flex items-center gap-3 min-w-0'>
-                              <div
-                                className={cn(
-                                  'flex items-center justify-center h-7 w-7 rounded-md border shrink-0',
-                                  isSelected
-                                    ? 'bg-surface border-hairline-strong text-ink'
-                                    : 'bg-subtle/60 border-hairline text-muted',
-                                )}
-                              >
-                                {item.icon}
-                              </div>
-
-                              <div className='min-w-0'>
-                                <p className='text-sm font-medium text-ink truncate'>
-                                  {item.title}
-                                </p>
-                                {item.description && (
-                                  <p className='text-xs text-muted truncate mt-0.5 max-w-sm sm:max-w-md'>
-                                    {item.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-
-                            {isSelected && (
-                              <m.div
-                                initial={{ opacity: 0, x: -4 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className='flex items-center gap-1 text-[11px] font-mono text-muted shrink-0 pr-1'
-                              >
-                                <span>Open</span>
-                                <CornerDownLeft className='h-3 w-3' />
-                              </m.div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className='flex flex-col items-center justify-center py-10 text-center'>
-                  <p className='font-ui text-sm font-semibold text-deep-moss'>
-                    No results found
-                  </p>
-                  <p className='text-xs text-sage-gray mt-1'>
-                    Try searching for another topic or filename.
-                  </p>
-                </div>
+            <m.div
+              initial={{ opacity: 0, scale: 0.98, y: -6 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: -6 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              onAnimationComplete={() => inputRef.current?.focus()}
+              ref={containerRef}
+              className={cn(
+                'relative w-full max-w-xl rounded-xl border border-hairline overflow-hidden shadow-xl flex flex-col max-h-[65vh]',
+                'bg-surface text-body',
               )}
-            </div>
-
-            <div className='hidden sm:flex items-center justify-between px-4 py-2 bg-cream-paper border-t border-hairline text-[11px] font-mono text-sage-gray'>
-              <div className='flex items-center gap-3'>
-                <span className='flex items-center gap-1'>
-                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
-                    ↑↓
-                  </kbd>{' '}
-                  Navigate
-                </span>
-                <span className='flex items-center gap-1'>
-                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
-                    ↵
-                  </kbd>{' '}
-                  Select
-                </span>
-                <span className='flex items-center gap-1'>
-                  <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
+            >
+              <div className='flex items-center gap-3 px-4 py-3.5 bg-surface border-b border-hairline'>
+                <SanMascotLazy
+                  immediate
+                  size={24}
+                  mood={paletteMood}
+                  fallback={<Search className='h-4 w-4 text-muted' />}
+                />
+                <input
+                  ref={inputRef}
+                  type='text'
+                  placeholder='Search pages, articles, projects...'
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={cn(
+                    'w-full bg-transparent text-ink placeholder-muted font-primary',
+                    'text-sm focus-visible:outline-none',
+                  )}
+                />
+                <div className='flex items-center gap-1.5 shrink-0'>
+                  <span className='font-mono text-[10px] text-muted border border-hairline rounded px-1.5 py-0.5 bg-subtle'>
                     ESC
-                  </kbd>{' '}
-                  Close
-                </span>
+                  </span>
+                  <button
+                    type='button'
+                    onClick={() => setIsOpen(false)}
+                    aria-label='Close search'
+                    className='text-muted hover:text-ink p-1 rounded transition-colors'
+                  >
+                    <X className='h-4 w-4' />
+                  </button>
+                </div>
               </div>
-              <div>
-                Press <kbd className='font-bold'>⌘K</kbd> anywhere
+
+              <div
+                ref={listRef}
+                className='flex-1 overflow-y-auto p-2 scrollbar-thin'
+              >
+                {filteredItems.length > 0 ? (
+                  Object.entries(groupedItems).map(([category, group]) => (
+                    <div key={category} className='mb-3 last:mb-1'>
+                      <div className='px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-wider text-sage-gray'>
+                        {category}
+                      </div>
+
+                      <div className='space-y-0.5 mt-1'>
+                        {group.items.map((item, idx) => {
+                          const itemFlatIndex = group.startIdx + idx;
+                          const isSelected = itemFlatIndex === selectedIndex;
+
+                          return (
+                            <div
+                              key={item.id}
+                              data-active={isSelected}
+                              onMouseEnter={() =>
+                                setSelectedIndex(itemFlatIndex)
+                              }
+                              onClick={() => {
+                                if (item.action) {
+                                  item.action();
+                                } else if (item.url) {
+                                  if (item.url.startsWith('http')) {
+                                    window.open(
+                                      item.url,
+                                      '_blank',
+                                      'noopener,noreferrer',
+                                    );
+                                  } else {
+                                    router.push(item.url);
+                                  }
+                                  setIsOpen(false);
+                                }
+                              }}
+                              className={cn(
+                                'group flex items-center justify-between px-3 py-2.5 rounded-md cursor-pointer transition-colors duration-100',
+                                isSelected
+                                  ? 'bg-subtle text-ink'
+                                  : 'hover:bg-subtle/60 text-body',
+                              )}
+                            >
+                              <div className='flex items-center gap-3 min-w-0'>
+                                <div
+                                  className={cn(
+                                    'flex items-center justify-center h-7 w-7 rounded-md border shrink-0',
+                                    isSelected
+                                      ? 'bg-surface border-hairline-strong text-ink'
+                                      : 'bg-subtle/60 border-hairline text-muted',
+                                  )}
+                                >
+                                  {item.icon}
+                                </div>
+
+                                <div className='min-w-0'>
+                                  <p className='text-sm font-medium text-ink truncate'>
+                                    {item.title}
+                                  </p>
+                                  {item.description && (
+                                    <p className='text-xs text-muted truncate mt-0.5 max-w-sm sm:max-w-md'>
+                                      {item.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+
+                              {isSelected && (
+                                <m.div
+                                  initial={{ opacity: 0, x: -4 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  className='flex items-center gap-1 text-[11px] font-mono text-muted shrink-0 pr-1'
+                                >
+                                  <span>Open</span>
+                                  <CornerDownLeft className='h-3 w-3' />
+                                </m.div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className='flex flex-col items-center justify-center py-10 text-center'>
+                    <p className='font-ui text-sm font-semibold text-deep-moss'>
+                      No results found
+                    </p>
+                    <p className='text-xs text-sage-gray mt-1'>
+                      Try searching for another topic or filename.
+                    </p>
+                  </div>
+                )}
               </div>
-            </div>
-          </m.div>
-        </div>
-      )}
-    </AnimatePresence>
+
+              <div className='hidden sm:flex items-center justify-between px-4 py-2 bg-cream-paper border-t border-hairline text-[11px] font-mono text-sage-gray'>
+                <div className='flex items-center gap-3'>
+                  <span className='flex items-center gap-1'>
+                    <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
+                      ↑↓
+                    </kbd>{' '}
+                    Navigate
+                  </span>
+                  <span className='flex items-center gap-1'>
+                    <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
+                      ↵
+                    </kbd>{' '}
+                    Select
+                  </span>
+                  <span className='flex items-center gap-1'>
+                    <kbd className='border border-hairline rounded-xs px-1 py-0.5 bg-paper-white font-bold'>
+                      ESC
+                    </kbd>{' '}
+                    Close
+                  </span>
+                </div>
+                <div>
+                  Press <kbd className='font-bold'>⌘K</kbd> anywhere
+                </div>
+              </div>
+            </m.div>
+          </div>
+        )}
+      </AnimatePresence>
+      <SanBurst
+        burst={sanBurst}
+        mood='wink'
+        size={44}
+        anchorRef={containerRef}
+      />
+    </>
   );
 };
 

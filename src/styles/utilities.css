@@ -33,6 +33,63 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .heart-nudge {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heart-nudge 640ms var(--ease-out) 2;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-new(root) {
+    -webkit-mask-image: radial-gradient(
+      circle closest-side,
+      #000 72%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle closest-side,
+      #000 72%,
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+
+  .san-reaction {
+    animation: item-enter 240ms var(--ease-out) backwards;
+    transition:
+      opacity 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+  }
+  .san-reaction[data-leaving='true'] {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .san-reaction-center {
+    animation: san-center-in 260ms var(--ease-out) backwards;
+    transition:
+      opacity 240ms var(--ease-out),
+      transform 240ms var(--ease-out);
+  }
+  .san-layer[data-leaving='true'] .san-reaction-center {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  .san-backdrop {
+    background: rgb(var(--rgb-canvas) / 0.3);
+    animation: hero-fade 220ms var(--ease-out) backwards;
+    transition: opacity 280ms var(--ease-out);
+  }
+  .san-layer[data-leaving='true'] .san-backdrop {
+    opacity: 0;
+  }
+
   .hero-rise {
     animation: hero-rise 300ms var(--ease-out) var(--hero-delay, 0ms) backwards;
   }
@@ -56,6 +113,28 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .san-reaction {
+    animation: hero-fade 150ms ease-out backwards;
+    transition: opacity 150ms ease-out;
+  }
+  .san-reaction[data-leaving='true'] {
+    opacity: 0;
+  }
+  .san-reaction-center {
+    animation: hero-fade 150ms ease-out backwards;
+    transition: opacity 150ms ease-out;
+  }
+  .san-layer[data-leaving='true'] .san-reaction-center {
+    opacity: 0;
+  }
+  .san-backdrop {
+    background: rgb(var(--rgb-canvas) / 0.3);
+    animation: hero-fade 150ms ease-out backwards;
+    transition: opacity 150ms ease-out;
+  }
+  .san-layer[data-leaving='true'] .san-backdrop {
+    opacity: 0;
+  }
   .item-enter {
     animation: hero-fade 150ms ease-out backwards;
   }
@@ -88,5 +167,57 @@
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+}
+
+@keyframes san-center-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.avatar-flip {
+  perspective: 900px;
+}
+.avatar-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.avatar-flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.avatar-flip-back {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .avatar-flip-inner {
+    transition: transform 700ms var(--ease-in-out);
+  }
+  .avatar-flip:hover .avatar-flip-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .avatar-flip-back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+  .avatar-flip:hover .avatar-flip-back {
+    opacity: 1;
+  }
+}
+
+@keyframes heart-nudge {
+  40% {
+    transform: scale(1.4);
   }
 }

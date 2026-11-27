@@ -3,6 +3,10 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+import SanBurst from '@/components/Atoms/svg/SanBurst';
+
+import { useSanBurst } from '@/helpers/useSanBurst';
+
 const InsideCodeFigureContext = React.createContext(false);
 
 const extractCodeText = (container: HTMLElement | null): string => {
@@ -32,6 +36,8 @@ type CopyCodeButtonProps = {
 
 const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
   const [copied, setCopied] = useState(false);
+  const { burst, trigger } = useSanBurst();
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -49,6 +55,7 @@ const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      trigger();
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -58,6 +65,7 @@ const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
 
   return (
     <button
+      ref={buttonRef}
       type='button'
       onClick={handleCopy}
       aria-label={copied ? 'Code copied' : 'Copy code'}
@@ -73,6 +81,7 @@ const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
     >
       {copied ? <Check size={12} /> : <Copy size={12} />}
       <span>{copied ? 'Copied' : 'Copy'}</span>
+      <SanBurst burst={burst} mood='shipped' size={44} anchorRef={buttonRef} />
     </button>
   );
 };

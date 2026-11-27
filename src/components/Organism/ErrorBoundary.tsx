@@ -1,5 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
+
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
@@ -36,37 +38,49 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className='min-h-screen flex items-center justify-center px-4 bg-desk'>
-          <div className='text-center max-w-md'>
-            <div className='text-6xl mb-4'>⚠️</div>
-            <h1 className='text-3xl font-bold text-deep-moss font-primary mb-4'>
+        <div className='flex min-h-screen items-center justify-center bg-canvas px-4'>
+          <div className='max-w-md text-center'>
+            <SanMascotLazy
+              immediate
+              mood='dizzy'
+              size={132}
+              animated
+              className='mx-auto mb-6'
+              ariaLabel='San feeling dizzy'
+            />
+            <p className='mb-3 font-mono text-xs uppercase tracking-widest text-danger'>
+              Unexpected error
+            </p>
+            <h1 className='font-primary text-3xl font-bold tracking-tight text-ink sm:text-4xl'>
               Something went wrong
             </h1>
-            <p className='text-olive-char font-ui mb-6'>
-              We're sorry, but something unexpected happened. The error has been
-              logged and we'll look into it.
+            <p className='mx-auto mt-4 mb-6 leading-relaxed text-body'>
+              We&apos;re sorry, but something unexpected happened. The error has
+              been logged and we&apos;ll look into it.
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className='mb-6 text-left'>
-                <summary className='cursor-pointer text-sm text-sage-gray mb-2'>
+                <summary className='mb-2 cursor-pointer text-sm text-muted'>
                   Error Details (Development only)
                 </summary>
-                <pre className='p-4 bg-soft-linen border border-hairline rounded-xs text-xs overflow-auto'>
+                <pre className='overflow-auto rounded-md border border-hairline bg-subtle p-4 text-xs text-body'>
                   {this.state.error.toString()}
                   {this.state.error.stack}
                 </pre>
               </details>
             )}
-            <div className='flex gap-4 justify-center'>
+            <div className='flex flex-col items-center justify-center gap-3 sm:flex-row'>
               <button
+                type='button'
                 onClick={this.handleReset}
-                className='inline-flex items-center px-6 py-3 border border-transparent text-base font-medium font-ui rounded-[4px] text-deep-moss bg-amber-glow hover:bg-dark-amber focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue focus-visible:ring-offset-2 transition-colors'
+                className='inline-flex select-none items-center rounded-md bg-cta px-5 py-2.5 text-sm font-medium text-cta-fg transition-[background-color,transform] duration-150 ease-[var(--ease-out)] hover:bg-cta-hover active:scale-[0.98]'
               >
-                Go Home
+                Back to Home
               </button>
               <button
+                type='button'
                 onClick={() => window.location.reload()}
-                className='inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-desk focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors'
+                className='inline-flex select-none items-center rounded-md border border-hairline-strong bg-surface px-5 py-2.5 text-sm font-medium text-ink transition-[background-color,transform] duration-150 ease-[var(--ease-out)] hover:bg-subtle active:scale-[0.98]'
               >
                 Try Again
               </button>

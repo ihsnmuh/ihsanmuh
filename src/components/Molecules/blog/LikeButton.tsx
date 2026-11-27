@@ -1,8 +1,13 @@
 import { Heart } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
+import { ARTICLE_FINISHED_EVENT } from '@/lib/articleEvents';
 import { cn } from '@/lib/utils';
 
+import SanBurst from '@/components/Atoms/svg/SanBurst';
+
 import { useLikeCounter } from '@/helpers/useLikeCounter';
+import { useSanBurst } from '@/helpers/useSanBurst';
 
 type LikeButtonProps = {
   slug: string;
@@ -62,6 +67,45 @@ export function LikeButton({
     initialLikes,
   });
 
+  const { burst, trigger } = useSanBurst();
+  const wasLikedRef = useRef<boolean | null>(null);
+  const [nudge, setNudge] = useState(false);
+  const isLikedRef = useRef(false);
+  const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    isLikedRef.current = isLiked;
+  }, [isLiked]);
+
+  // When the reader finishes the article, gently point at the Like button.
+  useEffect(() => {
+    if (!interactive) return;
+
+    const onFinished = () => {
+      if (isLikedRef.current) return;
+      trigger();
+      setNudge(true);
+      if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+      nudgeTimer.current = setTimeout(() => setNudge(false), 1400);
+    };
+
+    window.addEventListener(ARTICLE_FINISHED_EVENT, onFinished);
+    return () => {
+      window.removeEventListener(ARTICLE_FINISHED_EVENT, onFinished);
+      if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    };
+  }, [interactive, trigger]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (wasLikedRef.current === null) {
+      wasLikedRef.current = isLiked;
+      return;
+    }
+    if (isLiked && !wasLikedRef.current) trigger();
+    wasLikedRef.current = isLiked;
+  }, [isLiked, isLoading, trigger]);
+
   if (isLoading) {
     return (
       <span
@@ -89,7 +133,7 @@ export function LikeButton({
       onClick={handleLike}
       disabled={isLiked || isLoading}
       className={cn(
-        'flex items-center gap-1.5 text-sm transition-colors',
+        'relative flex items-center gap-1.5 text-sm transition-colors',
         isLiked ? 'text-danger' : 'text-muted hover:text-danger',
         (isLiked || isLoading) && 'cursor-not-allowed',
         className,
@@ -97,11 +141,22 @@ export function LikeButton({
       aria-label={isLiked ? 'Already liked' : 'Like this post'}
     >
       {showIcon && (
-        <Heart className={cn('h-4 w-4', isLiked && 'fill-current')} />
+        <Heart
+          className={cn(
+            'h-4 w-4',
+            isLiked && 'fill-current',
+            nudge && 'heart-nudge',
+          )}
+        />
       )}
       <span>
         {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
       </span>
+      <SanBurst
+        burst={burst}
+        mood='love'
+        className='bottom-full left-1/2 mb-1 -translate-x-1/2'
+      />
     </button>
   );
 }

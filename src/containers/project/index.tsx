@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import ScrollReveal from '@/components/Atoms/ScrollReveal';
+import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
 import ProjectCard from '@/components/Molecules/card/ProjectCard';
 import ShowcaseProjectCard from '@/components/Molecules/card/ShowcaseProjectCard';
 import SearchFilter from '@/components/Molecules/SearchFilter';
@@ -154,6 +155,10 @@ const ProjectContainer = () => {
       <div className='min-h-[320px] mt-8'>
         {isLoading ? (
           <div className='space-y-8'>
+            <div className='flex items-center gap-3 text-sm text-muted'>
+              <SanMascotLazy mood='vibing' size={32} animated />
+              <span>Loading projects...</span>
+            </div>
             <div className='h-64 rounded-lg border border-hairline bg-surface animate-pulse' />
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               {[...Array(4)].map((_, i) => (
@@ -227,7 +232,8 @@ const ProjectContainer = () => {
             )}
           </div>
         ) : (
-          <div className='flex flex-col items-center justify-center text-center py-20 border border-hairline rounded-lg bg-surface'>
+          <div className='flex flex-col items-center justify-center text-center py-16 border border-hairline rounded-lg bg-surface'>
+            <SanMascotLazy mood='skeptic' size={88} animated className='mb-4' />
             <p className='font-primary text-base font-semibold text-ink'>
               No projects found
             </p>
