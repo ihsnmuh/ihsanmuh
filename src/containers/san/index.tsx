@@ -20,6 +20,7 @@ import {
 } from '@/lib/san';
 import { cn } from '@/lib/utils';
 
+import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
 import ScrollReveal from '@/components/Atoms/ScrollReveal';
 import SanMascot from '@/components/Atoms/svg/SanMascot';
@@ -64,6 +65,148 @@ const LAYER_INFO: Record<
     detail: 'Sparkle or monospace accents around the head.',
   },
 };
+
+type TSanFeature = {
+  title: string;
+  where: string;
+  trigger: string;
+  mood: TSanMood;
+  detail: string;
+};
+
+type TSanFeatureGroup = {
+  label: string;
+  description: string;
+  features: TSanFeature[];
+};
+
+const SAN_FEATURE_GROUPS: TSanFeatureGroup[] = [
+  {
+    label: 'Follows you around',
+    description: 'San reads the page and changes her face to match.',
+    features: [
+      {
+        title: 'Time-of-day greeting',
+        where: 'Home, hero badge',
+        trigger: 'Your local clock',
+        mood: 'grin',
+        detail:
+          'Grin in the morning, focused at midday, chill in the afternoon, cool in the evening, tired after 22:00. Hover the badge for the greeting.',
+      },
+      {
+        title: 'Reading progress',
+        where: 'Blog posts, top bar',
+        trigger: 'Scrolling an article',
+        mood: 'focused',
+        detail:
+          'San rides the leading edge of the progress bar: curious, focused, idea, then shipped when you reach the end of the article.',
+      },
+      {
+        title: 'Command palette',
+        where: 'Cmd/Ctrl + K',
+        trigger: 'What you type',
+        mood: 'curious',
+        detail:
+          'Curious while the search is empty, focused while results match, awkward when nothing is found.',
+      },
+    ],
+  },
+  {
+    label: 'Reacts to what you do',
+    description: 'A short pop-up or burst, then she leaves.',
+    features: [
+      {
+        title: 'Theme toggle',
+        where: 'Header',
+        trigger: 'Switching light or dark',
+        mood: 'tired',
+        detail:
+          'A large San blurs the page and waves while the theme changes: tired for dark, grin for light. Quick repeated toggles cancel out.',
+      },
+      {
+        title: 'Like nudge',
+        where: 'Blog posts, like button',
+        trigger: 'Finishing an article',
+        mood: 'love',
+        detail:
+          'When you reach the end and have not liked yet, San pops above the like button and the button wiggles. Liking also brings her back.',
+      },
+      {
+        title: 'Copy confirmations',
+        where: 'Code blocks, blog share, About, palette',
+        trigger: 'Copying code, a link, or my email',
+        mood: 'wink',
+        detail:
+          'A small San pops above the button that was pressed: shipped on code blocks, wink for links and email, then fades.',
+      },
+    ],
+  },
+  {
+    label: 'Fills the empty states',
+    description: 'When there is nothing to show, San stands in.',
+    features: [
+      {
+        title: 'Page not found',
+        where: '404',
+        trigger: 'A URL that does not exist',
+        mood: '404',
+        detail: 'San looking confused above the error code.',
+      },
+      {
+        title: 'Server error',
+        where: '500 and the error boundary',
+        trigger: 'A crash on the server or in React',
+        mood: 'dizzy',
+        detail: 'Dizzy San on both the 500 page and the in-app error screen.',
+      },
+      {
+        title: 'No results',
+        where: 'Blog and projects filters',
+        trigger: 'A search or filter with no match',
+        mood: 'awkward',
+        detail:
+          'Awkward for articles, skeptic for projects, both with a button to reset the filters.',
+      },
+      {
+        title: 'Loading projects',
+        where: 'Projects page',
+        trigger: 'Waiting for the list',
+        mood: 'vibing',
+        detail: 'A small vibing San beside the loading text.',
+      },
+    ],
+  },
+  {
+    label: 'Brand marks',
+    description: 'The static San that identifies the site.',
+    features: [
+      {
+        title: 'Logo',
+        where: 'Header and footer',
+        trigger: 'Always visible',
+        mood: 'grin',
+        detail:
+          'The compact SanLogo, tinted by the accent color of the current theme.',
+      },
+      {
+        title: 'Avatar flip',
+        where: 'About page',
+        trigger: 'Hovering my photo',
+        mood: 'cool',
+        detail:
+          'The photo flips over to reveal San. The copy email button next to it sends a wink burst.',
+      },
+      {
+        title: 'Social preview',
+        where: 'Open Graph image',
+        trigger: 'Sharing a link',
+        mood: 'idea',
+        detail:
+          'San is drawn into the generated share card, with a mood picked from the page tags.',
+      },
+    ],
+  },
+];
 
 const PALETTE_SWATCHES = [
   { name: 'Light ground', hex: SAN_PALETTE.lightGround, role: 'Light accent' },
@@ -201,6 +344,20 @@ const SanContainer = () => {
           one <code className='font-mono text-xs text-ink'>1240x1240</code> SVG
           file, split into separate face, hair, brow, and expression parts so I
           can swap moods or haircuts without shipping extra image files.
+        </p>
+        <p
+          className='san-rise text-sm leading-relaxed text-muted max-w-2xl'
+          style={{ '--i': 4 } as React.CSSProperties}
+        >
+          The idea for San comes from Gri, the mascot of Griko Nibras. See the
+          original at{' '}
+          <UnstyledLink
+            href='https://nibras.co/gri/'
+            className='font-medium text-accent underline decoration-hairline-strong underline-offset-4 hover:text-accent-hover hover:decoration-accent transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm'
+          >
+            nibras.co/gri
+          </UnstyledLink>
+          .
         </p>
       </header>
 
@@ -872,6 +1029,92 @@ const SanContainer = () => {
             })}
           </div>
         </div>
+      </section>
+
+      {/* 7. Where San lives */}
+      <section className='space-y-8'>
+        <ScrollReveal>
+          <div>
+            <p className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium mb-1'>
+              In the wild
+            </p>
+            <h2 className='font-primary text-xl font-bold tracking-tight text-ink'>
+              Where San shows up
+            </h2>
+            <p className='mt-1 text-sm text-body max-w-2xl'>
+              Every feature on this site that uses San, what sets it off, and
+              which mood it picks.
+            </p>
+          </div>
+        </ScrollReveal>
+        {SAN_FEATURE_GROUPS.map((group, groupIndex) => (
+          <div key={group.label} className='space-y-4'>
+            <ScrollReveal>
+              <div className='flex items-end gap-4 border-b border-hairline pb-3'>
+                <span className='font-mono text-3xl font-bold leading-none text-muted'>
+                  {String(groupIndex + 1).padStart(2, '0')}
+                </span>
+                <div className='min-w-0 flex-1'>
+                  <h3 className='font-primary text-base font-bold text-ink'>
+                    {group.label}
+                  </h3>
+                  <p className='text-xs text-muted'>{group.description}</p>
+                </div>
+                <span className='font-mono text-[11px] text-muted'>
+                  {group.features.length} places
+                </span>
+              </div>
+            </ScrollReveal>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+              {group.features.map((feature, index) => (
+                <ScrollReveal
+                  key={feature.title}
+                  delay={(index % 2) * 60}
+                  className='h-full'
+                >
+                  <article
+                    className={cn(
+                      'san-mood group flex h-full flex-col overflow-hidden rounded-xl border border-hairline bg-surface',
+                      'hover:border-accent/50',
+                    )}
+                  >
+                    <div className='relative flex items-center justify-center bg-accent-soft/50 py-5'>
+                      <span className='absolute left-3 top-3 font-mono text-[11px] text-muted'>
+                        {SAN_MOOD_META[feature.mood].label}
+                      </span>
+                      <div className='san-mood-face'>
+                        <SanMascot
+                          mood={feature.mood}
+                          hairstyle={hairstyle}
+                          showFacialHair={showFacialHair}
+                          size={96}
+                          shape='circle'
+                          className='pointer-events-none'
+                        />
+                      </div>
+                    </div>
+                    <div className='flex flex-1 flex-col gap-2 p-4'>
+                      <h4 className='font-primary text-base font-semibold text-ink'>
+                        {feature.title}
+                      </h4>
+                      <p className='text-sm text-body'>{feature.detail}</p>
+                      <dl className='mt-auto space-y-1 border-t border-hairline pt-3 font-mono text-[11px]'>
+                        <div className='flex gap-2'>
+                          <dt className='w-14 shrink-0 text-muted'>Where</dt>
+                          <dd className='text-ink'>{feature.where}</dd>
+                        </div>
+                        <div className='flex gap-2'>
+                          <dt className='w-14 shrink-0 text-muted'>Trigger</dt>
+                          <dd className='text-ink'>{feature.trigger}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   );
