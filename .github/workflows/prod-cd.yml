@@ -7,6 +7,9 @@ on:
       - completed
     branches: ['master']
 
+permissions:
+  contents: read
+
 concurrency:
   group: production-deployment
   cancel-in-progress: false
@@ -14,17 +17,15 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 15
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Deploy using SSH
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -36,52 +37,40 @@ jobs:
 
             echo "Starting deployment..."
 
-            # Navigate to the application directory
-            cd ~/apps/fe/ihsanmuh/ || (echo "Directory not found!" && exit 1)
+            cd ~/apps/fe/ihsanmuh/ || { echo "Directory not found!"; exit 1; }
 
-            # Login to Docker Hub (required for private images)
-            echo "Logging in to Docker Hub..."
-            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-
-            # Pull the latest image from Docker Hub
             echo "Pulling latest Docker image..."
-            docker compose pull || (echo "Failed to pull image!" && exit 1)
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker compose pull || { docker logout; echo "Failed to pull image!"; exit 1; }
+            docker logout
 
-            # Run database migrations (if any pending)
             echo "Running database migrations..."
-            docker compose run --rm app node node_modules/prisma/build/index.js migrate deploy || (echo "Migration failed!" && exit 1)
+            docker compose run --rm app node node_modules/prisma/build/index.js migrate deploy || { echo "Migration failed!"; exit 1; }
 
-            # Sync project data from project.json
             echo "Running database seed..."
-            docker compose run --rm app node node_modules/prisma/build/index.js db seed || (echo "Seed failed!" && exit 1)
+            docker compose run --rm app node node_modules/prisma/build/index.js db seed || { echo "Seed failed!"; exit 1; }
 
-            # Restart the application with the new image
             echo "Starting application..."
-            docker compose up -d --remove-orphans || (echo "Failed to start container!" && exit 1)
+            docker compose up -d --remove-orphans || { echo "Failed to start container!"; exit 1; }
 
-            # Wait for health check
             echo "Waiting for health check..."
-            sleep 10
+            CONTAINER_ID=$(docker compose ps -q app)
+            STATUS="starting"
+            for _ in $(seq 1 30); do
+              STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$CONTAINER_ID")
+              [ "$STATUS" = "healthy" ] && break
+              [ "$STATUS" = "unhealthy" ] && break
+              sleep 5
+            done
 
-            # Verify container is running and healthy
-            if docker compose ps | grep -q "healthy"; then
-              echo "Container is healthy!"
-            else
-              echo "Warning: Container may not be healthy yet, check logs"
-              docker compose logs --tail=20 app
+            if [ "$STATUS" != "healthy" ]; then
+              echo "Container is not healthy (status: $STATUS)"
+              docker compose logs --tail=50 app
+              exit 1
             fi
+            echo "Container is healthy!"
 
-            # Cleanup old images to save disk space
             echo "Cleaning up old images..."
             docker image prune -f
 
             echo "Deployment completed successfully."
-
-      - name: Deployment status
-        if: always()
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "Deployment successful!"
-          else
-            echo "Deployment failed!"
-          fi
