@@ -19,7 +19,7 @@ const navLinks = [
 const socialLinks = [
   { href: 'mailto:me@ihsanmuh.com', label: 'Email' },
   { href: 'https://github.com/ihsnmuh', label: 'GitHub' },
-  { href: 'https://www.linkedin.com/in/ihsanmuhammad19/', label: 'LinkedIn' },
+  { href: 'https://www.linkedin.com/in/ihsnmuh/', label: 'LinkedIn' },
   { href: 'https://instagram.com/dailyjuniordev', label: 'Instagram' },
 ];
 

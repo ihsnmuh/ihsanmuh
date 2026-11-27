@@ -324,7 +324,7 @@ const AboutContainer = () => {
               Email me
             </a>
             <a
-              href='https://www.linkedin.com/in/ihsanmuhammad19/'
+              href='https://www.linkedin.com/in/ihsnmuh/'
               target='_blank'
               rel='noopener noreferrer'
               className='px-5 py-2.5 rounded-md text-sm font-medium bg-transparent text-ink border border-hairline-strong hover:bg-subtle active:scale-[0.98] transition-[background-color,transform] duration-150 ease-[var(--ease-out)] select-none'
