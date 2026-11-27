@@ -1,4 +1,4 @@
-import { RefObject, useLayoutEffect, useState } from 'react';
+import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { TSanMood } from '@/lib/san';
@@ -16,7 +16,7 @@ type TSanBurstProps = {
   className?: string;
   /**
    * Renders San in a portal centered above this element, so parents with `overflow: hidden`
-   * cannot clip it.
+   * cannot clip it. It follows the element while the page or a scroll container moves.
    */
   anchorRef?: RefObject<HTMLElement>;
 };
@@ -40,6 +40,30 @@ const SanBurst = ({
     setAnchor({ x: rect.left + rect.width / 2, y: rect.top });
   }, [burstId, anchorRef]);
 
+  useEffect(() => {
+    if (!burstId || !anchorRef) return;
+
+    let frame = 0;
+    const follow = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const el = anchorRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        setAnchor({ x: rect.left + rect.width / 2, y: rect.top });
+      });
+    };
+
+    window.addEventListener('scroll', follow, { capture: true, passive: true });
+    window.addEventListener('resize', follow, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', follow, { capture: true });
+      window.removeEventListener('resize', follow);
+    };
+  }, [burstId, anchorRef]);
+
   if (!burst) return null;
 
   const mascot = (
@@ -55,7 +79,7 @@ const SanBurst = ({
         key={burst.id}
         aria-hidden='true'
         style={{ left: anchor.x, top: anchor.y }}
-        className='pointer-events-none fixed z-[70] -translate-x-1/2 -translate-y-full pb-1.5'
+        className='pointer-events-none fixed z-[110] -translate-x-1/2 -translate-y-full pb-1.5'
       >
         {mascot}
       </span>

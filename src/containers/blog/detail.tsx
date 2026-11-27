@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import NextImage from '@/components/Atoms/NextImage';
 import TagPill from '@/components/Atoms/pills/TagPills';
+import SanBurst from '@/components/Atoms/svg/SanBurst';
 import { LikeButton } from '@/components/Molecules/blog/LikeButton';
 import ReadingProgress from '@/components/Molecules/blog/ReadingProgress';
 import RelatedPosts from '@/components/Molecules/blog/RelatedPosts';
@@ -22,6 +23,8 @@ const TabelOfContent = dynamic(
   () => import('@/components/Molecules/blog/TabelOfContent'),
   { ssr: false },
 );
+
+import { useSanBurst } from '@/helpers/useSanBurst';
 
 import { IPost } from '@/types/interfaces/posts';
 
@@ -54,6 +57,8 @@ const Detail = (props: IDetailBlog) => {
     relatedPosts,
   } = props;
   const [copied, setCopied] = useState(false);
+  const { burst, trigger } = useSanBurst();
+  const shareRef = useRef<HTMLButtonElement>(null);
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const publishDate = format(new Date(publishedAt), 'MMMM dd, yyyy');
 
@@ -67,6 +72,7 @@ const Detail = (props: IDetailBlog) => {
     if (typeof window === 'undefined') return;
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
+    trigger();
     if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
   };
@@ -127,6 +133,7 @@ const Detail = (props: IDetailBlog) => {
             </div>
 
             <button
+              ref={shareRef}
               type='button'
               onClick={handleCopyLink}
               className='inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors'
@@ -138,6 +145,12 @@ const Detail = (props: IDetailBlog) => {
               )}
               <span>{copied ? 'Copied' : 'Share'}</span>
             </button>
+            <SanBurst
+              burst={burst}
+              mood='wink'
+              size={44}
+              anchorRef={shareRef}
+            />
           </div>
         </header>
 
