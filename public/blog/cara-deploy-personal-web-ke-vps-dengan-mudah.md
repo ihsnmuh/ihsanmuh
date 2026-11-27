@@ -1,0 +1,319 @@
+# Deploy Personal Web Next.js ke VPS dengan Mudah
+
+- Published: 2024-12-04
+- Author: Muhammad Ihsan
+- Tags: setup, deploy
+- Canonical page: https://ihsanmuh.com/blog/cara-deploy-personal-web-ke-vps-dengan-mudah
+
+> Panduan lengkap langkah demi langkah untuk mendeploy aplikasi Next.js ke VPS, mulai dari pemilihan VPS, konfigurasi server, hingga pengaturan domain dan keamanan.
+
+## Pendahuluan
+
+Zaman sekarang, punya personal website bagi seorang developer bukan lagi sekadar hobi, tapi juga kebutuhan untuk menampilkan identitas, portofolio, atau bahkan menjalankan bisnis.
+Setelah website selesai dibuat, langkah berikutnya adalah membuatnya bisa diakses secara online supaya orang lain bisa melihat hasil karya kita, salah satunya dengan menggunakan **Virtual Private Server (VPS)**.
+
+Nah, kali ini gw akan membahas langkah-langkah mudah untuk deploy personal website Next.js ke VPS dari nol.
+
+## Kenapa Deploy di VPS?
+
+1. **Stable**: Kita bisa menentukan alokasi sumber daya (CPU, RAM, dan storage) yang _dedicated_, sehingga performa server tidak terpengaruh pengguna lain.
+2. **Full Control**: Kita punya akses penuh (_root_ atau admin) untuk menginstal software dan mengatur konfigurasi sesuai kebutuhan.
+3. **Scalability**: Kapasitas sumber daya bisa ditingkatkan dengan mudah seiring berkembangnya website atau aplikasi yang kita kelola.
+4. **Security**: Lebih aman dibanding _shared hosting_ karena lingkungan server terisolasi, ditambah kita bebas mengatur firewall dan lapisan keamanan sendiri.
+5. **Low Cost**: Karena alokasi sumber dayanya fleksibel, biaya berlangganan VPS bisa jauh lebih terjangkau sesuai kebutuhan.
+
+## Memilih VPS
+
+VPS yang gw pilih adalah [Biznet Gio](https://www.biznetgio.com/). Setelah gw bandingkan dengan penyedia VPS lain, Biznet Gio ini salah satu yang paling terjangkau menurut gw.
+Dengan modal Rp100.000 per bulan, gw sudah bisa dapat VPS dengan spesifikasi yang lumayan: 2 vCPU, RAM 2 GB, dan storage 60 GB SSD. Tapi balik lagi ke preferensi masing-masing mau pakai penyedia yang mana.
+
+![Pilihan paket VPS NEO Lite SS 2.2 di Biznet Gio dengan harga Rp100.000 per bulan](https://ihsanmuh.com/images/blog/neolite/neolite-ss-feature.png)
+
+Setelah memilih layanan yang diinginkan, kalian akan diminta mengatur sistem operasi, SSH key yang mau digunakan, serta username dan password untuk mengakses VM melalui SSH atau konsol.
+Tunggu beberapa saat setelah proses setup selesai hingga server aktif dan muncul IP publik yang bisa diakses.
+
+![Dashboard Biznet Gio menampilkan instance VPS Ubuntu 24.04 berstatus Active](https://ihsanmuh.com/images/blog/neolite/neolite-ss-active.png)
+
+## Setup SSH
+
+Selanjutnya, kita hubungkan terminal lokal ke VPS menggunakan SSH dengan perintah berikut:
+
+```shell
+# -i ~/.ssh/id_rsa adalah path SSH key yang sudah kalian daftarkan
+
+ssh -i ~/.ssh/id_rsa [username]@[public server IP]
+# contoh: ssh -i ~/.ssh/id_rsa ihsan@123.123.123.123
+```
+
+Atau kalian juga bisa menyimpannya di file `~/.ssh/config` seperti contoh di bawah ini (penjelasan lebih lengkap bisa dibaca di [panduan konfigurasi SSH dari DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-configure-custom-connection-options-for-your-ssh-client)):
+
+```shell title="~/.ssh/config"
+Host ihsanmuh
+    HostName 123.123.123.123
+    User ihsanmuh
+    IdentityFile ~/.ssh/id_rsa
+```
+
+Dengan konfigurasi ini, kalian cukup mengetik `ssh ihsanmuh` di terminal tanpa perlu menulis perintah panjang lagi.
+
+![Tampilan terminal berhasil masuk ke server Ubuntu 24.04 LTS melalui SSH](https://ihsanmuh.com/images/blog/neolite/neolite-ss-ssh-access.png)
+
+## Setting Server
+
+Setelah berhasil masuk ke dalam VPS lewat SSH, anggap saja server ini seperti PC Ubuntu biasa.
+Langkah pertama yang perlu kita lakukan adalah memperbarui paket sistem dengan **update** dan **upgrade**:
+
+```shell
+sudo apt update
+sudo apt upgrade
+```
+
+### 1. Install Nginx
+
+Secara singkat, **Nginx** adalah sebuah web server multifungsi yang juga biasa dipakai untuk _load balancing_, _content caching_, _reverse proxy_, hingga _media streaming_.
+Cara menginstalnya cukup jalankan perintah berikut:
+
+```shell
+sudo apt install nginx
+```
+
+Setelah terinstal, cek statusnya dengan `sudo systemctl status nginx` untuk memastikan Nginx sudah berjalan normal di server kita.
+
+![Output systemctl status nginx menampilkan service berstatus active (running)](https://ihsanmuh.com/images/blog/neolite/check-nginx.png)
+
+### 2. Install Node Manager
+
+Karena aplikasi yang akan kita deploy berbasis Node.js, kita perlu menginstal Node version manager terlebih dahulu.
+Kali ini gw menggunakan [Fast Node Manager (fnm)](https://github.com/Schniz/fnm):
+
+```shell
+curl -fsSL https://fnm.vercel.app/install | bash
+```
+
+Setelah instalasi selesai, muat ulang konfigurasi shell agar perintah `fnm` dikenali, lalu instal versi Node.js yang diinginkan:
+
+```shell
+# muat ulang konfigurasi shell
+source /home/yourname/.bashrc
+
+# install dan gunakan Node.js v18
+fnm install v18
+fnm use v18
+```
+
+Kalian bisa memastikan Node.js sudah aktif dengan menjalankan `node --version`. Karena gw terbiasa memakai `yarn`, gw lanjut menginstalnya dengan `npm i -g yarn`, tapi kalau kalian lebih nyaman tetap pakai `npm`, tidak masalah.
+
+### 3. Clone dan Jalankan Web
+
+Di sini gw akan menarik (_clone_) project dari GitHub. Karena kita memakai Nginx, gw mengikuti konvensi direktorinya di `/var/www/` dan membuat folder baru bernama `fe-app` dengan perintah `mkdir -p /var/www/fe-app`.
+
+```shell title="/var/www/fe-app/"
+# clone project
+git clone https://github.com/ihsnmuh/ihsanmuh.git
+
+# masuk ke direktori /var/www/fe-app/ihsanmuh
+cd ihsanmuh
+
+# install dependencies
+yarn
+
+# build aplikasi
+yarn build
+
+# jalankan aplikasi
+yarn start
+```
+
+Project yang gw pakai di contoh ini masih berupa starter Next.js. Setelah _dependencies_ terinstal lewat `yarn`, kita jalankan `yarn build` lalu `yarn start`.
+
+Taraaaa~ webnya sudah bisa diakses secara **online sementara** lewat IP publik dan port `3000`. Namun akses seperti ini belum ideal karena URL-nya sulit diingat dan masih menggunakan protokol HTTP biasa.
+
+![Halaman starter Next.js diakses menggunakan IP publik dan port 3000 di browser](https://ihsanmuh.com/images/blog/neolite/web-deploy.png)
+
+### 4. Menghubungkan Domain
+
+Supaya pengunjung tidak perlu mengakses lewat IP publik dan nomor port, kita hubungkan domain milik kita dengan mengarahkan (_pointing_) DNS `A` record ke IP publik server seperti di bawah ini.
+
+![Pengaturan DNS A record dan CNAME untuk mengarahkan domain ke IP publik VPS](https://ihsanmuh.com/images/blog/neolite/setup-domain.png)
+
+Setelah itu, masuk ke direktori konfigurasi Nginx di `cd /etc/nginx/sites-available`. Di dalamnya ada file bawaan bernama `default` yang bisa dijadikan acuan untuk mengatur **reverse proxy** ke aplikasi kita.
+Langkah-langkahnya:
+
+- Buat file konfigurasi Nginx baru (namanya bebas, di sini gw beri nama `ihsnmuh.prod.config`):
+
+```config {4,7} title="/etc/nginx/sites-available/ihsnmuh.prod.config"
+server {
+    listen 80;
+
+    server_name ihsanmuh.my.id;
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
+```
+
+- Pastikan sintaks konfigurasi Nginx tidak memiliki error:
+
+```shell
+sudo nginx -t
+
+# Jika berhasil akan muncul pesan seperti ini:
+# nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+# nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+- Aktifkan konfigurasi tersebut dengan membuat symlink ke `sites-enabled`:
+
+```shell
+sudo ln -s /etc/nginx/sites-available/ihsnmuh.prod.config /etc/nginx/sites-enabled/ihsnmuh.prod.config
+```
+
+- Restart Nginx untuk menerapkan perubahan:
+
+```shell
+sudo systemctl restart nginx
+```
+
+Saat domain diakses sekarang, akan muncul error `502 Bad Gateway`. Ini wajar karena tandanya domain dan Nginx sudah berhasil terhubung, hanya saja aplikasi Next.js kita belum dijalankan.
+Begitu aplikasi dijalankan kembali dengan `yarn start`, website sudah bisa diakses langsung lewat domain.
+
+![Halaman starter Next.js berhasil diakses melalui domain ihsanmuh.my.id](https://ihsanmuh.com/images/blog/neolite/temporary-online.png)
+
+> **Perhatian:** Dengan `yarn start` biasa, website hanya hidup selama sesi terminal SSH kita terbuka. Begitu kita keluar dari server, aplikasi akan ikut berhenti. Karena itu, kita perlu menjalankannya di _background_.
+
+### 5. Menggunakan PM2
+
+Agar aplikasi tetap berjalan di _background_ meskipun kita sudah keluar dari sesi SSH, kita bisa menggunakan process manager [PM2](https://pm2.keymetrics.io/).
+Instal terlebih dahulu dengan `npm i -g pm2`, lalu jalankan aplikasi menggunakan perintah di bawah ini (panduan lengkapnya bisa dilihat di [dokumentasi Quick Start PM2](https://pm2.keymetrics.io/docs/usage/quick-start/)):
+
+```shell
+pm2 start yarn --name ihsan-prod -- start
+```
+
+Sekarang website kita sudah berjalan stabil di _background_.
+
+![Tabel status PM2 menampilkan proses ihsan-prod berstatus online](https://ihsanmuh.com/images/blog/neolite/pm2-start.png)
+
+## Setup Tambahan
+
+Sejauh ini proses deployment utama sudah beres dan website sudah bisa diakses lewat domain. Namun demi keamanan server dan pengunjung, ada dua hal penting lagi yang perlu kita atur:
+
+### 1. Setup SSL dengan Certbot
+
+Sertifikat SSL/TLS berfungsi mengenkripsi komunikasi jaringan sekaligus memastikan identitas situs web lewat protokol HTTPS.
+Kita bisa memasang sertifikat SSL secara gratis menggunakan [Certbot](https://certbot.eff.org/) dengan langkah berikut:
+
+- Instal Certbot melalui `snap`:
+
+```shell
+sudo snap install --classic certbot
+```
+
+- Siapkan symlink perintah `certbot` agar bisa dipanggil langsung:
+
+```shell
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+- Jalankan Certbot untuk domain yang digunakan:
+
+```shell /ihsanmuh.my.id/
+# sesuaikan dengan nama domain kalian
+sudo certbot --nginx -d ihsanmuh.my.id
+```
+
+Setelah proses selesai, Certbot akan otomatis memperbarui konfigurasi Nginx kita menjadi seperti ini:
+
+```config {9-13, 17-27} title="/etc/nginx/sites-available/ihsnmuh.prod.config"
+server {
+
+    server_name ihsanmuh.my.id;
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ihsanmuh.my.id/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ihsanmuh.my.id/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {
+    if ($host = ihsanmuh.my.id) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+    listen 80;
+
+    server_name ihsanmuh.my.id;
+    return 404; # managed by Certbot
+
+}
+```
+
+### 2. Mengaktifkan Firewall
+
+Firewall berfungsi menyaring lalu lintas jaringan sehingga kita bisa mengatur secara eksplisit koneksi apa saja yang diizinkan masuk atau keluar dari server.
+Tanpa firewall, port aplikasi seperti `:3000` masih bisa ditembak langsung dari luar. Di Ubuntu, kita bisa menutup celah tersebut menggunakan **UFW (Uncomplicated Firewall)**:
+
+- Cek status UFW terlebih dahulu:
+
+```shell
+# Secara default status UFW masih inactive
+sudo ufw status
+```
+
+- Atur _rule_ default untuk menolak semua koneksi masuk:
+
+```shell
+# Semua koneksi masuk ke server akan ditolak kecuali yang diizinkan
+sudo ufw default deny incoming
+```
+
+- Izinkan seluruh koneksi keluar dari server:
+
+```shell
+sudo ufw default allow outgoing
+```
+
+- Buka akses khusus untuk SSH dan Nginx (HTTP/HTTPS):
+
+```shell
+# Mengizinkan akses SSH agar kita tetap bisa login ke server
+sudo ufw allow OpenSSH
+
+# Mengizinkan trafik HTTP (80) dan HTTPS (443) melalui Nginx
+sudo ufw allow 'Nginx Full'
+```
+
+- Aktifkan UFW:
+
+```shell
+sudo ufw enable
+```
+
+- Periksa daftar _rule_ yang sudah aktif:
+
+```shell
+sudo ufw status numbered
+
+# Output yang muncul akan sesuai dengan rule yang sudah kita izinkan:
+
+# Status: active
+
+#      To                         Action      From
+#      --                         ------      ----
+# [ 1] OpenSSH                    ALLOW IN    Anywhere
+# [ 2] Nginx Full                 ALLOW IN    Anywhere
+# [ 3] OpenSSH (v6)               ALLOW IN    Anywhere (v6)
+# [ 4] Nginx Full (v6)            ALLOW IN    Anywhere (v6)
+```
+
+## Penutup
+
+Kita sudah berhasil melakukan deployment aplikasi Next.js ke VPS dari nol, mulai dari menghubungkan SSH, menyiapkan Node.js dan PM2, mengatur _reverse proxy_ Nginx beserta domain, hingga mengamankan server dengan SSL dan firewall.
+Meskipun awalnya terlihat banyak langkah teknisnya, kalau sudah dicoba sendiri proses ini sebenarnya cukup _straightforward_ dan cepat. Semoga panduan ini bermanfaat!

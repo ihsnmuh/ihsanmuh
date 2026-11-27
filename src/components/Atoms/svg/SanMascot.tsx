@@ -29,6 +29,8 @@ type TSanMascotProps = {
   className?: string;
   onClick?: () => void;
   ariaLabel?: string;
+  /** Hides San from assistive tech when nearby text already names the mood. */
+  decorative?: boolean;
 };
 
 /**
@@ -52,6 +54,7 @@ const SanMascot = ({
   className,
   onClick,
   ariaLabel,
+  decorative = false,
 }: TSanMascotProps) => {
   const prefersReducedMotion = useReducedMotion();
   const resolved = resolveSanParts({
@@ -79,9 +82,10 @@ const SanMascot = ({
 
   return (
     <div
-      role={isClickable ? 'button' : undefined}
+      role={decorative ? undefined : isClickable ? 'button' : 'img'}
       tabIndex={isClickable ? 0 : undefined}
-      aria-label={label}
+      aria-label={decorative ? undefined : label}
+      aria-hidden={decorative ? true : undefined}
       onClick={onClick}
       onKeyDown={(e) => {
         if (isClickable && (e.key === 'Enter' || e.key === ' ')) {

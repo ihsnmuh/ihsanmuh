@@ -8,6 +8,23 @@ Allow: /api/og
 Disallow: /api/
 Disallow: /component
 
+# AI crawlers and assistants: same rules as everyone else, stated explicitly.
+# Agentic browsers act through the visitor's own browser, so they follow the rules above.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+Allow: /api/og
+Disallow: /api/
+Disallow: /component
+
 # Sitemap
 Sitemap: https://ihsanmuh.com/sitemap.xml
 

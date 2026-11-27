@@ -45,7 +45,7 @@ const HeroSocialMedia = () => {
           <Github size={17} />
         </Link>
         <Link
-          href='https://www.linkedin.com/in/ihsanmuhammad19/'
+          href='https://www.linkedin.com/in/ihsnmuh/'
           target='_blank'
           rel='noopener noreferrer'
           aria-label='LinkedIn'

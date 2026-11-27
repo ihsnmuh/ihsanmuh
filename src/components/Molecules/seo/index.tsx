@@ -182,6 +182,14 @@ const Seo = (props: SeoProps) => {
         />
       )}
 
+      {meta.isBlog && (
+        <link
+          rel='alternate'
+          type='text/markdown'
+          href={`${canonicalUrl}.md`}
+        />
+      )}
+
       {/* RSS Feed */}
       <link
         rel='alternate'

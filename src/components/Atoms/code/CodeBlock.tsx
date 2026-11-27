@@ -81,6 +81,9 @@ const CopyCodeButton = ({ getText, className }: CopyCodeButtonProps) => {
     >
       {copied ? <Check size={12} /> : <Copy size={12} />}
       <span>{copied ? 'Copied' : 'Copy'}</span>
+      <span role='status' className='sr-only'>
+        {copied ? 'Code copied' : ''}
+      </span>
       <SanBurst burst={burst} mood='shipped' size={44} anchorRef={buttonRef} />
     </button>
   );
