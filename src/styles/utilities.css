@@ -170,3 +170,42 @@
     transform: scale(0.9);
   }
 }
+
+.avatar-flip {
+  perspective: 900px;
+}
+.avatar-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.avatar-flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.avatar-flip-back {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .avatar-flip-inner {
+    transition: transform 700ms var(--ease-in-out);
+  }
+  .avatar-flip:hover .avatar-flip-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .avatar-flip-back {
+    transform: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+  .avatar-flip:hover .avatar-flip-back {
+    opacity: 1;
+  }
+}
