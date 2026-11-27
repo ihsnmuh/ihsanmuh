@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { ARTICLE_FINISHED_EVENT } from '@/lib/articleEvents';
 import { cn } from '@/lib/utils';
 
 import SanBurst from '@/components/Atoms/svg/SanBurst';
@@ -68,6 +69,32 @@ export function LikeButton({
 
   const { burst, trigger } = useSanBurst();
   const wasLikedRef = useRef<boolean | null>(null);
+  const [nudge, setNudge] = useState(false);
+  const isLikedRef = useRef(false);
+  const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    isLikedRef.current = isLiked;
+  }, [isLiked]);
+
+  // When the reader finishes the article, gently point at the Like button.
+  useEffect(() => {
+    if (!interactive) return;
+
+    const onFinished = () => {
+      if (isLikedRef.current) return;
+      trigger();
+      setNudge(true);
+      if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+      nudgeTimer.current = setTimeout(() => setNudge(false), 1400);
+    };
+
+    window.addEventListener(ARTICLE_FINISHED_EVENT, onFinished);
+    return () => {
+      window.removeEventListener(ARTICLE_FINISHED_EVENT, onFinished);
+      if (nudgeTimer.current) clearTimeout(nudgeTimer.current);
+    };
+  }, [interactive, trigger]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -114,7 +141,13 @@ export function LikeButton({
       aria-label={isLiked ? 'Already liked' : 'Like this post'}
     >
       {showIcon && (
-        <Heart className={cn('h-4 w-4', isLiked && 'fill-current')} />
+        <Heart
+          className={cn(
+            'h-4 w-4',
+            isLiked && 'fill-current',
+            nudge && 'heart-nudge',
+          )}
+        />
       )}
       <span>
         {likes.toLocaleString()} like{likes !== 1 ? 's' : ''}
