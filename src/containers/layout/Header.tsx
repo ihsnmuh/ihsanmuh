@@ -2,16 +2,15 @@ import { Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-import { emitSanReaction } from '@/lib/sanReact';
-import { getThemeTransitionMs, transitionTheme } from '@/lib/themeTransition';
 import { cn } from '@/lib/utils';
 
 import UnstyledLink from '@/components/Atoms/links/UnstyledLink';
 import { SPRING_SNAPPY } from '@/components/Atoms/Motion';
 import SanLogo from '@/components/Atoms/svg/SanLogo';
+
+import { useThemeToggle } from '@/helpers/useThemeToggle';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -23,7 +22,7 @@ const links = [
 const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useThemeToggle();
   const { asPath } = useRouter();
   const pathSplit = asPath.split('/')[1]?.toLowerCase() || '';
 
@@ -46,21 +45,6 @@ const Header = () => {
     if (!mounted) return false;
     const target = link.href.replace('/', '');
     return pathSplit === target;
-  };
-
-  const toggleTheme = () => {
-    const nextTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
-    const settleMs = 220;
-    const holdMs = settleMs + Math.max(getThemeTransitionMs(), 600) + 300;
-
-    emitSanReaction(nextTheme === 'dark' ? 'tired' : 'grin', {
-      holdMs,
-      backdrop: true,
-    });
-    // Let the blur settle first, then sweep the new theme in from the center.
-    setTimeout(() => {
-      void transitionTheme(nextTheme, () => setTheme(nextTheme));
-    }, settleMs);
   };
 
   return (

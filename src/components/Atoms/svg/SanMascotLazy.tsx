@@ -10,7 +10,14 @@ const SanMascot = dynamic(() => import('@/components/Atoms/svg/SanMascot'), {
   loading: () => null,
 });
 
-type TSanMascotLazyProps = ComponentProps<typeof SanMascot> & {
+type TSanMascotLazyProps = Omit<
+  ComponentProps<typeof SanMascot>,
+  'className'
+> & {
+  /** Classes for the fixed-size outer box, so margins separate it from its neighbours. */
+  className?: string;
+  /** Classes for the mascot itself, inside the box. */
+  mascotClassName?: string;
   /** Rendered under the mascot while it loads. Defaults to a soft circle. */
   fallback?: ReactNode;
   /** Skip the idle gate when the mascot is mounted by a user action. */
@@ -19,9 +26,12 @@ type TSanMascotLazyProps = ComponentProps<typeof SanMascot> & {
 
 /**
  * Loads the San mascot (and its 30 KB of markup) only after the page is idle,
- * inside a fixed-size box so nothing shifts when it appears.
+ * inside a fixed-size box so nothing shifts when it appears. `className` styles that box;
+ * use `mascotClassName` for the mascot inside it.
  */
 const SanMascotLazy = ({
+  className,
+  mascotClassName,
   fallback,
   immediate = false,
   ...props
@@ -36,12 +46,13 @@ const SanMascotLazy = ({
       className={cn(
         'relative inline-flex shrink-0 items-center justify-center',
         fallback === undefined && 'rounded-full bg-subtle',
+        className,
       )}
     >
       {fallback}
       {(immediate || idle) && (
         <span className='absolute inset-0 flex items-center justify-center'>
-          <SanMascot {...props} />
+          <SanMascot {...props} className={mascotClassName} />
         </span>
       )}
     </span>
