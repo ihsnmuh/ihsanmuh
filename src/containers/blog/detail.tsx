@@ -144,7 +144,7 @@ const Detail = (props: IDetailBlog) => {
               ) : (
                 <Link2 size={13} />
               )}
-              <span>{copied ? 'Copied' : 'Share'}</span>
+              <span aria-live='polite'>{copied ? 'Copied' : 'Share'}</span>
             </button>
             <SanBurst
               burst={burst}
@@ -202,7 +202,9 @@ const Detail = (props: IDetailBlog) => {
                   ) : (
                     <Link2 size={14} />
                   )}
-                  <span>{copied ? 'Copied' : 'Copy link'}</span>
+                  <span aria-live='polite'>
+                    {copied ? 'Copied' : 'Copy link'}
+                  </span>
                 </button>
               </div>
             </div>

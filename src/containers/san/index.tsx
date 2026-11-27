@@ -579,6 +579,7 @@ const SanContainer = () => {
                         showFacialHair={showFacialHair}
                         size={96}
                         shape='circle'
+                        decorative
                         className='pointer-events-none'
                       />
                     </div>
@@ -907,6 +908,7 @@ const SanContainer = () => {
                         showFacialHair={showFacialHair}
                         size={96}
                         shape='circle'
+                        decorative
                         className='pointer-events-none'
                       />
                     </div>
@@ -1089,6 +1091,7 @@ const SanContainer = () => {
                           showFacialHair={showFacialHair}
                           size={96}
                           shape='circle'
+                          decorative
                           className='pointer-events-none'
                         />
                       </div>

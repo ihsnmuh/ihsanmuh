@@ -23,6 +23,11 @@ const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { resolvedTheme, toggleTheme } = useThemeToggle();
+  const themeLabel = !mounted
+    ? 'Toggle color theme'
+    : resolvedTheme === 'dark'
+      ? 'Switch to light mode'
+      : 'Switch to dark mode';
   const { asPath } = useRouter();
   const pathSplit = asPath.split('/')[1]?.toLowerCase() || '';
 
@@ -114,7 +119,7 @@ const Header = () => {
             <button
               type='button'
               onClick={toggleTheme}
-              aria-label='Toggle color theme'
+              aria-label={themeLabel}
               className='w-8 h-8 flex items-center justify-center rounded-md border border-hairline bg-surface/70 text-muted hover:text-accent hover:border-accent/40 transition-colors duration-150 active:scale-[0.95] overflow-hidden'
             >
               {mounted ? (
@@ -152,7 +157,7 @@ const Header = () => {
             <button
               type='button'
               onClick={toggleTheme}
-              aria-label='Toggle color theme'
+              aria-label={themeLabel}
               className='p-2 rounded-md border border-hairline bg-surface text-muted hover:text-accent transition-colors'
             >
               {mounted ? (
