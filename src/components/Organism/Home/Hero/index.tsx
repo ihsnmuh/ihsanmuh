@@ -4,6 +4,7 @@ import SanMascotLazy from '@/components/Atoms/svg/SanMascotLazy';
 
 import { Experiences } from '@/constant/experience';
 import { useAfterIdle } from '@/helpers/useAfterIdle';
+import { useDayPeriod } from '@/helpers/useDayPeriod';
 
 import HeroSocialMedia from './HeroSocialMedia';
 import HeroTech from './HeroTech';
@@ -15,6 +16,7 @@ const HeroGlyphCanvas = dynamic(
 
 const Hero = () => {
   const canvasReady = useAfterIdle();
+  const dayPeriod = useDayPeriod();
 
   return (
     <section className='relative text-body pt-6 sm:pt-12'>
@@ -24,13 +26,15 @@ const Hero = () => {
 
       <div className='relative z-10 flex flex-col gap-6 max-w-3xl'>
         <div className='hero-rise [--hero-delay:0ms] inline-flex items-center gap-2 w-fit pl-1.5 pr-3 py-0.5 rounded-full bg-accent-soft/80 border border-accent/25 text-xs font-mono text-accent font-medium select-none'>
-          <SanMascotLazy
-            size={20}
-            mood='grin'
-            fallback={
-              <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
-            }
-          />
+          <span title={dayPeriod?.greeting} className='inline-flex'>
+            <SanMascotLazy
+              size={20}
+              mood={dayPeriod?.mood ?? 'grin'}
+              fallback={
+                <span className='w-1.5 h-1.5 rounded-full bg-accent animate-pulse' />
+              }
+            />
+          </span>
           <span>Open for work &amp; freelance</span>
         </div>
 
