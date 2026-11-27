@@ -59,6 +59,7 @@ const Detail = (props: IDetailBlog) => {
   const [copied, setCopied] = useState(false);
   const { burst, trigger } = useSanBurst();
   const shareRef = useRef<HTMLButtonElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const publishDate = format(new Date(publishedAt), 'MMMM dd, yyyy');
 
@@ -79,7 +80,7 @@ const Detail = (props: IDetailBlog) => {
 
   return (
     <>
-      <ReadingProgress />
+      <ReadingProgress targetRef={articleRef} />
       <div className='pt-2 sm:pt-4'>
         <div className='mb-6 sm:mb-8'>
           <Link
@@ -173,7 +174,7 @@ const Detail = (props: IDetailBlog) => {
 
         <div className='lg:grid lg:grid-cols-[minmax(0,1fr)_228px] lg:gap-10'>
           <div className='min-w-0'>
-            <article className='mdx prose max-w-none'>
+            <article ref={articleRef} className='mdx prose max-w-none'>
               <MDXRemote {...source} components={components} />
             </article>
 
