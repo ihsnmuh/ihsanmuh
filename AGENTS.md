@@ -160,7 +160,7 @@ GitHub Actions workflows:
 ### React / Next.js Patterns
 
 - Use `next/dynamic` for heavy or client-only components (e.g., `ThemeSwitcher` in `Header`, `HeroGlyphCanvas` in `Hero`).
-- Use `next/font/google` for font loading (`Plus Jakarta Sans` + `JetBrains Mono` configured in `src/containers/layout/Layout.tsx`).
+- Use `next/font/local` for font loading (self-hosted `Plus Jakarta Sans` + `JetBrains Mono` woff2 in `src/fonts/`, configured in `src/containers/layout/Layout.tsx`). The OG image route (`src/pages/api/og.tsx`) loads static TTFs from `src/fonts/og/` because Satori cannot read WOFF2.
 - Use `React.forwardRef` for link/button wrapper components.
 - Prefer shared link components in `src/components/Atoms/links/*` (`UnstyledLink` handles external links with `target="_blank"` + `rel="noopener noreferrer"`).
 - Use TanStack Query v4 for server-state; query configs live in `src/queries/`.
