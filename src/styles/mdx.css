@@ -42,6 +42,22 @@ pre [data-line] {
   @apply text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent;
 }
 
+.prose table {
+  @apply my-8 w-full border-collapse overflow-hidden rounded-lg border border-hairline text-sm;
+}
+
+.prose th {
+  @apply border-b border-hairline bg-subtle px-4 py-2.5 text-left font-mono text-[11px] font-medium uppercase tracking-wider text-muted;
+}
+
+.prose td {
+  @apply border-b border-hairline px-4 py-3 align-top text-body;
+}
+
+.prose tr:last-child td {
+  @apply border-b-0;
+}
+
 .prose > ul {
   list-style-type: disc;
   @apply my-5 pl-6 space-y-2;
