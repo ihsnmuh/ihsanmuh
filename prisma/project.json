@@ -1,5 +1,18 @@
 [
   {
+    "id": "1e76af52-d393-4069-ab8a-e1bc750468e1",
+    "image": "cafe-website",
+    "title": "Flight79 Cafe Website",
+    "slug": "cafe-website",
+    "category": "Personal Challenge",
+    "description": "Aviation-themed coffee and eatery website in Kota Baru Parahyangan, with bilingual (ID/EN) support and table reservation.",
+    "stacks": ["TypeScript", "Next.js", "TailwindCSS"],
+    "github": "",
+    "website": "https://flight79.ihsanmuh.com",
+    "createAt": "2026-11-28T00:00:00.000Z",
+    "updateAt": "2026-11-28T00:00:00.000Z"
+  },
+  {
     "id": "d45bdb27-c12c-4f40-b29f-ad0b25e9f952",
     "image": "femaledaily-website",
     "title": "Femaledaily Website",
