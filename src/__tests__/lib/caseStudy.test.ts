@@ -16,6 +16,17 @@ describe('case study', () => {
     CASE_STUDY_SLUGS.forEach((slug) => expect(files).toContain(slug));
   });
 
+  it('only publishes case studies that are not drafts', async () => {
+    for (const slug of CASE_STUDY_SLUGS) {
+      const contents = await getCaseStudyBySlug(slug);
+      expect(contents?.en.frontMatter.isShow).toBe(true);
+    }
+  });
+
+  it('hasCaseStudy accepts published slugs', () => {
+    CASE_STUDY_SLUGS.forEach((slug) => expect(hasCaseStudy(slug)).toBe(true));
+  });
+
   it('hasCaseStudy rejects unknown and empty slugs', () => {
     expect(hasCaseStudy(undefined)).toBe(false);
     expect(hasCaseStudy('does-not-exist')).toBe(false);
