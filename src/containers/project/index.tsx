@@ -72,9 +72,7 @@ const ProjectContainer = () => {
 
   const isSearchingOrFiltering =
     debouncedSearch.length > 0 || activeCategory !== ALL_CATEGORY;
-  const featuredProject = !isSearchingOrFiltering
-    ? filteredProjects[0]
-    : undefined;
+  const leadProject = !isSearchingOrFiltering ? filteredProjects[0] : undefined;
   const remainingProjects = !isSearchingOrFiltering
     ? filteredProjects.slice(1)
     : filteredProjects;
@@ -171,23 +169,14 @@ const ProjectContainer = () => {
           </div>
         ) : filteredProjects.length > 0 ? (
           <div className='space-y-12'>
-            {featuredProject && (
+            {leadProject && (
               <div>
-                <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-3'>
-                  Featured Project
-                </p>
-                <ProjectCard {...featuredProject} isFeatured={true} />
+                <ProjectCard {...leadProject} isLarge={true} />
               </div>
             )}
 
             {remainingProjects.length > 0 && (
               <div>
-                {featuredProject && (
-                  <p className='font-mono text-[11px] uppercase tracking-wider text-muted mb-4'>
-                    All Projects
-                  </p>
-                )}
-
                 <div
                   key={`${activeCategory}-${debouncedSearch}`}
                   className='grid grid-cols-1 md:grid-cols-2 gap-6'

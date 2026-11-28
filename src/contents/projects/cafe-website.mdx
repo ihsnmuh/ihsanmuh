@@ -1,0 +1,93 @@
+---
+role: 'Solo developer and designer'
+duration: '1 week build, longer design exploration'
+year: '2026'
+summary: 'A landing page with 2 languages for an aviation-themed coffee and eatery in Kota Baru Parahyangan. It is built for future ads and makes it easy to book a table through WhatsApp.'
+highlights:
+  - label: 'Languages supported'
+    value: 'ID / EN'
+  - label: 'Build time'
+    value: '1 week'
+  - label: 'Lighthouse score in all 4 categories (local build)'
+    value: '100'
+gallery: []
+isShow: true
+---
+
+## Problem
+
+Flight79 is a family-owned coffee and eatery in Kota Baru Parahyangan. Its aviation identity is strong, but it only showed up in the space itself and on Instagram.
+
+The cafe had no website. Information was scattered across Instagram, TikTok and Google Maps, so visitors struggled to find anything beyond a single post or caption.
+
+Three problems followed:
+
+- **The menu had no home of its own.** Around 115 items across eight categories could not be browsed before a visit.
+- **No destination for ads.** Social platforms work for discovery, but the family plans to run ads and needs a page that every ad can point to.
+- **Information scattered.** Opening hours, location and contact details depended on whichever post or profile a visitor happened to open.
+
+The audience is broad: people living around Kota Baru Parahyangan, visitors of all ages, and aviation enthusiasts who come for the theme itself.
+
+## Goal and measurement
+
+The goal is a landing page for ads that also explains the cafe: the concept, the full menu, practical details, and its use as an event venue. Everything on the page leads to one action, booking a table.
+
+**How success will be measured.** The measure that matters is how many guests actually arrive. Reservations are not stored on the site, so the count is manual for now. Every booking arrives in WhatsApp starting with the same line, "Halo Flight 79, saya ingin reservasi meja", which makes the chats easy to count and compare with who showed up. Clicks on the reservation buttons are also tracked, as an earlier signal.
+
+This plan has not run yet, because the site has not opened to guests. Two things I want to handle before ads start:
+
+- **Link ads to guests.** An idea, not built: add a source tag to the prefilled message, such as "(from an Instagram ad)", so arrivals can be tied to the ad without a backend.
+- **Test inside Instagram.** The family plans to advertise on Instagram, where visitors open the page in the app's built-in browser. I have not tested yet whether the WhatsApp button opens smoothly there. I will test it before ads run.
+
+## Key decisions
+
+- **One main action, through WhatsApp.** The reservation button opens a WhatsApp chat with the booking already written, so a guest only has to press send. There is no booking backend, no account and no cost, and it matches how guests already talk to the cafe. The trade-off is that nothing is stored, so there is no record of bookings or no-shows beyond the chats.
+- **A form and direct buttons, both.** They exist for one simple reason: to make it easy for guests to contact the cafe from the website, as one of its calls to action. The form, styled as a boarding pass, collects name, WhatsApp number, date, time, guest count and special requests. Guests who prefer not to fill in a form can use the buttons in the header, hero and events section, or the sticky button on mobile. All of them open the same chat.
+- **An open question: is it too aviation?** I have not found the answer yet. I am still iterating on one question: is this website appealing for an aviation-themed cafe, or does the theme go too far? I treat it as an open question instead of a finished decision. Feedback from the family is the next input.
+- **A menu that stays readable.** Around 115 items could easily become one long list. The menu is a set of tabs, one per main category, numbered like a flight (FL-01 to FL-08) and showing its item count. Inside a category, items are grouped by sub-category and can be filtered, following the order of the cafe's official PDF menu. The trade-off is that the menu lives in one data file that I update, so the owners depend on me whenever it changes. A simple admin page is the natural next step.
+- **Indonesian first, and not remembered.** Indonesian is the default and every visitor starts there, because it is the language of most guests. Switching is instant and updates the `lang` attribute for screen readers. The choice is deliberately not remembered between visits.
+
+The aviation ideas appear where they do real work:
+
+| Aviation idea   | Where it appears on the site                                 |
+| --------------- | ------------------------------------------------------------ |
+| Boarding pass   | The reservation form                                         |
+| Departure board | Menu category codes (FL-01 to FL-08) and the split-flap text |
+| Flight radar    | The animated background of the hero                          |
+| Runway          | The animation in the experience section                      |
+
+## Build notes
+
+The site is built with Next.js, TypeScript and Tailwind CSS. There is no i18n package: all copy lives in one typed dictionary with an Indonesian branch and an English branch, and a small React context passes the active language to every component.
+
+The palette is deep navy, warm cream and an amber accent, like a cockpit panel lit at night. Headlines use Barlow Condensed, close to the lettering on airport signs, and body text uses Manrope. All motion follows the visitor's "reduce motion" setting, so those visitors see static content.
+
+The build took about a week. Shaping the design took much longer, because the theme is distinctive and there is no ready-made pattern for a cafe. It is still not where I want it to be, and I count that as part of the story.
+
+## Result
+
+The website is built and working, but it has not opened to guests yet. It is waiting for a dedicated domain and for feedback from the family who own the cafe. There are no visitor or reservation numbers to report, and I would rather say so than invent any.
+
+What I can show today is the technical quality:
+
+- **Local build:** Lighthouse scores 100 for performance, accessibility, best practices and SEO.
+- **Temporary domain:** performance is 100 on desktop and 89 on mobile, with accessibility and SEO at 100. Best practices is 81 because of a Cloudflare script on the temporary domain, not the site's own code.
+
+<MdxImage
+  src='/images/project/cafe-website-lighthouse.png'
+  alt='Lighthouse report showing 100 for performance, accessibility, best practices and SEO'
+  width={1260}
+  height={1026}
+/>
+
+_Lighthouse report from the local build._
+
+Once the dedicated domain is ready, I will measure again. The next numbers worth adding are the count of reservation chats and how many of those guests arrived.
+
+### What I learned
+
+The hardest part was not technical. It was turning what the family wanted into a design, and fitting the website to a cafe whose theme already exists instead of imposing a look of my own. The build took a week, but understanding the wish behind the brief took much longer.
+
+One question is still open. I am still testing whether this website is appealing for an aviation-themed cafe, and whether the theme goes too far.
+
+I am keeping this as a note for future projects. First, start from the physical place and the people behind it. Second, check my reading of their wishes early. Last, design. I expect this to get me to the best result faster next time.
