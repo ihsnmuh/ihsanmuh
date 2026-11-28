@@ -1,0 +1,92 @@
+---
+role: 'Developer dan desainer (solo)'
+duration: '1 minggu pengerjaan, eksplorasi desain lebih lama'
+year: '2026'
+summary: 'Website dua bahasa untuk kafe dan tempat makan bertema aviasi di Kota Baru Parahyangan. Website ini mengenalkan konsep kafe secara online sekaligus memudahkan tamu memesan meja lewat WhatsApp.'
+highlights:
+  - label: 'Bahasa yang didukung'
+    value: 'ID / EN'
+  - label: 'Waktu pengerjaan'
+    value: '1 minggu'
+  - label: 'Skor Lighthouse di 4 kategori (build lokal)'
+    value: '100'
+gallery: []
+isShow: false
+---
+
+## Masalah
+
+Flight79 adalah kafe dan tempat makan milik keluarga di Kota Baru Parahyangan. Identitas aviasinya kuat, tetapi selama ini hanya terlihat saat datang langsung ke lokasi dan di Instagram.
+
+Kafe ini belum punya website. Informasi tersebar di Instagram, TikTok, dan Google Maps, sehingga pengunjung sulit mendapat gambaran lengkap di luar satu unggahan.
+
+Kondisi itu menimbulkan tiga masalah:
+
+- **Menu belum punya tempat sendiri.** Sekitar 115 menu dalam delapan kategori belum bisa dilihat sebelum pengunjung datang.
+- **Belum ada tujuan untuk iklan.** Media sosial memang cocok agar orang menemukan kafe ini, tetapi keluarga berencana memasang iklan dan butuh satu halaman tujuan (_landing page_) untuk semua iklan tersebut.
+- **Informasi dasar tidak terpusat.** Jam buka, lokasi, dan kontak bergantung pada unggahan atau profil yang kebetulan dibuka pengunjung.
+
+Audiensnya beragam: warga sekitar Kota Baru Parahyangan, pengunjung dari berbagai usia, dan pencinta aviasi yang datang karena temanya.
+
+Tujuannya adalah membuat satu website yang memperkenalkan konsep kafe dan menampilkan menu lengkap secara langsung ke pelanggan. Website ini juga memuat seluruh informasi praktis, termasuk fungsi kafe sebagai tempat acara, sekaligus menjadi halaman tujuan untuk iklan nantinya.
+
+## Pendekatan
+
+Saya memperlakukan website ini sebagai perpanjangan dari ruang kafenya: pengunjung terasa seperti masuk ke kabin pesawat, bukan sekadar menggulir daftar menu.
+
+Arah desainnya tidak perlu dicari dari nol. Ruang fisik kafe sudah punya tema aviasi yang kuat, jadi bahasa visualnya berangkat dari sana. Bagian yang lebih sulit adalah menerjemahkan suasana ruangan ke dalam halaman web. Temanya khas, dan belum ada pola desain siap pakai untuk kafe seperti ini. Pengerjaan kodenya sekitar seminggu, tetapi proses merumuskan desainnya jauh lebih lama. Hasil akhirnya belum sepenuhnya sesuai keinginan saya, dan itu tetap menjadi bagian dari ceritanya.
+
+Keputusan desainnya:
+
+- **Tema kafe menjadi arah utama.** Nomor penerbangan, istilah _boarding_, dan kategori ala papan keberangkatan membentuk tata letak dan teks, bukan sekadar menghias _template_ kafe yang umum.
+- **Tunjukkan alasan orang betah.** Selain menu, website menunjukkan alasan pengunjung betah berlama-lama: tempat duduk yang nyaman, internet cepat dari Starlink, dan banyak colokan. Hal ini penting bagi orang yang datang untuk bekerja atau belajar, bukan hanya makan.
+- **Tempat acara, bukan hanya kafe.** Ruang kafe juga bisa dipakai untuk acara, sehingga website menampilkannya sebagai lokasi ulang tahun, acara keluarga, rapat perusahaan, acara komunitas, hingga kumpul pencinta aviasi.
+- **Dua bahasa sejak awal.** Bahasa Indonesia dan bahasa Inggris berbagi struktur konten yang sama, sehingga keduanya terasa alami dan tidak seperti hasil terjemahan.
+- **Reservasi sebagai aksi utama.** Tombol utamanya mengarah ke reservasi meja, dengan tombol menu tepat di sebelahnya.
+
+Tidak ada konsep yang dibuang di tengah jalan. Arahnya bertahan dari awal sampai akhir, dan sebagian besar waktu saya habis untuk menyempurnakan detailnya. Saya merapikan _copywriting_ agar bahasa aviasinya tetap menyenangkan tanpa mengganggu, lalu menata ulang tampilan menu.
+
+Menu adalah bagian yang paling sering saya revisi. Daftar menu harus mudah dipindai dan tidak boleh menjadi satu daftar panjang. Butuh beberapa kali iterasi sampai tampilannya terasa jelas.
+
+## Solusi
+
+Website ini dibangun dengan Next.js, TypeScript, dan Tailwind CSS. Keputusan teknis utamanya:
+
+- **Dua bahasa tanpa _library_.** Tidak ada _package_ i18n. Semua teks disimpan dalam satu kamus bertipe (_typed dictionary_) dengan cabang bahasa Indonesia dan Inggris. Sebuah React context sederhana menyediakan bahasa yang aktif dan fungsi pengganti bahasa ke setiap komponen. Bahasa Indonesia menjadi bahasa bawaan. Bahasa halaman berganti seketika tanpa perlu dimuat ulang, dan atribut `lang` ikut berubah agar pembaca layar (_screen reader_) membacakan isinya dengan pelafalan yang tepat. Pilihan bahasa sengaja tidak disimpan antarkunjungan: setiap pengunjung mulai dari bahasa Indonesia, sesuai bahasa mayoritas tamu kafe, lalu bisa beralih ke bahasa Inggris kapan saja.
+- **Formulir reservasi yang berujung di WhatsApp.** Data reservasi tidak disimpan di server mana pun. Formulir bergaya _boarding pass_ ini meminta nama, nomor WhatsApp, tanggal, waktu, jumlah tamu, dan permintaan khusus. Setiap kolom wajib divalidasi terlebih dahulu, dengan pesan kesalahan sesuai bahasa yang sedang aktif. Setelah dikirim, WhatsApp langsung terbuka dengan detail reservasi yang sudah terisi otomatis dalam bahasa tersebut. Nama penumpang di tampilan tiket juga diperbarui secara langsung saat tamu mengetik. Tamu yang tidak ingin mengisi formulir bisa langsung menekan tombol di _header_, _hero_, bagian acara, atau tombol melayang di versi _mobile_. Semuanya mengarah ke obrolan WhatsApp yang sama agar seluruh permintaan tetap masuk ke aplikasi yang dipakai pemilik setiap hari.
+- **Menu yang terbaca sekilas.** Menu disusun dalam bentuk tab, satu untuk tiap kategori utama, lengkap dengan kode ala penerbangan (FL-01 sampai FL-08) dan jumlah itemnya. Di dalam setiap kategori, menu dikelompokkan per subkategori dan bisa disaring. Pengunjung bisa melihat gambaran besarnya lebih dulu, lalu menyaring sesuai keinginan. Dengan begitu, sekitar 115 menu tidak menumpuk dalam satu daftar panjang.
+- **Pelacakan untuk kebutuhan iklan.** Aksi penting seperti klik tombol reservasi WhatsApp diberi penanda dan dikirim ke _data layer_. Saat iklan mulai berjalan, pihak kafe bisa melihat tombol mana yang paling banyak diklik.
+- **Bahasa visual aviasi.** Palet warnanya navy tua, krem hangat, dan aksen amber, seperti panel kokpit yang menyala di malam hari. Judul memakai Barlow Condensed yang mirip huruf papan bandara, sedangkan teks bacaan memakai Manrope agar nyaman dibaca. Elemen khasnya berasal dari tema itu sendiri:
+
+  - efek teks _split-flap_, seperti papan jadwal bandara lama, yang mengacak huruf sebelum berhenti di teks akhir. Efek ini dipakai untuk detail seperti kode penerbangan dan tujuan.
+  - radar penerbangan berbasis _canvas_ di belakang _hero_, serta animasi _coffee runway_ berbasis _canvas_ di bagian suasana kafe.
+  - _progress bar_ dengan siluet jet kecil.
+  - _boarding pass_ bertepi berlubang untuk formulir reservasi, serta kode ala penerbangan (FL-01 sampai FL-08) untuk kategori menu.
+
+  Seluruh animasi mengikuti pengaturan "kurangi gerakan" (_reduced motion_) di perangkat pengunjung. Jika diaktifkan, halaman hanya menampilkan tampilan statis.
+
+## Hasil
+
+Website sudah selesai dibangun dan berfungsi penuh, tetapi belum diluncurkan untuk umum. Saat ini website masih menunggu domain khusus dan masukan dari keluarga pemilik kafe. Karena itu, belum ada data pengunjung maupun reservasi yang bisa dilaporkan, dan saya tidak mau mengarang angka.
+
+Yang bisa ditunjukkan sekarang adalah kualitas teknisnya:
+
+- **Build lokal:** Lighthouse memberi skor 100 untuk _performance_, _accessibility_, _best practices_, dan SEO.
+- **Domain sementara:** skor _performance_ mencapai 100 di _desktop_ dan 89 di _mobile_, dengan _accessibility_ dan SEO tetap 100. Skor _best practices_ berada di angka 81 akibat skrip bawaan Cloudflare di domain sementara, bukan karena kode website.
+
+<MdxImage
+  src='/images/project/cafe-website-lighthouse.png'
+  alt='Laporan Lighthouse dengan skor 100 untuk performance, accessibility, best practices, dan SEO'
+  width={1260}
+  height={1026}
+/>
+
+_Laporan Lighthouse dari build lokal._
+
+Setelah domain khusus aktif, saya akan mengujinya lagi. Metrik berikutnya yang layak ditambahkan adalah jumlah klik tombol reservasi, yang sudah dilacak untuk mendukung iklan yang direncanakan keluarga.
+
+### Yang saya pelajari
+
+Bagian tersulit bukan soal teknis. Tantangannya adalah menerjemahkan keinginan keluarga ke dalam desain dan menyesuaikan website dengan tema kafe yang sudah ada, bukan memaksakan selera saya. Pengerjaan kodenya hanya seminggu, tetapi memahami maksud di balik setiap permintaan butuh waktu jauh lebih lama.
+
+Hal ini menjadi catatan saya untuk proyek berikutnya. Pertama, mulai dari tempat fisik dan orang-orang di baliknya. Kedua, pastikan pemahaman saya tentang keinginan mereka sudah selaras sejak awal. Baru setelah itu mulai mendesain. Dengan cara itu, saya berharap bisa mencapai hasil terbaik lebih cepat.

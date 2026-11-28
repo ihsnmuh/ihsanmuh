@@ -1,0 +1,92 @@
+---
+role: 'Solo developer and designer'
+duration: '1 week build, longer design exploration'
+year: '2026'
+summary: 'A bilingual website for an aviation-themed cafe and eatery in Kota Baru Parahyangan. It brings the cafe concept online and lets guests book tables via WhatsApp.'
+highlights:
+  - label: 'Languages supported'
+    value: 'ID / EN'
+  - label: 'Build time'
+    value: '1 week'
+  - label: 'Lighthouse score in all 4 categories (local build)'
+    value: '100'
+gallery: []
+isShow: false
+---
+
+## Problem
+
+Flight79 is a family-owned cafe and eatery in Kota Baru Parahyangan. Its aviation identity is strong, but it only showed up in the physical space and on Instagram.
+
+The cafe had no website. Information was scattered across Instagram, TikTok, and Google Maps, so visitors struggled to find anything beyond a single post or caption.
+
+Three problems followed:
+
+- **The menu had no home of its own.** Around 115 items across eight categories could not be browsed before a visit.
+- **No destination for ads.** Social platforms work for discovery, but the family plans to run ads and needs a single landing page that every ad can point to.
+- **Scattered information.** Opening hours, location, and contact details depended on whichever post or profile a visitor happened to open.
+
+The audience is broad: people living around Kota Baru Parahyangan, visitors of all ages, and aviation enthusiasts who come for the theme itself.
+
+The goal was one website that introduces the concept, shows the full menu directly to customers, gathers all practical details about the cafe (including its use as an event venue), and serves as a landing page for future ads.
+
+## Approach
+
+I treated the website as an extension of the cafe itself: visitors step into a cabin instead of scrolling past a plain menu.
+
+The direction did not have to be invented from scratch. The cafe already has a clear aviation theme in its space, so the visual language came from there. The harder part was turning a physical room into a web page. The theme is distinctive, with no ready-made pattern for a cafe website. The build took about a week, while shaping the design took much longer. It is still not where I want it to be, and I count that as part of the story.
+
+Design decisions:
+
+- **The cafe's own theme leads.** Flight numbers, boarding terminology, and departure-board-style categories shape the layout and copy, instead of decorating a generic cafe template.
+- **Show why people stay.** Beyond the menu, the site shows what it is like to spend time there, with comfortable seating, fast internet backed by Starlink, and plenty of power outlets. These matter to people who come to work or study as much as to eat.
+- **A venue, not just a cafe.** The space also hosts events, so the site presents it for birthday celebrations, family gatherings, company meetings, community events, and aviation enthusiast meetups.
+- **Two languages from day one.** Indonesian and English share one content structure, so neither feels like a translation.
+- **Reservation as the main action.** The primary button books a table, with the menu right beside it.
+
+Nothing was dropped along the way. The direction held from start to finish, and my time went into refinement: tightening the copywriting so the aviation language stays playful without getting in the way, and reworking the menu layout.
+
+The menu was the part I revised most often. It has to stay scannable and not turn into one long list. That took several rounds before it felt clear.
+
+## Solution
+
+The site is built with Next.js, TypeScript, and Tailwind CSS. The main technical decisions:
+
+- **Bilingual without a library.** There is no i18n package. All copy lives in one typed dictionary with an Indonesian branch and an English branch. A small React context gives every component the active language and a function to switch it. Indonesian is the default. The whole page switches instantly without a reload, and the `lang` attribute updates alongside it so screen readers pronounce the content correctly. The choice is deliberately not saved between visits: every visitor starts in Indonesian, the language of most of the cafe's guests, and switches only if they want to.
+- **A reservation form that ends in WhatsApp.** Reservations are not stored on any server. The form, styled as a boarding pass, asks for name, WhatsApp number, date, time, guest count, and special requests. It validates required fields and shows errors in the active language. Submitting opens WhatsApp with the full booking pre-filled in that language. The passenger name on the pass updates live as the guest types. Guests who prefer not to fill in a form can use the buttons in the header, hero, and events section, or the sticky button on mobile. All of them open the same WhatsApp chat, keeping every request in the app the owners already use every day.
+- **A menu you can read at a glance.** The menu is a set of tabs, one per main category, numbered like a flight (FL-01 to FL-08) and showing its item count. Inside a category, items are grouped by subcategory and can be filtered. Customers see an overview of the menu first, then narrow it down. That keeps around 115 items from turning into one long list.
+- **Tracking for future ads.** Key actions such as WhatsApp reservation button clicks are tagged and sent to the data layer. Once ads start running, the cafe can see which buttons get clicked most.
+- **Aviation visual language.** The palette is deep navy, warm cream, and an amber accent, like a cockpit panel lit at night. Headlines use Barlow Condensed, close to the lettering on airport signs, and body text uses Manrope for readability. The signature pieces come from the theme itself:
+
+  - a split-flap text effect, like an old airport departure board, that scrambles letters before settling. It is used for details such as the flight code and destination.
+  - a canvas flight radar behind the hero, and a canvas-based coffee runway animation in the experience section.
+  - a progress bar with a small jet silhouette.
+  - a perforated boarding pass for the reservation form, and flight-style codes (FL-01 to FL-08) for menu categories.
+
+  All animations respect the visitor's "reduce motion" setting, showing static content when it is enabled.
+
+## Result
+
+The website is built and working, but it is not live for guests yet. It is waiting for a dedicated domain and feedback from the family who owns the cafe. There are no visitor or reservation numbers to report, and I would rather say so than invent any.
+
+What I can show today is the technical quality:
+
+- **Local build:** Lighthouse scores 100 across performance, accessibility, best practices, and SEO.
+- **Temporary domain:** Performance is 100 on desktop and 89 on mobile, with accessibility and SEO at 100. Best practices is 81 due to a Cloudflare script on the temporary domain, not the site's own code.
+
+<MdxImage
+  src='/images/project/cafe-website-lighthouse.png'
+  alt='Lighthouse report showing 100 for performance, accessibility, best practices, and SEO'
+  width={1260}
+  height={1026}
+/>
+
+_Lighthouse report from the local build._
+
+Once the dedicated domain is ready, I will measure again. The next numbers worth adding are real reservation clicks, which the site already tracks for the ads the family plans to run.
+
+### What I learned
+
+The hardest part was not technical. It was turning what the family wanted into a design, and fitting the website to a cafe whose theme already exists instead of imposing a look of my own. The build took a week, but understanding the intent behind the brief took much longer.
+
+I am keeping this as a note for future projects. First, start from the physical place and the people behind it. Second, check my understanding of their goals early. Last, design. I expect this to get me to the best result faster next time.

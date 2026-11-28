@@ -7,7 +7,7 @@
     "category": "Personal Challenge",
     "description": "Aviation-themed coffee and eatery website in Kota Baru Parahyangan, with bilingual (ID/EN) support and table reservation.",
     "stacks": ["TypeScript", "Next.js", "TailwindCSS"],
-    "github": "",
+    "github": "https://github.com/ihsnmuh/flight79",
     "website": "https://flight79.ihsanmuh.com",
     "createAt": "2026-11-28T00:00:00.000Z",
     "updateAt": "2026-11-28T00:00:00.000Z"
