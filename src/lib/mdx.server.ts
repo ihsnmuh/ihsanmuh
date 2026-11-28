@@ -21,9 +21,11 @@ const getThemeSource = () => {
   return cachedThemeSource;
 };
 
-export const getFileDatabySlug = async (slug: string) => {
-  // * For blog
-  const postFilePath = path.join(postsDirectory, `${slug}.mdx`);
+export const getFileDatabySlug = async (
+  slug: string,
+  directory: string = postsDirectory,
+) => {
+  const postFilePath = path.join(directory, `${slug}.mdx`);
   const source = fs.readFileSync(postFilePath, 'utf8');
 
   const { content, data } = matter(source);

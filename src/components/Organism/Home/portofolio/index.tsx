@@ -51,6 +51,7 @@ const Portofolio = () => {
         <div className='space-y-5'>
           <ScrollReveal delay={40}>
             <ProjectCard
+              slug={flagshipProject.slug}
               title={flagshipProject.title}
               image={flagshipProject.image}
               category={flagshipProject.category}
@@ -58,7 +59,7 @@ const Portofolio = () => {
               stacks={flagshipProject.stacks}
               github={flagshipProject.github}
               website={flagshipProject.website}
-              isFeatured={true}
+              isLarge={true}
             />
           </ScrollReveal>
 
@@ -67,6 +68,7 @@ const Portofolio = () => {
               {secondaryProjects.map((project, index) => (
                 <ScrollReveal key={project.title} delay={100 + index * 60}>
                   <ProjectCard
+                    slug={project.slug}
                     title={project.title}
                     image={project.image}
                     category={project.category}
@@ -74,7 +76,7 @@ const Portofolio = () => {
                     stacks={project.stacks}
                     github={project.github}
                     website={project.website}
-                    isFeatured={false}
+                    isLarge={false}
                   />
                 </ScrollReveal>
               ))}

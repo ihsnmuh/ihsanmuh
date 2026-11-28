@@ -1,4 +1,5 @@
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight, BookOpen, Github } from 'lucide-react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
@@ -6,21 +7,29 @@ import NextImage from '@/components/Atoms/NextImage';
 import StackPills from '@/components/Atoms/pills/StackPills';
 import { Tooltip } from '@/components/Atoms/Tooltip';
 
+import {
+  cardLinkClass,
+  getCardLinkProps,
+  ProjectCardChip,
+  ProjectCardCta,
+} from './ProjectCardAction';
+import { getProjectLink } from './projectLink';
 import WrapperCard from './WrapperCard';
 
 import { IProject } from '@/types/interfaces/projects';
 
 const STACKS_VISIBLE = 3;
-const STACKS_VISIBLE_FEATURED = 4;
+const STACKS_VISIBLE_LARGE = 4;
 
 interface IProjectProps extends IProject {
   className?: string;
-  isFeatured?: boolean;
+  isLarge?: boolean;
 }
 
 const ProjectCard = (props: IProjectProps) => {
   const {
     title,
+    slug,
     className,
     description,
     image,
@@ -28,49 +37,50 @@ const ProjectCard = (props: IProjectProps) => {
     website,
     github,
     category,
-    isFeatured,
+    isLarge,
   } = props;
 
-  const projectUrl = website || github;
-  const maxStacks = isFeatured ? STACKS_VISIBLE_FEATURED : STACKS_VISIBLE;
+  const projectLink = getProjectLink({ slug, website, github });
+  const isCaseStudy = projectLink?.isCaseStudy ?? false;
+  const maxStacks = isLarge ? STACKS_VISIBLE_LARGE : STACKS_VISIBLE;
   const visibleStacks = stacks?.slice(0, maxStacks) ?? [];
   const hiddenStacks = stacks?.slice(maxStacks) ?? [];
 
   return (
     <WrapperCard
       className={cn(
-        'group h-full flex overflow-hidden bg-surface text-ink',
-        'border border-hairline-strong/80 dark:border-hairline rounded-lg hover:border-hairline-strong [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5 transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)]',
-        'shadow-[0_1px_2px_rgba(24,24,27,0.05)] hover:shadow-[0_8px_24px_-12px_rgba(24,24,27,0.12)] dark:shadow-none',
-        isFeatured ? 'flex-col md:flex-row' : 'flex-col',
+        'h-full flex overflow-hidden bg-surface text-ink cursor-default hover:bg-surface',
+        'border border-hairline-strong/80 dark:border-hairline rounded-lg transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)]',
+        'shadow-[0_1px_2px_rgba(24,24,27,0.05)] dark:shadow-none',
+        isLarge ? 'flex-col md:flex-row' : 'flex-col',
         className,
       )}
     >
-      <a
-        href={projectUrl}
-        target='_blank'
-        rel='noopener noreferrer'
+      <Link
+        {...getCardLinkProps(projectLink)}
         className={cn(
-          'relative block overflow-hidden bg-subtle shrink-0',
-          isFeatured
+          cardLinkClass(projectLink),
+          'group/image relative block overflow-hidden bg-subtle shrink-0',
+          isLarge
             ? 'md:w-[48%] p-3 pb-0 md:pb-3 md:pr-0 border-b md:border-b-0 md:border-r border-hairline'
             : 'p-3 pb-0 border-b border-hairline',
         )}
-        aria-label={`Open ${title}`}
+        aria-label={`${projectLink?.ctaLabel ?? 'Open'}: ${title}`}
       >
         <div
           className={cn(
             'relative w-full overflow-hidden border border-hairline bg-surface',
-            isFeatured
+            isLarge
               ? 'aspect-video md:h-full md:aspect-auto min-h-[220px] rounded-t-md md:rounded-tr-none md:rounded-l-md border-b-0 md:border-b md:border-r-0'
               : 'aspect-video rounded-t-md border-b-0',
           )}
         >
+          {projectLink && <ProjectCardChip link={projectLink} />}
           <NextImage
             className='w-full h-full'
             classNames={{
               image:
-                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+                'transition-transform duration-500 ease-out group-hover/image:scale-[1.03] group-focus-visible/image:scale-[1.03]',
             }}
             src={`/images/project/${image}.png`}
             alt={title}
@@ -80,7 +90,7 @@ const ProjectCard = (props: IProjectProps) => {
             useSkeleton
           />
         </div>
-      </a>
+      </Link>
 
       <div className='flex flex-col flex-1 min-w-0'>
         <div className='p-5 sm:p-6 flex-1'>
@@ -91,9 +101,10 @@ const ProjectCard = (props: IProjectProps) => {
                   {category}
                 </span>
               )}
-              {isFeatured && (
-                <span className='px-2 py-0.5 rounded-full bg-accent-soft border border-accent/20 text-accent text-[10px] font-mono font-medium'>
-                  Featured
+              {isCaseStudy && (
+                <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent-soft border border-accent/20 text-accent text-[10px] font-mono font-medium'>
+                  <BookOpen size={10} aria-hidden='true' />
+                  Case study
                 </span>
               )}
             </div>
@@ -124,18 +135,20 @@ const ProjectCard = (props: IProjectProps) => {
             </div>
           </div>
 
-          <a
-            href={projectUrl}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='inline-flex items-center gap-1.5 font-primary text-lg sm:text-xl font-semibold tracking-tight text-ink group-hover:text-accent transition-colors duration-150 leading-snug'
+          <Link
+            {...getCardLinkProps(projectLink)}
+            className={cn(
+              cardLinkClass(projectLink),
+              'inline-flex items-center gap-1.5 font-primary text-lg sm:text-xl font-semibold tracking-tight text-ink transition-colors duration-150 leading-snug hover:text-accent hover:underline focus-visible:text-accent focus-visible:underline decoration-accent/40 underline-offset-4',
+            )}
           >
             <span className='line-clamp-1'>{title}</span>
-          </a>
+          </Link>
 
           <p className='text-body text-sm mt-2 line-clamp-3 leading-relaxed'>
             {description}
           </p>
+          {projectLink && <ProjectCardCta link={projectLink} />}
         </div>
 
         <div className='px-4 sm:px-5 py-2.5 border-t border-hairline bg-subtle/75 flex items-center flex-wrap gap-1.5'>

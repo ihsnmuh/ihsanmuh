@@ -1,4 +1,5 @@
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight, BookOpen, Github } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -7,42 +8,53 @@ import NextImage from '@/components/Atoms/NextImage';
 import StackPills from '@/components/Atoms/pills/StackPills';
 import { Tooltip } from '@/components/Atoms/Tooltip';
 
+import {
+  cardLinkClass,
+  getCardLinkProps,
+  ProjectCardChip,
+  ProjectCardCta,
+} from './ProjectCardAction';
+import { getProjectLink } from './projectLink';
+
 import { IProject } from '@/types/interfaces/projects';
 
 const STACKS_VISIBLE = 3;
 
 const ShowcaseProjectCard = (props: IProject) => {
-  const { title, image, category, description, stacks, github, website } =
+  const { title, slug, image, category, description, stacks, github, website } =
     props;
 
-  const projectUrl = website || github;
+  const projectLink = getProjectLink({ slug, website, github });
+  const isCaseStudy = projectLink?.isCaseStudy ?? false;
   const visibleStacks = stacks?.slice(0, STACKS_VISIBLE) ?? [];
   const hiddenStacks = stacks?.slice(STACKS_VISIBLE) ?? [];
 
   return (
     <article
       className={cn(
-        'group relative flex flex-col h-full',
+        'relative flex flex-col h-full cursor-default',
         'rounded-lg overflow-hidden',
-        'border border-hairline-strong/80 dark:border-hairline hover:border-hairline-strong [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5',
-        'shadow-[0_1px_2px_rgba(24,24,27,0.05)] hover:shadow-[0_8px_24px_-12px_rgba(24,24,27,0.12)] dark:shadow-none',
+        'border border-hairline-strong/80 dark:border-hairline',
+        'shadow-[0_1px_2px_rgba(24,24,27,0.05)] dark:shadow-none',
         'bg-surface text-ink',
         'transition-[border-color,box-shadow,transform] duration-200 ease-[var(--ease-out)]',
       )}
     >
-      <a
-        href={projectUrl}
-        target='_blank'
-        rel='noopener noreferrer'
-        className='relative block p-3 pb-0 overflow-hidden border-b border-hairline bg-subtle'
-        aria-label={`Open ${title}`}
+      <Link
+        {...getCardLinkProps(projectLink)}
+        className={cn(
+          cardLinkClass(projectLink),
+          'group/image relative block p-3 pb-0 overflow-hidden border-b border-hairline bg-subtle',
+        )}
+        aria-label={`${projectLink?.ctaLabel ?? 'Open'}: ${title}`}
       >
         <div className='relative aspect-[16/9] overflow-hidden rounded-t-md border border-b-0 border-hairline bg-surface'>
+          {projectLink && <ProjectCardChip link={projectLink} />}
           <NextImage
             className='w-full h-full'
             classNames={{
               image:
-                'transition-transform duration-500 ease-out group-hover:scale-[1.03]',
+                'transition-transform duration-500 ease-out group-hover/image:scale-[1.03] group-focus-visible/image:scale-[1.03]',
             }}
             src={`/images/project/${image}.png`}
             alt={title}
@@ -52,17 +64,25 @@ const ShowcaseProjectCard = (props: IProject) => {
             useSkeleton
           />
         </div>
-      </a>
+      </Link>
 
       <div className='flex flex-col flex-1 p-5 sm:p-6'>
         <div className='flex items-center justify-between gap-2 mb-2.5'>
-          {category ? (
-            <span className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
-              {category}
-            </span>
-          ) : (
-            <span />
-          )}
+          <div className='flex items-center gap-2'>
+            {category ? (
+              <span className='font-mono text-[11px] uppercase tracking-wider text-accent font-medium'>
+                {category}
+              </span>
+            ) : (
+              <span />
+            )}
+            {isCaseStudy && (
+              <span className='inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent-soft border border-accent/20 text-accent text-[10px] font-mono font-medium'>
+                <BookOpen size={10} aria-hidden='true' />
+                Case study
+              </span>
+            )}
+          </div>
 
           <div className='flex items-center gap-1.5 text-muted'>
             {github && (
@@ -92,20 +112,19 @@ const ShowcaseProjectCard = (props: IProject) => {
           </div>
         </div>
 
-        <a
-          href={projectUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='block'
+        <Link
+          {...getCardLinkProps(projectLink)}
+          className={cn(cardLinkClass(projectLink), 'group/title block')}
         >
-          <h3 className='font-primary font-semibold text-lg sm:text-xl tracking-tight leading-snug text-ink line-clamp-1 group-hover:text-accent transition-colors duration-150'>
+          <h3 className='font-primary font-semibold text-lg sm:text-xl tracking-tight leading-snug text-ink line-clamp-1 transition-colors duration-150 group-hover/title:text-accent group-hover/title:underline group-focus-visible/title:text-accent group-focus-visible/title:underline decoration-accent/40 underline-offset-4'>
             {title}
           </h3>
-        </a>
+        </Link>
 
         <p className='mt-2 text-sm leading-relaxed text-body line-clamp-3'>
           {description}
         </p>
+        {projectLink && <ProjectCardCta link={projectLink} />}
       </div>
 
       <div className='px-4 sm:px-5 py-2.5 border-t border-hairline bg-subtle/75 flex items-center flex-wrap gap-1.5'>
