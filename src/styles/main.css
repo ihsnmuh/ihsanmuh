@@ -1,1 +1,7 @@
 @tailwind components;
+
+@layer components {
+  .project-card-link {
+    @apply cursor-pointer rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+}
